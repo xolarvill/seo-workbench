@@ -2,6 +2,8 @@
 
 使用 SuperSEO + SEO Machine + Claude SEO 搭建一个从零起步的 Shopify 独立站 SEO 体系。
 
+> **📌 本教程适用于 Shopify Liquid (Online Store 2.0 / 传统 Theme)。** 如果你用的是 **Hydrogen / Remix / Next.js 等 Headless 方案**，请阅读 `Shopify-Hydrogen-Headless-SEO指南.md`——Headless 的 SEO 基线、URL 结构、Schema 管理、Sitemap 生成方式都与 Liquid 完全不同。
+
 ---
 
 ## Shopify SEO 的特殊性

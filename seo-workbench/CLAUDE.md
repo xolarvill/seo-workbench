@@ -50,22 +50,33 @@ INIT → STRATEGY → CONTENT_PRODUCTION → QUALITY_REVIEW → TECHNICAL_AUDIT 
 
 ### 阶段 0: INIT
 
-**目标**: 配置好所有上下文文件，验证 Shopify 技术基线。
+**目标**: 配置好所有上下文文件，验证技术基线。
 
-**步骤**:
+**通用步骤** (所有项目类型):
+
 1. `config-brand-voice` — 引导用户确认/创建 `seomachine/context/brand-voice.md`
    - 如果文件存在且非空：展示内容摘要，询问是否需要修改
-   - 如果文件不存在：提供 Shopify 电商品牌声音模板，引导用户填充
+   - 如果文件不存在：提供品牌声音模板，引导用户填充
+
 2. `config-target-keywords` — 引导用户确认/创建 `seomachine/context/target-keywords.md`
    - 列出 5-10 个核心品类词 + 5-10 个信息型词
-3. `verify-shopify-baseline` — 验证 Shopify 技术基础
-   - 确认只有一个主域名，其他域名 301 到主域
-   - 确认 HTTPS 全站强制
-   - 确认 GSC 已验证
-   - 确认 robots.txt 未屏蔽重要内容
-   - 工具: 读取 `seo-workbench/state.json` 中的 `project.url`，使用 WebFetch 检查
 
-**输出**: 已验证的品牌声音文件、目标关键词列表、Shopify 技术基线确认
+**类型专属步骤** (根据 `project.type` 动态加入):
+
+| project.type | 步骤 ID | 步骤描述 |
+|-------------|---------|---------|
+| `shopify` | `verify-shopify-liquid-baseline` | 验证 Shopify Liquid 技术基线 (域名/HTTPS/GSC/robots/theme.liquid) |
+| `shopify-headless` | `verify-headless-seo-baseline` | 验证 Headless SEO 基线 (MetaFunction/JSON-LD组件/sitemap/robots/404) |
+| `shopify-headless` | `verify-headless-deploy` | 验证部署配置 (域名/HTTPS/CDN/GSC) — 根据 platform.hosting 展开不同检查项 |
+| `general` | `verify-general-baseline` | 验证通用 CMS/建站平台检查 |
+| `existing` | (无额外步骤) | 跳过基线验证 |
+
+**workflow:next 执行 INIT 时**:
+- 始终先执行通用步骤，再执行类型专属步骤
+- 步骤根据 `project.type` 动态插入 state.json 的 `phases.INIT.steps`
+- `verify-headless-seo-baseline` 和 `verify-headless-deploy` 的具体检查项定义见本文档末尾「Headless 平台检查清单」章节
+
+**输出**: 已验证的品牌声音文件、目标关键词列表、技术基线确认
 
 **进入下一阶段**: 所有步骤 status=done → currentPhase = STRATEGY
 
@@ -172,7 +183,7 @@ INIT → STRATEGY → CONTENT_PRODUCTION → QUALITY_REVIEW → TECHNICAL_AUDIT 
 
 2. `schema` — Schema 部署与验证
    - 工具: `Skill("claude-seo:seo-schema")`
-   - 验证 9 种 Shopify 必需的 Schema 类型是否齐全
+   - 验证 9 种必需的 Schema 类型是否齐全
    - 缺失的生成 JSON-LD 代码，放置在 `audits/schema-report.md`
 
 3. `sitemap` — Sitemap 生成与提交
@@ -186,6 +197,19 @@ INIT → STRATEGY → CONTENT_PRODUCTION → QUALITY_REVIEW → TECHNICAL_AUDIT 
 5. `drift-baseline` — 建立 SEO 漂移基线
    - 工具: `Skill("claude-seo:seo-drift")`
    - 对核心页面建立基线，后续改版时用于对比
+
+**平台上下文注入规则:**
+
+当 `project.type = "shopify-headless"` 时，在调用 Skill 前将以下上下文拼入 prompt：
+
+| 步骤 | 注入内容 |
+|------|---------|
+| `technical-audit` | "这是一个 Shopify Headless 站（框架: {platform.framework}, 托管: {platform.hosting}, CMS: {platform.cms}）。审计时额外关注：流式SSR/Streaming对爬虫兼容性、筛选参数/排序参数的canonical处理、分页SEO实现、JS bundle大小与hydration开销、Headless CMS内容是否在SSR HTML中完整渲染、自定义路由是否引入重复内容路径。" |
+| `schema` | "这是一个 Headless 站，Schema 通过程序化 JSON-LD 组件生成（非 Liquid 模板注入）。请在渲染后的 HTML 中检查 `<script type='application/ld+json'>` 的输出，而非查找 theme.liquid。" |
+| `sitemap` | "Sitemap 由开发者自定义实现（resource route 或 framework 插件），非 Shopify 自动生成。验证 XML 完整性、URL 覆盖率，并确认所有重要页面类型（产品/集合/Blog/静态页）均已包含。" |
+| `images` | "图片通过 {platform.framework} 的 Image 组件渲染（如 Hydrogen `<Image>`, next/image）。重点检查：alt 属性是否从 Shopify 产品数据动态填充、是否设置了尺寸/宽高比防止 CLS、CDN 是否自动转换 WebP/AVIF 格式。" |
+
+对于 `project.type = "shopify"` (Liquid) 或 `general`，注入对应平台的上下午文（Liquid 关注 App 拖慢速度、重复 URL 等；通用站关注 CMS 框架）。
 
 **输出**: `audits/technical-audit.md`, `audits/schema-report.md`, `audits/sitemap-report.md`, `audits/images-report.md`, 漂移基线数据
 
@@ -292,6 +316,85 @@ TECHNICAL_AUDIT → OFF_PAGE:
 - 跳过 INIT 中的品牌配置（假设已有）
 - STRATEGY 前加入现状分析步骤: `Skill("superseo:page-audit")` 对现有核心页面
 - 优先进入 QUALITY_REVIEW 和 TECHNICAL_AUDIT 阶段
+
+## Headless 平台检查清单
+
+以下清单在 INIT 阶段 type=shopify-headless 时使用。workflow:next 根据 `platform.framework` + `platform.hosting` 组合选择对应的检查清单，展示给用户逐项确认。
+
+### Hydrogen + Oxygen
+
+**verify-headless-seo-baseline (SEO 基线检查):**
+- [ ] `root.tsx` 的 `MetaFunction` 完整（title / description / canonical / OG site_name / Twitter Card）
+- [ ] 每个产品 route (`products.$handle`) 有独立 `MetaFunction`（title 含产品名+品类+品牌, description 来自产品描述前 155 字符）
+- [ ] 每个集合 route (`collections.$handle`) 有独立 `MetaFunction`
+- [ ] 每个 Blog 文章 route (`blog.$slug`) 有独立 `MetaFunction`（含作者和发布日期）
+- [ ] 静态页 route (`pages.$handle`) 有独立 `MetaFunction`
+- [ ] JSON-LD 组件不在 React `<Suspense>` 边界内（确保首帧 HTML 输出）
+- [ ] 产品页有 `ProductJsonLd` 组件（`name`, `description`, `image`, `offers` 含 price/availability, `brand`）
+- [ ] 产品页有 `AggregateRating` JSON-LD（需对接 Judge.me / Stamped.io API）
+- [ ] 全站有 `BreadcrumbList` JSON-LD 组件
+- [ ] `root.tsx` 有 `Organization` JSON-LD（Logo + 联系信息 + sameAs 社交链接）
+- [ ] `root.tsx` 有 `WebSite` + `SearchAction` JSON-LD
+- [ ] 筛选/排序参数页 canonical 指向清洁 URL 或 noindex
+- [ ] `/search` 页面 noindex
+- [ ] `/cart`、`/account`、`/checkout` 路径不可爬取
+
+**verify-headless-deploy (部署检查):**
+- [ ] `/sitemap.xml` resource route 返回 200 + 完整 XML（含首页、产品、集合、Blog、静态页）
+- [ ] `/robots.txt` resource route 返回 200 + 包含 Sitemap 链接
+- [ ] 404 页面返回 404 状态码（非 200）
+- [ ] 主域名 301 重定向到首选版本（www ↔ non-www）
+- [ ] HTTP 自动 302/301 到 HTTPS（Oxygen 默认处理，确认）
+- [ ] GSC 已验证（DNS TXT 或 HTML 文件上传至 `public/`）
+- [ ] GA4 已注入（root.tsx 中）
+- [ ] Oxygen 部署 hook 或 CI 配置完成
+
+### Hydrogen + Vercel / 自托管
+
+**基础检查** = Hydrogen + Oxygen 的全部项目 +
+
+**额外检查:**
+- [ ] Vercel/自建 CDN 域名配置（首选域 / HTTPS / SSL 证书）
+- [ ] CDN 缓存策略：HTML 页面短缓存（`Cache-Control: public, max-age=60, stale-while-revalidate=3600`），静态资源长缓存（`max-age=31536000, immutable`）
+- [ ] 服务器地理位置接近主要客户（如不在 CDN 后）
+- [ ] SSR 渲染性能监控已配置（Sentry / Logflare / Vercel Analytics）
+- [ ] 图片优化方案已配置（Hydrogen `<Image>` 依赖 Oxygen CDN 参数——自托管需额外方案如 Sharp）
+
+### Next.js + Shopify
+
+**verify-headless-seo-baseline (SEO 基线检查):**
+- [ ] App Router: 每个 route 有 `generateMetadata` 或 `metadata` export
+- [ ] Pages Router: 每个页面有 `<Head>` 或 `NextSeo` 组件
+- [ ] JSON-LD 通过 `dangerouslySetInnerHTML` 或独立组件渲染（不依赖 useEffect）
+- [ ] RSC Streaming: 关键 SEO 标签和 JSON-LD 不在 Suspense 边界内
+- [ ] Product / Collection / Blog / 静态页 JSON-LD 完整（同 Hydrogen 标准）
+- [ ] 筛选/排序参数 canonical 处理
+- [ ] `/search` 等内部页 noindex
+
+**verify-headless-deploy (部署检查):**
+- [ ] `next-sitemap` 或 App Router `sitemap.ts` 生成完整 sitemap
+- [ ] App Router `robots.ts` 或 Pages Router `robots.txt` 正确输出
+- [ ] 产品页 ISR `revalidate` 时间合理（建议 3600s，高频更新产品 600s）
+- [ ] 404 页面返回 404 状态码
+- [ ] Vercel/Netlify/自托管 域名与 HTTPS 配置
+- [ ] `next/image` 组件: alt 从产品数据动态填充, sizes 属性正确, 格式自动转换 (WebP/AVIF)
+- [ ] GSC + GA4 已配置
+
+### 所有 Headless 路线的通用检查项
+
+以下与 framework 无关，所有 headless 站都需要:
+
+- [ ] Headless CMS 中的内容在页面首次 HTML 中呈现（非客户端 fetch）
+- [ ] Blog 文章有作者署名和简介（CMS 字段 → HTML 输出）
+- [ ] 发布日期和更新日期在页面中可见（`<time>` 标签 + `dateTime` 属性）
+- [ ] 每篇 Blog 文章有 Article JSON-LD（作者、发布日期、修改日期、主图）
+- [ ] 站点有 About 页、Contact 页、隐私政策、退换货政策（CMS 管理或静态路由）
+- [ ] 核心产品页有至少 300 字描述（来自 Shopify 产品数据或 CMS 增强）
+- [ ] 核心集合页有至少 300 字品类描述（从 CMS 获取，渲染在集合页底部）
+- [ ] 所有产品图片有描述性 Alt Text
+- [ ] 首屏图片 `loading="eager" fetchpriority="high"`，其余 `loading="lazy"`
+- [ ] 所有图片有明确尺寸或 `aspectRatio`（防止 CLS）
+- [ ] OG 社交分享图至少 1200×630，所有核心页面设置
 
 ## 状态更新规范
 

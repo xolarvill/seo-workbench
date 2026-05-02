@@ -43,8 +43,19 @@
 ### Step 2: 找到下一步
 
 1. 确定 `currentPhase`
-2. 如果当前阶段所有步骤 done → 将阶段 status 设为 done，推进 `currentPhase` 到下一个
-3. 在当前阶段中找到第一个 status=pending 的步骤
+2. 如果是 INIT 阶段且 steps 尚未包含类型专属步骤: 根据 `project.type` 动态插入 (见下方「INIT 阶段步骤动态插入」)
+3. 如果当前阶段所有步骤 done → 将阶段 status 设为 done，推进 `currentPhase` 到下一个
+4. 在当前阶段中找到第一个 status=pending 的步骤
+
+**INIT 阶段步骤动态插入:**
+
+当 workflow:next 首次进入 INIT 阶段时，根据 `project.type` 在通用步骤后追加类型专属步骤:
+- `shopify` → 追加 `verify-shopify-liquid-baseline`
+- `shopify-headless` → 追加 `verify-headless-seo-baseline` + `verify-headless-deploy`
+- `general` → 追加 `verify-general-baseline`
+- `existing` → 不追加
+
+步骤定义见 `seo-workbench/CLAUDE.md` 的 INIT 阶段章节。追加后立即写入 state.json，确保后续执行一致。
 
 ### Step 3: 检查上游依赖
 
@@ -64,11 +75,30 @@
 
 根据当前阶段和步骤，调用对应工具。详细执行逻辑见 `seo-workbench/CLAUDE.md` 各阶段定义。
 
+**平台上下文注入 (TECHNICAL_AUDIT 阶段):**
+
+如果当前步骤属于 TECHNICAL_AUDIT 阶段，从 `state.json` 的 `project` 字段构建平台上下文，注入 Skill 调用:
+
+```
+从 state.json 读取:
+  project.type = "shopify-headless" | "shopify" | "general" | "existing"
+  project.platform = { framework, hosting, cms } | null
+
+根据 project.type 构建注入片段:
+  - shopify → "这是一个 Shopify Liquid 站。关注: App拖慢速度、重复产品URL、theme.liquid Schema输出"
+  - shopify-headless → "这是一个 Shopify Headless 站 (框架: {framework}, 托管: {hosting}, CMS: {cms})。{在TECHNICAL_AUDIT阶段的步骤注入表中查找对应步骤的注入内容}"
+  - general → "这是一个通用 CMS 站。关注: 爬虫兼容性、URL结构、Schema、图片"
+  - existing → 同 general，加 "这是一个已有站的改造项目"
+
+步骤-注入映射表见 seo-workbench/CLAUDE.md TECHNICAL_AUDIT 阶段"平台上下文注入规则"。
+```
+
 **通用执行模式:**
 
 1. 标记步骤 status: pending → in_progress，更新 state.json
 2. 从产出目录读取上游上下文（按 Handoff 规则提取摘要）
-3. 调用对应 Skill：
+3. 构建平台上下文 (如适用), 拼入 Skill prompt
+4. 调用对应 Skill：
    - `Skill("superseo:keyword-deep-dive")` — 关键词深潜
    - `Skill("superseo:topic-cluster-planning")` — 集群规划
    - `Skill("superseo:content-brief")` — 内容简报
@@ -84,11 +114,11 @@
    - `Skill("claude-seo:seo-backlinks")` — 外链审计
    - `Skill("claude-seo:seo-drift")` — 漂移
 
-   **重要**: 在调用 Skill 前，将上游上下文摘要拼入 prompt。如果 Skill 不支持传参，则在调用前向用户说明上下文，然后调用。
+   **重要**: 在调用 Skill 前，将上游上下文摘要 + 平台上下文 (如适用) 拼入 prompt。如果 Skill 不支持传参，则在调用前向用户说明上下文，然后调用。
 
-4. 等待 Skill 执行完成
-5. 提取关键结论，写入对应产出文件
-6. 更新 state.json：
+5. 等待 Skill 执行完成
+6. 提取关键结论，写入对应产出文件
+7. 更新 state.json：
    - 步骤 status: in_progress → done
    - `lastAction`: 描述刚完成的操作
    - `nextAction`: 描述下一步要做什么
@@ -125,17 +155,25 @@
 
 ### 用户发布后标记
 
-用户告知某篇文章已发布到 Shopify Blog 后：
+用户告知某篇文章已发布后：
 - contentQueue 中该文章 status: draft → published
 - 记录实际 URL
 - QUALITY_REVIEW 阶段会自动发现新 published 的文章
+
+发布目标根据 `project.type`:
+- `shopify` (Liquid): 发布到 Shopify Blog
+- `shopify-headless`: 发布到 Headless CMS (Sanity / Contentful / Strapi)
+- `general`: 发布到对应 CMS
 
 ### INIT 阶段特殊处理
 
 INIT 阶段的步骤是引导性的，不是自动执行的：
 - `config-brand-voice`: 检查文件是否存在，提示用户编辑
 - `config-target-keywords`: 检查文件是否存在，提示用户编辑
-- `verify-shopify-baseline`: 引导用户手动检查 Shopify 后台设置
+- `verify-shopify-liquid-baseline`: (type=shopify) 引导用户手动检查 Shopify 后台设置
+- `verify-headless-seo-baseline`: (type=shopify-headless) 展示 Headless SEO 基线检查清单，引导用户逐项确认。检查清单根据 `platform.framework` + `platform.hosting` 从 `seo-workbench/CLAUDE.md` 末尾「Headless 平台检查清单」章节选取
+- `verify-headless-deploy`: (type=shopify-headless) 展示部署检查清单，引导用户逐项确认
+- `verify-general-baseline`: (type=general) 引导用户检查 CMS/建站平台基础设置
 
 每个步骤由用户确认"已完成"后标记 done。不自动写配置文件。
 

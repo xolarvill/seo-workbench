@@ -2,6 +2,13 @@
 
 三条开源项目（SuperSEO、SEO Machine、Claude SEO）覆盖 SEO 全链路：**战略→生产→质检→审计**。本指南记录如何将它们串联成一套可复现的工作流。
 
+> **📖 本指南默认以 WordPress 为例演示发布流程。** 如果你用 Shopify，请根据技术栈选择对应教程:
+> - **Shopify Liquid (Online Store 2.0)**: `Shopify从0到1-SEO建设进阶教程.md`
+> - **Shopify Headless (Hydrogen / Next.js)**: `Shopify-Hydrogen-Headless-SEO指南.md`
+> - **通用新站**: `从0到1新站SEO建设教程.md`
+>
+> 不同技术栈的差异主要在 INIT（技术基线检查）和 TECHNICAL_AUDIT（关注点不同）两个阶段，战略规划、内容生产、质量审查、外链建设四个阶段通用。
+
 ---
 
 ## 工具速览
@@ -65,7 +72,9 @@
 
 ## 第二阶段：内容生产（SEO Machine）
 
-**目标：** 把简报变成一篇在 WordPress 上发出去的、SEO 优化完毕的文章。
+**目标：** 把简报变成一篇 SEO 优化完毕的文章，发布到你的内容平台。
+
+**发布目标按技术栈：** WordPress (REST API 自动发布) / Shopify Blog (手动粘贴) / Headless CMS (手动录入 Sanity/Contentful/Strapi)
 
 ### 步骤 4：关键词研究
 
@@ -103,11 +112,17 @@ SEO Machine 会：
 - 修复优先级排序（高/中/低）
 - 确认元数据、标题层级、图片Alt文本
 
-### 步骤 7：发布到 WordPress
+### 步骤 7：发布到内容平台
 
+**WordPress:**
 ```
 /publish-draft [文件路径]
 ```
+通过 WordPress REST API 发布，自动携带 Yoast SEO 元数据。
+
+**Shopify (Liquid):** `/write` 产出草稿后手动粘贴到 Shopify Blog。
+
+**Shopify (Headless):** `/write` 产出草稿后手动录入 Headless CMS（Sanity / Contentful / Strapi）。
 
 通过 WordPress REST API 发布，自动携带 Yoast SEO 元数据。
 
@@ -246,7 +261,7 @@ SEO Machine 会：
 │                                                         │
 │    /research → /write → /optimize → /publish-draft       │
 │                                                         │
-│  输出：已发布、已优化的 WordPress 文章                         │
+│  输出：已发布、已优化的文章 (WP / Shopify Blog / Headless CMS)    │
 └─────────────────────────────────────────────────────────┘
                            │
                            ▼
@@ -301,5 +316,5 @@ SEO Machine 会：
 **Q: 需要哪些外部 API 才能跑通全流程？**
 
 - **SuperSEO：** 零依赖，Agent 自己爬 SERP
-- **SEO Machine：** DataForSEO（关键词数据）、GA4 + GSC（效果数据，可选）、WordPress 凭证（发布必需）
+- **SEO Machine：** DataForSEO（关键词数据）、GA4 + GSC（效果数据，可选）、WordPress 凭证（WordPress 自动发布必需，Shopify/Headless 用户不需要）
 - **Claude SEO：** Google API（GSC/CrUX/GA4，可选但建议）、Moz API（外链）、DataForSEO（实时 SERP）

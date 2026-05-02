@@ -4,7 +4,8 @@
     "type": "shopify",
     "url": "",
     "createdAt": "",
-    "description": ""
+    "description": "",
+    "platform": null
   },
   "currentPhase": "INIT",
   "phaseOrder": ["INIT", "STRATEGY", "CONTENT_PRODUCTION", "QUALITY_REVIEW", "TECHNICAL_AUDIT", "OFF_PAGE", "MONITORING"],
@@ -13,8 +14,7 @@
       "status": "pending",
       "steps": [
         {"id": "config-brand-voice", "label": "配置品牌声音文档 (brand-voice.md)", "status": "pending"},
-        {"id": "config-target-keywords", "label": "配置目标关键词 (target-keywords.md)", "status": "pending"},
-        {"id": "verify-shopify-baseline", "label": "验证 Shopify 技术基线 (域名/HTTPS/robots)", "status": "pending"}
+        {"id": "config-target-keywords", "label": "配置目标关键词 (target-keywords.md)", "status": "pending"}
       ]
     },
     "STRATEGY": {

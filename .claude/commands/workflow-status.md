@@ -21,13 +21,19 @@
 ```
 ╔══════════════════════════════════════════╗
 ║  📋 {project.name}                       
-║  🏷  类型: Shopify 从0到1                  
+║  🏷  类型: {typeDisplay}                  
 ║  🔗 URL: {project.url}                    
 ║  📅 创建: {project.createdAt}              
 ║  📍 阶段: {currentPhase}                   
 ║  ⏱  最后活动: {lastAction}                 
 ╚══════════════════════════════════════════╝
 ```
+
+typeDisplay 根据 `project.type` 和 `project.platform` 动态生成：
+- `shopify` → "Shopify 从0到1 (Liquid)"
+- `shopify-headless` → "Shopify 从0到1 (Headless: {platform.framework} + {platform.hosting})"，如 CMS 非 none 加 " + {platform.cms}"
+- `general` → "通用新站 从0到1"
+- `existing` → "已有站改造"
 
 ### 阶段进度
 
@@ -97,7 +103,10 @@ audits/
 ```
 ⚠️ 未找到项目。请先执行 /workflow:init 创建项目。
 
-用法: /workflow:init shopify --name "项目名" --url "https://xxx.com"
+用法:
+  /workflow:init shopify           --name "项目名" --url "https://xxx.com"   (Liquid)
+  /workflow:init shopify-headless  --name "项目名" --url "https://xxx.com"   (Headless)
+  /workflow:init general           --name "项目名" --url "https://xxx.com"   (通用)
 ```
 
 ## 如果所有阶段都完成
