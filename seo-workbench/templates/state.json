@@ -1,0 +1,77 @@
+{
+  "project": {
+    "name": "",
+    "type": "shopify",
+    "url": "",
+    "createdAt": "",
+    "description": ""
+  },
+  "currentPhase": "INIT",
+  "phaseOrder": ["INIT", "STRATEGY", "CONTENT_PRODUCTION", "QUALITY_REVIEW", "TECHNICAL_AUDIT", "OFF_PAGE", "MONITORING"],
+  "phases": {
+    "INIT": {
+      "status": "pending",
+      "steps": [
+        {"id": "config-brand-voice", "label": "配置品牌声音文档 (brand-voice.md)", "status": "pending"},
+        {"id": "config-target-keywords", "label": "配置目标关键词 (target-keywords.md)", "status": "pending"},
+        {"id": "verify-shopify-baseline", "label": "验证 Shopify 技术基线 (域名/HTTPS/robots)", "status": "pending"}
+      ]
+    },
+    "STRATEGY": {
+      "status": "pending",
+      "steps": [
+        {"id": "keyword-dive-product", "label": "核心品类关键词深潜 (1-3个)", "status": "pending"},
+        {"id": "keyword-dive-info", "label": "信息型关键词深潜 (3-5个)", "status": "pending"},
+        {"id": "cluster-plan", "label": "话题集群规划 (Hub + 8-12 Spoke)", "status": "pending"},
+        {"id": "content-briefs", "label": "内容简报生成 (每篇Spoke一个简报)", "status": "pending"}
+      ]
+    },
+    "CONTENT_PRODUCTION": {
+      "status": "pending",
+      "steps": []
+    },
+    "QUALITY_REVIEW": {
+      "status": "pending",
+      "steps": [
+        {"id": "page-audits", "label": "逐篇页面审计 (7维)", "status": "pending"},
+        {"id": "eeat-audit", "label": "E-E-A-T 专项审计", "status": "pending"},
+        {"id": "semantic-gap", "label": "语义缺口分析 (排名4-10的页面)", "status": "pending"}
+      ]
+    },
+    "TECHNICAL_AUDIT": {
+      "status": "pending",
+      "steps": [
+        {"id": "technical-audit", "label": "全站技术审计 (9维度)", "status": "pending"},
+        {"id": "schema", "label": "Schema 部署与验证 (9种类型)", "status": "pending"},
+        {"id": "sitemap", "label": "Sitemap 生成与提交", "status": "pending"},
+        {"id": "images", "label": "图片 SEO 检查 (Alt/格式/尺寸)", "status": "pending"},
+        {"id": "drift-baseline", "label": "建立 SEO 漂移基线", "status": "pending"}
+      ]
+    },
+    "OFF_PAGE": {
+      "status": "pending",
+      "steps": [
+        {"id": "linkbuilding-strategy", "label": "外链建设策略 (阶段判定+战术推荐)", "status": "pending"},
+        {"id": "backlinks-audit", "label": "外链审计 (Moz/Bing/CommonCrawl)", "status": "pending"}
+      ]
+    },
+    "MONITORING": {
+      "status": "pending",
+      "steps": [
+        {"id": "technical-recheck", "label": "周期性技术复查", "status": "pending"},
+        {"id": "drift-compare", "label": "SEO 漂移对比", "status": "pending"},
+        {"id": "backlinks-recheck", "label": "外链复查", "status": "pending"}
+      ]
+    }
+  },
+  "contentQueue": [],
+  "keywords": [],
+  "cluster": {
+    "hub": null,
+    "spokes": []
+  },
+  "lastAction": null,
+  "nextAction": "配置品牌声音与关键词文档",
+  "notes": "",
+  "visualization": {}
+}
