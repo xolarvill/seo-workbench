@@ -8,9 +8,10 @@
 SEO tools/
 ├── README.md                          ← 使用场景与覆盖状态
 ├── CLAUDE.md                          ← 本文件 (配置与使用指引)
-├── superseo-skills/                   ← SuperSEO: 内容战略顾问 (11个skills)
-├── seomachine/                        ← SEO Machine: 内容生产流水线 (24个commands + 11个agents)
-├── claude-seo/                        ← Claude SEO: 全站技术审计平台 (24个skills)
+├── superseo-skills/                   ← SuperSEO: 内容战略顾问 (setup.sh 克隆)
+├── seomachine/                        ← SEO Machine: 内容生产流水线 (setup.sh 克隆)
+├── claude-seo/                        ← Claude SEO: 全站技术审计平台 (setup.sh 克隆)
+├── setup.sh                           ← 依赖安装脚本
 ├── seo-workbench/                     ← 编排层: 串联三工具的状态机工作流
 │   ├── CLAUDE.md                      ←   编排引擎定义 (阶段、Handoff、错误处理)
 │   ├── templates/state.json           ←   状态文件模板
@@ -47,12 +48,13 @@ Claude SEO (技术审计): `Skill("claude-seo:seo-technical")`, `Skill("claude-s
 
 **如果你是第一次用:**
 
-1. 根据技术栈选择教程：`Shopify从0到1-SEO建设进阶教程.md` (Liquid 电商站) / `Shopify-Hydrogen-Headless-SEO指南.md` (Headless 电商站) / `从0到1新站SEO建设教程.md` (通用站)
-2. 执行初始化命令:
+1. 运行 `./setup.sh` 克隆三个外部技能包 (superseo-skills, seomachine, claude-seo)
+2. 根据技术栈选择教程：`Shopify从0到1-SEO建设进阶教程.md` (Liquid 电商站) / `Shopify-Hydrogen-Headless-SEO指南.md` (Headless 电商站) / `从0到1新站SEO建设教程.md` (通用站)
+3. 执行初始化命令:
    - `/workflow:init shopify --name "项目名" --url "https://xxx.com"` (Liquid)
    - `/workflow:init shopify-headless --name "项目名" --url "https://xxx.com" --framework hydrogen --hosting oxygen --cms sanity` (Headless)
    - `/workflow:init general --name "项目名" --url "https://xxx.com"` (通用)
-3. 跟着 `/workflow:next` 一步步走
+4. 跟着 `/workflow:next` 一步步走
 
 ## 编排层工作原理
 

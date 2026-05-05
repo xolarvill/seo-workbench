@@ -38,7 +38,27 @@
 
 ## 快速开始
 
+### 1. 克隆并安装依赖
+
 ```bash
+git clone https://github.com/<your-org>/seo-workbench.git
+cd seo-workbench
+./setup.sh
+```
+
+`setup.sh` 会自动克隆三个外部技能包（`superseo-skills`、`seomachine`、`claude-seo`）到项目根目录。
+
+**前置条件：** `git`、[Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview)（需预先安装并配置）。
+
+### 2. 启动 Claude Code 并初始化项目
+
+```bash
+claude
+```
+
+在 Claude Code 中执行：
+
+```
 # Liquid Shopify 新站
 /workflow:init shopify --name "我的店铺" --url "https://myshop.com"
 
@@ -82,13 +102,15 @@ seo-workbench/
 │   ├── workflow-next.md
 │   ├── workflow-status.md
 │   └── workflow-phase.md
-├── superseo-skills/                             ← SuperSEO: 内容战略顾问
-├── seomachine/                                  ← SEO Machine: 内容生产流水线
-└── claude-seo/                                  ← Claude SEO: 技术审计平台
+├── superseo-skills/                             ← SuperSEO: 内容战略顾问 (setup.sh 克隆)
+├── seomachine/                                  ← SEO Machine: 内容生产流水线 (setup.sh 克隆)
+├── claude-seo/                                  ← Claude SEO: 技术审计平台 (setup.sh 克隆)
+└── setup.sh                                     ← 依赖安装脚本
 ```
 
 ## 已知限制
 
-- **外部 Skill 不感知 Headless。** `claude-seo:seo-technical` 等 skill 是平台无关的——它们分析渲染后的 HTML。Headless 特有的问题（流式 SSR 截断、Suspense 内 JSON-LD 丢失、hydration 开销、CMS 内容是否 SSR 输出）不会自动检查。Workbench 通过 TECHNICAL_AUDIT 阶段的 prompt 上下文注入来补充提示，但这不是 skill 原生能力。
+- **外部 Skill 不感知 Headless。** `claude-seo:seo-technical` 等 skill 是平台无关的——它们分析渲染后的 HTML。Headless 特有的问题（流式 SSR 截断、Suspense 内 JSON-LD 丢失、hydration 开销、CMS 内容是否 SSR 输出）不会自动检查。Workbench 通过 TECHNICAL_AUDIT 阶段的 `headless-precheck` 步骤（WebFetch 拉取原始 HTML + 15 项爬虫视角扫描）来补充，预检发现的证据会注入后续 skill 调用中。
+- **预检能力尚未独立。** `headless-precheck` 当前仅在 workbench 的 TECHNICAL_AUDIT 阶段内运行。如果需要单独调（不经过 workbench 流程），考虑将此逻辑抽成一个独立 skill（如 `claude-seo:seo-headless-precheck`），让不依赖 workbench 的用户也能直接使用。
 - **无自动发布。** `/write` 产出草稿后需手动发布（WordPress 除外）。Headless CMS 的自动发布管线不在当前 scope。
 - **单站点假设。** 当前工作流假设一个项目对应一个站点。多站点/多语言 SEO 不在此版本覆盖。

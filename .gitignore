@@ -1,1 +1,6 @@
 .DS_Store
+
+# External skill packs — cloned by setup.sh
+claude-seo/
+seomachine/
+superseo-skills/
