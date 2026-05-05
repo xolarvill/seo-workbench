@@ -177,6 +177,13 @@ INIT → STRATEGY → CONTENT_PRODUCTION → QUALITY_REVIEW → TECHNICAL_AUDIT 
 
 **步骤**:
 
+0. `headless-precheck` — Headless SEO 爬虫预检（仅 shopify-headless，其他类型自动跳过）
+   - 工具: `WebFetch`（以无 JS 方式拉取原始 HTML，模拟搜索引擎爬虫）
+   - 目标页面: 首页 + 1个核心产品页 + 1篇Blog文章（从 state.json 的 contentQueue 中取已发布文章）
+   - 对照 Headless 风险清单逐页扫描 15 项
+   - 产出 `audits/headless-precheck.md`
+   - 此步骤产出会作为后续 `technical-audit` 和 `schema` 步骤的上下文注入
+
 1. `technical-audit` — 全站技术审计 (9维度)
    - 工具: `Skill("claude-seo:seo-technical")`
    - 审计报告写入 `audits/technical-audit.md`
@@ -200,16 +207,18 @@ INIT → STRATEGY → CONTENT_PRODUCTION → QUALITY_REVIEW → TECHNICAL_AUDIT 
 
 **平台上下文注入规则:**
 
-当 `project.type = "shopify-headless"` 时，在调用 Skill 前将以下上下文拼入 prompt：
+当 `project.type = "shopify-headless"` 时，在调用 Skill 前将以下上下文拼入 prompt。
 
-| 步骤 | 注入内容 |
-|------|---------|
-| `technical-audit` | "这是一个 Shopify Headless 站（框架: {platform.framework}, 托管: {platform.hosting}, CMS: {platform.cms}）。审计时额外关注：流式SSR/Streaming对爬虫兼容性、筛选参数/排序参数的canonical处理、分页SEO实现、JS bundle大小与hydration开销、Headless CMS内容是否在SSR HTML中完整渲染、自定义路由是否引入重复内容路径。" |
-| `schema` | "这是一个 Headless 站，Schema 通过程序化 JSON-LD 组件生成（非 Liquid 模板注入）。请在渲染后的 HTML 中检查 `<script type='application/ld+json'>` 的输出，而非查找 theme.liquid。" |
-| `sitemap` | "Sitemap 由开发者自定义实现（resource route 或 framework 插件），非 Shopify 自动生成。验证 XML 完整性、URL 覆盖率，并确认所有重要页面类型（产品/集合/Blog/静态页）均已包含。" |
-| `images` | "图片通过 {platform.framework} 的 Image 组件渲染（如 Hydrogen `<Image>`, next/image）。重点检查：alt 属性是否从 Shopify 产品数据动态填充、是否设置了尺寸/宽高比防止 CLS、CDN 是否自动转换 WebP/AVIF 格式。" |
+如果 `headless-precheck` 步骤已完成（`audits/headless-precheck.md` 存在），**优先使用预检报告中的具体发现**替换通用提示：
 
-对于 `project.type = "shopify"` (Liquid) 或 `general`，注入对应平台的上下午文（Liquid 关注 App 拖慢速度、重复 URL 等；通用站关注 CMS 框架）。
+| 步骤 | 注入内容（无预检报告时） | 注入内容（有预检报告时） |
+|------|----------------------|------------------------|
+| `technical-audit` | "这是一个 Shopify Headless 站（框架: {platform.framework}, 托管: {platform.hosting}, CMS: {platform.cms}）。审计时额外关注：流式SSR兼容性、筛选参数canonical、分页SEO、JS bundle大小、CMS内容SSR渲染、自定义路由重复。" | 从 `audits/headless-precheck.md` 提取 ❌/⚠️ 项摘要，格式: "预检已发现以下问题，请纳入审计结论并评估严重程度：[问题1], [问题2]..." |
+| `schema` | "Headless 站，Schema 程序化生成。检查 `<script type='application/ld+json'>` 输出。" | 从预检报告提取 Schema 相关发现，格式: "预检扫描发现：首页缺失 WebSite Schema / 产品页 JSON-LD Product 未找到（疑似 Suspense）/ ... 。请验证这些问题并生成修复代码。" |
+| `sitemap` | "Sitemap 由开发者自定义实现，验证 XML 完整性和 URL 覆盖率。" | 不变（sitemap 检查与预检无关） |
+| `images` | "图片通过 {platform.framework} 的 Image 组件渲染。检查 alt、尺寸、CDN 格式转换。" | 从预检报告提取图片相关发现，格式: "预检扫描发现：产品页 N/M 张图片缺少 alt / Blog 页图片无尺寸属性。请重点审计这些页面并给出修复建议。" |
+
+对于 `project.type = "shopify"` (Liquid) 或 `general`，注入对应平台上下文（Liquid 关注 App 拖慢速度、重复 URL 等；通用站关注 CMS 框架），无需预检。
 
 **输出**: `audits/technical-audit.md`, `audits/schema-report.md`, `audits/sitemap-report.md`, `audits/images-report.md`, 漂移基线数据
 
@@ -395,6 +404,83 @@ TECHNICAL_AUDIT → OFF_PAGE:
 - [ ] 首屏图片 `loading="eager" fetchpriority="high"`，其余 `loading="lazy"`
 - [ ] 所有图片有明确尺寸或 `aspectRatio`（防止 CLS）
 - [ ] OG 社交分享图至少 1200×630，所有核心页面设置
+
+## Headless SEO 爬虫预检清单
+
+以下 15 项由 TECHNICAL_AUDIT 的 `headless-precheck` 步骤在原始 HTML（无 JS 渲染）中逐页扫描。格式模仿搜索引擎爬虫视角。
+
+### 页面样本
+
+预检至少覆盖:
+- 首页 (`/`)
+- 1 个核心产品页 (从 state.json 的 contentQueue 中取已发布的交易型文章目标 URL，或用户指定)
+- 1 篇 Blog 文章 (从 state.json 的 contentQueue 中取 status=published 的信息型文章目标 URL)
+
+### 15 项扫描清单
+
+每项判定 ✅ 通过 / ❌ 未通过 / ⚠️ 部分通过 / — 不适用，必须附 HTML 证据。
+
+| # | 检查项 | 判定逻辑 |
+|---|--------|---------|
+| 1 | **Title 存在且合理** | `<title>` 标签存在，长度 30-65 字符，非默认模板值 |
+| 2 | **Meta Description 存在** | `<meta name="description">` 存在，长度 70-155 字符 |
+| 3 | **Canonical 正确** | `<link rel="canonical">` 存在，指向自身 URL（非带参数版本），绝对路径 |
+| 4 | **Robots meta 正确** | 内容页为 `index, follow` 或无 robots meta（默认 index）；搜索/购物车/账号页为 `noindex` |
+| 5 | **OG 标签完整** | `og:title` + `og:description` + `og:image` + `og:type` 均存在，`og:image` 为绝对 URL |
+| 6 | **JSON-LD 存在且 JSON 有效** | 至少 1 个 `<script type="application/ld+json">` 存在，JSON.parse 不报错 |
+| 7 | **JSON-LD 类型完整** | 首页: Organization + WebSite；产品页: Product (+ Offer + AggregateRating)；Blog 页: Article |
+| 8 | **正文在原始 HTML 中** | 正文首段文字在原始 HTML 中出现（非仅客户端渲染）；搜索关键词可定位到正文内容 |
+| 9 | **无 Suspense fallback 残留** | 原始 HTML 中不含 "Loading..." / "Skeleton" / 空白占位符等 Suspense fallback 文本 |
+| 10 | **H1 唯一且有意义** | 恰好 1 个 `<h1>`，内容非空、非 "Untitled"、非站点名 |
+| 11 | **图片有 alt** | 正文/产品区域中 ≥80% 的 `<img>` 有非空 `alt` 属性 |
+| 12 | **图片有尺寸** | 正文/产品区域中 ≥80% 的 `<img>` 有 `width` + `height` 或 `style="aspect-ratio:..."` |
+| 13 | **作者与日期可见** (Blog 页) | `<time>` 标签或文本日期 + 作者名在 HTML 中出现 |
+| 14 | **内部链接存在** (Blog 页) | Blog 正文中有 ≥2 个指向站内产品或其他 Blog 的 `<a>` 链接 |
+| 15 | **CMS 内容完整渲染** | Headless CMS 的内容（正文/作者/日期/富文本）均在原始 HTML 中完整出现 |
+
+### 预检报告输出格式
+
+`audits/headless-precheck.md`:
+
+```markdown
+# Headless SEO 爬虫预检报告
+
+> 扫描时间: {timestamp}
+> 平台: {platform.framework} + {platform.hosting}, CMS: {platform.cms}
+> 扫描页面: URL1, URL2, URL3
+
+## 汇总
+
+| 状态 | 数量 |
+|------|------|
+| ✅ 通过 | N |
+| ❌ 未通过 | N |
+| ⚠️ 部分通过 | N |
+| — 不适用 | N |
+
+## 逐页详情
+
+### {页面标题} ({URL})
+
+| # | 检查项 | 状态 | 证据 |
+|---|--------|------|------|
+| 1 | Title | ✅ | "{实际title文本}" — {长度} chars, HTML line {N} |
+| 2 | Meta Description | ❌ | 未找到 `<meta name="description">` |
+| ... | ... | ... | ... |
+
+## 关键发现
+
+### 阻塞级 (❌)
+- [ ] 问题1: 影响 + 证据
+- [ ] 问题2: 影响 + 证据
+
+### 警告级 (⚠️)
+- [ ] 问题1: 影响 + 证据
+
+## 传递给后续步骤的摘要
+
+(300字以内，用于注入 technical-audit 和 schema skill 的 prompt)
+```
 
 ## 状态更新规范
 

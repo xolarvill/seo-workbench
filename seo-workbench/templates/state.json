@@ -41,6 +41,7 @@
     "TECHNICAL_AUDIT": {
       "status": "pending",
       "steps": [
+        {"id": "headless-precheck", "label": "Headless SEO 爬虫预检 (15项, 仅Headless)", "status": "pending"},
         {"id": "technical-audit", "label": "全站技术审计 (9维度)", "status": "pending"},
         {"id": "schema", "label": "Schema 部署与验证 (9种类型)", "status": "pending"},
         {"id": "sitemap", "label": "Sitemap 生成与提交", "status": "pending"},

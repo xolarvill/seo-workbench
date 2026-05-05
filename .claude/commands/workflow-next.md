@@ -75,9 +75,29 @@
 
 根据当前阶段和步骤，调用对应工具。详细执行逻辑见 `seo-workbench/CLAUDE.md` 各阶段定义。
 
+**`headless-precheck` 步骤 (仅 shopify-headless):**
+
+如果当前步骤为 `headless-precheck`：
+1. 检查 `project.type`：
+   - 非 `shopify-headless` → 标记步骤为 done，跳过，继续 Step 2 找下一步
+   - `shopify-headless` → 执行预检
+2. 标记步骤 in_progress
+3. 确定扫描页面:
+   - 首页: `{project.url}/`
+   - 产品页: 从 `project.url` 拼一个产品页路径，或提示用户提供一个核心产品 URL
+   - Blog: 从 contentQueue 中取第一篇 status=published 的文章 URL；如无已发布文章则取第一篇 draft
+4. 依次用 `WebFetch` 以 "Return the COMPLETE raw HTML" 为 prompt 拉取 3 个页面
+5. 读取 `seo-workbench/CLAUDE.md` 末尾「Headless SEO 爬虫预检清单」章节的 15 项扫描清单
+6. 逐页逐项扫描，判定 ✅/❌/⚠️/—
+7. 按预检报告输出格式生成 `audits/headless-precheck.md`
+8. 提取 300 字摘要（❌ 和 ⚠️ 项的列表），保存到 state.json 的 `notes` 字段中（供后续步骤注入使用）
+9. 标记步骤 done
+
 **平台上下文注入 (TECHNICAL_AUDIT 阶段):**
 
-如果当前步骤属于 TECHNICAL_AUDIT 阶段，从 `state.json` 的 `project` 字段构建平台上下文，注入 Skill 调用:
+如果当前步骤属于 TECHNICAL_AUDIT 阶段且不是 `headless-precheck`，从 `state.json` 的 `project` 字段构建平台上下文，注入 Skill 调用。
+
+如果 `audits/headless-precheck.md` 存在且步骤为 `technical-audit` 或 `schema` 或 `images`：从文件中提取「传递给后续步骤的摘要」章节，**优先使用具体发现替换通用提示**。提取方法见 `seo-workbench/CLAUDE.md` TECHNICAL_AUDIT 阶段"平台上下文注入规则"表中的「有预检报告时」列。
 
 ```
 从 state.json 读取:
@@ -86,7 +106,7 @@
 
 根据 project.type 构建注入片段:
   - shopify → "这是一个 Shopify Liquid 站。关注: App拖慢速度、重复产品URL、theme.liquid Schema输出"
-  - shopify-headless → "这是一个 Shopify Headless 站 (框架: {framework}, 托管: {hosting}, CMS: {cms})。{在TECHNICAL_AUDIT阶段的步骤注入表中查找对应步骤的注入内容}"
+  - shopify-headless → "这是一个 Shopify Headless 站 (框架: {framework}, 托管: {hosting}, CMS: {cms})。{优先使用 audits/headless-precheck.md 的具体发现；如不存在则使用通用提示}"
   - general → "这是一个通用 CMS 站。关注: 爬虫兼容性、URL结构、Schema、图片"
   - existing → 同 general，加 "这是一个已有站的改造项目"
 
