@@ -210,6 +210,11 @@ INIT → STRATEGY → CONTENT_PRODUCTION → QUALITY_REVIEW → TECHNICAL_AUDIT 
    - 分析 AI crawler 可访问性、llms.txt、品牌引用信号、段落可引用性
    - 产出 `audits/geo-report.md`
 
+7. `ecommerce-audit` — 电商搜索可见性审计
+   - 工具: `Skill("claude-seo:seo-ecommerce")`
+   - 分析 Google Shopping 可见度、价格竞争力、Product Schema 精确性、Amazon 竞品
+   - 产出 `audits/ecommerce-report.md`
+
 **平台上下文注入规则:**
 
 当 `project.type = "shopify-headless"` 时，在调用 Skill 前将以下上下文拼入 prompt。
@@ -225,7 +230,7 @@ INIT → STRATEGY → CONTENT_PRODUCTION → QUALITY_REVIEW → TECHNICAL_AUDIT 
 
 对于 `project.type = "shopify"` (Liquid) 或 `general`，注入对应平台上下文（Liquid 关注 App 拖慢速度、重复 URL 等；通用站关注 CMS 框架），无需预检。
 
-**输出**: `audits/technical-audit.md`, `audits/schema-report.md`, `audits/sitemap-report.md`, `audits/images-report.md`, `audits/geo-report.md`, 漂移基线数据
+**输出**: `audits/technical-audit.md`, `audits/schema-report.md`, `audits/sitemap-report.md`, `audits/images-report.md`, `audits/geo-report.md`, `audits/ecommerce-report.md`, 漂移基线数据
 
 **进入下一阶段**: 所有步骤 status=done → currentPhase = OFF_PAGE
 

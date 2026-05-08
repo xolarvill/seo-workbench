@@ -134,6 +134,7 @@
    - `Skill("claude-seo:seo-backlinks")` — 外链审计
    - `Skill("claude-seo:seo-drift")` — 漂移
    - `Skill("claude-seo:seo-geo")` — AI 搜索可见性
+   - `Skill("claude-seo:seo-ecommerce")` — 电商搜索
 
    **重要**: 在调用 Skill 前，将上游上下文摘要 + 平台上下文 (如适用) 拼入 prompt。如果 Skill 不支持传参，则在调用前向用户说明上下文，然后调用。
 
