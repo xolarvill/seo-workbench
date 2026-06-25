@@ -5,6 +5,9 @@
     "keyword-dive-product": "skills/keyword-deep-dive/SKILL.md",
     "keyword-dive-info": "skills/keyword-deep-dive/SKILL.md",
     "content-briefs": "skills/content-brief/SKILL.md",
-    "technical-audit": "skills/technical-audit/SKILL.md"
+    "write-content": "skills/write-content/SKILL.md",
+    "page-audits": "skills/page-audit/SKILL.md",
+    "technical-audit": "skills/technical-audit/SKILL.md",
+    "schema": "skills/schema/SKILL.md"
   }
 }

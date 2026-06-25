@@ -109,7 +109,7 @@ Allow: /
 ### 7. Structured Data
 - Detection: JSON-LD (preferred), Microdata, RDFa
 - Validation against Google's supported types
-- See seo-schema skill for full analysis
+- See schema skill for full analysis
 
 ### 8. JavaScript Rendering
 - Check if content visible in initial HTML vs requires JS
