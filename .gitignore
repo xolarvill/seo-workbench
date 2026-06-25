@@ -1,4 +1,7 @@
 .DS_Store
+__pycache__/
+.venv/
+.uv-cache/
 
 # External skill packs — cloned by setup.sh
 claude-seo/
