@@ -148,7 +148,7 @@ def fetch(url: str, timeout: float) -> dict[str, Any]:
             "html_bytes": len(body),
         }
     except URLError as exc:
-        raise SystemExit(f"fetch failed: {exc.reason}") from exc
+        raise RuntimeError(f"fetch failed: {exc.reason}") from exc
 
 
 def probe(url: str, timeout: float = 15) -> dict[str, Any]:
@@ -185,7 +185,12 @@ def main(argv: list[str] | None = None) -> int:
     if not args.url:
         argp.error("url is required unless --self-test is used")
 
-    json.dump(probe(args.url, args.timeout), sys.stdout, ensure_ascii=False, indent=2)
+    try:
+        result = probe(args.url, args.timeout)
+    except RuntimeError as exc:
+        raise SystemExit(str(exc)) from exc
+
+    json.dump(result, sys.stdout, ensure_ascii=False, indent=2)
     sys.stdout.write("\n")
     return 0
 
