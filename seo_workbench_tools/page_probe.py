@@ -38,6 +38,7 @@ class SeoParser(HTMLParser):
     metas: dict[str, str] = field(default_factory=dict)
     links: list[dict[str, str]] = field(default_factory=list)
     images: list[dict[str, str]] = field(default_factory=list)
+    resources: list[dict[str, str]] = field(default_factory=list)
     json_ld_raw: list[str] = field(default_factory=list)
     text_parts: list[str] = field(default_factory=list)
     _tag_stack: list[str] = field(default_factory=list)
@@ -61,19 +62,29 @@ class SeoParser(HTMLParser):
             rel = attr.get("rel", "").lower()
             href = attr.get("href", "")
             if rel and href:
-                self.links.append({"rel": rel, "href": urljoin(self.base_url, href)})
+                link = {"rel": rel, "href": urljoin(self.base_url, href)}
+                if attr.get("hreflang"):
+                    link["hreflang"] = attr["hreflang"].lower()
+                self.links.append(link)
+                if "stylesheet" in rel or attr.get("as") in {"script", "style"}:
+                    self.resources.append({"type": attr.get("as") or "style", "url": link["href"]})
         elif tag == "a" and attr.get("href"):
             self.links.append({"rel": "anchor", "href": urljoin(self.base_url, attr["href"])})
         elif tag == "img":
+            src = urljoin(self.base_url, attr.get("src", ""))
             self.images.append(
                 {
-                    "src": urljoin(self.base_url, attr.get("src", "")),
+                    "src": src,
                     "alt": attr.get("alt", ""),
                     "width": attr.get("width", ""),
                     "height": attr.get("height", ""),
                     "loading": attr.get("loading", ""),
                 }
             )
+            if src:
+                self.resources.append({"type": "image", "url": src})
+        elif tag == "script" and attr.get("src"):
+            self.resources.append({"type": "script", "url": urljoin(self.base_url, attr["src"])})
         elif tag == "script" and attr.get("type", "").lower() == "application/ld+json":
             self._capture_script = True
             self._script_parts = []
@@ -231,6 +242,29 @@ def content_audit(html: str, headings: dict[str, list[str]], word_count: int, ht
     }
 
 
+def detect_page_type(url: str, parsed: dict[str, Any]) -> str:
+    path = re.sub(r"/+$", "", re.sub(r"^https?://[^/]+", "", url)).lower() or "/"
+    if path == "/":
+        return "homepage"
+    if path in {"/pricing", "/plans"}:
+        return "pricing"
+    if "/tools/" in path or "generator" in path:
+        return "tool"
+    if "/mockups/" in path or "/dielines/" in path:
+        return "category"
+    if "/blog/" in path or "/resource/" in path:
+        return "blog"
+    if "/mockup-detail/" in path or "/dielines-detail/" in path:
+        return "product"
+    if parsed.get("schema_audit", {}).get("schema_types_found"):
+        types = set(parsed["schema_audit"]["schema_types_found"])
+        if types & {"Product", "SoftwareApplication"}:
+            return "product"
+        if types & {"Article", "BlogPosting", "NewsArticle"}:
+            return "blog"
+    return "static_page" if path else "unknown"
+
+
 def parse_html(html: str, base_url: str, html_bytes: int | None = None) -> dict[str, Any]:
     parser = SeoParser(base_url=base_url)
     parser.feed(html)
@@ -248,7 +282,7 @@ def parse_html(html: str, base_url: str, html_bytes: int | None = None) -> dict[
     byte_count = html_bytes if html_bytes is not None else len(html.encode("utf-8"))
     canonical = next((link["href"] for link in parser.links if link["rel"] == "canonical"), "")
     schema_summary = schema_audit(schema)
-    return {
+    result = {
         "title": " ".join(parser.title_parts).strip(),
         "meta_description": parser.metas.get("description", ""),
         "canonical": canonical,
@@ -258,11 +292,14 @@ def parse_html(html: str, base_url: str, html_bytes: int | None = None) -> dict[
         "images": parser.images,
         "image_stats": image_stats(parser.images),
         "links": parser.links,
+        "resources": parser.resources,
         "schema": schema,
         "schema_audit": schema_summary,
         "word_count": word_count,
         "content_audit": content_audit(html, parser.headings, word_count, byte_count),
     }
+    result["page_type"] = detect_page_type(base_url, result)
+    return result
 
 
 def response_headers(headers: Any) -> dict[str, str]:
@@ -308,6 +345,8 @@ def probe(url: str, timeout: float = 15) -> dict[str, Any]:
 def _self_test() -> None:
     html = """<!doctype html><title>Test</title><meta name="description" content="Desc">
     <link rel="canonical" href="/x"><h1>Hello</h1><h2>Sub</h2>
+    <link rel="alternate" hreflang="en-us" href="/en">
+    <script src="/app.123.js"></script>
     <script type="application/ld+json">{"@type":"Article","headline":"Hello"}</script>
     <img src="/a.webp" alt="A real image" width="10" height="20" loading="lazy">
     <img src="https://facebook.com/tr?id=1" alt="" width="1" height="1"><a href="/b">B</a><p>One two three.</p>"""
@@ -322,6 +361,9 @@ def _self_test() -> None:
     assert result["image_stats"]["with_descriptive_alt"] == 1
     assert result["image_stats"]["tracking_pixels"] == 1
     assert result["content_audit"]["h1_count"] == 1
+    assert result["links"][1]["hreflang"] == "en-us"
+    assert result["resources"][0]["type"] == "script"
+    assert result["page_type"] == "blog"
     assert result["word_count"] >= 4
 
 

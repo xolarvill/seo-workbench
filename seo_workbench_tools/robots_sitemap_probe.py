@@ -38,11 +38,19 @@ def parse_robots(text: str) -> dict[str, Any]:
 def parse_sitemap_xml(xml_text: str) -> dict[str, Any]:
     root = ET.fromstring(xml_text)
     ns = root.tag.split("}", 1)[0] + "}" if root.tag.startswith("{") else ""
+    def alternates(node: ET.Element) -> list[dict[str, str]]:
+        return [
+            {"hreflang": link.attrib.get("hreflang", "").lower(), "href": link.attrib.get("href", "")}
+            for link in node.iter()
+            if link.tag.endswith("link") and link.attrib.get("rel") == "alternate" and link.attrib.get("hreflang")
+        ]
+
     if root.tag.endswith("sitemapindex"):
         entries = [
             {
                 "loc": loc.text.strip(),
                 "lastmod": (sitemap.find(f"{ns}lastmod").text or "").strip() if sitemap.find(f"{ns}lastmod") is not None else "",
+                "alternates": alternates(sitemap),
             }
             for sitemap in root.findall(f".//{ns}sitemap")
             if (loc := sitemap.find(f"{ns}loc")) is not None and loc.text
@@ -57,6 +65,7 @@ def parse_sitemap_xml(xml_text: str) -> dict[str, Any]:
             {
                 "loc": loc.text.strip(),
                 "lastmod": (url.find(f"{ns}lastmod").text or "").strip() if url.find(f"{ns}lastmod") is not None else "",
+                "alternates": alternates(url),
             }
             for url in root.findall(f".//{ns}url")
             if (loc := url.find(f"{ns}loc")) is not None and loc.text
@@ -106,6 +115,10 @@ def freshness(entries: list[dict[str, str]]) -> dict[str, Any]:
     }
 
 
+def hreflang_codes(entries: list[dict[str, Any]]) -> list[str]:
+    return sorted({alt["hreflang"] for entry in entries for alt in entry.get("alternates", []) if alt.get("hreflang")})
+
+
 def fetch_sitemap(url: str, timeout: float, sample_limit: int) -> dict[str, Any]:
     try:
         fetched = fetch(url, timeout)
@@ -120,6 +133,7 @@ def fetch_sitemap(url: str, timeout: float, sample_limit: int) -> dict[str, Any]
             "sample_urls": urls[:sample_limit],
             "sample_entries": parsed["entries"][:sample_limit],
             "freshness": freshness(parsed["entries"]),
+            "hreflang_codes": hreflang_codes(parsed["entries"]),
         }
     except (RuntimeError, ET.ParseError) as exc:
         return {"url": url, "error": str(exc)}
@@ -161,11 +175,13 @@ def _self_test() -> None:
 
     urlset = parse_sitemap_xml(
         """<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-        <url><loc>https://example.com/a</loc><lastmod>2026-01-01</lastmod></url></urlset>"""
+        <url><loc>https://example.com/a</loc><lastmod>2026-01-01</lastmod>
+        <xhtml:link xmlns:xhtml="http://www.w3.org/1999/xhtml" rel="alternate" hreflang="en-us" href="https://example.com/a"/></url></urlset>"""
     )
     assert urlset["type"] == "urlset"
     assert urlset["urls"] == ["https://example.com/a"]
     assert urlset["entries"][0]["lastmod"] == "2026-01-01"
+    assert hreflang_codes(urlset["entries"]) == ["en-us"]
     assert freshness(urlset["entries"])["has_lastmod"] is True
 
 
