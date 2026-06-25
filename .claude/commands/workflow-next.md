@@ -98,15 +98,16 @@
    `env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.workflow_evidence`
 2. 读取最新的 `seo-workbench/audits/raw/evidence-*.json`
 3. 在调用 `technical-audit`、`schema`、`sitemap`、`images`、`geo-audit`、`ecommerce-audit` 前，将 evidence JSON 的关键事实摘要加入 prompt：
-   - page status/final_url/title/meta/canonical/h1/schema/images/word_count
-   - robots status、Sitemap 声明、Sitemap URL 数量和样例 URL
-   - JSON-LD parse 错误、缺失 canonical、缺失 alt、异常状态码等直接证据
+   - page status/final_url/page_type/title/meta/canonical/h1/content_audit/schema_audit/image_stats/headers
+   - robots status、Sitemap 声明、Sitemap URL 数量、样例 URL、lastmod freshness
+   - hreflang_audit、resource_cache_audit
+   - JSON-LD parse 错误、缺失 canonical、缺失 alt、异常状态码、no-store/no-cache 等直接证据
 
 **平台上下文注入 (TECHNICAL_AUDIT 阶段):**
 
 如果当前步骤属于 TECHNICAL_AUDIT 阶段且不是 `headless-precheck`，从 `state.json` 的 `project` 字段构建平台上下文，注入 Skill 调用。
 
-如果 `audits/headless-precheck.md` 存在且步骤为 `technical-audit` 或 `schema` 或 `images`：从文件中提取「传递给后续步骤的摘要」章节，**优先使用具体发现替换通用提示**。同时读取最新 evidence JSON，补充 robots/sitemap/page/schema/image 的机器证据。
+如果 `audits/headless-precheck.md` 存在且步骤为 `technical-audit` 或 `schema` 或 `images`：从文件中提取「传递给后续步骤的摘要」章节，**优先使用具体发现替换通用提示**。同时读取最新 evidence JSON，补充 headers、robots/sitemap、page_type、content/schema/image、hreflang、resource cache 的机器证据。
 
 ```
 从 state.json 读取:

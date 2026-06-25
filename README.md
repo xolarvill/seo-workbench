@@ -89,7 +89,7 @@ env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.wo
 seo-workbench/audits/raw/evidence-*.json
 ```
 
-后续 `technical-audit`、`schema`、`sitemap`、`images` 等步骤会读取这份 JSON，把页面状态码、最终 URL、title/meta/canonical、JSON-LD、图片 alt、robots.txt 和 sitemap 证据注入到对应 Skill 的 prompt 中。
+后续 `technical-audit`、`schema`、`sitemap`、`images` 等步骤会读取这份 JSON，把页面状态码、最终 URL、页面类型、title/meta/canonical、HTTP headers、内容结构、JSON-LD 结构校验、图片统计、robots.txt、sitemap freshness、hreflang 和静态资源缓存证据注入到对应 Skill 的 prompt 中。
 
 ## 教程索引
 
@@ -128,7 +128,7 @@ seo-workbench/
 
 ## 已知限制
 
-- **外部 Skill 不感知 Headless。** `claude-seo:seo-technical` 等 skill 是平台无关的。Workbench 通过 TECHNICAL_AUDIT 阶段的 `workflow_evidence` + `headless-precheck` 补充 raw HTML、Schema、图片、robots.txt 和 sitemap 机器证据。
-- **预检证据是 raw HTML 视角。** `seo_workbench_tools` 当前使用 Python 标准库抓取原始 HTML、robots.txt 和 sitemap，不执行 JS。需要验证渲染后 DOM 时，再增加 Playwright 层。
+- **外部 Skill 不感知 Headless。** `claude-seo:seo-technical` 等 skill 是平台无关的。Workbench 通过 TECHNICAL_AUDIT 阶段的 `workflow_evidence` + `headless-precheck` 补充 raw HTML、HTTP headers、Schema、图片、robots.txt、sitemap、hreflang 和资源缓存机器证据。
+- **预检证据以 raw HTML 为主。** `seo_workbench_tools` 当前使用 Python 标准库抓取原始 HTML、robots.txt、sitemap，并用 HEAD 抽样检查静态资源缓存，不执行 JS。需要验证渲染后 DOM 时，再增加 Playwright 层。
 - **无自动发布。** `/write` 产出草稿后需手动发布（WordPress 除外）。Headless CMS 的自动发布管线不在当前 scope。
 - **单站点假设。** 当前工作流假设一个项目对应一个站点。多站点/多语言 SEO 不在此版本覆盖。

@@ -12,7 +12,7 @@ SEO tools/
 ├── seomachine/                        ← SEO Machine: 内容生产流水线 (setup.sh 克隆)
 ├── claude-seo/                        ← Claude SEO: 全站技术审计平台 (setup.sh 克隆)
 ├── setup.sh                           ← 依赖安装脚本
-├── seo_workbench_tools/               ← Python 胶水工具: 页面/robots/sitemap/evidence 采集
+├── seo_workbench_tools/               ← Python 胶水工具: 页面/headers/robots/sitemap/evidence 采集
 ├── seo-workbench/                     ← 编排层: 串联三工具的状态机工作流
 │   ├── CLAUDE.md                      ←   编排引擎定义 (阶段、Handoff、错误处理)
 │   ├── templates/state.json           ←   状态文件模板
@@ -64,7 +64,7 @@ Workbench 胶水工具 (机器证据): `env UV_CACHE_DIR=.uv-cache uv run --pyth
 1. 从 state.json 读取进度
 2. 从产出目录读取上游上下文
 3. TECHNICAL_AUDIT 阶段先运行 `seo_workbench_tools.workflow_evidence` 生成 `seo-workbench/audits/raw/evidence-*.json`
-4. 调用对应的 Skill 工具，并注入机器证据摘要
+4. 调用对应的 Skill 工具，并注入 headers、page_type、content/schema/image、robots/sitemap、hreflang、resource cache 机器证据摘要
 5. 保存结果并更新状态
 
 详见 `seo-workbench/CLAUDE.md`。
