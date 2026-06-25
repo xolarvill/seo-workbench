@@ -4,6 +4,8 @@ import argparse
 import json
 import sys
 import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
+from typing import Any
 from urllib.parse import urljoin, urlparse
 
 from seo_workbench_tools.page_probe import fetch
@@ -37,16 +39,71 @@ def parse_sitemap_xml(xml_text: str) -> dict[str, Any]:
     root = ET.fromstring(xml_text)
     ns = root.tag.split("}", 1)[0] + "}" if root.tag.startswith("{") else ""
     if root.tag.endswith("sitemapindex"):
+        entries = [
+            {
+                "loc": loc.text.strip(),
+                "lastmod": (sitemap.find(f"{ns}lastmod").text or "").strip() if sitemap.find(f"{ns}lastmod") is not None else "",
+            }
+            for sitemap in root.findall(f".//{ns}sitemap")
+            if (loc := sitemap.find(f"{ns}loc")) is not None and loc.text
+        ]
         return {
             "type": "sitemapindex",
-            "urls": [loc.text.strip() for loc in root.findall(f".//{ns}sitemap/{ns}loc") if loc.text],
+            "urls": [entry["loc"] for entry in entries],
+            "entries": entries,
         }
     if root.tag.endswith("urlset"):
+        entries = [
+            {
+                "loc": loc.text.strip(),
+                "lastmod": (url.find(f"{ns}lastmod").text or "").strip() if url.find(f"{ns}lastmod") is not None else "",
+            }
+            for url in root.findall(f".//{ns}url")
+            if (loc := url.find(f"{ns}loc")) is not None and loc.text
+        ]
         return {
             "type": "urlset",
-            "urls": [loc.text.strip() for loc in root.findall(f".//{ns}url/{ns}loc") if loc.text],
+            "urls": [entry["loc"] for entry in entries],
+            "entries": entries,
         }
-    return {"type": "unknown", "urls": []}
+    return {"type": "unknown", "urls": [], "entries": []}
+
+
+def parse_lastmod(value: str) -> datetime | None:
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
+    except ValueError:
+        try:
+            return datetime.strptime(value[:10], "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        except ValueError:
+            return None
+
+
+def freshness(entries: list[dict[str, str]]) -> dict[str, Any]:
+    dates = [date for entry in entries if (date := parse_lastmod(entry.get("lastmod", "")))]
+    if not dates:
+        return {
+            "oldest_lastmod": "",
+            "newest_lastmod": "",
+            "days_since_newest": None,
+            "days_since_oldest": None,
+            "stale_percentage": 0,
+            "has_lastmod": False,
+        }
+    today = datetime.now(timezone.utc)
+    oldest = min(dates)
+    newest = max(dates)
+    stale = sum(1 for date in dates if (today - date).days > 365)
+    return {
+        "oldest_lastmod": oldest.date().isoformat(),
+        "newest_lastmod": newest.date().isoformat(),
+        "days_since_newest": (today - newest).days,
+        "days_since_oldest": (today - oldest).days,
+        "stale_percentage": round((stale / len(entries)) * 100, 2) if entries else 0,
+        "has_lastmod": True,
+    }
 
 
 def fetch_sitemap(url: str, timeout: float, sample_limit: int) -> dict[str, Any]:
@@ -61,6 +118,8 @@ def fetch_sitemap(url: str, timeout: float, sample_limit: int) -> dict[str, Any]
             "type": parsed["type"],
             "url_count": len(urls),
             "sample_urls": urls[:sample_limit],
+            "sample_entries": parsed["entries"][:sample_limit],
+            "freshness": freshness(parsed["entries"]),
         }
     except (RuntimeError, ET.ParseError) as exc:
         return {"url": url, "error": str(exc)}
@@ -102,9 +161,12 @@ def _self_test() -> None:
 
     urlset = parse_sitemap_xml(
         """<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-        <url><loc>https://example.com/a</loc></url></urlset>"""
+        <url><loc>https://example.com/a</loc><lastmod>2026-01-01</lastmod></url></urlset>"""
     )
-    assert urlset == {"type": "urlset", "urls": ["https://example.com/a"]}
+    assert urlset["type"] == "urlset"
+    assert urlset["urls"] == ["https://example.com/a"]
+    assert urlset["entries"][0]["lastmod"] == "2026-01-01"
+    assert freshness(urlset["entries"])["has_lastmod"] is True
 
 
 def main(argv: list[str] | None = None) -> int:
