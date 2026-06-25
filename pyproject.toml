@@ -1,7 +1,7 @@
 [project]
-name = "seo-workbench-tools"
-version = "0.1.0"
-description = "Small CLI probes for SEO Workbench agents."
+name = "seo-workbench"
+version = "0.2.0"
+description = "Agent-neutral SEO workflow and audit tools."
 requires-python = ">=3.11,<3.12"
 dependencies = []
 
