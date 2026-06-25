@@ -5,6 +5,7 @@ from pathlib import Path
 
 from seo_workbench import state
 from seo_workbench.evidence import collect_from_state
+from seo_workbench.workflow import load_workflow, next_contract
 
 
 def cmd_init(args: argparse.Namespace) -> int:
@@ -56,18 +57,23 @@ def cmd_next(args: argparse.Namespace) -> int:
     if not step:
         print(f"{phase}: no pending step")
         return 0
-    print(f"{phase}/{step['id']}: {step.get('label', '')}")
-    if phase in {"STRATEGY", "CONTENT_PRODUCTION", "QUALITY_REVIEW", "OFF_PAGE"}:
-        print("agent: read skills/ and write the step output, then mark the step done in state.json")
-    elif phase == "TECHNICAL_AUDIT":
-        print("agent: run `seo-workbench evidence`, then use the JSON as audit evidence")
-    else:
-        print("agent: complete the setup checklist, then mark the step done in state.json")
+    contract = next_contract(load_workflow(args.workflow), phase, step, args.project_dir)
+    print(f"{contract['phase']}/{contract['step']}: {contract['label']}")
+    if contract["skill"]:
+        print(f"skill: {contract['skill']}")
+    if contract["context"]:
+        print("context:")
+        for path in contract["context"]:
+            print(f"- {path}")
+    if contract["output"]:
+        print(f"output: {contract['output']}")
+    print("after: python -m seo_workbench step done")
     return 0
 
 
 def cmd_evidence(args: argparse.Namespace) -> int:
-    path = collect_from_state(state.state_path(args.project_dir), args.timeout, args.sample_limit, args.output_dir)
+    output_dir = args.output_dir or args.project_dir / "audits/raw"
+    path = collect_from_state(state.state_path(args.project_dir), args.timeout, args.sample_limit, output_dir)
     print(path)
     return 0
 
@@ -75,6 +81,7 @@ def cmd_evidence(args: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="seo-workbench")
     parser.add_argument("--project-dir", type=Path, default=state.DEFAULT_PROJECT_DIR)
+    parser.add_argument("--workflow", type=Path, default=None)
     sub = parser.add_subparsers(dest="command", required=True)
 
     init = sub.add_parser("init")
@@ -106,13 +113,17 @@ def build_parser() -> argparse.ArgumentParser:
     evidence = sub.add_parser("evidence")
     evidence.add_argument("--timeout", type=float, default=15)
     evidence.add_argument("--sample-limit", type=int, default=50)
-    evidence.add_argument("--output-dir", type=Path, default=Path("seo-workbench/audits/raw"))
+    evidence.add_argument("--output-dir", type=Path)
     evidence.set_defaults(func=cmd_evidence)
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.workflow is None:
+        from seo_workbench.workflow import DEFAULT_WORKFLOW
+
+        args.workflow = DEFAULT_WORKFLOW
     try:
         return args.func(args)
     except (FileNotFoundError, FileExistsError, ValueError) as exc:

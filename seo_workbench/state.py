@@ -13,6 +13,7 @@ DEFAULT_TEMPLATE = ROOT / "templates" / "state.json"
 
 
 PROJECT_DIRS = [
+    "context",
     "strategy/keyword-dives",
     "strategy/briefs",
     "content/drafts",
