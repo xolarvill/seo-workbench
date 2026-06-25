@@ -178,27 +178,32 @@ INIT → STRATEGY → CONTENT_PRODUCTION → QUALITY_REVIEW → TECHNICAL_AUDIT 
 **步骤**:
 
 0. `headless-precheck` — Headless SEO 爬虫预检（仅 shopify-headless，其他类型自动跳过）
-   - 工具: `WebFetch`（以无 JS 方式拉取原始 HTML，模拟搜索引擎爬虫）
-   - 目标页面: 首页 + 1个核心产品页 + 1篇Blog文章（从 state.json 的 contentQueue 中取已发布文章）
+   - 工具: `env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.workflow_evidence`
+   - 目标页面: `state.json` 的 `project.url` + contentQueue 中 status 为 `published` 或 `draft` 的 URL
+   - 机器证据: `seo-workbench/audits/raw/evidence-*.json`
    - 对照 Headless 风险清单逐页扫描 15 项
    - 产出 `audits/headless-precheck.md`
    - 此步骤产出会作为后续 `technical-audit` 和 `schema` 步骤的上下文注入
 
 1. `technical-audit` — 全站技术审计 (9维度)
    - 工具: `Skill("claude-seo:seo-technical")`
+   - 调用前读取最新 `seo-workbench/audits/raw/evidence-*.json`，注入 status/final_url/title/meta/canonical/schema/images/robots/sitemap 证据摘要
    - 审计报告写入 `audits/technical-audit.md`
 
 2. `schema` — Schema 部署与验证
    - 工具: `Skill("claude-seo:seo-schema")`
+   - 调用前读取最新 evidence JSON 中 `pages[*].schema`
    - 验证 9 种必需的 Schema 类型是否齐全
    - 缺失的生成 JSON-LD 代码，放置在 `audits/schema-report.md`
 
 3. `sitemap` — Sitemap 生成与提交
    - 工具: `Skill("claude-seo:seo-sitemap")`
+   - 调用前读取最新 evidence JSON 中 `site.robots` 和 `site.sitemaps`
    - 产出写入 `audits/sitemap-report.md`
 
 4. `images` — 图片 SEO 检查
    - 工具: `Skill("claude-seo:seo-images")`
+   - 调用前读取最新 evidence JSON 中 `pages[*].images`
    - 产出写入 `audits/images-report.md`
 
 5. `drift-baseline` — 建立 SEO 漂移基线

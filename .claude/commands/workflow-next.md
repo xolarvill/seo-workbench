@@ -82,22 +82,31 @@
    - 非 `shopify-headless` → 标记步骤为 done，跳过，继续 Step 2 找下一步
    - `shopify-headless` → 执行预检
 2. 标记步骤 in_progress
-3. 确定扫描页面:
-   - 首页: `{project.url}/`
-   - 产品页: 从 `project.url` 拼一个产品页路径，或提示用户提供一个核心产品 URL
-   - Blog: 从 contentQueue 中取第一篇 status=published 的文章 URL；如无已发布文章则取第一篇 draft
-4. 依次用 `WebFetch` 以 "Return the COMPLETE raw HTML" 为 prompt 拉取 3 个页面
+3. 执行本地证据采集命令:
+   `env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.workflow_evidence`
+4. 读取命令输出的 `seo-workbench/audits/raw/evidence-*.json`
 5. 读取 `seo-workbench/CLAUDE.md` 末尾「Headless SEO 爬虫预检清单」章节的 15 项扫描清单
-6. 逐页逐项扫描，判定 ✅/❌/⚠️/—
-7. 按预检报告输出格式生成 `audits/headless-precheck.md`
+6. 基于 JSON 中 `pages[*]` 的 raw HTML 解析结果、Schema、图片、canonical、robots/sitemap 证据逐项判定 ✅/❌/⚠️/—
+7. 按预检报告输出格式生成 `audits/headless-precheck.md`，并在报告中记录 evidence JSON 路径
 8. 提取 300 字摘要（❌ 和 ⚠️ 项的列表），保存到 state.json 的 `notes` 字段中（供后续步骤注入使用）
 9. 标记步骤 done
+
+**TECHNICAL_AUDIT 证据采集 (所有项目类型):**
+
+当当前阶段为 TECHNICAL_AUDIT，且当前步骤不是 `headless-precheck`：
+1. 如果 `seo-workbench/audits/raw/` 下没有 evidence JSON，先执行:
+   `env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.workflow_evidence`
+2. 读取最新的 `seo-workbench/audits/raw/evidence-*.json`
+3. 在调用 `technical-audit`、`schema`、`sitemap`、`images`、`geo-audit`、`ecommerce-audit` 前，将 evidence JSON 的关键事实摘要加入 prompt：
+   - page status/final_url/title/meta/canonical/h1/schema/images/word_count
+   - robots status、Sitemap 声明、Sitemap URL 数量和样例 URL
+   - JSON-LD parse 错误、缺失 canonical、缺失 alt、异常状态码等直接证据
 
 **平台上下文注入 (TECHNICAL_AUDIT 阶段):**
 
 如果当前步骤属于 TECHNICAL_AUDIT 阶段且不是 `headless-precheck`，从 `state.json` 的 `project` 字段构建平台上下文，注入 Skill 调用。
 
-如果 `audits/headless-precheck.md` 存在且步骤为 `technical-audit` 或 `schema` 或 `images`：从文件中提取「传递给后续步骤的摘要」章节，**优先使用具体发现替换通用提示**。提取方法见 `seo-workbench/CLAUDE.md` TECHNICAL_AUDIT 阶段"平台上下文注入规则"表中的「有预检报告时」列。
+如果 `audits/headless-precheck.md` 存在且步骤为 `technical-audit` 或 `schema` 或 `images`：从文件中提取「传递给后续步骤的摘要」章节，**优先使用具体发现替换通用提示**。同时读取最新 evidence JSON，补充 robots/sitemap/page/schema/image 的机器证据。
 
 ```
 从 state.json 读取:

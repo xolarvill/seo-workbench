@@ -48,7 +48,7 @@ cd seo-workbench
 
 `setup.sh` 会自动克隆三个外部技能包（`superseo-skills`、`seomachine`、`claude-seo`）到项目根目录。
 
-**前置条件：** `git`、[Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview)（需预先安装并配置）。
+**前置条件：** `git`、`uv`、Python 3.11、[Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview)（需预先安装并配置）。
 
 ### 2. 启动 Claude Code 并初始化项目
 
@@ -75,6 +75,22 @@ claude
 
 然后跟着 `/workflow:next` 一步步走。
 
+### 3. 技术审计机器证据
+
+进入 `TECHNICAL_AUDIT` 阶段时，workflow 会先运行本地胶水工具采集机器证据：
+
+```bash
+env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.workflow_evidence
+```
+
+产出写入：
+
+```text
+seo-workbench/audits/raw/evidence-*.json
+```
+
+后续 `technical-audit`、`schema`、`sitemap`、`images` 等步骤会读取这份 JSON，把页面状态码、最终 URL、title/meta/canonical、JSON-LD、图片 alt、robots.txt 和 sitemap 证据注入到对应 Skill 的 prompt 中。
+
 ## 教程索引
 
 | 教程 | 适用场景 |
@@ -90,13 +106,15 @@ claude
 seo-workbench/
 ├── README.md                                    ← 本文件
 ├── CLAUDE.md                                    ← 根配置文件
+├── pyproject.toml                               ← uv / Python 3.11 工具环境
+├── seo_workbench_tools/                         ← 技术审计机器证据采集工具
 ├── seo-workbench/
 │   ├── CLAUDE.md                                ← 编排引擎定义 (状态机、Handoff、错误处理)
 │   ├── templates/state.json                     ← 状态文件模板
 │   ├── state.json                               ← 运行时状态
 │   ├── strategy/                                ← SuperSEO 产出
 │   ├── content/                                 ← 内容产出
-│   └── audits/                                  ← 审计产出
+│   └── audits/                                  ← 审计产出 (含 raw/evidence-*.json)
 ├── .claude/commands/                            ← 工作流命令
 │   ├── workflow-init.md
 │   ├── workflow-next.md
@@ -110,7 +128,7 @@ seo-workbench/
 
 ## 已知限制
 
-- **外部 Skill 不感知 Headless。** `claude-seo:seo-technical` 等 skill 是平台无关的——它们分析渲染后的 HTML。Headless 特有的问题（流式 SSR 截断、Suspense 内 JSON-LD 丢失、hydration 开销、CMS 内容是否 SSR 输出）不会自动检查。Workbench 通过 TECHNICAL_AUDIT 阶段的 `headless-precheck` 步骤（WebFetch 拉取原始 HTML + 15 项爬虫视角扫描）来补充，预检发现的证据会注入后续 skill 调用中。
-- **预检能力尚未独立。** `headless-precheck` 当前仅在 workbench 的 TECHNICAL_AUDIT 阶段内运行。如果需要单独调（不经过 workbench 流程），考虑将此逻辑抽成一个独立 skill（如 `claude-seo:seo-headless-precheck`），让不依赖 workbench 的用户也能直接使用。
+- **外部 Skill 不感知 Headless。** `claude-seo:seo-technical` 等 skill 是平台无关的。Workbench 通过 TECHNICAL_AUDIT 阶段的 `workflow_evidence` + `headless-precheck` 补充 raw HTML、Schema、图片、robots.txt 和 sitemap 机器证据。
+- **预检证据是 raw HTML 视角。** `seo_workbench_tools` 当前使用 Python 标准库抓取原始 HTML、robots.txt 和 sitemap，不执行 JS。需要验证渲染后 DOM 时，再增加 Playwright 层。
 - **无自动发布。** `/write` 产出草稿后需手动发布（WordPress 除外）。Headless CMS 的自动发布管线不在当前 scope。
 - **单站点假设。** 当前工作流假设一个项目对应一个站点。多站点/多语言 SEO 不在此版本覆盖。

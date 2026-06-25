@@ -12,13 +12,14 @@ SEO tools/
 ├── seomachine/                        ← SEO Machine: 内容生产流水线 (setup.sh 克隆)
 ├── claude-seo/                        ← Claude SEO: 全站技术审计平台 (setup.sh 克隆)
 ├── setup.sh                           ← 依赖安装脚本
+├── seo_workbench_tools/               ← Python 胶水工具: 页面/robots/sitemap/evidence 采集
 ├── seo-workbench/                     ← 编排层: 串联三工具的状态机工作流
 │   ├── CLAUDE.md                      ←   编排引擎定义 (阶段、Handoff、错误处理)
 │   ├── templates/state.json           ←   状态文件模板
 │   ├── state.json                     ←   运行时状态 (由 /workflow:init 创建)
 │   ├── strategy/                      ←   战略产出 (关键词深潜、集群、简报)
 │   ├── content/                       ←   内容产出 (草稿)
-│   └── audits/                        ←   审计产出 (技术审计、页面审计、E-E-A-T)
+│   └── audits/                        ←   审计产出 (含 raw/evidence-*.json 机器证据)
 ├── .claude/commands/                  ← 自定义命令
 │   ├── workflow-init.md               ←   初始化项目
 │   ├── workflow-next.md               ←   推进下一步 (核心命令)
@@ -45,6 +46,7 @@ SEO tools/
 SuperSEO (内容策略):  `Skill("superseo:keyword-deep-dive")`, `Skill("superseo:content-brief")`, 等
 SEO Machine (内容生产): `/research`, `/write`, `/optimize`, 等 (在 seomachine 工作区)
 Claude SEO (技术审计): `Skill("claude-seo:seo-technical")`, `Skill("claude-seo:seo-schema")`, 等
+Workbench 胶水工具 (机器证据): `env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.workflow_evidence`
 
 **如果你是第一次用:**
 
@@ -61,8 +63,9 @@ Claude SEO (技术审计): `Skill("claude-seo:seo-technical")`, `Skill("claude-s
 `/workflow:next` 驱动一个 6 阶段状态机 (INIT → STRATEGY → CONTENT_PRODUCTION → QUALITY_REVIEW → TECHNICAL_AUDIT → OFF_PAGE → MONITORING)。每步自动:
 1. 从 state.json 读取进度
 2. 从产出目录读取上游上下文
-3. 调用对应的 Skill 工具
-4. 保存结果并更新状态
+3. TECHNICAL_AUDIT 阶段先运行 `seo_workbench_tools.workflow_evidence` 生成 `seo-workbench/audits/raw/evidence-*.json`
+4. 调用对应的 Skill 工具，并注入机器证据摘要
+5. 保存结果并更新状态
 
 详见 `seo-workbench/CLAUDE.md`。
 
