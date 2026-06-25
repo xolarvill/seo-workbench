@@ -46,7 +46,7 @@ cd seo-workbench
 ./setup.sh
 ```
 
-`setup.sh` 会自动克隆三个外部技能包（`superseo-skills`、`seomachine`、`claude-seo`）到项目根目录。
+`setup.sh` 会按需克隆三个外部来源包（`superseo-skills`、`seomachine`、`claude-seo`）。已存在的本地副本不会自动 `git pull`，避免上游变化破坏 workbench。
 
 **前置条件：** `git`、`uv`、Python 3.11。Claude Code 只在使用 legacy slash commands 时需要。
 
