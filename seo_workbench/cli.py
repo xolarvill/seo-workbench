@@ -42,6 +42,14 @@ def cmd_phase(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_step(args: argparse.Namespace) -> int:
+    data = state.load_state(args.project_dir)
+    phase, step_id = state.update_step(data, args.action, args.step_id)
+    state.save_state(data, args.project_dir)
+    print(f"{args.action}: {phase}/{step_id}")
+    return 0
+
+
 def cmd_next(args: argparse.Namespace) -> int:
     data = state.load_state(args.project_dir)
     phase, step = state.current_step(data)
@@ -86,6 +94,11 @@ def build_parser() -> argparse.ArgumentParser:
     phase = sub.add_parser("phase")
     phase.add_argument("phase")
     phase.set_defaults(func=cmd_phase)
+
+    step = sub.add_parser("step")
+    step.add_argument("action", choices=["done", "skip", "reset", "start"])
+    step.add_argument("step_id", nargs="?")
+    step.set_defaults(func=cmd_step)
 
     next_cmd = sub.add_parser("next")
     next_cmd.set_defaults(func=cmd_next)

@@ -93,7 +93,61 @@ def set_phase(data: dict[str, Any], phase: str) -> None:
     data["nextAction"] = "Run next"
 
 
+def phase_after(data: dict[str, Any], phase: str) -> str | None:
+    order = data.get("phaseOrder", [])
+    try:
+        index = order.index(phase)
+    except ValueError:
+        return None
+    return order[index + 1] if index + 1 < len(order) else None
+
+
+def advance_if_done(data: dict[str, Any]) -> None:
+    phase = data.get("currentPhase", "INIT")
+    steps = data.get("phases", {}).get(phase, {}).get("steps", [])
+    if steps and all(step.get("status") == "done" for step in steps):
+        data["phases"][phase]["status"] = "done"
+        if next_phase := phase_after(data, phase):
+            data["currentPhase"] = next_phase
+            data["nextAction"] = f"Run {next_phase}"
+        else:
+            data["nextAction"] = "Workflow complete"
+
+
+def update_step(data: dict[str, Any], action: str, step_id: str | None = None) -> tuple[str, str]:
+    phase = data.get("currentPhase", "INIT")
+    steps = data.get("phases", {}).get(phase, {}).get("steps", [])
+    if not steps:
+        raise ValueError(f"{phase} has no steps")
+
+    target = None
+    if step_id:
+        target = next((step for step in steps if step.get("id") == step_id), None)
+        if target is None:
+            raise ValueError(f"unknown step in {phase}: {step_id}")
+    else:
+        _, target = current_step(data)
+    if target is None:
+        raise ValueError(f"{phase} has no pending step")
+
+    statuses = {"done": "done", "skip": "done", "reset": "pending", "start": "in_progress"}
+    if action not in statuses:
+        raise ValueError(f"unknown step action: {action}")
+    target["status"] = statuses[action]
+    data["lastAction"] = f"{action}: {phase}/{target['id']}"
+    data["nextAction"] = "Run next"
+    advance_if_done(data)
+    return phase, target["id"]
+
+
 def _self_test() -> None:
     state = {"currentPhase": "INIT", "phases": {"INIT": {"steps": [{"id": "a", "status": "done"}, {"id": "b", "status": "pending"}]}}}
     assert current_step(state) == ("INIT", {"id": "b", "status": "pending"})
     set_phase({"phases": {"X": {}}, "currentPhase": "INIT"}, "X")
+    data = {
+        "currentPhase": "A",
+        "phaseOrder": ["A", "B"],
+        "phases": {"A": {"steps": [{"id": "x", "status": "pending"}]}, "B": {"steps": []}},
+    }
+    assert update_step(data, "done") == ("A", "x")
+    assert data["currentPhase"] == "B"

@@ -21,6 +21,7 @@ The external directories `superseo-skills/`, `seomachine/`, and `claude-seo/` ar
 ```bash
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench status
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench step done
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench phase TECHNICAL_AUDIT
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence
 ```
