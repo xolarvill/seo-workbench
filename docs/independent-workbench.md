@@ -13,6 +13,8 @@ templates/              Reusable state and report templates
 third_party/            License and attribution notes
 ```
 
+The first extracted local modules are `keyword-deep-dive`, `content-brief`, and `technical-audit`.
+
 ## Harness Contract
 
 Agents should use the same local files and commands:
