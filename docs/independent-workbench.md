@@ -18,8 +18,8 @@ third_party/            License and attribution notes
 Agents should use the same local files and commands:
 
 ```bash
-uv run seo-workbench status
-uv run seo-workbench next
+uv run python -m seo_workbench status
+uv run python -m seo_workbench next
 python -m seo_workbench_tools.workflow_evidence
 ```
 

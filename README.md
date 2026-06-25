@@ -48,9 +48,22 @@ cd seo-workbench
 
 `setup.sh` 会自动克隆三个外部技能包（`superseo-skills`、`seomachine`、`claude-seo`）到项目根目录。
 
-**前置条件：** `git`、`uv`、Python 3.11、[Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview)（需预先安装并配置）。
+**前置条件：** `git`、`uv`、Python 3.11。Claude Code 只在使用 legacy slash commands 时需要。
 
-### 2. 启动 Claude Code 并初始化项目
+### 2. 初始化项目
+
+Agent-neutral CLI:
+
+```bash
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench \
+  init shopify-headless --name "我的店铺" --url "https://myshop.com" \
+  --framework hydrogen --hosting oxygen --cms sanity
+
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench status
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next
+```
+
+Claude legacy commands remain available:
 
 ```bash
 claude

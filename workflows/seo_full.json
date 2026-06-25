@@ -1,0 +1,4 @@
+{
+  "template": "../templates/state.json",
+  "phaseOrder": ["INIT", "STRATEGY", "CONTENT_PRODUCTION", "QUALITY_REVIEW", "TECHNICAL_AUDIT", "OFF_PAGE", "MONITORING"]
+}
