@@ -35,6 +35,13 @@ seo-workbench/
 └── audits/                    ← SuperSEO + Claude SEO 审计产出
 ```
 
+**路径与工具规则:**
+- 本文件中的 `strategy/...`、`content/...`、`audits/...` 均相对于内层 `seo-workbench/` 目录。
+- 从仓库根目录执行命令时，实际路径必须写成 `seo-workbench/strategy/...`、`seo-workbench/content/...`、`seo-workbench/audits/...`。
+- 仓库根目录的 `audits/` 仅作为历史误写目录；新 workflow 不得写入。
+- 禁止在任何 audit 输出目录中创建 Python、JavaScript 或临时工具脚本。能力不足时扩展 `seo_workbench_tools/`。
+- 需要截图、移动端、above-the-fold、渲染后 DOM 或视觉证据时，使用 `seo_workbench_tools.rendered_probe`（uv 命令加 `--extra rendered`），输出到 `seo-workbench/audits/rendered/`。
+
 ## 状态机：6 阶段流程
 
 ```
@@ -204,6 +211,7 @@ INIT → STRATEGY → CONTENT_PRODUCTION → QUALITY_REVIEW → TECHNICAL_AUDIT 
 4. `images` — 图片 SEO 检查
    - 工具: `Skill("claude-seo:seo-images")`
    - 调用前读取最新 evidence JSON 中 `pages[*].images` 和 `pages[*].image_stats`
+   - 如需验证渲染后图片、above-the-fold 或移动端布局，先执行 `env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench_tools.rendered_probe {url}`
    - 产出写入 `audits/images-report.md`
 
 5. `drift-baseline` — 建立 SEO 漂移基线

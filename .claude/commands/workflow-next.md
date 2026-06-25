@@ -75,6 +75,13 @@
 
 根据当前阶段和步骤，调用对应工具。详细执行逻辑见 `seo-workbench/CLAUDE.md` 各阶段定义。
 
+**工具生成规则:**
+
+- 禁止在 audit 输出目录中创建 Python、JavaScript 或其它临时工具脚本。
+- 需要截图、移动端、above-the-fold、渲染后 DOM 或视觉证据时，使用:
+  `env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench_tools.rendered_probe <url>`
+- 如审计能力不足，只能复用或扩展 `seo_workbench_tools/`，并把能力缺口记录到报告中。
+
 **`headless-precheck` 步骤 (仅 shopify-headless):**
 
 如果当前步骤为 `headless-precheck`：
@@ -102,6 +109,7 @@
    - robots status、Sitemap 声明、Sitemap URL 数量、样例 URL、lastmod freshness
    - hreflang_audit、resource_cache_audit
    - JSON-LD parse 错误、缺失 canonical、缺失 alt、异常状态码、no-store/no-cache 等直接证据
+4. 如果当前审计需要渲染后视觉证据，执行 `seo_workbench_tools.rendered_probe`，并读取 `seo-workbench/audits/rendered/rendered-*.json`。
 
 **平台上下文注入 (TECHNICAL_AUDIT 阶段):**
 

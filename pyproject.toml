@@ -5,5 +5,10 @@ description = "Small CLI probes for SEO Workbench agents."
 requires-python = ">=3.11,<3.12"
 dependencies = []
 
+[project.optional-dependencies]
+rendered = [
+    "playwright>=1.53.0",
+]
+
 [tool.uv]
 package = false

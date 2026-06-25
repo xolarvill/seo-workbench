@@ -65,7 +65,8 @@ Workbench 胶水工具 (机器证据): `env UV_CACHE_DIR=.uv-cache uv run --pyth
 2. 从产出目录读取上游上下文
 3. TECHNICAL_AUDIT 阶段先运行 `seo_workbench_tools.workflow_evidence` 生成 `seo-workbench/audits/raw/evidence-*.json`
 4. 调用对应的 Skill 工具，并注入 headers、page_type、content/schema/image、robots/sitemap、hreflang、resource cache 机器证据摘要
-5. 保存结果并更新状态
+5. 需要截图、移动端、above-the-fold、渲染后 DOM 或视觉证据时，调用 `seo_workbench_tools.rendered_probe`
+6. 保存结果并更新状态
 
 详见 `seo-workbench/CLAUDE.md`。
 
@@ -74,4 +75,5 @@ Workbench 胶水工具 (机器证据): `env UV_CACHE_DIR=.uv-cache uv run --pyth
 - `/workflow:next` 一次只推进一个步骤，完成后暂停让你 review
 - 不自动发布内容到线上（产出草稿，需手动 review 后发布）
 - 编排层不修改三个工具包本身，只调用它们
+- 不要在 audit 产物目录创建临时 Python/JS 脚本；能力不足时扩展 `seo_workbench_tools/`
 - 不要在没有执行 `/workflow:init` 的情况下直接使用 workflow 命令
