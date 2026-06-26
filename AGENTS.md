@@ -14,7 +14,7 @@ projects/default/       Default runtime project directory
 third_party/            Attribution and upstream license notes
 ```
 
-The external directories `superseo-skills/`, `seomachine/`, and `claude-seo/` are optional source material. Do not depend on them at runtime unless the user explicitly asks to import or compare upstream content.
+The original third-party repos are not runtime dependencies. Their useful content is preserved under `skills/`.
 
 ## Daily Commands
 
@@ -38,8 +38,7 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 
 - Prefer `skills/` over third-party skill packs.
 - Prefer `seo_workbench_tools/` for machine evidence; do not rewrite probes unless the existing collector cannot supply the field.
-- Keep Claude slash commands as legacy adapters, not the core workflow.
-- Do not run `git pull` inside external packs as part of normal setup.
+- Do not restore Claude slash commands or external repo dependencies unless the user explicitly asks.
 - Each reform layer should be committed separately.
 
 ## Skill Modules

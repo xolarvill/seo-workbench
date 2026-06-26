@@ -46,7 +46,7 @@ cd seo-workbench
 ./setup.sh
 ```
 
-`setup.sh` 会按需克隆三个外部来源包（`superseo-skills`、`seomachine`、`claude-seo`）。已存在的本地副本不会自动 `git pull`，避免上游变化破坏 workbench。
+`setup.sh` 只检查本地依赖和模板，不克隆外部仓库。三套原工具的能力已经抽取到 `skills/`。
 
 **前置条件：** `git`、`uv`、Python 3.11。Claude Code 只在使用 legacy slash commands 时需要。
 
@@ -118,15 +118,12 @@ seo-workbench/
 │   ├── strategy/                                ← SuperSEO 产出
 │   ├── content/                                 ← 内容产出
 │   └── audits/                                  ← 审计产出 (含 raw/evidence-*.json)
-├── superseo-skills/                             ← SuperSEO: 内容战略顾问 (setup.sh 克隆)
-├── seomachine/                                  ← SEO Machine: 内容生产流水线 (setup.sh 克隆)
-├── claude-seo/                                  ← Claude SEO: 技术审计平台 (setup.sh 克隆)
 └── setup.sh                                     ← 依赖安装脚本
 ```
 
 ## 已知限制
 
-- **外部 Skill 不感知 Headless。** `claude-seo:seo-technical` 等 skill 是平台无关的。Workbench 通过 TECHNICAL_AUDIT 阶段的 `workflow_evidence` + `headless-precheck` 补充 raw HTML、HTTP headers、Schema、图片、robots.txt、sitemap、hreflang 和资源缓存机器证据。
+- **抽取的技术 Skill 不感知 Headless。** Workbench 通过 TECHNICAL_AUDIT 阶段的 `workflow_evidence` + `headless-precheck` 补充 raw HTML、HTTP headers、Schema、图片、robots.txt、sitemap、hreflang 和资源缓存机器证据。
 - **渲染后证据依赖 Playwright。** raw HTML、robots.txt、sitemap、资源缓存检查默认可跑；截图和 rendered DOM 使用 `seo_workbench_tools.rendered_probe`，需要用 `--extra rendered` 并先安装 Chromium。
 - **无自动发布。** `/write` 产出草稿后需手动发布（WordPress 除外）。Headless CMS 的自动发布管线不在当前 scope。
 - **单站点假设。** 当前工作流假设一个项目对应一个站点。多站点/多语言 SEO 不在此版本覆盖。
