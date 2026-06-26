@@ -4,10 +4,22 @@
   "skills": {
     "keyword-dive-product": "skills/keyword-deep-dive/SKILL.md",
     "keyword-dive-info": "skills/keyword-deep-dive/SKILL.md",
+    "cluster-plan": "skills/topic-cluster-planning/SKILL.md",
     "content-briefs": "skills/content-brief/SKILL.md",
     "CONTENT_PRODUCTION:dynamic": "skills/write-content/SKILL.md",
     "page-audits": "skills/page-audit/SKILL.md",
+    "eeat-audit": "skills/eeat-audit/SKILL.md",
+    "semantic-gap": "skills/semantic-gap-analysis/SKILL.md",
+    "headless-precheck": "skills/headless-precheck/SKILL.md",
     "technical-audit": "skills/technical-audit/SKILL.md",
-    "schema": "skills/schema/SKILL.md"
+    "schema": "skills/schema/SKILL.md",
+    "sitemap": "skills/sitemap/SKILL.md",
+    "images": "skills/images/SKILL.md",
+    "drift-baseline": "skills/drift/SKILL.md",
+    "linkbuilding-strategy": "skills/linkbuilding/SKILL.md",
+    "backlinks-audit": "skills/backlinks/SKILL.md",
+    "technical-recheck": "skills/technical-audit/SKILL.md",
+    "drift-compare": "skills/drift/SKILL.md",
+    "backlinks-recheck": "skills/backlinks/SKILL.md"
   }
 }

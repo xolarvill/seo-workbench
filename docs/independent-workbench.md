@@ -13,7 +13,7 @@ templates/              Reusable state and report templates
 third_party/            License and attribution notes
 ```
 
-The first extracted local modules are `keyword-deep-dive`, `content-brief`, `write-content`, `page-audit`, `technical-audit`, and `schema`.
+Local modules now cover every non-INIT step in `templates/state.json`.
 
 ## Harness Contract
 
