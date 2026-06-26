@@ -67,7 +67,7 @@ def cmd_next(args: argparse.Namespace) -> int:
             print(f"- {path}")
     if contract["output"]:
         print(f"output: {contract['output']}")
-    print("after: python -m seo_workbench step done")
+    print(f"after: python -m seo_workbench --project-dir {args.project_dir} step done")
     return 0
 
 
