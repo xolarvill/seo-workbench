@@ -20,4 +20,10 @@ Current minimum set:
 - `linkbuilding` - off-page strategy.
 - `backlinks` - backlink audit.
 
+Preserved source-specific assets:
+
+- `seo-machine-pipeline/` keeps SEO Machine commands, agents, and skills as local production-pipeline source material.
+- `claude-seo-extra/` keeps Claude SEO specialty modules that are not in the default state machine.
+- `improve-content`, `featured-snippet-optimizer`, and `expert-interview` keep additional SuperSEO content-improvement workflows.
+
 Agents should read the relevant `SKILL.md` and only load `references/` files named by that skill.

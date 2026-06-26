@@ -126,6 +126,8 @@ seo-workbench/audits/rendered/
 | `从0到1新站SEO建设教程.md` | 通用新站 (WordPress / CMS) |
 | `SEO工具链协同工作流指南.md` | 三工具协同通用指南 |
 
+See `docs/capability-preservation.md` for what was preserved from SuperSEO, SEO Machine, and Claude SEO.
+
 ## 目录结构
 
 ```
