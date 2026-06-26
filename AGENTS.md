@@ -10,7 +10,7 @@ seo_workbench_tools/    Existing raw/rendered SEO evidence collectors
 skills/                 Extracted first-party SEO playbooks
 workflows/              Workflow manifests
 templates/              State templates
-seo-workbench/          Default runtime project directory
+projects/default/       Default runtime project directory
 third_party/            Attribution and upstream license notes
 ```
 

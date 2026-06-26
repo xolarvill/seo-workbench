@@ -56,7 +56,7 @@ def output_for_step(phase: str, step_id: str, project_dir: Path) -> str:
     return str(outputs[step_id]) if step_id in outputs else ""
 
 
-def next_contract(workflow: dict[str, Any], phase: str, step: dict[str, Any], project_dir: Path = Path("seo-workbench")) -> dict[str, Any]:
+def next_contract(workflow: dict[str, Any], phase: str, step: dict[str, Any], project_dir: Path = Path("projects/default")) -> dict[str, Any]:
     step_id = step.get("id", "")
     return {
         "phase": phase,

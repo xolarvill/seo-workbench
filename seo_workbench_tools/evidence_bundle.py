@@ -13,7 +13,7 @@ from urllib.request import Request, urlopen
 from seo_workbench_tools import page_probe, robots_sitemap_probe
 
 
-DEFAULT_OUTPUT_DIR = Path("seo-workbench/audits/raw")
+DEFAULT_OUTPUT_DIR = Path("projects/default/audits/raw")
 RESOURCE_SAMPLE_PER_TYPE = 5
 
 

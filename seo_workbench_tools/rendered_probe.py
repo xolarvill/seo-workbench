@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 
-DEFAULT_OUTPUT_DIR = Path("seo-workbench/audits/rendered")
+DEFAULT_OUTPUT_DIR = Path("projects/default/audits/rendered")
 VIEWPORTS = {
     "desktop_1920x1080": {"width": 1920, "height": 1080},
     "tablet_768x1024": {"width": 768, "height": 1024},

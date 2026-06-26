@@ -11,6 +11,7 @@ skills/                 Extracted SEO playbooks and rubrics
 workflows/              State-machine definitions
 templates/              Reusable state and report templates
 third_party/            License and attribution notes
+projects/default/       Default runtime project directory
 ```
 
 Local modules now cover every non-INIT step in `templates/state.json`.

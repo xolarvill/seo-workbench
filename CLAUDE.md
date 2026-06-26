@@ -23,5 +23,5 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 
 - Read `AGENTS.md` for the authoritative workflow instructions.
 - Use local `skills/` first; do not call external `superseo-skills/`, `seomachine/`, or `claude-seo/` unless the user asks to import or compare upstream.
-- Treat `.claude/commands/` as legacy compatibility notes, not the core workflow.
+- Do not use legacy slash-command files; the local CLI is the workflow interface.
 - Do not run `git pull` inside third-party source directories during normal setup.

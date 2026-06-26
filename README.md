@@ -64,43 +64,18 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench step done
 ```
 
-Claude legacy commands remain available:
-
-```bash
-claude
-```
-
-在 Claude Code 中执行：
-
-```
-# Liquid Shopify 新站
-/workflow:init shopify --name "我的店铺" --url "https://myshop.com"
-
-# Headless Shopify 新站
-/workflow:init shopify-headless --name "我的店铺" --url "https://myshop.com" \
-  --framework hydrogen --hosting oxygen --cms sanity
-
-# 通用新站
-/workflow:init general --name "项目名" --url "https://example.com"
-
-# 已有站改造
-/workflow:init existing --name "项目名" --url "https://example.com"
-```
-
-然后跟着 `/workflow:next` 一步步走。
-
 ### 3. 技术审计机器证据
 
 进入 `TECHNICAL_AUDIT` 阶段时，workflow 会先运行本地胶水工具采集机器证据：
 
 ```bash
-env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.workflow_evidence
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence
 ```
 
 产出写入：
 
 ```text
-seo-workbench/audits/raw/evidence-*.json
+projects/default/audits/raw/evidence-*.json
 ```
 
 后续 `technical-audit`、`schema`、`sitemap`、`images` 等步骤会读取这份 JSON，把页面状态码、最终 URL、页面类型、title/meta/canonical、HTTP headers、内容结构、JSON-LD 结构校验、图片统计、robots.txt、sitemap freshness、hreflang 和静态资源缓存证据注入到对应 Skill 的 prompt 中。
@@ -114,7 +89,7 @@ env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_w
 产出写入：
 
 ```text
-seo-workbench/audits/rendered/
+projects/default/audits/rendered/
 ```
 
 ## 教程索引
@@ -136,18 +111,13 @@ seo-workbench/
 ├── CLAUDE.md                                    ← 根配置文件
 ├── pyproject.toml                               ← uv / Python 3.11 工具环境
 ├── seo_workbench_tools/                         ← 技术审计机器证据采集工具
-├── seo-workbench/
-│   ├── CLAUDE.md                                ← 编排引擎定义 (状态机、Handoff、错误处理)
-│   ├── templates/state.json                     ← 状态文件模板
-│   ├── state.json                               ← 运行时状态
+├── templates/state.json                         ← 状态文件模板
+├── workflows/seo_full.json                      ← 工作流映射
+├── projects/default/
+│   ├── state.json                               ← 运行时状态 (init 后生成)
 │   ├── strategy/                                ← SuperSEO 产出
 │   ├── content/                                 ← 内容产出
 │   └── audits/                                  ← 审计产出 (含 raw/evidence-*.json)
-├── .claude/commands/                            ← 工作流命令
-│   ├── workflow-init.md
-│   ├── workflow-next.md
-│   ├── workflow-status.md
-│   └── workflow-phase.md
 ├── superseo-skills/                             ← SuperSEO: 内容战略顾问 (setup.sh 克隆)
 ├── seomachine/                                  ← SEO Machine: 内容生产流水线 (setup.sh 克隆)
 ├── claude-seo/                                  ← Claude SEO: 技术审计平台 (setup.sh 克隆)

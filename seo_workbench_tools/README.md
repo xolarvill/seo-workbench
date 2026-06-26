@@ -4,16 +4,16 @@ Python 胶水工具层，用于给 TECHNICAL_AUDIT 阶段提供可复查的机�
 
 ## 常用入口
 
-按 `seo-workbench/state.json` 自动采集：
+按 `projects/default/state.json` 自动采集：
 
 ```bash
-env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.workflow_evidence
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence
 ```
 
 输出：
 
 ```text
-seo-workbench/audits/raw/
+projects/default/audits/raw/
 ```
 
 ## 单独调用

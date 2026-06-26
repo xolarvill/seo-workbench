@@ -8,7 +8,7 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_PROJECT_DIR = Path("seo-workbench")
+DEFAULT_PROJECT_DIR = Path("projects/default")
 DEFAULT_TEMPLATE = ROOT / "templates" / "state.json"
 
 

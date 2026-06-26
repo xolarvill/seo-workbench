@@ -8,7 +8,7 @@ from typing import Any
 from seo_workbench_tools.evidence_bundle import DEFAULT_OUTPUT_DIR, collect, write_bundle
 
 
-DEFAULT_STATE = Path("seo-workbench/state.json")
+DEFAULT_STATE = Path("projects/default/state.json")
 
 
 def page_urls_from_state(state: dict[str, Any]) -> list[str]:
@@ -42,7 +42,7 @@ def _self_test() -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    argp = argparse.ArgumentParser(description="Collect evidence using seo-workbench/state.json.")
+    argp = argparse.ArgumentParser(description="Collect evidence using projects/default/state.json.")
     argp.add_argument("--state", type=Path, default=DEFAULT_STATE)
     argp.add_argument("--timeout", type=float, default=15)
     argp.add_argument("--sample-limit", type=int, default=50)
