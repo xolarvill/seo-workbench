@@ -60,6 +60,10 @@ def init_state(
             "platform": platform,
         }
     )
+    if project_type != "shopify-headless":
+        for step in state["phases"]["TECHNICAL_AUDIT"]["steps"]:
+            if step.get("id") == "headless-precheck":
+                step["status"] = "done"
     write_json(path, state)
     for dirname in PROJECT_DIRS:
         (project_dir / dirname).mkdir(parents=True, exist_ok=True)
@@ -152,3 +156,11 @@ def _self_test() -> None:
     }
     assert update_step(data, "done") == ("A", "x")
     assert data["currentPhase"] == "B"
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as dirname:
+        path = init_state("general", "T", "https://example.com", Path(dirname), force=True)
+        initialized = read_json(path)
+        precheck = initialized["phases"]["TECHNICAL_AUDIT"]["steps"][0]
+        assert precheck["id"] == "headless-precheck"
+        assert precheck["status"] == "done"
