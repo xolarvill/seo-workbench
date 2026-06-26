@@ -1,79 +1,27 @@
-# SEO Tools Workspace
+# SEO Workbench Claude Adapter
 
-本工作区包含三套开源 SEO 工具包和一个编排层，覆盖 SEO 全链路：战略规划 → 内容生产 → 质量审查 → 技术审计。
+This repo is now agent-neutral. Claude should use the same local CLI and `skills/` modules as Codex or any other harness.
 
-## 目录结构
+## Primary Commands
 
-```
-SEO tools/
-├── README.md                          ← 使用场景与覆盖状态
-├── CLAUDE.md                          ← 本文件 (配置与使用指引)
-├── superseo-skills/                   ← SuperSEO: 内容战略顾问 (setup.sh 克隆)
-├── seomachine/                        ← SEO Machine: 内容生产流水线 (setup.sh 克隆)
-├── claude-seo/                        ← Claude SEO: 全站技术审计平台 (setup.sh 克隆)
-├── setup.sh                           ← 依赖安装脚本
-├── seo_workbench_tools/               ← Python 胶水工具: 页面/headers/robots/sitemap/evidence 采集
-├── seo-workbench/                     ← 编排层: 串联三工具的状态机工作流
-│   ├── CLAUDE.md                      ←   编排引擎定义 (阶段、Handoff、错误处理)
-│   ├── templates/state.json           ←   状态文件模板
-│   ├── state.json                     ←   运行时状态 (由 /workflow:init 创建)
-│   ├── strategy/                      ←   战略产出 (关键词深潜、集群、简报)
-│   ├── content/                       ←   内容产出 (草稿)
-│   └── audits/                        ←   审计产出 (含 raw/evidence-*.json 机器证据)
-├── .claude/commands/                  ← 自定义命令
-│   ├── workflow-init.md               ←   初始化项目
-│   ├── workflow-next.md               ←   推进下一步 (核心命令)
-│   ├── workflow-status.md             ←   查看进度
-│   └── workflow-phase.md              ←   跳转阶段
-├── SEO工具链协同工作流指南.md           ← 通用教程
-├── 从0到1新站SEO建设教程.md            ← 新站教程
-├── Shopify从0到1-SEO建设进阶教程.md      ← Shopify (Liquid) 进阶教程
-└── Shopify-Hydrogen-Headless-SEO指南.md  ← Shopify (Hydrogen/Headless) 指南
+```bash
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench status
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench step done
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence
 ```
 
-## 日常使用
+Initialize:
 
-**如果你要按工作流推进 SEO 任务:**
-
-```
-/workflow:status     查看当前进度
-/workflow:next       执行下一步 (日常只需要这个)
-/workflow:phase xxx  跳转到指定阶段
+```bash
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench \
+  init shopify-headless --name "Project" --url "https://example.com" \
+  --framework hydrogen --hosting oxygen --cms sanity
 ```
 
-**如果你要单独调用某个工具:**
+## Rules
 
-SuperSEO (内容策略):  `Skill("superseo:keyword-deep-dive")`, `Skill("superseo:content-brief")`, 等
-SEO Machine (内容生产): `/research`, `/write`, `/optimize`, 等 (在 seomachine 工作区)
-Claude SEO (技术审计): `Skill("claude-seo:seo-technical")`, `Skill("claude-seo:seo-schema")`, 等
-Workbench 胶水工具 (机器证据): `env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.workflow_evidence`
-
-**如果你是第一次用:**
-
-1. 运行 `./setup.sh` 克隆三个外部技能包 (superseo-skills, seomachine, claude-seo)
-2. 根据技术栈选择教程：`Shopify从0到1-SEO建设进阶教程.md` (Liquid 电商站) / `Shopify-Hydrogen-Headless-SEO指南.md` (Headless 电商站) / `从0到1新站SEO建设教程.md` (通用站)
-3. 执行初始化命令:
-   - `/workflow:init shopify --name "项目名" --url "https://xxx.com"` (Liquid)
-   - `/workflow:init shopify-headless --name "项目名" --url "https://xxx.com" --framework hydrogen --hosting oxygen --cms sanity` (Headless)
-   - `/workflow:init general --name "项目名" --url "https://xxx.com"` (通用)
-4. 跟着 `/workflow:next` 一步步走
-
-## 编排层工作原理
-
-`/workflow:next` 驱动一个 6 阶段状态机 (INIT → STRATEGY → CONTENT_PRODUCTION → QUALITY_REVIEW → TECHNICAL_AUDIT → OFF_PAGE → MONITORING)。每步自动:
-1. 从 state.json 读取进度
-2. 从产出目录读取上游上下文
-3. TECHNICAL_AUDIT 阶段先运行 `seo_workbench_tools.workflow_evidence` 生成 `seo-workbench/audits/raw/evidence-*.json`
-4. 调用对应的 Skill 工具，并注入 headers、page_type、content/schema/image、robots/sitemap、hreflang、resource cache 机器证据摘要
-5. 需要截图、移动端、above-the-fold、渲染后 DOM 或视觉证据时，调用 `seo_workbench_tools.rendered_probe`
-6. 保存结果并更新状态
-
-详见 `seo-workbench/CLAUDE.md`。
-
-## 重要原则
-
-- `/workflow:next` 一次只推进一个步骤，完成后暂停让你 review
-- 不自动发布内容到线上（产出草稿，需手动 review 后发布）
-- 编排层不修改三个工具包本身，只调用它们
-- 不要在 audit 产物目录创建临时 Python/JS 脚本；能力不足时扩展 `seo_workbench_tools/`
-- 不要在没有执行 `/workflow:init` 的情况下直接使用 workflow 命令
+- Read `AGENTS.md` for the authoritative workflow instructions.
+- Use local `skills/` first; do not call external `superseo-skills/`, `seomachine/`, or `claude-seo/` unless the user asks to import or compare upstream.
+- Treat `.claude/commands/` as legacy compatibility notes, not the core workflow.
+- Do not run `git pull` inside third-party source directories during normal setup.
