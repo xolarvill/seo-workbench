@@ -20,10 +20,22 @@ The original third-party repos are not runtime dependencies. Their useful conten
 
 ```bash
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench status
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench status --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench step done
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench phase TECHNICAL_AUDIT
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench validate --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench doctor --json
+```
+
+If uv cannot read its user-profile managed Python, install Python locally for this workspace:
+
+```bash
+env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv python install 3.11
+env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv sync --frozen --extra dev --python 3.11
 ```
 
 Initialize a project:
@@ -38,6 +50,11 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 
 - Prefer `skills/` over third-party skill packs.
 - Prefer `seo_workbench_tools/` for machine evidence; do not rewrite probes unless the existing collector cannot supply the field.
+- Run `validate --json` after changing workflow, state, CLI contracts, or skill mappings.
+- Run `doctor --json` when debugging local setup, missing evidence, or optional rendered support.
+- Treat `projects/default/audits/raw/latest.json` as the stable current evidence pointer; timestamped `evidence-*.json` files are the immutable audit records.
+- For Headless SEO work, prefer `python -m seo_workbench evidence --rendered --json` when Playwright is available so `headless_audit` includes raw/rendered diffs.
+- Evidence collectors should return structured JSON with `collection_status`, `errors`, and `warnings` even when some fetches fail.
 - Do not restore Claude slash commands or external repo dependencies unless the user explicitly asks.
 - Each reform layer should be committed separately.
 

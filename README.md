@@ -64,6 +64,27 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench step done
 ```
 
+### Agent / 自动化 CLI 契约
+
+CLI 是所有 agent harness 的稳定入口。给人看的输出继续保留；脚本和 agent 应优先使用 JSON 形式：
+
+```bash
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench status --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench validate --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench doctor --json
+```
+
+- 改动 `templates/`、`workflows/`、skill 映射或输出契约后，运行 `validate --json`。
+- 调试 Python/uv、项目状态、证据目录、最新 evidence 或可选 Playwright 支持时，运行 `doctor --json`。
+- 如果 uv 的用户目录 Python 因权限不可读，可把 Python 安装固定到工作区本地：
+
+```bash
+env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv python install 3.11
+env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv sync --frozen --extra dev --python 3.11
+```
+
 ### 3. 技术审计机器证据
 
 进入 `TECHNICAL_AUDIT` 阶段时，workflow 会先运行本地胶水工具采集机器证据：
@@ -76,7 +97,10 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 
 ```text
 projects/default/audits/raw/evidence-*.json
+projects/default/audits/raw/latest.json
 ```
+
+`latest.json` 是当前证据包的稳定指针；timestamped `evidence-*.json` 是不可变审计记录。证据包包含 `schema_version`、`collector_version`、`collection_status`、`manifest`、`errors`、`warnings` 和 `source_confidence`，因此即使部分抓取失败也能继续复查。
 
 后续 `technical-audit`、`schema`、`sitemap`、`images` 等步骤会读取这份 JSON，把页面状态码、最终 URL、页面类型、title/meta/canonical、HTTP headers、内容结构、JSON-LD 结构校验、图片统计、robots.txt、sitemap freshness、hreflang 和静态资源缓存证据注入到对应 Skill 的 prompt 中。
 
@@ -84,12 +108,23 @@ projects/default/audits/raw/evidence-*.json
 
 ```bash
 env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench_tools.rendered_probe https://example.com
+env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench evidence --rendered --json
 ```
 
 产出写入：
 
 ```text
 projects/default/audits/rendered/
+```
+
+For Headless SEO projects, `evidence --rendered` also adds `headless_audit` to the raw evidence bundle. It compares raw HTML and rendered DOM for title, meta description, canonical, robots meta, H1, JSON-LD types/count, links, and images.
+
+## Development checks
+
+```bash
+env UV_CACHE_DIR=.uv-cache uv run --frozen --extra dev --python 3.11 pytest
+env UV_CACHE_DIR=.uv-cache uv run --frozen --extra dev --python 3.11 python -m seo_workbench validate --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --extra dev --python 3.11 python -m seo_workbench doctor --json
 ```
 
 ## 教程索引
