@@ -81,6 +81,20 @@ def save_state(data: dict[str, Any], project_dir: Path = DEFAULT_PROJECT_DIR) ->
     write_json(state_path(project_dir), data)
 
 
+def record_history(data: dict[str, Any], action: str, phase: str = "", step_id: str = "", note: str = "") -> None:
+    entry = {
+        "at": datetime.now(timezone.utc).isoformat(),
+        "action": action,
+    }
+    if phase:
+        entry["phase"] = phase
+    if step_id:
+        entry["step"] = step_id
+    if note:
+        entry["note"] = note
+    data.setdefault("history", []).append(entry)
+
+
 def current_step(data: dict[str, Any]) -> tuple[str, dict[str, Any] | None]:
     phase = data.get("currentPhase", "INIT")
     steps = data.get("phases", {}).get(phase, {}).get("steps", [])
@@ -96,6 +110,7 @@ def set_phase(data: dict[str, Any], phase: str) -> None:
     data["currentPhase"] = phase
     data["lastAction"] = f"Switched to {phase}"
     data["nextAction"] = "Run next"
+    record_history(data, "phase", phase)
 
 
 def phase_after(data: dict[str, Any], phase: str) -> str | None:
@@ -139,8 +154,13 @@ def update_step(data: dict[str, Any], action: str, step_id: str | None = None) -
     if action not in statuses:
         raise ValueError(f"unknown step action: {action}")
     target["status"] = statuses[action]
+    if action == "skip":
+        target["skipped"] = True
+    elif action in {"done", "reset", "start"}:
+        target.pop("skipped", None)
     data["lastAction"] = f"{action}: {phase}/{target['id']}"
     data["nextAction"] = "Run next"
+    record_history(data, action, phase, target["id"])
     advance_if_done(data)
     return phase, target["id"]
 
