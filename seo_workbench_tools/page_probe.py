@@ -9,7 +9,7 @@ from html.parser import HTMLParser
 from time import perf_counter
 from typing import Any
 from urllib.error import HTTPError, URLError
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse, urlunparse
 from urllib.request import Request, urlopen
 
 
@@ -27,7 +27,13 @@ HEADER_KEYS = {
     "x-robots-tag": "x_robots_tag",
     "content-length": "content_length",
     "content-encoding": "content_encoding",
+    "permissions-policy": "permissions_policy",
+    "cross-origin-opener-policy": "cross_origin_opener_policy",
+    "cross-origin-resource-policy": "cross_origin_resource_policy",
+    "cross-origin-embedder-policy": "cross_origin_embedder_policy",
+    "vary": "vary",
 }
+SECURITY_HEADER_KEYS = ["hsts", "x_frame_options", "x_content_type_options", "csp", "referrer_policy"]
 
 
 @dataclass
@@ -242,6 +248,71 @@ def content_audit(html: str, headings: dict[str, list[str]], word_count: int, ht
     }
 
 
+def _normalize_url(value: str) -> str:
+    if not value:
+        return ""
+    parsed = urlparse(value)
+    path = parsed.path.rstrip("/") or "/"
+    return urlunparse((parsed.scheme.lower(), parsed.netloc.lower(), path, "", parsed.query, ""))
+
+
+def canonical_audit(page_url: str, canonical: str) -> dict[str, Any]:
+    issues = []
+    if not canonical:
+        issues.append("missing canonical")
+    elif urlparse(canonical).scheme not in {"http", "https"}:
+        issues.append("canonical is not absolute http(s)")
+    elif _normalize_url(page_url) != _normalize_url(canonical):
+        issues.append("canonical differs from final URL")
+    return {
+        "present": bool(canonical),
+        "self_referencing": bool(canonical) and _normalize_url(page_url) == _normalize_url(canonical),
+        "issues": issues,
+    }
+
+
+def robots_meta_audit(value: str) -> dict[str, Any]:
+    directives = sorted({part.strip().lower() for part in value.split(",") if part.strip()})
+    blocking = sorted(set(directives) & {"noindex", "none", "nosnippet"})
+    return {
+        "present": bool(value),
+        "directives": directives,
+        "blocking_directives": blocking,
+        "indexable": not bool(set(directives) & {"noindex", "none"}),
+    }
+
+
+def link_summary(links: list[dict[str, str]], base_url: str) -> dict[str, Any]:
+    base_host = urlparse(base_url).netloc.lower()
+    anchors = [link for link in links if link.get("rel") == "anchor"]
+    internal = []
+    external = []
+    empty = 0
+    for link in anchors:
+        href = link.get("href", "")
+        parsed = urlparse(href)
+        if not href or href in {"#", base_url + "#"}:
+            empty += 1
+        elif parsed.netloc.lower() == base_host:
+            internal.append(href)
+        else:
+            external.append(href)
+    return {
+        "anchor_count": len(anchors),
+        "internal_count": len(set(internal)),
+        "external_count": len(set(external)),
+        "empty_or_fragment_count": empty,
+        "sample_internal": sorted(set(internal))[:20],
+        "sample_external": sorted(set(external))[:20],
+    }
+
+
+def security_headers_audit(headers: dict[str, str]) -> dict[str, Any]:
+    present = sorted(key for key in SECURITY_HEADER_KEYS if headers.get(key))
+    missing = sorted(key for key in SECURITY_HEADER_KEYS if not headers.get(key))
+    return {"present": present, "missing": missing, "score": round((len(present) / len(SECURITY_HEADER_KEYS)) * 100)}
+
+
 def detect_page_type(url: str, parsed: dict[str, Any]) -> str:
     path = re.sub(r"/+$", "", re.sub(r"^https?://[^/]+", "", url)).lower() or "/"
     if path == "/":
@@ -285,18 +356,28 @@ def parse_html(html: str, base_url: str, html_bytes: int | None = None) -> dict[
     result = {
         "title": " ".join(parser.title_parts).strip(),
         "meta_description": parser.metas.get("description", ""),
+        "viewport": parser.metas.get("viewport", ""),
+        "open_graph": {key: value for key, value in parser.metas.items() if key.startswith("og:")},
+        "twitter": {key: value for key, value in parser.metas.items() if key.startswith("twitter:")},
         "canonical": canonical,
         "robots_meta": parser.metas.get("robots", ""),
         "h1": parser.headings["h1"],
         "h2": parser.headings["h2"],
+        "h3": parser.headings["h3"],
+        "h4": parser.headings["h4"],
+        "h5": parser.headings["h5"],
+        "h6": parser.headings["h6"],
         "images": parser.images,
         "image_stats": image_stats(parser.images),
         "links": parser.links,
+        "link_summary": link_summary(parser.links, base_url),
         "resources": parser.resources,
         "schema": schema,
         "schema_audit": schema_summary,
         "word_count": word_count,
         "content_audit": content_audit(html, parser.headings, word_count, byte_count),
+        "canonical_audit": canonical_audit(base_url, canonical),
+        "robots_meta_audit": robots_meta_audit(parser.metas.get("robots", "")),
     }
     result["page_type"] = detect_page_type(base_url, result)
     return result
@@ -339,7 +420,19 @@ def fetch(url: str, timeout: float) -> dict[str, Any]:
 def probe(url: str, timeout: float = 15) -> dict[str, Any]:
     fetched = fetch(url, timeout)
     parsed = parse_html(fetched.pop("html"), fetched["final_url"], fetched["html_bytes"])
-    return {"url": url, **fetched, "redirected": fetched["final_url"] != url, **parsed}
+    headers = fetched.get("headers", {})
+    return {
+        "url": url,
+        **fetched,
+        "redirected": fetched["final_url"] != url,
+        "url_consistency": {
+            "requested_url": url,
+            "final_url": fetched["final_url"],
+            "redirected": fetched["final_url"] != url,
+        },
+        "security_headers_audit": security_headers_audit(headers),
+        **parsed,
+    }
 
 
 def _self_test() -> None:
@@ -355,6 +448,7 @@ def _self_test() -> None:
     assert result["meta_description"] == "Desc"
     assert result["canonical"] == "https://example.com/x"
     assert result["h1"] == ["Hello"]
+    assert result["h3"] == []
     assert result["schema"][0]["type"] == "Article"
     assert result["schema_audit"]["schema_types_found"] == ["Article"]
     assert result["images"][0]["src"] == "https://example.com/a.webp"
@@ -365,6 +459,7 @@ def _self_test() -> None:
     assert result["resources"][0]["type"] == "script"
     assert result["page_type"] == "blog"
     assert result["word_count"] >= 4
+    assert result["canonical_audit"]["self_referencing"] is False
 
 
 def main(argv: list[str] | None = None) -> int:

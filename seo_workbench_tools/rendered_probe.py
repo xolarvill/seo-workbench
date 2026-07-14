@@ -72,11 +72,54 @@ def analyze_page(page: Any) -> dict[str, Any]:
                 duration: Math.round(entry.duration || 0),
             }));
             const nav = performance.getEntriesByType('navigation')[0];
+            const meta = (name) => {
+                const el = document.querySelector(`meta[name="${name}"], meta[property="${name}"]`);
+                return el ? el.getAttribute('content') || '' : '';
+            };
+            const schemaBlocks = [...document.querySelectorAll('script[type="application/ld+json"]')].map((script) => {
+                try {
+                    return JSON.parse(script.textContent || '{}');
+                } catch {
+                    return null;
+                }
+            }).filter(Boolean);
+            const collectTypes = (value, out = []) => {
+                if (!value || typeof value !== 'object') return out;
+                if (Array.isArray(value)) {
+                    value.forEach((item) => collectTypes(item, out));
+                    return out;
+                }
+                if (value['@type']) {
+                    if (Array.isArray(value['@type'])) out.push(...value['@type'].map(String));
+                    else out.push(String(value['@type']));
+                }
+                Object.values(value).forEach((child) => collectTypes(child, out));
+                return out;
+            };
+            const origin = location.origin;
+            const anchorHrefs = [...document.querySelectorAll('a[href]')].map((a) => a.href).filter(Boolean);
+            const internal = [...new Set(anchorHrefs.filter((href) => href.startsWith(origin)))];
+            const external = [...new Set(anchorHrefs.filter((href) => !href.startsWith(origin)))];
+            const bodyText = (document.body ? document.body.innerText || '' : '').trim();
             return {
                 url: location.href,
                 title: document.title,
+                meta_description: meta('description'),
+                canonical: (document.querySelector('link[rel="canonical"]') || {}).href || '',
+                robots_meta: meta('robots'),
+                viewport_meta: (document.querySelector('meta[name="viewport"]') || {}).content || '',
+                schema_types: [...new Set(collectTypes(schemaBlocks))].sort(),
+                schema_count: schemaBlocks.length,
+                has_body_text: bodyText.length >= 50,
                 viewport: vp,
                 h1: [...document.querySelectorAll('h1')].map((h) => h.innerText.trim()).filter(Boolean),
+                link_summary: {
+                    anchor_count: anchorHrefs.length,
+                    internal_count: internal.length,
+                    external_count: external.length,
+                    sample_internal: internal.slice(0, 20),
+                    sample_external: external.slice(0, 20),
+                },
                 above_fold: {
                     h1: first(['h1']),
                     primary_cta: first(['a[href*="collection"]', 'a[href*="product"]', 'button', '[role="button"]', '[class*="cta" i]', '[class*="button" i]']),
