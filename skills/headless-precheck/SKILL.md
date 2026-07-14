@@ -11,7 +11,13 @@ Run machine evidence first:
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence
 ```
 
-Read the newest JSON under `audits/raw/`.
+For raw/rendered comparison, run:
+
+```bash
+env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench evidence --rendered
+```
+
+Read `audits/raw/latest.json`. It mirrors the timestamped evidence bundle and includes `manifest.path`.
 
 Check:
 
@@ -22,6 +28,8 @@ Check:
 - hreflang consistency if present
 - static resource cache headers
 - whether body text appears in raw HTML
+- `headless_audit.critical`, `headless_audit.warnings`, and per-page raw/rendered diffs when rendered evidence exists
+- raw/rendered mismatches for title, meta description, canonical, robots meta, H1, JSON-LD types/count, links, and images
 
 Write:
 
@@ -29,4 +37,4 @@ Write:
 audits/headless-precheck.md
 ```
 
-Include critical findings first, then warnings, then the evidence JSON path.
+Include critical findings first, then warnings, then the evidence JSON path from `manifest.path`.

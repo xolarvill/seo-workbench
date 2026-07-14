@@ -20,12 +20,20 @@ def page_urls_from_state(state: dict[str, Any]) -> list[str]:
     return urls
 
 
-def collect_from_state(state_path: Path, timeout: float, sample_limit: int, output_dir: Path) -> Path:
+def collect_from_state(state_path: Path, timeout: float, sample_limit: int, output_dir: Path, rendered: bool = False) -> Path:
     state = json.loads(state_path.read_text(encoding="utf-8"))
     url = state.get("project", {}).get("url")
     if not url:
         raise ValueError(f"missing project.url in {state_path}")
-    bundle = collect(url, page_urls_from_state(state), timeout, sample_limit)
+    bundle = collect(
+        url,
+        page_urls_from_state(state),
+        timeout,
+        sample_limit,
+        rendered=rendered,
+        rendered_output_dir=output_dir.parent / "rendered",
+        project_type=state.get("project", {}).get("type", ""),
+    )
     bundle["state_path"] = str(state_path)
     return write_bundle(bundle, output_dir)
 
@@ -47,6 +55,7 @@ def main(argv: list[str] | None = None) -> int:
     argp.add_argument("--timeout", type=float, default=15)
     argp.add_argument("--sample-limit", type=int, default=50)
     argp.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    argp.add_argument("--rendered", action="store_true")
     argp.add_argument("--self-test", action="store_true")
     args = argp.parse_args(argv)
 
@@ -55,7 +64,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     try:
-        path = collect_from_state(args.state, args.timeout, args.sample_limit, args.output_dir)
+        path = collect_from_state(args.state, args.timeout, args.sample_limit, args.output_dir, rendered=args.rendered)
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         raise SystemExit(str(exc)) from exc
     print(path)

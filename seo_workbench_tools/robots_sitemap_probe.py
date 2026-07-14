@@ -9,6 +9,18 @@ from typing import Any
 from urllib.parse import urljoin, urlparse
 
 from seo_workbench_tools.page_probe import fetch
+from seo_workbench_tools import page_probe
+
+
+AI_CRAWLERS = {
+    "gptbot",
+    "chatgpt-user",
+    "claudebot",
+    "perplexitybot",
+    "bytespider",
+    "google-extended",
+    "ccbot",
+}
 
 
 def site_root(url: str) -> str:
@@ -21,6 +33,8 @@ def site_root(url: str) -> str:
 def parse_robots(text: str) -> dict[str, Any]:
     sitemaps = []
     rules = []
+    groups: dict[str, list[dict[str, str]]] = {}
+    current_agents: list[str] = []
     for line in text.splitlines():
         clean = line.split("#", 1)[0].strip()
         if not clean or ":" not in clean:
@@ -32,7 +46,18 @@ def parse_robots(text: str) -> dict[str, Any]:
             sitemaps.append(value)
         elif key in {"user-agent", "allow", "disallow", "crawl-delay"}:
             rules.append({"directive": key, "value": value})
-    return {"sitemaps": sitemaps, "rules": rules}
+            if key == "user-agent":
+                current_agents = [value.lower()]
+                groups.setdefault(value.lower(), [])
+            else:
+                for agent in current_agents or ["*"]:
+                    groups.setdefault(agent, []).append({"directive": key, "value": value})
+    ai_crawler_rules = {
+        agent: directives
+        for agent, directives in groups.items()
+        if agent in AI_CRAWLERS or any(token in agent for token in AI_CRAWLERS)
+    }
+    return {"sitemaps": sitemaps, "rules": rules, "groups": groups, "ai_crawler_rules": ai_crawler_rules}
 
 
 def parse_sitemap_xml(xml_text: str) -> dict[str, Any]:
@@ -139,20 +164,63 @@ def fetch_sitemap(url: str, timeout: float, sample_limit: int) -> dict[str, Any]
         return {"url": url, "error": str(exc)}
 
 
+def expand_sitemap_indexes(sitemaps: list[dict[str, Any]], timeout: float, sample_limit: int, max_sitemaps: int = 20) -> list[dict[str, Any]]:
+    expanded = []
+    seen = {sitemap.get("url", "") for sitemap in sitemaps}
+    queue = [child for sitemap in sitemaps if sitemap.get("type") == "sitemapindex" for child in sitemap.get("sample_urls", [])]
+    while queue and len(expanded) < max_sitemaps:
+        child_url = queue.pop(0)
+        if child_url in seen:
+            continue
+        seen.add(child_url)
+        child = fetch_sitemap(child_url, timeout, sample_limit)
+        expanded.append(child)
+        if child.get("type") == "sitemapindex":
+            queue.extend(child.get("sample_urls", []))
+    return expanded
+
+
+def audit_sitemap_sample(sitemaps: list[dict[str, Any]], timeout: float, sample_limit: int) -> dict[str, Any]:
+    urls = []
+    for sitemap in sitemaps:
+        for url in sitemap.get("sample_urls", []):
+            if url not in urls:
+                urls.append(url)
+    checked = []
+    issues = []
+    for url in urls[: min(sample_limit, 10)]:
+        try:
+            result = page_probe.probe(url, timeout)
+            item = {
+                "url": url,
+                "status": result.get("status"),
+                "final_url": result.get("final_url"),
+                "redirected": result.get("redirected"),
+                "robots_meta": result.get("robots_meta", ""),
+            }
+            if result.get("status") != 200:
+                issues.append(f"{url} returned {result.get('status')}")
+            if result.get("redirected"):
+                issues.append(f"{url} redirects to {result.get('final_url')}")
+            if not result.get("robots_meta_audit", {}).get("indexable", True):
+                issues.append(f"{url} has noindex robots meta")
+            checked.append(item)
+        except RuntimeError as exc:
+            checked.append({"url": url, "error": str(exc)})
+            issues.append(f"{url} failed sample fetch: {exc}")
+    return {"checked_urls": len(checked), "sampled": checked, "issues": issues}
+
+
 def probe(url: str, timeout: float = 15, sample_limit: int = 50) -> dict[str, Any]:
     root = site_root(url)
     robots_url = urljoin(root, "robots.txt")
     robots = fetch(robots_url, timeout)
-    parsed_robots = parse_robots(robots["html"]) if robots["status"] == 200 else {"sitemaps": [], "rules": []}
+    parsed_robots = parse_robots(robots["html"]) if robots["status"] == 200 else {"sitemaps": [], "rules": [], "groups": {}, "ai_crawler_rules": {}}
 
     sitemap_urls = parsed_robots["sitemaps"] or [urljoin(root, "sitemap.xml")]
     sitemaps = [fetch_sitemap(sitemap_url, timeout, sample_limit) for sitemap_url in sitemap_urls]
-
-    # ponytail: sitemap indexes expand one level; add recursion only if real sites need deeper evidence.
-    expanded = []
-    for sitemap in sitemaps:
-        if sitemap.get("type") == "sitemapindex":
-            expanded.extend(fetch_sitemap(child_url, timeout, sample_limit) for child_url in sitemap["sample_urls"])
+    expanded = expand_sitemap_indexes(sitemaps, timeout, sample_limit)
+    all_sitemaps = sitemaps + expanded
 
     return {
         "url": url,
@@ -163,8 +231,11 @@ def probe(url: str, timeout: float = 15, sample_limit: int = 50) -> dict[str, An
             "final_url": robots["final_url"],
             "sitemaps": parsed_robots["sitemaps"],
             "rules": parsed_robots["rules"],
+            "groups": parsed_robots["groups"],
+            "ai_crawler_rules": parsed_robots["ai_crawler_rules"],
         },
-        "sitemaps": sitemaps + expanded,
+        "sitemaps": all_sitemaps,
+        "sitemap_sample_audit": audit_sitemap_sample(all_sitemaps, timeout, sample_limit),
     }
 
 
@@ -172,6 +243,7 @@ def _self_test() -> None:
     robots = parse_robots("User-agent: *\nDisallow: /cart\nSitemap: https://example.com/sitemap.xml\n")
     assert robots["sitemaps"] == ["https://example.com/sitemap.xml"]
     assert robots["rules"][1] == {"directive": "disallow", "value": "/cart"}
+    assert robots["groups"]["*"] == [{"directive": "disallow", "value": "/cart"}]
 
     urlset = parse_sitemap_xml(
         """<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
