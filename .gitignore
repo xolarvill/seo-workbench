@@ -1,8 +1,12 @@
 .DS_Store
 __pycache__/
 **/__pycache__/
+.pytest_cache/
+.pytest-tmp/
 .venv/
+.venv-codex/
 .uv-cache/
+.uv-python/
 
 # External skill packs — cloned by setup.sh
 claude-seo/

@@ -6,9 +6,15 @@ requires-python = ">=3.11,<3.12"
 dependencies = []
 
 [project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+]
 rendered = [
     "playwright>=1.53.0",
 ]
 
 [tool.uv]
 package = false
+
+[tool.pytest.ini_options]
+addopts = "--basetemp=.pytest-tmp -p no:cacheprovider"
