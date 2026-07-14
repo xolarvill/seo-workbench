@@ -27,7 +27,7 @@ def context_for_step(phase: str, step_id: str, project_dir: Path) -> list[str]:
     if phase == "QUALITY_REVIEW":
         return [*common, str(project_dir / "content/drafts")]
     if phase == "TECHNICAL_AUDIT":
-        return [*common, str(project_dir / "audits/raw/latest evidence JSON")]
+        return [*common, str(project_dir / "audits/raw/latest.json")]
     if phase == "OFF_PAGE":
         return [*common, str(project_dir / "audits/technical-audit.md"), str(project_dir / "strategy/cluster-plan.md")]
     return common
@@ -50,6 +50,9 @@ def output_for_step(phase: str, step_id: str, project_dir: Path) -> str:
         "drift-baseline": project_dir / "audits/drift-baseline.md",
         "linkbuilding-strategy": project_dir / "strategy/linkbuilding-plan.md",
         "backlinks-audit": project_dir / "audits/backlinks-report.md",
+        "technical-recheck": project_dir / "audits/technical-recheck.md",
+        "drift-compare": project_dir / "audits/drift-compare.md",
+        "backlinks-recheck": project_dir / "audits/backlinks-recheck.md",
     }
     if phase == "CONTENT_PRODUCTION":
         return str(project_dir / "content/drafts/{slug}.md")

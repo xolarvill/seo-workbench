@@ -1,11 +1,18 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 from seo_workbench import state
+from seo_workbench.doctor import run_doctor
 from seo_workbench.evidence import collect_from_state
+from seo_workbench.validation import validate_project
 from seo_workbench.workflow import load_workflow, next_contract
+
+
+def print_json(data: dict) -> None:
+    print(json.dumps(data, ensure_ascii=False, indent=2))
 
 
 def cmd_init(args: argparse.Namespace) -> int:
@@ -28,6 +35,17 @@ def cmd_init(args: argparse.Namespace) -> int:
 def cmd_status(args: argparse.Namespace) -> int:
     data = state.load_state(args.project_dir)
     phase, step = state.current_step(data)
+    payload = {
+        "ok": True,
+        "project": data.get("project", {}),
+        "phase": phase,
+        "step": step,
+        "next": data.get("nextAction") or "",
+        "last": data.get("lastAction") or "",
+    }
+    if args.json_output:
+        print_json(payload)
+        return 0
     print(f"project: {data.get('project', {}).get('name', '')}")
     print(f"phase: {phase}")
     print(f"step: {step.get('id') if step else 'none'}")
@@ -47,6 +65,9 @@ def cmd_step(args: argparse.Namespace) -> int:
     data = state.load_state(args.project_dir)
     phase, step_id = state.update_step(data, args.action, args.step_id)
     state.save_state(data, args.project_dir)
+    if args.json_output:
+        print_json({"ok": True, "action": args.action, "phase": phase, "step": step_id})
+        return 0
     print(f"{args.action}: {phase}/{step_id}")
     return 0
 
@@ -55,9 +76,15 @@ def cmd_next(args: argparse.Namespace) -> int:
     data = state.load_state(args.project_dir)
     phase, step = state.current_step(data)
     if not step:
+        if args.json_output:
+            print_json({"ok": True, "phase": phase, "step": None, "pending": False})
+            return 0
         print(f"{phase}: no pending step")
         return 0
     contract = next_contract(load_workflow(args.workflow), phase, step, args.project_dir)
+    if args.json_output:
+        print_json({"ok": True, "pending": True, **contract})
+        return 0
     print(f"{contract['phase']}/{contract['step']}: {contract['label']}")
     if contract["skill"]:
         print(f"skill: {contract['skill']}")
@@ -73,9 +100,35 @@ def cmd_next(args: argparse.Namespace) -> int:
 
 def cmd_evidence(args: argparse.Namespace) -> int:
     output_dir = args.output_dir or args.project_dir / "audits/raw"
-    path = collect_from_state(state.state_path(args.project_dir), args.timeout, args.sample_limit, output_dir)
+    path = collect_from_state(state.state_path(args.project_dir), args.timeout, args.sample_limit, output_dir, rendered=args.rendered)
+    if args.json_output:
+        print_json({"ok": True, "path": str(path), "rendered": args.rendered})
+        return 0
     print(path)
     return 0
+
+
+def cmd_validate(args: argparse.Namespace) -> int:
+    result = validate_project(args.project_dir, args.workflow)
+    if args.json_output:
+        print_json(result)
+    else:
+        print("ok" if result["ok"] else "failed")
+        for issue in result["issues"]:
+            print(f"{issue['severity']}: {issue['code']}: {issue['message']}")
+    return 0 if result["ok"] else 1
+
+
+def cmd_doctor(args: argparse.Namespace) -> int:
+    result = run_doctor(args.project_dir, args.workflow)
+    if args.json_output:
+        print_json(result)
+    else:
+        print("ok" if result["ok"] else "attention needed")
+        for check in result["checks"]:
+            status = "ok" if check["ok"] else check["severity"]
+            print(f"{status}: {check['name']} - {check['detail']}")
+    return 0 if result["ok"] else 1
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -96,6 +149,7 @@ def build_parser() -> argparse.ArgumentParser:
     init.set_defaults(func=cmd_init)
 
     status = sub.add_parser("status")
+    status.add_argument("--json", action="store_true", dest="json_output")
     status.set_defaults(func=cmd_status)
 
     phase = sub.add_parser("phase")
@@ -105,16 +159,28 @@ def build_parser() -> argparse.ArgumentParser:
     step = sub.add_parser("step")
     step.add_argument("action", choices=["done", "skip", "reset", "start"])
     step.add_argument("step_id", nargs="?")
+    step.add_argument("--json", action="store_true", dest="json_output")
     step.set_defaults(func=cmd_step)
 
     next_cmd = sub.add_parser("next")
+    next_cmd.add_argument("--json", action="store_true", dest="json_output")
     next_cmd.set_defaults(func=cmd_next)
 
     evidence = sub.add_parser("evidence")
     evidence.add_argument("--timeout", type=float, default=15)
     evidence.add_argument("--sample-limit", type=int, default=50)
     evidence.add_argument("--output-dir", type=Path)
+    evidence.add_argument("--rendered", action="store_true")
+    evidence.add_argument("--json", action="store_true", dest="json_output")
     evidence.set_defaults(func=cmd_evidence)
+
+    validate = sub.add_parser("validate")
+    validate.add_argument("--json", action="store_true", dest="json_output")
+    validate.set_defaults(func=cmd_validate)
+
+    doctor = sub.add_parser("doctor")
+    doctor.add_argument("--json", action="store_true", dest="json_output")
+    doctor.set_defaults(func=cmd_doctor)
     return parser
 
 
@@ -127,6 +193,9 @@ def main(argv: list[str] | None = None) -> int:
     try:
         return args.func(args)
     except (FileNotFoundError, FileExistsError, ValueError) as exc:
+        if getattr(args, "json_output", False):
+            print_json({"ok": False, "error": str(exc)})
+            return 1
         raise SystemExit(str(exc)) from exc
 
 
