@@ -17,7 +17,7 @@ from seo_workbench_tools.headless import build_headless_audit
 DEFAULT_OUTPUT_DIR = Path("projects/default/audits/raw")
 RESOURCE_SAMPLE_PER_TYPE = 5
 SCHEMA_VERSION = "1.0"
-COLLECTOR_VERSION = "0.3.0"
+COLLECTOR_VERSION = "0.4.0"
 
 
 def slugify(value: str) -> str:
@@ -125,6 +125,8 @@ def collect(
     rendered: bool = False,
     rendered_output_dir: Path | None = None,
     project_type: str = "",
+    technology: bool = False,
+    technology_output_dir: Path | None = None,
 ) -> dict[str, Any]:
     errors = []
     warnings = []
@@ -156,6 +158,7 @@ def collect(
             "robots_sitemap": 0.9 if not site.get("error") else 0.0,
             "resource_headers": 0.7,
             "rendered_dom": 0.0,
+            "technology_fingerprints": 0.0,
         },
     }
     bundle["hreflang_audit"] = hreflang_audit(pages, site)
@@ -175,6 +178,23 @@ def collect(
         except Exception as exc:
             errors.append({"scope": "rendered", "url": url, "error": str(exc)})
             warnings.append({"scope": "rendered", "message": "rendered evidence unavailable; install the rendered extra and Chromium"})
+
+    if technology:
+        technology_output_dir = technology_output_dir or DEFAULT_OUTPUT_DIR.parent / "technology"
+        try:
+            from seo_workbench_tools.technology_probe import collect as collect_technologies
+            from seo_workbench_tools.technology_probe import write_report as write_technology_report
+
+            technology_report = collect_technologies([url, *extra_pages], timeout=max(timeout, 20))
+            write_technology_report(technology_report, technology_output_dir)
+            bundle["technology_audit"] = technology_report
+            if technology_report.get("collection_status") in {"ok", "partial"}:
+                bundle["source_confidence"]["technology_fingerprints"] = 0.85
+            errors.extend(technology_report.get("errors", []))
+            warnings.extend(technology_report.get("warnings", []))
+        except Exception as exc:
+            errors.append({"scope": "technology", "url": url, "error": str(exc)})
+            warnings.append({"scope": "technology", "message": "technology evidence unavailable; install Go and verify the detector module"})
 
     bundle["headless_audit"] = build_headless_audit(bundle, rendered_report, project_type)
     bundle["collection_status"] = collection_status(bundle)

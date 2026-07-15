@@ -19,6 +19,7 @@ PROJECT_DIRS = [
     "content/drafts",
     "audits/raw",
     "audits/rendered",
+    "audits/technology",
 ]
 
 

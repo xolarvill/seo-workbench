@@ -1,6 +1,8 @@
+from seo_workbench import state
 from seo_workbench_tools import page_probe, robots_sitemap_probe
 from seo_workbench_tools.evidence_bundle import collect
 from seo_workbench_tools.headless import build_headless_audit
+from seo_workbench_tools import technology_probe
 
 
 def test_page_parser_exposes_expanded_seo_evidence() -> None:
@@ -97,3 +99,77 @@ def test_headless_audit_flags_rendered_only_schema() -> None:
     audit = build_headless_audit(raw_bundle, rendered, "shopify-headless")
     assert audit["status"] == "fail"
     assert any("schema appears only after rendering" in item for item in audit["critical"])
+
+
+def test_technology_output_contract_and_latest_pointer(tmp_path) -> None:
+    report = technology_probe.parse_detector_output(
+        """{
+          "schema_version":"1.0",
+          "detector_version":"0.1.0",
+          "provider":"projectdiscovery/wappalyzergo",
+          "provider_version":"v0.2.89",
+          "generated_at":"2026-07-15T00:00:00Z",
+          "collection_status":"ok",
+          "pages":[{"url":"https://example.com","technologies":[]}],
+          "errors":[],
+          "warnings":[]
+        }"""
+    )
+    path = technology_probe.write_report(report, tmp_path)
+    assert path.exists()
+    assert (tmp_path / "latest.json").exists()
+    assert report["manifest"]["collection_status"] == "ok"
+
+
+def test_technology_urls_from_state_deduplicates() -> None:
+    data = {
+        "project": {"url": "https://example.com"},
+        "contentQueue": [
+            {"status": "published", "url": "https://example.com"},
+            {"status": "draft", "publishedUrl": "https://example.com/article"},
+            {"status": "planned", "url": "https://example.com/future"},
+        ],
+    }
+    assert technology_probe.urls_from_state(data) == ["https://example.com", "https://example.com/article"]
+
+
+def test_project_initialization_creates_technology_audit_dir(tmp_path) -> None:
+    project_dir = tmp_path / "project"
+    state.init_state("general", "Example", "https://example.com", project_dir)
+    assert (project_dir / "audits/technology").is_dir()
+
+
+def test_technology_probe_rejects_non_positive_timeout() -> None:
+    try:
+        technology_probe.collect(["https://example.com"], timeout=0)
+    except ValueError as exc:
+        assert str(exc) == "timeout must be greater than zero"
+    else:
+        raise AssertionError("expected timeout validation to fail")
+
+
+def test_technology_probe_limits_representative_urls(monkeypatch) -> None:
+    captured = {}
+
+    def fake_run(command, **kwargs):
+        captured["command"] = command
+        return type(
+            "Completed",
+            (),
+            {
+                "returncode": 0,
+                "stderr": "",
+                "stdout": """{
+                  "schema_version":"1.0", "detector_version":"0.1.0",
+                  "provider":"projectdiscovery/wappalyzergo", "provider_version":"v0.2.89",
+                  "generated_at":"2026-07-15T00:00:00Z", "collection_status":"ok",
+                  "pages":[], "errors":[], "warnings":[]
+                }""",
+            },
+        )()
+
+    monkeypatch.setattr(technology_probe, "detector_command", lambda: (["detector"], None))
+    monkeypatch.setattr(technology_probe.subprocess, "run", fake_run)
+    report = technology_probe.collect([f"https://example.com/{index}" for index in range(12)])
+    assert captured["command"].count("-url") == technology_probe.MAX_TECHNOLOGY_URLS
+    assert "omitted 2" in report["warnings"][0]["message"]

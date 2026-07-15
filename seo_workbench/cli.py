@@ -7,6 +7,7 @@ from pathlib import Path
 from seo_workbench import state
 from seo_workbench.doctor import run_doctor
 from seo_workbench.evidence import collect_from_state
+from seo_workbench.technology import collect_from_state as collect_technology_from_state
 from seo_workbench.validation import validate_project
 from seo_workbench.workflow import load_workflow, next_contract
 
@@ -100,12 +101,37 @@ def cmd_next(args: argparse.Namespace) -> int:
 
 def cmd_evidence(args: argparse.Namespace) -> int:
     output_dir = args.output_dir or args.project_dir / "audits/raw"
-    path = collect_from_state(state.state_path(args.project_dir), args.timeout, args.sample_limit, output_dir, rendered=args.rendered)
+    path = collect_from_state(
+        state.state_path(args.project_dir),
+        args.timeout,
+        args.sample_limit,
+        output_dir,
+        rendered=args.rendered,
+        technology=args.technology,
+    )
     if args.json_output:
-        print_json({"ok": True, "path": str(path), "rendered": args.rendered})
+        print_json({"ok": True, "path": str(path), "rendered": args.rendered, "technology": args.technology})
         return 0
     print(path)
     return 0
+
+
+def cmd_technology(args: argparse.Namespace) -> int:
+    output_dir = args.output_dir or args.project_dir / "audits/technology"
+    path = collect_technology_from_state(
+        state.state_path(args.project_dir),
+        args.timeout,
+        output_dir,
+        allow_private=args.allow_private,
+    )
+    report = json.loads(path.read_text(encoding="utf-8"))
+    collection_status = report.get("collection_status", "failed")
+    ok = collection_status != "failed"
+    if args.json_output:
+        print_json({"ok": ok, "path": str(path), "collection_status": collection_status})
+        return 0 if ok else 1
+    print(path)
+    return 0 if ok else 1
 
 
 def cmd_validate(args: argparse.Namespace) -> int:
@@ -171,8 +197,16 @@ def build_parser() -> argparse.ArgumentParser:
     evidence.add_argument("--sample-limit", type=int, default=50)
     evidence.add_argument("--output-dir", type=Path)
     evidence.add_argument("--rendered", action="store_true")
+    evidence.add_argument("--technology", action="store_true")
     evidence.add_argument("--json", action="store_true", dest="json_output")
     evidence.set_defaults(func=cmd_evidence)
+
+    technology = sub.add_parser("technology")
+    technology.add_argument("--timeout", type=float, default=20)
+    technology.add_argument("--output-dir", type=Path)
+    technology.add_argument("--allow-private", action="store_true")
+    technology.add_argument("--json", action="store_true", dest="json_output")
+    technology.set_defaults(func=cmd_technology)
 
     validate = sub.add_parser("validate")
     validate.add_argument("--json", action="store_true", dest="json_output")
@@ -192,7 +226,7 @@ def main(argv: list[str] | None = None) -> int:
         args.workflow = DEFAULT_WORKFLOW
     try:
         return args.func(args)
-    except (FileNotFoundError, FileExistsError, ValueError) as exc:
+    except (FileNotFoundError, FileExistsError, RuntimeError, ValueError) as exc:
         if getattr(args, "json_output", False):
             print_json({"ok": False, "error": str(exc)})
             return 1
