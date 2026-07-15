@@ -10,7 +10,7 @@ seo_workbench_tools/    Existing raw/rendered SEO evidence collectors
 skills/                 Extracted first-party SEO playbooks
 workflows/              Workflow manifests
 templates/              State templates
-projects/default/       Default runtime project directory
+projects/<id>/          One isolated runtime directory per store; default remains backward-compatible
 third_party/            Attribution and upstream license notes
 ```
 
@@ -20,6 +20,8 @@ The original third-party repos are not runtime dependencies. Their useful conten
 
 ```bash
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench status
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench projects --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench --project example-store status --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench status --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next --json
@@ -31,6 +33,7 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --technology --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --performance --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench audit-diff --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench validate --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench doctor --json
 ```
@@ -56,13 +59,16 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 - Prefer `seo_workbench_tools/` for machine evidence; do not rewrite probes unless the existing collector cannot supply the field.
 - Run `validate --json` after changing workflow, state, CLI contracts, or skill mappings.
 - Run `doctor --json` when debugging local setup, missing evidence, or optional rendered support.
-- Treat `projects/default/audits/raw/latest.json` as the stable current evidence pointer; timestamped `evidence-*.json` files are the immutable audit records.
+- Treat `projects/<id>/audits/raw/latest.json` as the stable current evidence pointer; timestamped `evidence-*.json` files are the immutable audit records.
 - For Headless SEO work, prefer `python -m seo_workbench evidence --rendered --json` when Playwright is available so `headless_audit` includes raw/rendered diffs.
 - Evidence collectors should return structured JSON with `collection_status`, `errors`, and `warnings` even when some fetches fail.
 - Technology detection uses the pinned Go helper under `seo_workbench_tools/technology_detector/`; keep its JSON contract stable and update fixtures before changing the fingerprint provider version.
 - Lighthouse performance evidence uses the pinned Node runner and browser resolved by `setup.sh`; keep runs sequential, default to five runs, and preserve every complete LHR before changing aggregation behavior.
 - Keep Lighthouse traffic behind `network_boundary.guarded_proxy` unless the user explicitly selects `--allow-private`; redact sensitive URL credentials and query values before persisting LHR or HTML artifacts.
-- Treat `projects/default/audits/performance/latest.json` as the stable performance pointer; timestamped performance directories are immutable records.
+- Treat `projects/<id>/audits/performance/latest.json` as the stable performance pointer; timestamped performance directories are immutable records.
+- Keep stores isolated under `projects/<id>/`; prefer `--project <id>` for daily use and retain `--project-dir` for explicit external or test directories.
+- Audit diff compares the newest immutable raw, technology, and performance snapshot with its newest matching URL/runtime baseline. Never classify a performance regression when Lighthouse, form factor, browser version, run count, variance, or benchmark comparability fails.
+- Treat `projects/<id>/audits/diffs/latest.json` as the stable current diff pointer; timestamped `audit-diff-*.json` files are immutable records.
 - Do not restore Claude slash commands or external repo dependencies unless the user explicitly asks.
 - Each reform layer should be committed separately.
 

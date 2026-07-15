@@ -28,6 +28,7 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --technology --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --performance --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench --project example-store audit-diff --json
 ```
 
 ## 证据内容
@@ -73,3 +74,5 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 
 完整 LHR 与 HTML 保存在 `projects/default/audits/performance/performance-*/`，稳定指针是 `projects/default/audits/performance/latest.json`。
 默认情况下，所有 Chrome 请求都通过本地 `network_boundary` 代理逐连接验证 DNS/IP；报告写盘前会脱敏 URL userinfo 和 token、secret、signature 等敏感查询值。`--allow-private` 会放开该网络边界，只能用于可信目标。
+
+`audit-diff` 自动比较当前项目最近两份 raw、technology 和 performance 不可变记录。结果保存到 `projects/<id>/audits/diffs/`；缺少第二份记录时会返回 `no_baseline`，不会伪造变化结论。
