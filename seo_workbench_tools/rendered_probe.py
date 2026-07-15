@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 from datetime import datetime, timezone
@@ -10,6 +11,7 @@ from typing import Any
 
 
 DEFAULT_OUTPUT_DIR = Path("projects/default/audits/rendered")
+DEFAULT_BROWSERS_PATH = Path(__file__).resolve().parent.parent / ".runtime/playwright"
 VIEWPORTS = {
     "desktop_1920x1080": {"width": 1920, "height": 1080},
     "tablet_768x1024": {"width": 768, "height": 1024},
@@ -162,6 +164,7 @@ def analyze_page(page: Any) -> dict[str, Any]:
 
 
 def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> dict[str, Any]:
+    os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", str(DEFAULT_BROWSERS_PATH))
     try:
         from playwright.sync_api import sync_playwright
     except ImportError as exc:

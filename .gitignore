@@ -3,6 +3,10 @@ __pycache__/
 **/__pycache__/
 .venv/
 .uv-cache/
+.uv-python/
+.runtime/
+node_modules/
+npm-debug.log*
 
 # External skill packs — cloned by setup.sh
 claude-seo/

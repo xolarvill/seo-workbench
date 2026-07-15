@@ -1,0 +1,16 @@
+{
+  "name": "seo-workbench-runtime",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Pinned Node runtime dependencies for SEO Workbench browser evidence.",
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "lighthouse:self-test": "node seo_workbench_tools/lighthouse_runner.mjs --self-test"
+  },
+  "dependencies": {
+    "lighthouse": "13.4.0"
+  }
+}

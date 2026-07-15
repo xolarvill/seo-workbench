@@ -14,6 +14,7 @@ from typing import Any
 
 DEFAULT_OUTPUT_DIR = Path("projects/default/audits/technology")
 HELPER_DIR = Path(__file__).with_name("technology_detector")
+LOCAL_DETECTOR = Path(__file__).resolve().parent.parent / ".runtime/bin/technology-detector"
 REQUIRED_REPORT_KEYS = {
     "schema_version",
     "detector_version",
@@ -52,6 +53,9 @@ def detector_command() -> tuple[list[str], Path | None]:
         if not os.access(path, os.X_OK):
             raise RuntimeError(f"SEO_WORKBENCH_TECH_DETECTOR is not executable: {path}")
         return [str(path)], None
+
+    if LOCAL_DETECTOR.is_file() and os.access(LOCAL_DETECTOR, os.X_OK):
+        return [str(LOCAL_DETECTOR)], None
 
     go = shutil.which("go")
     if not go:
