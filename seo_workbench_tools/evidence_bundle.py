@@ -17,7 +17,7 @@ from seo_workbench_tools.headless import build_headless_audit
 DEFAULT_OUTPUT_DIR = Path("projects/default/audits/raw")
 RESOURCE_SAMPLE_PER_TYPE = 5
 SCHEMA_VERSION = "1.0"
-COLLECTOR_VERSION = "0.4.0"
+COLLECTOR_VERSION = "0.5.0"
 
 
 def slugify(value: str) -> str:
@@ -117,6 +117,16 @@ def collection_status(bundle: dict[str, Any]) -> str:
     return "ok"
 
 
+def performance_confidence(report: dict[str, Any]) -> float:
+    if report.get("collection_status") not in {"ok", "partial"}:
+        return 0.0
+    if report.get("runs_succeeded", 0) < 3:
+        return 0.6
+    if report.get("aggregate", {}).get("high_variance"):
+        return 0.7
+    return 0.9
+
+
 def collect(
     url: str,
     extra_pages: list[str],
@@ -127,6 +137,10 @@ def collect(
     project_type: str = "",
     technology: bool = False,
     technology_output_dir: Path | None = None,
+    performance: bool = False,
+    performance_output_dir: Path | None = None,
+    performance_runs: int = 5,
+    performance_form_factor: str = "mobile",
 ) -> dict[str, Any]:
     errors = []
     warnings = []
@@ -159,6 +173,7 @@ def collect(
             "resource_headers": 0.7,
             "rendered_dom": 0.0,
             "technology_fingerprints": 0.0,
+            "performance_lab": 0.0,
         },
     }
     bundle["hreflang_audit"] = hreflang_audit(pages, site)
@@ -195,6 +210,26 @@ def collect(
         except Exception as exc:
             errors.append({"scope": "technology", "url": url, "error": str(exc)})
             warnings.append({"scope": "technology", "message": "technology evidence unavailable; install Go and verify the detector module"})
+
+    if performance:
+        performance_output_dir = performance_output_dir or DEFAULT_OUTPUT_DIR.parent / "performance"
+        try:
+            from seo_workbench_tools.performance_probe import collect as collect_performance
+
+            performance_report = collect_performance(
+                url,
+                performance_output_dir,
+                runs=performance_runs,
+                form_factor=performance_form_factor,
+                timeout=max(timeout, 45),
+            )
+            bundle["performance_audit"] = performance_report
+            bundle["source_confidence"]["performance_lab"] = performance_confidence(performance_report)
+            errors.extend(performance_report.get("errors", []))
+            warnings.extend(performance_report.get("warnings", []))
+        except Exception as exc:
+            errors.append({"scope": "performance", "url": url, "error": str(exc)})
+            warnings.append({"scope": "performance", "message": "performance evidence unavailable; run ./setup.sh and verify Lighthouse"})
 
     bundle["headless_audit"] = build_headless_audit(bundle, rendered_report, project_type)
     bundle["collection_status"] = collection_status(bundle)
@@ -237,6 +272,9 @@ def main(argv: list[str] | None = None) -> int:
     argp.add_argument("--sample-limit", type=int, default=50)
     argp.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     argp.add_argument("--rendered", action="store_true")
+    argp.add_argument("--performance", action="store_true")
+    argp.add_argument("--performance-runs", type=int, default=5)
+    argp.add_argument("--performance-form-factor", choices=["mobile", "desktop"], default="mobile")
     argp.add_argument("--print", action="store_true", dest="print_json", help="Print JSON instead of writing a file")
     argp.add_argument("--self-test", action="store_true")
     args = argp.parse_args(argv)
@@ -247,7 +285,16 @@ def main(argv: list[str] | None = None) -> int:
     if not args.url:
         argp.error("url is required unless --self-test is used")
 
-    bundle = collect(args.url, args.page, args.timeout, args.sample_limit, rendered=args.rendered)
+    bundle = collect(
+        args.url,
+        args.page,
+        args.timeout,
+        args.sample_limit,
+        rendered=args.rendered,
+        performance=args.performance,
+        performance_runs=args.performance_runs,
+        performance_form_factor=args.performance_form_factor,
+    )
     if args.print_json:
         json.dump(bundle, sys.stdout, ensure_ascii=False, indent=2)
         sys.stdout.write("\n")

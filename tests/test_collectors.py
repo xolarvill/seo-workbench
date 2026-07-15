@@ -1,6 +1,12 @@
+import json
+import socket
+from contextlib import nullcontext
+from pathlib import Path
+
 from seo_workbench import state
-from seo_workbench_tools import page_probe, robots_sitemap_probe
-from seo_workbench_tools.evidence_bundle import collect
+from seo_workbench_tools import page_probe, performance_probe, robots_sitemap_probe
+from seo_workbench_tools.network_boundary import resolve_target
+from seo_workbench_tools.evidence_bundle import collect, performance_confidence
 from seo_workbench_tools.headless import build_headless_audit
 from seo_workbench_tools import technology_probe
 
@@ -137,6 +143,7 @@ def test_project_initialization_creates_technology_audit_dir(tmp_path) -> None:
     project_dir = tmp_path / "project"
     state.init_state("general", "Example", "https://example.com", project_dir)
     assert (project_dir / "audits/technology").is_dir()
+    assert (project_dir / "audits/performance").is_dir()
 
 
 def test_technology_probe_rejects_non_positive_timeout() -> None:
@@ -151,7 +158,7 @@ def test_technology_probe_rejects_non_positive_timeout() -> None:
 def test_technology_probe_limits_representative_urls(monkeypatch) -> None:
     captured = {}
 
-    def fake_run(command, **kwargs):
+    def fake_run(command, *args, **kwargs):
         captured["command"] = command
         return type(
             "Completed",
@@ -173,3 +180,87 @@ def test_technology_probe_limits_representative_urls(monkeypatch) -> None:
     report = technology_probe.collect([f"https://example.com/{index}" for index in range(12)])
     assert captured["command"].count("-url") == technology_probe.MAX_TECHNOLOGY_URLS
     assert "omitted 2" in report["warnings"][0]["message"]
+
+
+def test_performance_output_contract_and_latest_pointer(tmp_path, monkeypatch) -> None:
+    summary = {
+        "schema_version": "1.0",
+        "runner_version": "0.1.0",
+        "lighthouse_version": "13.4.0",
+        "generated_at": "2026-07-15T00:00:00Z",
+        "collection_status": "ok",
+        "url": "https://example.com/",
+        "form_factor": "mobile",
+        "runs_requested": 5,
+        "runs_succeeded": 5,
+        "aggregate": {"performance_score": {"median": 90}, "high_variance": False},
+        "environment": {"node_version": "v24.18.0"},
+        "errors": [],
+        "warnings": [],
+        "artifacts": {},
+    }
+
+    def fake_run(command, *args, **kwargs):
+        return type("Completed", (), {"returncode": 0, "stdout": json.dumps(summary), "stderr": ""})()
+
+    monkeypatch.setattr(performance_probe, "preflight_target", lambda *args: {"status_code": 200})
+    monkeypatch.setattr(performance_probe, "node_command", lambda: "/node")
+    monkeypatch.setattr(performance_probe, "browser_executable", lambda: "/chrome")
+    monkeypatch.setattr(performance_probe, "guarded_proxy", lambda *args: nullcontext("http://127.0.0.1:1234"))
+    monkeypatch.setattr(performance_probe, "run_runner", fake_run)
+    report = performance_probe.collect("https://example.com", tmp_path, runs=5)
+    assert report["collection_status"] == "ok"
+    assert Path(report["manifest"]["path"]).exists()
+    assert (tmp_path / "latest.json").exists()
+
+
+def test_performance_runner_contract_rejects_invalid_output() -> None:
+    try:
+        performance_probe.parse_runner_output('{"collection_status":"ok"}')
+    except RuntimeError as exc:
+        assert "missing keys" in str(exc)
+    else:
+        raise AssertionError("expected invalid runner output to fail")
+
+
+def test_performance_probe_rejects_sensitive_urls() -> None:
+    for url in (
+        "https://user:password@example.com/",
+        "https://example.com/?access_token=secret",
+        "file:///tmp/page.html",
+    ):
+        try:
+            performance_probe.validate_url(url)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"expected sensitive URL to fail: {url}")
+    assert performance_probe.slugify("https://example.com/page?utm_term=private-value") == "example-com-page"
+
+
+def test_performance_probe_rejects_two_run_false_reliability(tmp_path) -> None:
+    try:
+        performance_probe.collect("https://example.com", tmp_path, runs=2)
+    except ValueError as exc:
+        assert "smoke test" in str(exc)
+    else:
+        raise AssertionError("expected a two-run analysis to fail")
+
+
+def test_performance_proxy_blocks_loopback_resolution(monkeypatch) -> None:
+    monkeypatch.setattr(
+        socket,
+        "getaddrinfo",
+        lambda *args, **kwargs: [(socket.AF_INET, socket.SOCK_STREAM, 6, "", ("127.0.0.1", 80))],
+    )
+    try:
+        resolve_target("example.test", 80, allow_private=False)
+    except RuntimeError as exc:
+        assert "non-public" in str(exc)
+    else:
+        raise AssertionError("expected loopback target to be blocked")
+
+
+def test_single_run_performance_is_smoke_confidence_only() -> None:
+    assert performance_confidence({"collection_status": "ok", "runs_succeeded": 1, "aggregate": {}}) == 0.6
+    assert performance_confidence({"collection_status": "ok", "runs_succeeded": 5, "aggregate": {}}) == 0.9

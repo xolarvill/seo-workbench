@@ -7,6 +7,7 @@ from pathlib import Path
 from seo_workbench import state
 from seo_workbench.doctor import run_doctor
 from seo_workbench.evidence import collect_from_state
+from seo_workbench.performance import collect_from_state as collect_performance_from_state
 from seo_workbench.technology import collect_from_state as collect_technology_from_state
 from seo_workbench.validation import validate_project
 from seo_workbench.workflow import load_workflow, next_contract
@@ -108,9 +109,20 @@ def cmd_evidence(args: argparse.Namespace) -> int:
         output_dir,
         rendered=args.rendered,
         technology=args.technology,
+        performance=args.performance,
+        performance_runs=args.performance_runs,
+        performance_form_factor=args.performance_form_factor,
     )
     if args.json_output:
-        print_json({"ok": True, "path": str(path), "rendered": args.rendered, "technology": args.technology})
+        print_json(
+            {
+                "ok": True,
+                "path": str(path),
+                "rendered": args.rendered,
+                "technology": args.technology,
+                "performance": args.performance,
+            }
+        )
         return 0
     print(path)
     return 0
@@ -129,6 +141,34 @@ def cmd_technology(args: argparse.Namespace) -> int:
     ok = collection_status != "failed"
     if args.json_output:
         print_json({"ok": ok, "path": str(path), "collection_status": collection_status})
+        return 0 if ok else 1
+    print(path)
+    return 0 if ok else 1
+
+
+def cmd_performance(args: argparse.Namespace) -> int:
+    output_dir = args.output_dir or args.project_dir / "audits/performance"
+    path = collect_performance_from_state(
+        state.state_path(args.project_dir),
+        output_dir,
+        runs=args.runs,
+        form_factor=args.form_factor,
+        timeout=args.timeout,
+        allow_private=args.allow_private,
+    )
+    report = json.loads(path.read_text(encoding="utf-8"))
+    collection_status = report.get("collection_status", "failed")
+    ok = collection_status != "failed"
+    if args.json_output:
+        print_json(
+            {
+                "ok": ok,
+                "path": str(path),
+                "collection_status": collection_status,
+                "performance_score": report.get("aggregate", {}).get("performance_score", {}),
+                "high_variance": report.get("aggregate", {}).get("high_variance", False),
+            }
+        )
         return 0 if ok else 1
     print(path)
     return 0 if ok else 1
@@ -198,6 +238,9 @@ def build_parser() -> argparse.ArgumentParser:
     evidence.add_argument("--output-dir", type=Path)
     evidence.add_argument("--rendered", action="store_true")
     evidence.add_argument("--technology", action="store_true")
+    evidence.add_argument("--performance", action="store_true")
+    evidence.add_argument("--performance-runs", type=int, default=5)
+    evidence.add_argument("--performance-form-factor", choices=["mobile", "desktop"], default="mobile")
     evidence.add_argument("--json", action="store_true", dest="json_output")
     evidence.set_defaults(func=cmd_evidence)
 
@@ -207,6 +250,15 @@ def build_parser() -> argparse.ArgumentParser:
     technology.add_argument("--allow-private", action="store_true")
     technology.add_argument("--json", action="store_true", dest="json_output")
     technology.set_defaults(func=cmd_technology)
+
+    performance = sub.add_parser("performance")
+    performance.add_argument("--runs", type=int, default=5)
+    performance.add_argument("--form-factor", choices=["mobile", "desktop"], default="mobile")
+    performance.add_argument("--timeout", type=float, default=45)
+    performance.add_argument("--output-dir", type=Path)
+    performance.add_argument("--allow-private", action="store_true")
+    performance.add_argument("--json", action="store_true", dest="json_output")
+    performance.set_defaults(func=cmd_performance)
 
     validate = sub.add_parser("validate")
     validate.add_argument("--json", action="store_true", dest="json_output")

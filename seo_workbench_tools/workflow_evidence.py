@@ -27,6 +27,9 @@ def collect_from_state(
     output_dir: Path,
     rendered: bool = False,
     technology: bool = False,
+    performance: bool = False,
+    performance_runs: int = 5,
+    performance_form_factor: str = "mobile",
 ) -> Path:
     state = json.loads(state_path.read_text(encoding="utf-8"))
     url = state.get("project", {}).get("url")
@@ -42,6 +45,10 @@ def collect_from_state(
         project_type=state.get("project", {}).get("type", ""),
         technology=technology,
         technology_output_dir=output_dir.parent / "technology",
+        performance=performance,
+        performance_output_dir=output_dir.parent / "performance",
+        performance_runs=performance_runs,
+        performance_form_factor=performance_form_factor,
     )
     bundle["state_path"] = str(state_path)
     return write_bundle(bundle, output_dir)
@@ -66,6 +73,9 @@ def main(argv: list[str] | None = None) -> int:
     argp.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     argp.add_argument("--rendered", action="store_true")
     argp.add_argument("--technology", action="store_true")
+    argp.add_argument("--performance", action="store_true")
+    argp.add_argument("--performance-runs", type=int, default=5)
+    argp.add_argument("--performance-form-factor", choices=["mobile", "desktop"], default="mobile")
     argp.add_argument("--self-test", action="store_true")
     args = argp.parse_args(argv)
 
@@ -81,6 +91,9 @@ def main(argv: list[str] | None = None) -> int:
             args.output_dir,
             rendered=args.rendered,
             technology=args.technology,
+            performance=args.performance,
+            performance_runs=args.performance_runs,
+            performance_form_factor=args.performance_form_factor,
         )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         raise SystemExit(str(exc)) from exc

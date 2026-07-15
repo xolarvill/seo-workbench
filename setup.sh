@@ -26,13 +26,15 @@ BROWSER_DIR="${RUNTIME_DIR}/playwright"
 TECH_BIN="${RUNTIME_DIR}/bin/technology-detector"
 CHECK_ONLY=0
 ASSUME_YES=0
+LOCAL_BROWSER=0
 
 usage() {
   cat <<EOF
-Usage: ./setup.sh [--check] [--yes]
+Usage: ./setup.sh [--check] [--yes] [--local-browser]
 
-  --check  Verify the complete environment without installing anything.
-  --yes    Install missing Homebrew prerequisites without prompting.
+  --check          Verify the complete environment without installing anything.
+  --yes            Install missing Homebrew prerequisites without prompting.
+  --local-browser  Install Playwright's pinned Chromium instead of reusing system Chrome.
 EOF
 }
 
@@ -40,6 +42,7 @@ for arg in "$@"; do
   case "${arg}" in
     --check) CHECK_ONLY=1 ;;
     --yes) ASSUME_YES=1 ;;
+    --local-browser) LOCAL_BROWSER=1 ;;
     -h|--help) usage; exit 0 ;;
     *) err "unknown option: ${arg}"; usage; exit 2 ;;
   esac
@@ -65,11 +68,31 @@ confirm() {
 }
 
 node_path() {
-  if command -v brew &>/dev/null && brew --prefix node@24 &>/dev/null; then
-    printf '%s/bin/node\n' "$(brew --prefix node@24)"
+  local brew_node brew_prefix
+  if command -v brew &>/dev/null && brew_prefix="$(brew --prefix node@24 2>/dev/null)"; then
+    brew_node="${brew_prefix}/bin/node"
+    if [[ -x "${brew_node}" ]]; then
+      printf '%s\n' "${brew_node}"
+      return
+    fi
+  fi
+  if [[ -x "${RUNTIME_DIR}/bin/node" ]]; then
+    printf '%s\n' "${RUNTIME_DIR}/bin/node"
     return
   fi
   command -v node 2>/dev/null || true
+}
+
+go_path() {
+  local brew_go brew_prefix
+  if command -v brew &>/dev/null && brew_prefix="$(brew --prefix go 2>/dev/null)"; then
+    brew_go="${brew_prefix}/bin/go"
+    if [[ -x "${brew_go}" ]]; then
+      printf '%s\n' "${brew_go}"
+      return
+    fi
+  fi
+  command -v go 2>/dev/null || true
 }
 
 npm_path() {
@@ -93,7 +116,10 @@ info "git found: $(git --version | head -1)"
 
 NEEDS_SYSTEM=0
 command -v uv &>/dev/null || NEEDS_SYSTEM=1
-command -v go &>/dev/null || NEEDS_SYSTEM=1
+GO_BIN="$(go_path)"
+if [[ -z "${GO_BIN}" ]] || ! version_at_least "$(${GO_BIN} env GOVERSION 2>/dev/null | sed 's/^go//' || true)" 1 25; then
+  NEEDS_SYSTEM=1
+fi
 NODE_BIN="$(node_path)"
 if [[ -z "${NODE_BIN}" ]] || ! node_is_24 "$(${NODE_BIN} -p 'process.versions.node' 2>/dev/null || true)"; then
   NEEDS_SYSTEM=1
@@ -112,12 +138,12 @@ if (( NEEDS_SYSTEM )); then
     err "setup cancelled"
     exit 1
   fi
-  brew bundle --file "${PROJECT_ROOT}/Brewfile"
+  HOMEBREW_NO_AUTO_UPDATE=1 brew bundle --file "${PROJECT_ROOT}/Brewfile"
   NODE_BIN="$(node_path)"
+  GO_BIN="$(go_path)"
 fi
 
 UV_BIN="$(command -v uv 2>/dev/null || true)"
-GO_BIN="$(command -v go 2>/dev/null || true)"
 NPM_BIN="$(npm_path "${NODE_BIN}")"
 
 [[ -n "${UV_BIN}" ]] || { err "uv is unavailable"; exit 1; }
@@ -145,34 +171,47 @@ if (( CHECK_ONLY )); then
   [[ -x "${PROJECT_ROOT}/.venv/bin/python" ]] || { err "Python environment is missing"; exit 1; }
   [[ -x "${TECH_BIN}" ]] || { err "compiled technology detector is missing"; exit 1; }
   [[ -x "${PROJECT_ROOT}/node_modules/.bin/lighthouse" ]] || { err "Lighthouse dependency is missing"; exit 1; }
-  PLAYWRIGHT_BROWSERS_PATH="${BROWSER_DIR}" "${PROJECT_ROOT}/.venv/bin/python" -c \
-    'import os; from playwright.sync_api import sync_playwright; p=sync_playwright().start(); path=p.chromium.executable_path; p.stop(); raise SystemExit(0 if os.path.isfile(path) else 1)' \
-    || { err "Playwright Chromium is missing"; exit 1; }
-  info "project-local Python, Go helper, Lighthouse, and Chromium are ready"
+  env PLAYWRIGHT_BROWSERS_PATH="${BROWSER_DIR}" "${PROJECT_ROOT}/.venv/bin/python" \
+    -m seo_workbench_tools.browser_runtime --print >/dev/null \
+    || { err "Chrome or Chromium is missing"; exit 1; }
+  (cd "${PROJECT_ROOT}" && "${NODE_BIN}" seo_workbench_tools/lighthouse_runner.mjs --self-test >/dev/null)
+  "${TECH_BIN}" -h >/dev/null 2>&1
+  info "project-local Python, Go helper, Lighthouse, and browser runtime are ready"
   exit 0
 fi
 
 header "Installing project-local runtimes"
 mkdir -p "${RUNTIME_DIR}/bin" "${BROWSER_DIR}"
+ln -sf "${NODE_BIN}" "${RUNTIME_DIR}/bin/node"
 
 env UV_CACHE_DIR="${PROJECT_ROOT}/.uv-cache" UV_PYTHON_INSTALL_DIR="${PROJECT_ROOT}/.uv-python" \
   "${UV_BIN}" python install 3.11
 env UV_CACHE_DIR="${PROJECT_ROOT}/.uv-cache" UV_PYTHON_INSTALL_DIR="${PROJECT_ROOT}/.uv-python" \
   "${UV_BIN}" sync --frozen --python 3.11 --extra rendered
 
-(cd "${PROJECT_ROOT}" && "${NPM_BIN}" ci)
+(cd "${PROJECT_ROOT}" && env PATH="$(dirname "${NODE_BIN}"):${PATH}" "${NPM_BIN}" ci)
 
-env PLAYWRIGHT_BROWSERS_PATH="${BROWSER_DIR}" UV_CACHE_DIR="${PROJECT_ROOT}/.uv-cache" \
-  "${UV_BIN}" run --frozen --python 3.11 --extra rendered python -m playwright install chromium
+if (( ! LOCAL_BROWSER )) && BROWSER_EXECUTABLE="$(env PLAYWRIGHT_BROWSERS_PATH="${BROWSER_DIR}" \
+  "${PROJECT_ROOT}/.venv/bin/python" -m seo_workbench_tools.browser_runtime --print 2>/dev/null)"; then
+  info "browser found: ${BROWSER_EXECUTABLE}"
+else
+  info "installing project-local Chromium"
+  env PLAYWRIGHT_BROWSERS_PATH="${BROWSER_DIR}" UV_CACHE_DIR="${PROJECT_ROOT}/.uv-cache" \
+    PLAYWRIGHT_DOWNLOAD_CONNECTION_TIMEOUT=120000 \
+    "${UV_BIN}" run --frozen --python 3.11 --extra rendered python -m playwright install chromium
+fi
 
 (cd "${PROJECT_ROOT}/seo_workbench_tools/technology_detector" && \
+  env GOPROXY="${SEO_WORKBENCH_GOPROXY:-https://proxy.golang.org|https://goproxy.cn|direct}" \
   "${GO_BIN}" build -trimpath -o "${TECH_BIN}" .)
 
 if [[ -f "${PROJECT_ROOT}/seo_workbench_tools/lighthouse_runner.mjs" ]]; then
   (cd "${PROJECT_ROOT}" && "${NODE_BIN}" seo_workbench_tools/lighthouse_runner.mjs --self-test)
 fi
 
-"${TECH_BIN}" -h >/dev/null
+"${TECH_BIN}" -h >/dev/null 2>&1
+env PLAYWRIGHT_BROWSERS_PATH="${BROWSER_DIR}" "${PROJECT_ROOT}/.venv/bin/python" \
+  -m seo_workbench_tools.browser_runtime --print >/dev/null
 env PLAYWRIGHT_BROWSERS_PATH="${BROWSER_DIR}" UV_CACHE_DIR="${PROJECT_ROOT}/.uv-cache" \
   "${UV_BIN}" run --frozen --python 3.11 --extra rendered python -m seo_workbench_tools.rendered_probe --self-test
 
