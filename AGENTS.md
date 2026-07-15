@@ -35,7 +35,7 @@ If uv cannot read its user-profile managed Python, install Python locally for th
 
 ```bash
 env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv python install 3.11
-env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv sync --frozen --extra dev --python 3.11
+env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv sync --frozen --python 3.11
 ```
 
 Initialize a project:

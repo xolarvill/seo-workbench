@@ -82,7 +82,7 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 
 ```bash
 env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv python install 3.11
-env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv sync --frozen --extra dev --python 3.11
+env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv sync --frozen --python 3.11
 ```
 
 ### 3. 技术审计机器证据
@@ -122,9 +122,8 @@ For Headless SEO projects, `evidence --rendered` also adds `headless_audit` to t
 ## Development checks
 
 ```bash
-env UV_CACHE_DIR=.uv-cache uv run --frozen --extra dev --python 3.11 pytest
-env UV_CACHE_DIR=.uv-cache uv run --frozen --extra dev --python 3.11 python -m seo_workbench validate --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --extra dev --python 3.11 python -m seo_workbench doctor --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench validate --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench doctor --json
 ```
 
 ## 教程索引
