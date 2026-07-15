@@ -11,6 +11,7 @@
     "lighthouse:self-test": "node seo_workbench_tools/lighthouse_runner.mjs --self-test"
   },
   "dependencies": {
+    "chrome-launcher": "1.2.1",
     "lighthouse": "13.4.0"
   }
 }
