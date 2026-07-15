@@ -1,6 +1,6 @@
 # SEO Workbench
 
-三套开源 SEO 工具包的编排层，覆盖 SEO 全链路：战略规划 → 内容生产 → 质量审查 → 技术审计 → 外链建设 → 持续监控。
+基于社区开源项目而创建的SEO工作流，覆盖全链路：战略规划 → 内容生产 → 质量审查 → 技术审计 → 外链建设 → 持续监控。
 
 ## 使用场景与覆盖状态
 
@@ -41,12 +41,10 @@
 ### 1. 克隆并安装依赖
 
 ```bash
-git clone https://github.com/<your-org>/seo-workbench.git
+git clone https://github.com/xolarvill/seo-workbench.git
 cd seo-workbench
 ./setup.sh
 ```
-
-`setup.sh` 只检查本地依赖和模板，不克隆外部仓库。三套原工具的能力已经抽取到 `skills/`。
 
 **前置条件：** `git`、`uv`、Python 3.11。Claude Code 只在使用 legacy slash commands 时需要。
 
