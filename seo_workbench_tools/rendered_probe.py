@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from seo_workbench_tools.browser_runtime import browser_executable
+from seo_workbench_tools.files import atomic_output_path, atomic_write_text
 
 
 DEFAULT_OUTPUT_DIR = Path("projects/default/audits/rendered")
@@ -191,8 +192,10 @@ def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> 
                         prefix = f"{slugify(url)}-{viewport_name}"
                         full_path = output_dir / f"{prefix}-full.png"
                         fold_path = output_dir / f"{prefix}-fold.png"
-                        page.screenshot(path=str(full_path), full_page=True, timeout=int(timeout * 1000))
-                        page.screenshot(path=str(fold_path), full_page=False, timeout=int(timeout * 1000))
+                        with atomic_output_path(full_path) as temporary:
+                            page.screenshot(path=str(temporary), type="png", full_page=True, timeout=int(timeout * 1000))
+                        with atomic_output_path(fold_path) as temporary:
+                            page.screenshot(path=str(temporary), type="png", full_page=False, timeout=int(timeout * 1000))
                         data = analyze_page(page)
                         data["screenshots"] = {"full": str(full_path), "fold": str(fold_path)}
                         data["console_errors"] = console_errors[:20]
@@ -205,7 +208,7 @@ def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> 
         finally:
             browser.close()
     path = output_dir / f"rendered-{slugify(urls[0])}-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}.json"
-    path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    atomic_write_text(path, json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     report["output_path"] = str(path)
     return report
 

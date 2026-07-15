@@ -17,7 +17,16 @@ def _check(name: str, ok: bool, detail: str = "", severity: str = "error") -> di
 
 
 def _latest(pattern_dir: Path, pattern: str) -> str:
-    matches = sorted(pattern_dir.glob(pattern), key=lambda item: item.stat().st_mtime, reverse=True)
+    root = pattern_dir.resolve()
+    matches = sorted(
+        (
+            item
+            for item in pattern_dir.glob(pattern)
+            if item.is_file() and not item.is_symlink() and item.resolve().is_relative_to(root)
+        ),
+        key=lambda item: item.stat().st_mtime,
+        reverse=True,
+    )
     return str(matches[0]) if matches else ""
 
 
@@ -55,10 +64,11 @@ def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
     validation = validate_project(project_dir, workflow_path)
     checks.append(_check("workflow_contract", validation["ok"], f"{len(validation['issues'])} validation issue(s)"))
 
-    raw_dir = project_dir / "audits/raw"
-    rendered_dir = project_dir / "audits/rendered"
-    technology_dir = project_dir / "audits/technology"
-    performance_dir = project_dir / "audits/performance"
+    raw_dir = state.safe_project_path(project_dir, "audits/raw")
+    rendered_dir = state.safe_project_path(project_dir, "audits/rendered")
+    technology_dir = state.safe_project_path(project_dir, "audits/technology")
+    performance_dir = state.safe_project_path(project_dir, "audits/performance")
+    diff_dir = state.safe_project_path(project_dir, "audits/diffs")
     checks.append(_check("raw_evidence_dir", raw_dir.exists(), str(raw_dir), "warning"))
     latest_raw = _latest(raw_dir, "evidence-*.json") if raw_dir.exists() else ""
     checks.append(_check("latest_raw_evidence", bool(latest_raw), latest_raw or "no evidence bundle found", "warning"))
@@ -107,7 +117,7 @@ def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
         chrome_ok = False
     checks.append(_check("performance_browser", chrome_ok, chrome_path, "warning"))
     checks.append(_check("performance_evidence_dir", performance_dir.exists(), str(performance_dir), "info"))
-    latest_performance = performance_dir / "latest.json"
+    latest_performance = state.safe_project_path(project_dir, "audits/performance/latest.json")
     if latest_performance.is_file():
         try:
             latest_performance_report = state.read_json(latest_performance)
@@ -131,6 +141,21 @@ def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
             "warning",
         )
     )
+    checks.append(_check("audit_diff_dir", diff_dir.exists(), str(diff_dir), "info"))
+    latest_diff = state.safe_project_path(project_dir, "audits/diffs/latest.json")
+    if latest_diff.is_file():
+        try:
+            diff_report = state.read_json(latest_diff)
+            diff_status = diff_report.get("collection_status", "missing status")
+            diff_ok = diff_report.get("schema_version") == "1.0" and diff_status in {"ok", "partial", "no_baseline"}
+            diff_detail = f"{latest_diff} ({diff_status})"
+        except (OSError, ValueError) as exc:
+            diff_ok = False
+            diff_detail = f"{latest_diff} ({exc})"
+    else:
+        diff_ok = False
+        diff_detail = "no audit diff found"
+    checks.append(_check("latest_audit_diff", diff_ok, diff_detail, "info"))
 
     hard_fail = any((not check["ok"]) and check["severity"] == "error" for check in checks)
     return {

@@ -11,6 +11,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from seo_workbench_tools.files import atomic_write_text
+
 
 DEFAULT_OUTPUT_DIR = Path("projects/default/audits/technology")
 HELPER_DIR = Path(__file__).with_name("technology_detector")
@@ -136,8 +138,8 @@ def write_report(report: dict[str, Any], output_dir: Path) -> Path:
         "collection_status": report.get("collection_status", ""),
     }
     content = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
-    path.write_text(content, encoding="utf-8")
-    (output_dir / "latest.json").write_text(content, encoding="utf-8")
+    atomic_write_text(path, content)
+    atomic_write_text(output_dir / "latest.json", content)
     return path
 
 

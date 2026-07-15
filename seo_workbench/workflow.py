@@ -30,6 +30,13 @@ def context_for_step(phase: str, step_id: str, project_dir: Path) -> list[str]:
         return [*common, str(project_dir / "audits/raw/latest.json")]
     if phase == "OFF_PAGE":
         return [*common, str(project_dir / "audits/technical-audit.md"), str(project_dir / "strategy/cluster-plan.md")]
+    if phase == "MONITORING":
+        return [
+            *common,
+            str(project_dir / "audits/raw/latest.json"),
+            str(project_dir / "audits/performance/latest.json"),
+            str(project_dir / "audits/diffs/latest.json"),
+        ]
     return common
 
 

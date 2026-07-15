@@ -6,7 +6,7 @@ from pathlib import Path
 from seo_workbench import state
 from seo_workbench_tools import page_probe, performance_probe, robots_sitemap_probe
 from seo_workbench_tools.network_boundary import resolve_target
-from seo_workbench_tools.evidence_bundle import collect, performance_confidence
+from seo_workbench_tools.evidence_bundle import collect, performance_confidence, write_bundle
 from seo_workbench_tools.headless import build_headless_audit
 from seo_workbench_tools import technology_probe
 
@@ -125,6 +125,37 @@ def test_technology_output_contract_and_latest_pointer(tmp_path) -> None:
     assert path.exists()
     assert (tmp_path / "latest.json").exists()
     assert report["manifest"]["collection_status"] == "ok"
+
+
+def test_collector_latest_pointers_replace_symlinks_without_touching_target(tmp_path) -> None:
+    outside = tmp_path / "outside.json"
+    outside.write_text("do not overwrite", encoding="utf-8")
+
+    raw_dir = tmp_path / "raw"
+    raw_dir.mkdir()
+    (raw_dir / "latest.json").symlink_to(outside)
+    write_bundle({"seed_url": "https://example.com", "pages": [], "site": {}}, raw_dir)
+    assert outside.read_text(encoding="utf-8") == "do not overwrite"
+    assert not (raw_dir / "latest.json").is_symlink()
+
+    technology_dir = tmp_path / "technology"
+    technology_dir.mkdir()
+    (technology_dir / "latest.json").symlink_to(outside)
+    technology_probe.write_report(
+        {
+            "schema_version": "1.0",
+            "detector_version": "0.1.0",
+            "provider": "projectdiscovery/wappalyzergo",
+            "provider_version": "v0.2.89",
+            "collection_status": "ok",
+            "pages": [{"url": "https://example.com", "technologies": []}],
+            "errors": [],
+            "warnings": [],
+        },
+        technology_dir,
+    )
+    assert outside.read_text(encoding="utf-8") == "do not overwrite"
+    assert not (technology_dir / "latest.json").is_symlink()
 
 
 def test_technology_urls_from_state_deduplicates() -> None:

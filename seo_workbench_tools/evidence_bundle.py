@@ -11,6 +11,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from seo_workbench_tools import page_probe, robots_sitemap_probe
+from seo_workbench_tools.files import atomic_write_text
 from seo_workbench_tools.headless import build_headless_audit
 
 
@@ -238,7 +239,7 @@ def collect(
 
 def write_bundle(bundle: dict[str, Any], output_dir: Path) -> Path:
     output_dir.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     path = output_dir / f"evidence-{slugify(bundle['seed_url'])}-{timestamp}.json"
     bundle["manifest"] = {
         "path": str(path),
@@ -246,8 +247,9 @@ def write_bundle(bundle: dict[str, Any], output_dir: Path) -> Path:
         "schema_version": bundle.get("schema_version", SCHEMA_VERSION),
         "collection_status": bundle.get("collection_status", ""),
     }
-    path.write_text(json.dumps(bundle, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    (output_dir / "latest.json").write_text(json.dumps(bundle, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    content = json.dumps(bundle, ensure_ascii=False, indent=2) + "\n"
+    atomic_write_text(path, content)
+    atomic_write_text(output_dir / "latest.json", content)
     return path
 
 

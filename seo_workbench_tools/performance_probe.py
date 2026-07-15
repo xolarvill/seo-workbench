@@ -8,13 +8,14 @@ import signal
 import shutil
 import subprocess
 import sys
-import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
+
 from seo_workbench_tools.browser_runtime import browser_executable
+from seo_workbench_tools.files import atomic_write_text
 from seo_workbench_tools.network_boundary import guarded_proxy, inspect_target, sensitive_query_key, validate_url
 
 
@@ -49,24 +50,7 @@ def slugify(value: str) -> str:
 
 
 def write_private(path: Path, content: str) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary_path: Path | None = None
-    try:
-        with tempfile.NamedTemporaryFile(
-            mode="w",
-            encoding="utf-8",
-            dir=path.parent,
-            prefix=f".{path.name}.",
-            suffix=".tmp",
-            delete=False,
-        ) as handle:
-            temporary_path = Path(handle.name)
-            handle.write(content)
-        temporary_path.chmod(0o600)
-        temporary_path.replace(path)
-    finally:
-        if temporary_path and temporary_path.exists():
-            temporary_path.unlink()
+    atomic_write_text(path, content, mode=0o600)
 
 
 def node_command() -> str:

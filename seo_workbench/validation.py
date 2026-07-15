@@ -76,8 +76,13 @@ def validate_state(data: dict[str, Any], project_dir: Path) -> list[dict[str, st
         )
 
     for dirname in state.PROJECT_DIRS:
-        if not (project_dir / dirname).exists():
-            issues.append(_issue("warning", "project_dir.missing", f"missing runtime directory: {project_dir / dirname}"))
+        try:
+            runtime_dir = state.safe_project_path(project_dir, dirname)
+        except ValueError as exc:
+            issues.append(_issue("error", "project_dir.unsafe", str(exc), str(project_dir / dirname)))
+            continue
+        if not runtime_dir.exists():
+            issues.append(_issue("warning", "project_dir.missing", f"missing runtime directory: {runtime_dir}"))
     return issues
 
 
