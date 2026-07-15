@@ -38,6 +38,17 @@ else
   info "uv found: $(uv --version | head -1)"
 fi
 
+if ! command -v go &>/dev/null; then
+  warn "go 1.25+ is not installed; technology detection will be unavailable"
+else
+  GO_VERSION="$(go env GOVERSION 2>/dev/null || true)"
+  if [[ "${GO_VERSION}" =~ ^go([0-9]+)\.([0-9]+) ]] && (( BASH_REMATCH[1] > 1 || (BASH_REMATCH[1] == 1 && BASH_REMATCH[2] >= 25) )); then
+    info "go found: $(go version)"
+  else
+    warn "go 1.25+ is required for technology detection; found ${GO_VERSION:-unknown version}"
+  fi
+fi
+
 if [ ! -f "${PROJECT_ROOT}/templates/state.json" ]; then
   err "templates/state.json is missing"
   exit 1

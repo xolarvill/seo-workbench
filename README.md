@@ -72,6 +72,8 @@ CLI 是所有 agent harness 的稳定入口。给人看的输出继续保留；�
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench status --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --technology --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench validate --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench doctor --json
 ```
@@ -103,6 +105,24 @@ projects/default/audits/raw/latest.json
 `latest.json` 是当前证据包的稳定指针；timestamped `evidence-*.json` 是不可变审计记录。证据包包含 `schema_version`、`collector_version`、`collection_status`、`manifest`、`errors`、`warnings` 和 `source_confidence`，因此即使部分抓取失败也能继续复查。
 
 后续 `technical-audit`、`schema`、`sitemap`、`images` 等步骤会读取这份 JSON，把页面状态码、最终 URL、页面类型、title/meta/canonical、HTTP headers、内容结构、JSON-LD 结构校验、图片统计、robots.txt、sitemap freshness、hreflang 和静态资源缓存证据注入到对应 Skill 的 prompt 中。
+
+技术栈识别由固定版本的 Go/Wappalyzer helper 提供。Go 1.25+ 已安装时可单独运行，或合并进 evidence bundle：
+
+```bash
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --technology --json
+```
+
+独立产出写入：
+
+```text
+projects/default/audits/technology/technology-*.json
+projects/default/audits/technology/latest.json
+```
+
+检测结果包含技术名称、可识别版本、类别、描述、官网和 CPE；页面级 `fingerprint_inputs` 记录送入指纹引擎的信号类型。当前 provider 是锁定在 `v0.2.89` 的 `projectdiscovery/wappalyzergo`，检查响应 headers、Set-Cookie 和 raw HTML；运行时不会调用 Wappalyzer SaaS API。
+
+默认拒绝 loopback、私网和 link-local 目标，也会对审计产物中的常见 token/signature 查询参数脱敏。只有在目标明确可信时，才对独立探测命令增加 `--allow-private`。单次最多选取 10 个代表页面并以最多 4 路并发抓取，避免大型内容队列把探测拖成长任务。
 
 如需截图、移动端、above-the-fold 或渲染后 DOM 证据，可运行：
 
@@ -151,7 +171,7 @@ seo-workbench/
 │   ├── state.json                               ← 运行时状态 (init 后生成)
 │   ├── strategy/                                ← SuperSEO 产出
 │   ├── content/                                 ← 内容产出
-│   └── audits/                                  ← 审计产出 (含 raw/evidence-*.json)
+│   └── audits/                                  ← 审计产出 (含 raw/rendered/technology)
 └── setup.sh                                     ← 依赖安装脚本
 ```
 
@@ -159,5 +179,6 @@ seo-workbench/
 
 - **抽取的技术 Skill 不感知 Headless。** Workbench 通过 TECHNICAL_AUDIT 阶段的 `workflow_evidence` + `headless-precheck` 补充 raw HTML、HTTP headers、Schema、图片、robots.txt、sitemap、hreflang 和资源缓存机器证据。
 - **渲染后证据依赖 Playwright。** raw HTML、robots.txt、sitemap、资源缓存检查默认可跑；截图和 rendered DOM 使用 `seo_workbench_tools.rendered_probe`，需要用 `--extra rendered` 并先安装 Chromium。
+- **技术栈识别依赖 Go 1.25+。** `technology` 与 `evidence --technology` 会通过 `go run` 启动固定版本的本地 helper；首次运行可能需要下载 `go.sum` 锁定的模块。只检查公开响应信号，不执行侵入式探测。
 - **无自动发布。** `/write` 产出草稿后需手动发布（WordPress 除外）。Headless CMS 的自动发布管线不在当前 scope。
 - **单站点假设。** 当前工作流假设一个项目对应一个站点。多站点/多语言 SEO 不在此版本覆盖。

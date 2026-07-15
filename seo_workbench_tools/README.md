@@ -24,6 +24,8 @@ env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.ro
 env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.evidence_bundle https://example.com --page https://example.com/products/foo
 env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench_tools.rendered_probe https://example.com
 env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench evidence --rendered --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --technology --json
 ```
 
 ## 证据内容
@@ -35,6 +37,7 @@ env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_w
 - 站点级：robots.txt、robots user-agent groups、AI crawler directives、sitemap URL、sitemap lastmod freshness、sitemap hreflang、sitemap sample URL audit
 - 汇总级：hreflang_audit、resource_cache_audit、headless_audit
 - 渲染级：viewport screenshots、above_fold、mobile touch targets、horizontal overflow、rendered images、fonts、resource timing、raw/rendered SEO diffs
+- 技术栈：Wappalyzer headers/cookies/raw-HTML fingerprints、technology categories、version、description、CPE、provider version
 
 Every written bundle is saved as a timestamped `evidence-*.json` file and mirrored to:
 
@@ -47,3 +50,14 @@ projects/default/audits/raw/latest.json
 ```bash
 env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered playwright install chromium
 ```
+
+`technology_probe` 需要 Go 1.25+，指纹依赖固定在 `seo_workbench_tools/technology_detector/go.mod` 和 `go.sum`：
+
+```bash
+go version
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench_tools.technology_probe https://example.com --print
+```
+
+如需使用预编译 helper，可设置 `SEO_WORKBENCH_TECH_DETECTOR=/absolute/path/to/binary`。
+
+探针默认拒绝本机、私网和 link-local 地址；只对明确可信的开发或内网站点使用 `technology --allow-private`。报告中的 `fingerprint_inputs` 表示该页面送入指纹引擎的信号类型，不代表每项技术分别命中了哪一种信号。
