@@ -29,6 +29,8 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --technology --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --performance --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench validate --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench doctor --json
 ```
@@ -58,6 +60,9 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 - For Headless SEO work, prefer `python -m seo_workbench evidence --rendered --json` when Playwright is available so `headless_audit` includes raw/rendered diffs.
 - Evidence collectors should return structured JSON with `collection_status`, `errors`, and `warnings` even when some fetches fail.
 - Technology detection uses the pinned Go helper under `seo_workbench_tools/technology_detector/`; keep its JSON contract stable and update fixtures before changing the fingerprint provider version.
+- Lighthouse performance evidence uses the pinned Node runner and browser resolved by `setup.sh`; keep runs sequential, default to five runs, and preserve every complete LHR before changing aggregation behavior.
+- Keep Lighthouse traffic behind `network_boundary.guarded_proxy` unless the user explicitly selects `--allow-private`; redact sensitive URL credentials and query values before persisting LHR or HTML artifacts.
+- Treat `projects/default/audits/performance/latest.json` as the stable performance pointer; timestamped performance directories are immutable records.
 - Do not restore Claude slash commands or external repo dependencies unless the user explicitly asks.
 - Each reform layer should be committed separately.
 

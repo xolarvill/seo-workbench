@@ -6,6 +6,7 @@ This workbench extracts and adapts public SEO playbooks from:
 - `seomachine` - MIT License.
 - `claude-seo` - MIT License.
 - `projectdiscovery/wappalyzergo` v0.2.89 - MIT License; used by the local technology detector.
+- `GoogleChrome/lighthouse` v13.4.0 - Apache License 2.0; used by the local performance runner.
 
 Keep upstream license text and NOTICE files when copying substantial content into `skills/`.
 

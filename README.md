@@ -5,7 +5,7 @@
 ---
 Todo:
 - [X] tech stack recognization: wappalyzergo integration
-- [ ] laboratorical test: lighthouse调度，lhci
+- [X] laboratory test: Lighthouse 本地多次采样与代表结果
 - [ ] real UX: CrUX接入
 - [ ] 审计diff
 - [ ] GSC接入
@@ -24,10 +24,41 @@ cd seo-workbench
 codex # 使用任意agent
 ```
 
+`setup.sh` 是安装入口，不只是环境检查。它会安装或配置 Python 3.11、Go helper、Node 24 LTS、锁定版本的 Lighthouse 和浏览器运行时。机器已有 Google Chrome/Chromium 时会直接复用，否则安装项目本地 Chromium。macOS 自动安装系统依赖时需要 Homebrew。Go 模块下载会在官方代理不可用时回退到 `goproxy.cn` 和 direct，可用 `SEO_WORKBENCH_GOPROXY` 覆盖代理链。
+
+```bash
+./setup.sh --check   # 只验证，不安装
+./setup.sh --yes     # 非交互安装，适合 agent/CI
+./setup.sh --local-browser  # 安装 Playwright 固定版本 Chromium，适合基准对比
+```
+
+## 技术栈与性能证据
+
+```bash
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --runs 1 --form-factor desktop --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --performance --json
+```
+
+性能分析固定使用 Lighthouse 13.4.0。默认对项目首页顺序运行 5 次，至少 3 次有效才生成代表结果，并保留每次完整 LHR、代表 JSON、HTML 报告、运行环境和波动范围。默认网络边界会逐连接解析并拒绝私网地址，写盘前还会脱敏 URL 中的凭据和敏感查询值：
+
+```text
+projects/default/audits/performance/performance-*/run-*.json
+projects/default/audits/performance/performance-*/representative.json
+projects/default/audits/performance/performance-*/report.html
+projects/default/audits/performance/performance-*/summary.json
+projects/default/audits/performance/latest.json
+```
+
+单次运行适合烟测，不适合趋势结论。跨时间比较应保持相同 form factor、Lighthouse、浏览器版本和机器环境；报告会记录 `browser_version`，其中 `high_variance` 为真时不应直接判定回归。需要严格固定浏览器时，先运行 `./setup.sh --local-browser`。
+
 ## 已知限制
 
 - **无自动发布。** `/write` 产出草稿后需手动发布（WordPress 除外）。Headless CMS 的自动发布管线不在当前 scope。
 - **单站点假设。** 当前工作流假设一个项目对应一个站点。多站点/多语言 SEO 不在此版本覆盖。
+- **Lighthouse 是实验室数据。** 当前没有接入 CrUX/PageSpeed field data，也没有定时调度或 LHCI Server。
+- **本地探针不是完整的恶意网站沙箱。** Lighthouse 流量会经过私网过滤代理，但它不能替代操作系统或容器隔离；`--allow-private` 只用于明确可信的开发或内网站点。
 
 ## Credit
 
