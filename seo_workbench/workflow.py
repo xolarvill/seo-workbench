@@ -20,6 +20,19 @@ def skill_for_step(workflow: dict[str, Any], phase: str, step_id: str) -> str:
 
 def context_for_step(phase: str, step_id: str, project_dir: Path) -> list[str]:
     common = [str(project_dir / "state.json")]
+    if phase == "INIT" and step_id == "config-brand-voice":
+        return [
+            *common,
+            str(project_dir / "audits/raw/latest.json"),
+            str(project_dir / "audits/rendered"),
+            str(project_dir / "audits/technology/latest.json"),
+        ]
+    if phase == "INIT" and step_id == "config-target-keywords":
+        return [
+            *common,
+            str(project_dir / "context/brand-voice.md"),
+            str(project_dir / "audits/raw/latest.json"),
+        ]
     if phase == "STRATEGY":
         return [*common, str(project_dir / "context/brand-voice.md"), str(project_dir / "context/target-keywords.md")]
     if phase == "CONTENT_PRODUCTION":
@@ -42,6 +55,8 @@ def context_for_step(phase: str, step_id: str, project_dir: Path) -> list[str]:
 
 def output_for_step(phase: str, step_id: str, project_dir: Path) -> str:
     outputs = {
+        "config-brand-voice": project_dir / "context/brand-voice.md",
+        "config-target-keywords": project_dir / "context/target-keywords.md",
         "keyword-dive-product": project_dir / "strategy/keyword-dives/product-{keyword}.md",
         "keyword-dive-info": project_dir / "strategy/keyword-dives/info-{keyword}.md",
         "cluster-plan": project_dir / "strategy/cluster-plan.md",

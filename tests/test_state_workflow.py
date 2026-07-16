@@ -4,7 +4,7 @@ from pathlib import Path
 from seo_workbench import state
 from seo_workbench.cli import main
 from seo_workbench.validation import validate_project
-from seo_workbench.workflow import DEFAULT_WORKFLOW
+from seo_workbench.workflow import DEFAULT_WORKFLOW, load_workflow, next_contract
 
 
 def test_non_headless_init_skips_headless_precheck(tmp_path: Path) -> None:
@@ -32,6 +32,19 @@ def test_validate_project_reports_contract(tmp_path: Path) -> None:
     result = validate_project(tmp_path, DEFAULT_WORKFLOW)
     assert result["ok"] is True
     assert all(issue["severity"] != "error" for issue in result["issues"])
+
+
+def test_init_steps_declare_skill_context_and_output(tmp_path: Path) -> None:
+    workflow = load_workflow(DEFAULT_WORKFLOW)
+    brand = next_contract(workflow, "INIT", {"id": "config-brand-voice", "label": "Brand"}, tmp_path)
+    keywords = next_contract(workflow, "INIT", {"id": "config-target-keywords", "label": "Keywords"}, tmp_path)
+
+    assert brand["skill"] == "skills/project-context/SKILL.md"
+    assert brand["output"] == str(tmp_path / "context/brand-voice.md")
+    assert str(tmp_path / "audits/technology/latest.json") in brand["context"]
+    assert keywords["skill"] == "skills/project-context/SKILL.md"
+    assert keywords["output"] == str(tmp_path / "context/target-keywords.md")
+    assert str(tmp_path / "context/brand-voice.md") in keywords["context"]
 
 
 def test_project_id_and_discovery_keep_stores_isolated(tmp_path: Path) -> None:

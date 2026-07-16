@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Context"
+  short_description: "Define brand voice and target keyword context"
+  default_prompt: "Create or update this SEO project brand voice and target keyword context files."

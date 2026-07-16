@@ -97,7 +97,7 @@ def validate_workflow(workflow: dict[str, Any], data: dict[str, Any], project_di
     for phase, phase_data in phases.items():
         for step in phase_data.get("steps", []):
             step_id = step.get("id", "")
-            if not step_id or phase == "INIT":
+            if not step_id:
                 continue
             skill = skill_for_step(workflow, phase, step_id)
             if not skill:

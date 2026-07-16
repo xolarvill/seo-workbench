@@ -6,7 +6,7 @@ from pathlib import Path
 from seo_workbench import state
 from seo_workbench_tools import page_probe, performance_probe, robots_sitemap_probe
 from seo_workbench_tools.network_boundary import resolve_target
-from seo_workbench_tools.evidence_bundle import collect, performance_confidence, write_bundle
+from seo_workbench_tools.evidence_bundle import collection_status, collect, performance_confidence, write_bundle
 from seo_workbench_tools.headless import build_headless_audit
 from seo_workbench_tools import technology_probe
 
@@ -59,6 +59,24 @@ def test_evidence_bundle_keeps_partial_failure_json(monkeypatch) -> None:
     assert bundle["collection_status"] == "failed"
     assert bundle["errors"]
     assert bundle["headless_audit"]["status"] in {"warn", "fail"}
+
+
+def test_bundle_status_is_partial_when_raw_page_returns_http_error() -> None:
+    bundle = {
+        "pages": [{"url": "https://example.com", "status": 429}],
+        "site": {"url": "https://example.com", "robots": {"status": 200}},
+        "errors": [],
+    }
+    assert collection_status(bundle) == "partial"
+
+
+def test_bundle_status_fails_when_pages_and_site_fail() -> None:
+    bundle = {
+        "pages": [{"url": "https://example.com", "error": "timeout"}],
+        "site": {"url": "https://example.com", "error": "timeout"},
+        "errors": [{"scope": "page", "error": "timeout"}],
+    }
+    assert collection_status(bundle) == "failed"
 
 
 def test_headless_audit_flags_rendered_only_schema() -> None:

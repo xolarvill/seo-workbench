@@ -110,10 +110,20 @@ def resource_cache_audit(pages: list[dict[str, Any]], timeout: float) -> dict[st
 def collection_status(bundle: dict[str, Any]) -> str:
     errors = bundle.get("errors", [])
     pages = bundle.get("pages", [])
-    successful_pages = [page for page in pages if not page.get("error")]
-    if errors and not successful_pages:
+    successful_pages = [
+        page
+        for page in pages
+        if not page.get("error") and 200 <= int(page.get("status", 0) or 0) < 400
+    ]
+    failed_pages = [
+        page
+        for page in pages
+        if page.get("error") or not 200 <= int(page.get("status", 0) or 0) < 400
+    ]
+    site_failed = bool(bundle.get("site", {}).get("error"))
+    if not successful_pages and site_failed:
         return "failed"
-    if errors or any(page.get("error") for page in pages) or bundle.get("site", {}).get("error"):
+    if errors or failed_pages or site_failed:
         return "partial"
     return "ok"
 
@@ -148,7 +158,16 @@ def collect(
     pages = []
     for page_url in [url, *extra_pages]:
         try:
-            pages.append(page_probe.probe(page_url, timeout))
+            page = page_probe.probe(page_url, timeout)
+            pages.append(page)
+            if not 200 <= int(page.get("status", 0) or 0) < 400:
+                warnings.append(
+                    {
+                        "scope": "page",
+                        "url": page_url,
+                        "message": f"raw page evidence used HTTP status {page.get('status', 'unknown')}",
+                    }
+                )
         except RuntimeError as exc:
             errors.append({"scope": "page", "url": page_url, "error": str(exc)})
             pages.append({"url": page_url, "error": str(exc)})
