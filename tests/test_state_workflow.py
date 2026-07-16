@@ -87,6 +87,23 @@ def test_cli_rejects_unsafe_project_id_as_json(capsys) -> None:
     assert payload["ok"] is False
 
 
+def test_evidence_json_surfaces_partial_collection_status(tmp_path: Path, monkeypatch, capsys) -> None:
+    project_dir = tmp_path / "project"
+    state.init_state("shopify", "Shop", "https://example.com", project_dir=project_dir)
+    report_path = project_dir / "audits/raw/evidence.json"
+    report_path.write_text(
+        json.dumps({"collection_status": "partial", "errors": [], "warnings": [{"scope": "page"}]}),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr("seo_workbench.cli.collect_from_state", lambda *args, **kwargs: report_path)
+
+    assert main(["--project-dir", str(project_dir), "evidence", "--json"]) == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["ok"] is True
+    assert payload["collection_status"] == "partial"
+    assert payload["warning_count"] == 1
+
+
 def test_project_id_rejects_symlink_escape(tmp_path: Path) -> None:
     projects_root = tmp_path / "projects"
     outside = tmp_path / "outside"

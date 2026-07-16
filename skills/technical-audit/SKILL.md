@@ -133,6 +133,15 @@ Google updated its JavaScript SEO documentation in December 2025 with critical c
 - Supported by search engines other than Google
 - Recommend implementation for faster indexing on non-Google engines
 
+### Architecture and Technology Impact
+
+- Read `audits/technology/latest.json` and its `architecture_analysis` together with raw, rendered, performance, and diff evidence.
+- Group detected technology into delivery, commerce, frontend, acquisition/data, trust/compliance, and content layers.
+- Explain the architecture as evidence-backed inferences, not as a list of brand names.
+- Assess four SEO relationships: crawl/rendering parity, measured performance ownership, consent/analytics integrity, and commerce search-feature eligibility.
+- Treat a detected technology as presence evidence only. Do not claim it is active on every template or caused a measured issue without network, rendering, or Lighthouse attribution.
+- State the scan mode. Fast mode uses response headers, cookies, and raw HTML. Balanced mode adds scripts, robots, and DNS but can still miss runtime JavaScript, DOM, XHR, interaction-only, gated, or route-specific technologies.
+
 ## Output
 
 ### Technical Score: XX/100
@@ -149,6 +158,12 @@ Google updated its JavaScript SEO documentation in December 2025 with critical c
 | Structured Data | pass/warn/fail | XX/100 |
 | JS Rendering | pass/warn/fail | XX/100 |
 | IndexNow | pass/warn/fail | XX/100 |
+
+### Architecture Impact
+- Architecture summary and layer map
+- Evidence quality and scan limitations
+- SEO impact by crawl/rendering, performance, analytics/consent, and commerce search features
+- Verification actions that distinguish a stack inference from a confirmed defect
 
 ### Critical Issues (fix immediately)
 ### High Priority (fix within 1 week)

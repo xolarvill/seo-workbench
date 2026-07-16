@@ -25,6 +25,7 @@ env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.ev
 env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench_tools.rendered_probe https://example.com
 env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench evidence --rendered --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --scan-mode fast --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --technology --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --performance --json
@@ -40,7 +41,7 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 - 站点级：robots.txt、robots user-agent groups、AI crawler directives、sitemap URL、sitemap lastmod freshness、sitemap hreflang、sitemap sample URL audit
 - 汇总级：hreflang_audit、resource_cache_audit、headless_audit
 - 渲染级：viewport screenshots、above_fold、mobile touch targets、horizontal overflow、rendered images、fonts、resource timing、raw/rendered SEO diffs
-- 技术栈：Wappalyzer headers/cookies/raw-HTML fingerprints、technology categories、version、description、CPE、provider version
+- 技术栈：默认使用 balanced Wappalyzer 扫描（页面、脚本、robots、DNS），并输出分层架构与 SEO 影响；`--scan-mode fast` 保留 Go headers/cookies/raw-HTML 快速指纹。两种模式都不宣称与浏览器扩展完全等价，运行时信号限制会写入报告
 - 性能：Lighthouse performance score、FCP、LCP、Speed Index、TBT、CLS、TTI、benchmark index、跨运行波动与代表结果
 
 Every written bundle is saved as a timestamped `evidence-*.json` file and mirrored to:
@@ -55,7 +56,7 @@ projects/default/audits/raw/latest.json
 env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered playwright install chromium
 ```
 
-`technology_probe` 需要 Go 1.25+，指纹依赖固定在 `seo_workbench_tools/technology_detector/go.mod` 和 `go.sum`：
+Balanced 技术扫描由 `wappalyzer` Python 包提供，并通过 guarded proxy 限制到允许的公网目标。快速扫描需要 Go 1.25+，指纹依赖固定在 `seo_workbench_tools/technology_detector/go.mod` 和 `go.sum`：
 
 ```bash
 go version

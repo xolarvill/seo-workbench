@@ -7,11 +7,14 @@ import re
 import shutil
 import subprocess
 import sys
+from contextlib import contextmanager
 from datetime import datetime, timezone
+from importlib.metadata import version
 from pathlib import Path
 from typing import Any
 
 from seo_workbench_tools.files import atomic_write_text
+from seo_workbench_tools.technology_architecture import analyze_architecture
 
 
 DEFAULT_OUTPUT_DIR = Path("projects/default/audits/technology")
@@ -29,6 +32,7 @@ REQUIRED_REPORT_KEYS = {
     "warnings",
 }
 MAX_TECHNOLOGY_URLS = 10
+ENRICHED_DETECTOR_VERSION = "0.2.0"
 
 
 def slugify(value: str) -> str:
@@ -87,35 +91,131 @@ def parse_detector_output(stdout: str) -> dict[str, Any]:
     return report
 
 
-def collect(urls: list[str], timeout: float = 20, allow_private: bool = False) -> dict[str, Any]:
+def _normalize_wappalyzer_results(
+    results: dict[str, Any],
+    requested_urls: list[str],
+    scan_mode: str,
+) -> dict[str, Any]:
+    pages = []
+    for result_url, detected in results.items():
+        technologies = []
+        for name, details in sorted(detected.items(), key=lambda item: item[0].casefold()):
+            technologies.append(
+                {
+                    "name": name,
+                    "version": details.get("version", ""),
+                    "confidence": details.get("confidence"),
+                    "categories": details.get("categories", []),
+                    "groups": details.get("groups", []),
+                }
+            )
+        pages.append(
+            {
+                "url": result_url,
+                "final_url": result_url,
+                "fingerprint_inputs": ["response_headers", "set_cookie", "raw_html", "script_sources", "robots", "dns"],
+                "technologies": technologies,
+            }
+        )
+    missing_count = max(0, len(requested_urls) - len(pages))
+    errors = (
+        [{"scope": "technology", "error": f"balanced detector omitted {missing_count} requested URL(s)"}]
+        if missing_count
+        else []
+    )
+    return {
+        "schema_version": "1.0",
+        "detector_version": ENRICHED_DETECTOR_VERSION,
+        "provider": "wappalyzer-next",
+        "provider_version": version("wappalyzer"),
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "collection_status": "failed" if not pages else "partial" if errors else "ok",
+        "scan_mode": scan_mode,
+        "pages": pages,
+        "errors": errors,
+        "warnings": [],
+    }
+
+
+@contextmanager
+def _proxy_environment(proxy_url: str):
+    keys = ("HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy", "NO_PROXY", "no_proxy")
+    original = {key: os.environ.get(key) for key in keys}
+    os.environ.update(
+        {
+            "HTTP_PROXY": proxy_url,
+            "HTTPS_PROXY": proxy_url,
+            "http_proxy": proxy_url,
+            "https_proxy": proxy_url,
+            "NO_PROXY": "",
+            "no_proxy": "",
+        }
+    )
+    try:
+        yield
+    finally:
+        for key, value in original.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
+
+
+def _collect_balanced(urls: list[str], timeout: float, allow_private: bool) -> dict[str, Any]:
+    try:
+        from wappalyzer import Wappalyzer
+    except ImportError as exc:
+        raise RuntimeError("balanced technology detection is unavailable; run ./setup.sh or use --scan-mode fast") from exc
+    from seo_workbench_tools.network_boundary import guarded_proxy, inspect_target
+
+    for url in urls:
+        inspect_target(url, allow_private)
+    with guarded_proxy(allow_private) as proxy_url, _proxy_environment(proxy_url):
+        with Wappalyzer(scan_type="balanced", workers=min(3, len(urls)), timeout=max(1, int(timeout))) as scanner:
+            results = scanner.analyze_many(urls)
+    return _normalize_wappalyzer_results(results, urls, "balanced")
+
+
+def collect(
+    urls: list[str],
+    timeout: float = 20,
+    allow_private: bool = False,
+    scan_mode: str = "balanced",
+) -> dict[str, Any]:
     if timeout <= 0:
         raise ValueError("timeout must be greater than zero")
     unique_urls = list(dict.fromkeys(url for url in urls if url))
     if not unique_urls:
         raise ValueError("at least one URL is required for technology detection")
+    if scan_mode not in {"fast", "balanced"}:
+        raise ValueError("scan_mode must be 'fast' or 'balanced'")
     omitted_urls = max(0, len(unique_urls) - MAX_TECHNOLOGY_URLS)
     unique_urls = unique_urls[:MAX_TECHNOLOGY_URLS]
-    command, cwd = detector_command()
-    for url in unique_urls:
-        command.extend(["-url", url])
-    command.extend(["-timeout", f"{timeout}s"])
-    if allow_private:
-        command.append("-allow-private")
-    try:
-        completed = subprocess.run(
-            command,
-            cwd=cwd,
-            capture_output=True,
-            text=True,
-            timeout=max(60, int(timeout * len(unique_urls)) + 60),
-            check=False,
-        )
-    except subprocess.TimeoutExpired as exc:
-        raise RuntimeError(f"technology detector timed out after {exc.timeout}s") from exc
-    if completed.returncode != 0:
-        detail = completed.stderr.strip() or completed.stdout.strip() or f"exit code {completed.returncode}"
-        raise RuntimeError(f"technology detector failed: {detail}")
-    report = parse_detector_output(completed.stdout)
+    if scan_mode == "balanced":
+        report = _collect_balanced(unique_urls, timeout, allow_private)
+    else:
+        command, cwd = detector_command()
+        for url in unique_urls:
+            command.extend(["-url", url])
+        command.extend(["-timeout", f"{timeout}s"])
+        if allow_private:
+            command.append("-allow-private")
+        try:
+            completed = subprocess.run(
+                command,
+                cwd=cwd,
+                capture_output=True,
+                text=True,
+                timeout=max(60, int(timeout * len(unique_urls)) + 60),
+                check=False,
+            )
+        except subprocess.TimeoutExpired as exc:
+            raise RuntimeError(f"technology detector timed out after {exc.timeout}s") from exc
+        if completed.returncode != 0:
+            detail = completed.stderr.strip() or completed.stdout.strip() or f"exit code {completed.returncode}"
+            raise RuntimeError(f"technology detector failed: {detail}")
+        report = parse_detector_output(completed.stdout)
+        report["scan_mode"] = "fast"
     if omitted_urls:
         report["warnings"].append(
             {
@@ -123,6 +223,7 @@ def collect(urls: list[str], timeout: float = 20, allow_private: bool = False) -
                 "message": f"limited technology fingerprinting to {MAX_TECHNOLOGY_URLS} representative URLs; omitted {omitted_urls}",
             }
         )
+    report["architecture_analysis"] = analyze_architecture(report)
     return report
 
 
@@ -143,12 +244,26 @@ def write_report(report: dict[str, Any], output_dir: Path) -> Path:
     return path
 
 
-def collect_from_state(state_path: Path, timeout: float, output_dir: Path, allow_private: bool = False) -> Path:
+def collect_from_state(
+    state_path: Path,
+    timeout: float,
+    output_dir: Path,
+    allow_private: bool = False,
+    scan_mode: str = "balanced",
+) -> Path:
     data = json.loads(state_path.read_text(encoding="utf-8"))
     urls = urls_from_state(data)
     if not urls:
         raise ValueError(f"missing project.url in {state_path}")
-    report = collect(urls, timeout, allow_private=allow_private)
+    report = collect(urls, timeout, allow_private=allow_private, scan_mode=scan_mode)
+    performance_path = output_dir.parent / "performance/latest.json"
+    performance = None
+    if performance_path.is_file():
+        try:
+            performance = json.loads(performance_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            pass
+    report["architecture_analysis"] = analyze_architecture(report, performance=performance)
     report["state_path"] = str(state_path)
     return write_report(report, output_dir)
 
@@ -159,6 +274,7 @@ def main(argv: list[str] | None = None) -> int:
     argp.add_argument("--page", action="append", default=[], help="Extra URL to inspect; repeatable")
     argp.add_argument("--state", type=Path, default=None, help="Read project and content URLs from a state file")
     argp.add_argument("--timeout", type=float, default=20)
+    argp.add_argument("--scan-mode", choices=("fast", "balanced"), default="balanced")
     argp.add_argument("--allow-private", action="store_true", help="Allow a trusted private or loopback target")
     argp.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     argp.add_argument("--print", action="store_true", dest="print_json")
@@ -170,7 +286,7 @@ def main(argv: list[str] | None = None) -> int:
             urls = urls_from_state(data)
         else:
             urls = [args.url, *args.page] if args.url else []
-        report = collect(urls, args.timeout, allow_private=args.allow_private)
+        report = collect(urls, args.timeout, allow_private=args.allow_private, scan_mode=args.scan_mode)
         if args.print_json:
             json.dump(report, sys.stdout, ensure_ascii=False, indent=2)
             sys.stdout.write("\n")

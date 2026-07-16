@@ -135,19 +135,25 @@ def cmd_evidence(args: argparse.Namespace) -> int:
         performance_runs=args.performance_runs,
         performance_form_factor=args.performance_form_factor,
     )
+    report = json.loads(path.read_text(encoding="utf-8"))
+    collection_status = report.get("collection_status", "failed")
+    ok = collection_status != "failed"
     if args.json_output:
         print_json(
             {
-                "ok": True,
+                "ok": ok,
                 "path": str(path),
+                "collection_status": collection_status,
+                "error_count": len(report.get("errors", [])),
+                "warning_count": len(report.get("warnings", [])),
                 "rendered": args.rendered,
                 "technology": args.technology,
                 "performance": args.performance,
             }
         )
-        return 0
+        return 0 if ok else 1
     print(path)
-    return 0
+    return 0 if ok else 1
 
 
 def cmd_technology(args: argparse.Namespace) -> int:
@@ -157,12 +163,29 @@ def cmd_technology(args: argparse.Namespace) -> int:
         args.timeout,
         output_dir,
         allow_private=args.allow_private,
+        scan_mode=args.scan_mode,
     )
     report = json.loads(path.read_text(encoding="utf-8"))
     collection_status = report.get("collection_status", "failed")
     ok = collection_status != "failed"
     if args.json_output:
-        print_json({"ok": ok, "path": str(path), "collection_status": collection_status})
+        print_json(
+            {
+                "ok": ok,
+                "path": str(path),
+                "collection_status": collection_status,
+                "scan_mode": report.get("scan_mode", ""),
+                "technology_count": len(
+                    {
+                        technology.get("name")
+                        for page in report.get("pages", [])
+                        for technology in page.get("technologies", [])
+                        if technology.get("name")
+                    }
+                ),
+                "architecture_summary": report.get("architecture_analysis", {}).get("summary", ""),
+            }
+        )
         return 0 if ok else 1
     print(path)
     return 0 if ok else 1
@@ -300,6 +323,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     technology = sub.add_parser("technology")
     technology.add_argument("--timeout", type=float, default=20)
+    technology.add_argument("--scan-mode", choices=("fast", "balanced"), default="balanced")
     technology.add_argument("--output-dir", type=Path)
     technology.add_argument("--allow-private", action="store_true")
     technology.add_argument("--json", action="store_true", dest="json_output")

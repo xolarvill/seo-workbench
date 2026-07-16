@@ -9,6 +9,7 @@ from seo_workbench_tools.network_boundary import resolve_target
 from seo_workbench_tools.evidence_bundle import collection_status, collect, performance_confidence, write_bundle
 from seo_workbench_tools.headless import build_headless_audit
 from seo_workbench_tools import technology_probe
+from seo_workbench_tools.technology_architecture import analyze_architecture
 
 
 def test_page_parser_exposes_expanded_seo_evidence() -> None:
@@ -145,6 +146,61 @@ def test_technology_output_contract_and_latest_pointer(tmp_path) -> None:
     assert report["manifest"]["collection_status"] == "ok"
 
 
+def test_balanced_technology_results_normalize_extended_signals(monkeypatch) -> None:
+    monkeypatch.setattr(technology_probe, "version", lambda _: "2.0.2")
+    report = technology_probe._normalize_wappalyzer_results(
+        {
+            "https://example.com/": {
+                "React": {
+                    "version": "18",
+                    "confidence": 100,
+                    "categories": ["JavaScript frameworks"],
+                    "groups": ["Web development"],
+                }
+            }
+        },
+        ["https://example.com"],
+        "balanced",
+    )
+    assert report["collection_status"] == "ok"
+    assert report["scan_mode"] == "balanced"
+    assert report["pages"][0]["technologies"][0]["name"] == "React"
+    assert "script_sources" in report["pages"][0]["fingerprint_inputs"]
+
+
+def test_architecture_analysis_connects_stack_to_measured_seo_risk() -> None:
+    report = {
+        "scan_mode": "full",
+        "pages": [
+            {
+                "fingerprint_inputs": ["rendered_dom", "runtime_javascript", "network_requests"],
+                "technologies": [
+                    {"name": "Shopify", "categories": ["Ecommerce"]},
+                    {"name": "Cloudflare", "categories": ["CDN"]},
+                    {"name": "React", "categories": ["JavaScript frameworks"]},
+                    {"name": "Vue.js", "categories": ["JavaScript frameworks"]},
+                    {"name": "Google Tag Manager", "categories": ["Tag managers"]},
+                ],
+            }
+        ],
+    }
+    performance = {
+        "aggregate": {
+            "performance_score": {"median": 25},
+            "metrics": {
+                "largest-contentful-paint": {"median": 14755},
+                "total-blocking-time": {"median": 941},
+            },
+        }
+    }
+    analysis = analyze_architecture(report, performance=performance)
+    assert "Shopify-managed commerce" in analysis["summary"]
+    assert analysis["evidence_quality"]["runtime_browser_signals"] is True
+    performance_impact = next(item for item in analysis["seo_impacts"] if item["area"] == "performance")
+    assert performance_impact["risk"] == "high"
+    assert any("Lighthouse median performance score: 25" in item for item in performance_impact["evidence"])
+
+
 def test_collector_latest_pointers_replace_symlinks_without_touching_target(tmp_path) -> None:
     outside = tmp_path / "outside.json"
     outside.write_text("do not overwrite", encoding="utf-8")
@@ -226,7 +282,7 @@ def test_technology_probe_limits_representative_urls(monkeypatch) -> None:
 
     monkeypatch.setattr(technology_probe, "detector_command", lambda: (["detector"], None))
     monkeypatch.setattr(technology_probe.subprocess, "run", fake_run)
-    report = technology_probe.collect([f"https://example.com/{index}" for index in range(12)])
+    report = technology_probe.collect([f"https://example.com/{index}" for index in range(12)], scan_mode="fast")
     assert captured["command"].count("-url") == technology_probe.MAX_TECHNOLOGY_URLS
     assert "omitted 2" in report["warnings"][0]["message"]
 

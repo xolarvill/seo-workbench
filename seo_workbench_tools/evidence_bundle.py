@@ -77,7 +77,11 @@ def resource_cache_audit(pages: list[dict[str, Any]], timeout: float) -> dict[st
             kind = resource.get("type", "")
             if kind == "style":
                 kind = "style"
-            if kind in by_type and resource.get("url") and resource["url"] not in by_type[kind]:
+            if (
+                kind in by_type
+                and resource.get("url", "").startswith(("http://", "https://"))
+                and resource["url"] not in by_type[kind]
+            ):
                 by_type[kind].append(resource["url"])
 
     sampled = [url for urls in by_type.values() for url in urls[:RESOURCE_SAMPLE_PER_TYPE]]

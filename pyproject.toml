@@ -9,6 +9,15 @@ dependencies = []
 rendered = [
     "playwright>=1.53.0",
 ]
+technology = [
+    "wappalyzer==2.0.2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.0,<9",
+    "pyyaml>=6.0.2,<7",
+]
 
 [tool.uv]
 package = false

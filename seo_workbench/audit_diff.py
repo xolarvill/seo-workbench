@@ -14,7 +14,9 @@ DIFF_VERSION = "0.1.0"
 AUDIT_KINDS = ("raw", "technology", "performance")
 EXPECTED_CONTRACTS = {
     "raw": {"schema_version": "1.0", "collector_version": "0.5.0"},
-    "technology": {"schema_version": "1.0", "detector_version": "0.1.0"},
+    # Technology has two provider-specific detector contracts. Snapshot identity
+    # already requires matching detector/provider versions before comparison.
+    "technology": {"schema_version": "1.0"},
     "performance": {"schema_version": "1.0", "runner_version": "0.1.0"},
 }
 PERFORMANCE_METRICS = (

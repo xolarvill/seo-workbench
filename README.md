@@ -25,7 +25,7 @@ cd seo-workbench
 codex # 使用任意agent
 ```
 
-`setup.sh` 是安装入口，不只是环境检查。它会安装或配置 Python 3.11、Go helper、Node 24 LTS、锁定版本的 Lighthouse 和浏览器运行时。机器已有 Google Chrome/Chromium 时会直接复用，否则安装项目本地 Chromium。macOS 自动安装系统依赖时需要 Homebrew。Go 模块下载会在官方代理不可用时回退到 `goproxy.cn` 和 direct，可用 `SEO_WORKBENCH_GOPROXY` 覆盖代理链。
+`setup.sh` 是安装入口，不只是环境检查。它会安装或配置 Python 3.11、Go 快速指纹 helper、balanced Wappalyzer、Node 24 LTS、锁定版本的 Lighthouse、开发验收依赖和浏览器运行时。机器已有 Google Chrome/Chromium 时会直接复用，否则安装项目本地 Chromium。macOS 自动安装系统依赖时需要 Homebrew。Go 模块下载会在官方代理不可用时回退到 `goproxy.cn` 和 direct，可用 `SEO_WORKBENCH_GOPROXY` 覆盖代理链。
 
 ```bash
 ./setup.sh --check   # 只验证，不安装
@@ -37,10 +37,13 @@ codex # 使用任意agent
 
 ```bash
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --scan-mode fast --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --runs 1 --form-factor desktop --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --performance --json
 ```
+
+`technology` 默认用 balanced Wappalyzer 检查页面、脚本、robots 和 DNS，并把技术按架构层分组，结合现有 Lighthouse 证据输出 SEO 影响。`--scan-mode fast` 使用可复现的 Go headers/cookies/raw-HTML 指纹。两种模式都会声明证据边界，不冒充浏览器扩展的运行时覆盖率。
 
 性能分析固定使用 Lighthouse 13.4.0。默认对项目首页顺序运行 5 次，至少 3 次有效才生成代表结果，并保留每次完整 LHR、代表 JSON、HTML 报告、运行环境和波动范围。默认网络边界会逐连接解析并拒绝私网地址，写盘前还会脱敏 URL 中的凭据和敏感查询值：
 
@@ -56,7 +59,7 @@ projects/default/audits/performance/latest.json
 
 ## 多店铺管理
 
-每家店铺使用一个独立目录，不需要数据库或中央配置：
+每家店铺使用一个独立目录，不需要数据库或中央配置。版本库只跟踪 `projects/default/` 脚手架；其他 `projects/<id>/` 默认由 `.gitignore` 排除，只保留在本机：
 
 ```text
 projects/

@@ -171,12 +171,14 @@ if (( CHECK_ONLY )); then
   [[ -x "${PROJECT_ROOT}/.venv/bin/python" ]] || { err "Python environment is missing"; exit 1; }
   [[ -x "${TECH_BIN}" ]] || { err "compiled technology detector is missing"; exit 1; }
   [[ -x "${PROJECT_ROOT}/node_modules/.bin/lighthouse" ]] || { err "Lighthouse dependency is missing"; exit 1; }
+  "${PROJECT_ROOT}/.venv/bin/python" -c "import wappalyzer" \
+    || { err "balanced Wappalyzer technology detector is missing"; exit 1; }
   env PLAYWRIGHT_BROWSERS_PATH="${BROWSER_DIR}" "${PROJECT_ROOT}/.venv/bin/python" \
     -m seo_workbench_tools.browser_runtime --print >/dev/null \
     || { err "Chrome or Chromium is missing"; exit 1; }
   (cd "${PROJECT_ROOT}" && "${NODE_BIN}" seo_workbench_tools/lighthouse_runner.mjs --self-test >/dev/null)
   "${TECH_BIN}" -h >/dev/null 2>&1
-  info "project-local Python, Go helper, Lighthouse, and browser runtime are ready"
+  info "project-local Python, Go helper, balanced Wappalyzer, Lighthouse, and browser runtime are ready"
   exit 0
 fi
 
@@ -187,7 +189,7 @@ ln -sf "${NODE_BIN}" "${RUNTIME_DIR}/bin/node"
 env UV_CACHE_DIR="${PROJECT_ROOT}/.uv-cache" UV_PYTHON_INSTALL_DIR="${PROJECT_ROOT}/.uv-python" \
   "${UV_BIN}" python install 3.11
 env UV_CACHE_DIR="${PROJECT_ROOT}/.uv-cache" UV_PYTHON_INSTALL_DIR="${PROJECT_ROOT}/.uv-python" \
-  "${UV_BIN}" sync --frozen --python 3.11 --extra rendered
+  "${UV_BIN}" sync --frozen --python 3.11 --extra rendered --extra technology --group dev
 
 (cd "${PROJECT_ROOT}" && env PATH="$(dirname "${NODE_BIN}"):${PATH}" "${NPM_BIN}" ci)
 
@@ -198,7 +200,7 @@ else
   info "installing project-local Chromium"
   env PLAYWRIGHT_BROWSERS_PATH="${BROWSER_DIR}" UV_CACHE_DIR="${PROJECT_ROOT}/.uv-cache" \
     PLAYWRIGHT_DOWNLOAD_CONNECTION_TIMEOUT=120000 \
-    "${UV_BIN}" run --frozen --python 3.11 --extra rendered python -m playwright install chromium
+    "${UV_BIN}" run --frozen --python 3.11 --extra rendered --extra technology python -m playwright install chromium
 fi
 
 (cd "${PROJECT_ROOT}/seo_workbench_tools/technology_detector" && \

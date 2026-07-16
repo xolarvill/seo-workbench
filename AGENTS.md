@@ -30,6 +30,7 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --scan-mode fast --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --technology --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --performance --json
@@ -63,6 +64,7 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 - For Headless SEO work, prefer `python -m seo_workbench evidence --rendered --json` when Playwright is available so `headless_audit` includes raw/rendered diffs.
 - Evidence collectors should return structured JSON with `collection_status`, `errors`, and `warnings` even when some fetches fail.
 - Technology detection uses the pinned Go helper under `seo_workbench_tools/technology_detector/`; keep its JSON contract stable and update fixtures before changing the fingerprint provider version.
+- `technology` defaults to balanced Wappalyzer detection (page, scripts, robots, and DNS) and adds structured architecture/SEO impact analysis; use `--scan-mode fast` for the reproducible Go headers/cookies/raw-HTML path. Neither mode claims browser-extension parity; record runtime-only gaps in `architecture_analysis.evidence_quality`.
 - Lighthouse performance evidence uses the pinned Node runner and browser resolved by `setup.sh`; keep runs sequential, default to five runs, and preserve every complete LHR before changing aggregation behavior.
 - Keep Lighthouse traffic behind `network_boundary.guarded_proxy` unless the user explicitly selects `--allow-private`; redact sensitive URL credentials and query values before persisting LHR or HTML artifacts.
 - Treat `projects/<id>/audits/performance/latest.json` as the stable performance pointer; timestamped performance directories are immutable records.

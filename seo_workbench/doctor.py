@@ -78,6 +78,15 @@ def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
     checks.append(_check("latest_rendered_evidence", bool(latest_rendered), latest_rendered or "no rendered evidence found", "info"))
     playwright = importlib.util.find_spec("playwright") is not None
     checks.append(_check("playwright_optional", playwright, "installed" if playwright else "not installed; rendered evidence is optional", "info"))
+    wappalyzer = importlib.util.find_spec("wappalyzer") is not None
+    checks.append(
+        _check(
+            "wappalyzer_balanced",
+            wappalyzer,
+            "installed" if wappalyzer else "not installed; run ./setup.sh or use technology --scan-mode fast",
+            "warning",
+        )
+    )
 
     go_path = shutil.which("go")
     checks.append(_check("go_optional", bool(go_path), go_path or "not installed; technology detection is optional", "info"))
