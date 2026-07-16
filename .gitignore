@@ -12,3 +12,9 @@ npm-debug.log*
 claude-seo/
 seomachine/
 superseo-skills/
+
+# Store-specific runtime data stays local. Keep only the distributable default scaffold.
+projects/*/
+!projects/default/
+!projects/default/**
+projects/default/.DS_Store
