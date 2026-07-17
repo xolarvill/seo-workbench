@@ -12,6 +12,10 @@ rendered = [
 technology = [
     "wappalyzer==2.0.2",
 ]
+google = [
+    "google-auth>=2.40.0,<3",
+    "google-auth-oauthlib>=1.2.2,<2",
+]
 
 [dependency-groups]
 dev = [

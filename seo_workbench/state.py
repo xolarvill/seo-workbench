@@ -27,6 +27,10 @@ PROJECT_DIRS = [
     "audits/technology",
     "audits/performance",
     "audits/crux",
+    "audits/gsc",
+    "audits/gsc/search-analytics",
+    "audits/gsc/inspection",
+    "audits/gsc/sitemaps",
     "audits/diffs",
 ]
 

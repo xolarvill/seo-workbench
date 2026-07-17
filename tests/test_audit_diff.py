@@ -1,4 +1,5 @@
 import json
+import shutil
 from pathlib import Path
 
 from seo_workbench import state
@@ -287,7 +288,7 @@ def test_audit_parent_symlink_is_rejected_before_snapshot_read(tmp_path: Path) -
     state.init_state("shopify", "Store", "https://example.com", project_dir=project_dir)
     audits_dir = project_dir / "audits"
     for child in sorted(audits_dir.iterdir(), reverse=True):
-        child.rmdir()
+        shutil.rmtree(child)
     audits_dir.rmdir()
     outside = tmp_path / "outside-audits"
     (outside / "raw").mkdir(parents=True)

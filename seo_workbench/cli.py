@@ -9,6 +9,15 @@ from seo_workbench.audit_diff import AUDIT_KINDS, create_diff
 from seo_workbench.crux import collect_from_state as collect_crux_from_state
 from seo_workbench.doctor import run_doctor
 from seo_workbench.evidence import collect_from_state
+from seo_workbench.gsc import (
+    authenticate as authenticate_gsc,
+    bind_property as bind_gsc_property,
+    collect_all as collect_gsc,
+    collect_inspection as collect_gsc_inspection,
+    collect_performance as collect_gsc_performance,
+    collect_sitemaps as collect_gsc_sitemaps,
+    list_properties as list_gsc_properties,
+)
 from seo_workbench.performance import collect_from_state as collect_performance_from_state
 from seo_workbench.technology import collect_from_state as collect_technology_from_state
 from seo_workbench.validation import validate_project
@@ -258,6 +267,78 @@ def cmd_crux(args: argparse.Namespace) -> int:
     return 0 if ok else 1
 
 
+def _gsc_result(report: dict, args: argparse.Namespace, *, path: str = "") -> int:
+    status = report.get("collection_status", "ok")
+    ok = status != "failed"
+    if args.json_output:
+        print_json({"ok": ok, "path": path, **report})
+    elif path:
+        print(path)
+    else:
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+    return 0 if ok else 1
+
+
+def cmd_gsc_auth(args: argparse.Namespace) -> int:
+    report = authenticate_gsc(
+        args.profile,
+        client_secret=args.client_secret,
+        service_account_path=args.service_account,
+    )
+    return _gsc_result({"collection_status": "ok", **report}, args)
+
+
+def cmd_gsc_properties(args: argparse.Namespace) -> int:
+    return _gsc_result(list_gsc_properties(args.profile, timeout=args.timeout), args)
+
+
+def cmd_gsc_bind(args: argparse.Namespace) -> int:
+    binding = bind_gsc_property(args.project_dir, args.property, profile=args.profile, timeout=args.timeout)
+    return _gsc_result({"collection_status": "ok", "binding": binding}, args)
+
+
+def cmd_gsc_performance(args: argparse.Namespace) -> int:
+    report = collect_gsc_performance(
+        args.project_dir,
+        state.safe_project_path(args.project_dir, "audits/gsc/search-analytics"),
+        days=args.days,
+        compare=args.compare,
+        timeout=args.timeout,
+    )
+    return _gsc_result(report, args, path=report.get("manifest", {}).get("path", ""))
+
+
+def cmd_gsc_inspect(args: argparse.Namespace) -> int:
+    report = collect_gsc_inspection(
+        args.project_dir,
+        state.safe_project_path(args.project_dir, "audits/gsc/inspection"),
+        urls=args.url,
+        limit=args.limit,
+        timeout=args.timeout,
+    )
+    return _gsc_result(report, args, path=report.get("manifest", {}).get("path", ""))
+
+
+def cmd_gsc_sitemaps(args: argparse.Namespace) -> int:
+    report = collect_gsc_sitemaps(
+        args.project_dir,
+        state.safe_project_path(args.project_dir, "audits/gsc/sitemaps"),
+        timeout=args.timeout,
+    )
+    return _gsc_result(report, args, path=report.get("manifest", {}).get("path", ""))
+
+
+def cmd_gsc_collect(args: argparse.Namespace) -> int:
+    report = collect_gsc(
+        args.project_dir,
+        state.safe_project_path(args.project_dir, "audits/gsc"),
+        days=args.days,
+        inspection_limit=args.inspection_limit,
+        timeout=args.timeout,
+    )
+    return _gsc_result(report, args, path=report.get("manifest", {}).get("path", ""))
+
+
 def cmd_audit_diff(args: argparse.Namespace) -> int:
     report, path = create_diff(
         args.project_dir,
@@ -389,6 +470,56 @@ def build_parser() -> argparse.ArgumentParser:
     crux.add_argument("--output-dir", type=Path)
     crux.add_argument("--json", action="store_true", dest="json_output")
     crux.set_defaults(func=cmd_crux)
+
+    gsc = sub.add_parser("gsc")
+    gsc_sub = gsc.add_subparsers(dest="gsc_command", required=True)
+
+    gsc_auth = gsc_sub.add_parser("auth")
+    gsc_auth.add_argument("--profile", default="default")
+    credential = gsc_auth.add_mutually_exclusive_group(required=True)
+    credential.add_argument("--client-secret", type=Path)
+    credential.add_argument("--service-account", type=Path)
+    gsc_auth.add_argument("--json", action="store_true", dest="json_output")
+    gsc_auth.set_defaults(func=cmd_gsc_auth)
+
+    gsc_properties = gsc_sub.add_parser("properties")
+    gsc_properties.add_argument("--profile", default="default")
+    gsc_properties.add_argument("--timeout", type=float, default=20)
+    gsc_properties.add_argument("--json", action="store_true", dest="json_output")
+    gsc_properties.set_defaults(func=cmd_gsc_properties)
+
+    gsc_bind = gsc_sub.add_parser("bind")
+    gsc_bind.add_argument("--profile", default="default")
+    gsc_bind.add_argument("--property", required=True)
+    gsc_bind.add_argument("--timeout", type=float, default=20)
+    gsc_bind.add_argument("--json", action="store_true", dest="json_output")
+    gsc_bind.set_defaults(func=cmd_gsc_bind)
+
+    gsc_performance = gsc_sub.add_parser("performance")
+    gsc_performance.add_argument("--days", type=int, default=28)
+    gsc_performance.add_argument("--compare", action=argparse.BooleanOptionalAction, default=True)
+    gsc_performance.add_argument("--timeout", type=float, default=30)
+    gsc_performance.add_argument("--json", action="store_true", dest="json_output")
+    gsc_performance.set_defaults(func=cmd_gsc_performance)
+
+    gsc_inspect = gsc_sub.add_parser("inspect")
+    gsc_inspect.add_argument("--url", action="append")
+    gsc_inspect.add_argument("--limit", type=int, default=10)
+    gsc_inspect.add_argument("--timeout", type=float, default=30)
+    gsc_inspect.add_argument("--json", action="store_true", dest="json_output")
+    gsc_inspect.set_defaults(func=cmd_gsc_inspect)
+
+    gsc_sitemaps = gsc_sub.add_parser("sitemaps")
+    gsc_sitemaps.add_argument("--timeout", type=float, default=30)
+    gsc_sitemaps.add_argument("--json", action="store_true", dest="json_output")
+    gsc_sitemaps.set_defaults(func=cmd_gsc_sitemaps)
+
+    gsc_collect = gsc_sub.add_parser("collect")
+    gsc_collect.add_argument("--days", type=int, default=28)
+    gsc_collect.add_argument("--inspection-limit", type=int, default=10)
+    gsc_collect.add_argument("--timeout", type=float, default=30)
+    gsc_collect.add_argument("--json", action="store_true", dest="json_output")
+    gsc_collect.set_defaults(func=cmd_gsc_collect)
 
     audit_diff = sub.add_parser("audit-diff")
     audit_diff.add_argument("--kind", choices=["all", *AUDIT_KINDS], default="all")
