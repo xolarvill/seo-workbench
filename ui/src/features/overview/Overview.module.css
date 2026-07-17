@@ -1,0 +1,340 @@
+.overviewLayout {
+  min-height: calc(100vh - 72px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 196px;
+  background: var(--canvas);
+}
+
+.overviewContent {
+  min-width: 0;
+  padding: 24px;
+}
+
+.primaryGrid,
+.secondaryGrid {
+  display: grid;
+  gap: 1px;
+  border: 1px solid var(--separator);
+  background: var(--separator);
+}
+
+.primaryGrid { grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.85fr); }
+.secondaryGrid { grid-template-columns: 1.05fr 0.72fr 1fr; border-top: 0; }
+
+.performanceSection,
+.workflowSection,
+.architectureSection,
+.diffSection,
+.recentSection {
+  min-width: 0;
+  padding: 20px;
+  background: var(--surface);
+}
+
+.sectionHeading {
+  min-height: 24px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.sectionHeading h1,
+.sectionHeading h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+}
+
+.sectionHeading span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.scoreBand {
+  display: grid;
+  grid-template-columns: 150px minmax(150px, 1fr);
+  align-items: end;
+  gap: 20px;
+  padding: 4px 0 18px;
+}
+
+.scoreBand > div:first-child { display: flex; align-items: baseline; gap: 4px; }
+.scoreBand span { color: var(--muted); font-size: 12px; }
+.scoreBand strong { color: var(--regression); font: 600 48px/0.95 var(--font-mono); letter-spacing: -0.045em; }
+.scoreBand small { color: var(--muted); font: 11px var(--font-mono); }
+
+.scoreTrack {
+  position: relative;
+  height: 7px;
+  margin-bottom: 7px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--separator);
+}
+
+.scoreTrack::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-right: 1px solid var(--surface);
+  border-left: 1px solid var(--surface);
+  pointer-events: none;
+}
+
+.scoreTrack span {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  background: var(--regression);
+}
+
+.metricTable { border-top: 1px solid var(--separator); }
+.tableHead,
+.tableRow {
+  min-height: 42px;
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) minmax(100px, 0.8fr) minmax(100px, 0.8fr);
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--separator);
+}
+.tableHead { min-height: 34px; color: var(--muted); font-size: 11px; }
+.tableRow strong { font-size: 13px; }
+.tableRow span { font: 12px var(--font-mono); }
+.tableRow b { font-size: 12px; font-weight: 550; }
+
+.nextAction {
+  width: 100%;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--separator-strong);
+  border-radius: var(--radius-6);
+  color: var(--ink);
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 120ms var(--ease-out), border-color 120ms var(--ease-out), background-color 120ms var(--ease-out);
+}
+.nextAction:active { transform: scale(0.98); }
+.nextAction span { display: grid; gap: 5px; }
+.nextAction small { color: var(--emerald); font-size: 10px; font-weight: 650; letter-spacing: 0.04em; text-transform: uppercase; }
+.nextAction strong { font-size: 14px; }
+
+.phaseList {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.phaseList li {
+  position: relative;
+  min-height: 33px;
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  border-bottom: 1px solid var(--separator);
+  color: var(--muted);
+}
+.phaseList li > span {
+  position: relative;
+  z-index: 1;
+  width: 8px;
+  height: 8px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: white;
+}
+.phaseList li::before {
+  content: "";
+  position: absolute;
+  inset-block: -1px;
+  inset-inline-start: 3px;
+  width: 1px;
+  background: var(--separator-strong);
+}
+.phaseList li:first-child::before { inset-block-start: 50%; }
+.phaseList li:last-child::before { inset-block-end: 50%; }
+.phaseList strong { overflow: hidden; font: 600 11px/1 var(--font-mono); text-overflow: ellipsis; white-space: nowrap; }
+.phaseList small { font-size: 10px; }
+.phaseList .currentPhase { color: var(--emerald); }
+.phaseList .currentPhase > span,
+.phaseList .completePhase > span { border-color: var(--emerald); background: var(--emerald); }
+.phaseList .completePhase { color: var(--ink-muted); }
+.localState { margin: 16px 0 0; color: var(--muted); font-size: 11px; }
+
+.architectureRow {
+  min-height: 42px;
+  display: grid;
+  grid-template-columns: minmax(100px, 0.48fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid var(--separator);
+}
+.architectureRow strong { color: var(--ink-muted); font-size: 11px; font-weight: 600; text-transform: capitalize; }
+.architectureRow span { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+
+.diffNumbers {
+  min-height: 116px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  border-top: 1px solid var(--separator);
+  border-bottom: 1px solid var(--separator);
+}
+.diffNumbers div { display: grid; gap: 6px; padding: 0 12px; border-right: 1px solid var(--separator); }
+.diffNumbers div:last-child { border-right: 0; }
+.diffNumbers strong { font: 600 26px/1 var(--font-mono); }
+.diffNumbers span { color: currentColor; font-size: 10px; }
+
+.fileTable { border-top: 1px solid var(--separator); }
+.fileRow,
+.updatedFile {
+  position: relative;
+  width: 100%;
+  min-height: 47px;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px;
+  border: 0;
+  border-bottom: 1px solid var(--separator);
+  color: var(--ink);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.updatedFile { background: var(--emerald-wash); }
+.updatedFile::after {
+  content: "";
+  position: absolute;
+  inset-inline: 12px;
+  inset-block-end: 0;
+  height: 1px;
+  background: var(--emerald);
+  transform-origin: left;
+  animation: scan 900ms var(--ease-out) both;
+}
+.fileRow span,
+.updatedFile span { min-width: 0; display: grid; gap: 3px; }
+.fileRow strong,
+.updatedFile strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.fileRow small,
+.updatedFile small { overflow: hidden; color: var(--muted); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.updatedFile small { color: var(--emerald); }
+.fileRow time,
+.updatedFile time { color: var(--muted); font: 9px var(--font-mono); }
+
+.evidenceRail {
+  min-width: 0;
+  padding: 25px 14px;
+  border-left: 1px solid var(--separator);
+  background: var(--surface);
+}
+.evidenceRail h2 { margin: 0 10px 16px; font-size: 14px; font-weight: 650; text-transform: uppercase; }
+.evidenceTrack { display: grid; }
+.evidenceItem {
+  position: relative;
+  min-height: 78px;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 10px 8px 10px 35px;
+  border-bottom: 1px solid var(--separator);
+}
+.evidenceItem > span:last-child { min-width: 0; display: grid; gap: 5px; }
+.evidenceItem strong { font-size: 12px; }
+.evidenceItem small { font-size: 10px; font-weight: 600; text-transform: capitalize; }
+.statusIcon {
+  position: absolute;
+  inset-inline-start: 7px;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: var(--surface);
+}
+.evidenceItem:not(:last-child) .statusIcon::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 17px;
+  inset-inline-start: 8px;
+  width: 1px;
+  height: 61px;
+  background: var(--separator-strong);
+}
+
+.ready { color: var(--emerald); }
+.warning { color: var(--amber); }
+.failed,
+.regressionText { color: var(--regression); }
+.emptyCopy { color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+@keyframes scan {
+  from { opacity: 0; transform: scaleX(0); }
+  45% { opacity: 1; }
+  to { opacity: 0.35; transform: scaleX(1); }
+}
+
+@media (hover: hover) {
+  .nextAction:hover { border-color: var(--emerald); background: var(--emerald-wash); }
+  .fileRow:hover { background: var(--canvas); }
+}
+
+@media (max-width: 1100px) {
+  .overviewLayout { grid-template-columns: 1fr; }
+  .evidenceRail { padding: 18px 24px; border-top: 1px solid var(--separator); border-left: 0; }
+  .evidenceTrack { grid-template-columns: repeat(6, minmax(120px, 1fr)); overflow-x: auto; }
+  .evidenceItem { min-height: 68px; padding-inline-start: 30px; border-right: 1px solid var(--separator); border-bottom: 0; }
+  .evidenceItem:not(:last-child) .statusIcon::after { inset-block-start: 8px; inset-inline-start: 17px; width: 104px; height: 1px; }
+  .secondaryGrid { grid-template-columns: 1fr 1fr; }
+  .recentSection { grid-column: 1 / -1; }
+}
+
+@media (max-width: 760px) {
+  .overviewLayout { display: block; min-height: auto; }
+  .overviewContent { padding: 0; }
+  .primaryGrid,
+  .secondaryGrid { display: block; border-inline: 0; }
+  .performanceSection,
+  .workflowSection,
+  .architectureSection,
+  .diffSection,
+  .recentSection { padding: 20px 18px; border-bottom: 1px solid var(--separator); }
+  .workflowSection { display: flex; flex-direction: column; }
+  .workflowSection .phaseList,
+  .workflowSection .localState { display: none; }
+  .scoreBand { grid-template-columns: 120px 1fr; }
+  .scoreBand strong { font-size: 42px; }
+  .tableHead { display: none; }
+  .tableRow { grid-template-columns: 1fr auto; min-height: 44px; }
+  .tableRow b { display: none; }
+  .architectureSection { display: none; }
+  .diffNumbers { min-height: 88px; }
+  .diffNumbers div { padding: 0 8px; }
+  .diffNumbers strong { font-size: 22px; }
+  .evidenceRail { padding: 20px 0 12px; border-top: 0; }
+  .evidenceRail h2 { margin-inline: 18px; }
+  .evidenceTrack { padding-inline: 18px; grid-template-columns: repeat(6, 112px); scrollbar-width: thin; }
+  .evidenceItem { grid-template-columns: 1fr; align-content: center; justify-items: start; gap: 4px; padding: 22px 8px 8px; }
+  .evidenceItem > svg { display: none; }
+  .evidenceItem:not(:last-child) .statusIcon::after { width: 98px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .updatedFile::after { animation: none; }
+}

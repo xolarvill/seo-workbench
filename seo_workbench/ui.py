@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, AsyncIterator
-from urllib.parse import urlparse
+from urllib.parse import urlencode, urlparse
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, StreamingResponse
@@ -264,7 +264,9 @@ def create_app(
             return await call_next(request)
         supplied = request.query_params.get("token")
         if request.method == "GET" and request.url.path == "/" and supplied == session_token:
-            response = RedirectResponse("/", status_code=303)
+            remaining = [(key, value) for key, value in request.query_params.multi_items() if key != "token"]
+            target = f"/?{urlencode(remaining)}" if remaining else "/"
+            response = RedirectResponse(target, status_code=303)
             response.set_cookie(COOKIE_NAME, session_token, httponly=True, samesite="strict", secure=False)
             return response
         if request.cookies.get(COOKIE_NAME) != session_token:

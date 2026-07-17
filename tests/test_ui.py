@@ -45,6 +45,24 @@ def test_ui_requires_local_session_but_health_is_public(tmp_path: Path) -> None:
         assert COOKIE_NAME in boot.cookies
 
 
+def test_ui_bootstrap_preserves_project_and_serves_built_frontend(tmp_path: Path) -> None:
+    frontend = tmp_path / "dist"
+    frontend.mkdir()
+    (frontend / "index.html").write_text("<main>Built workbench</main>", encoding="utf-8")
+    app = create_app(
+        token="secret",
+        projects_root=tmp_path / "projects",
+        runtime_dir=tmp_path / ".runtime/ui",
+        frontend_dir=frontend,
+        watch_files=False,
+    )
+    with TestClient(app) as client:
+        boot = client.get("/?token=secret&project=store", follow_redirects=False)
+        assert boot.headers["location"] == "/?project=store"
+        client.cookies.set(COOKIE_NAME, "secret")
+        assert "Built workbench" in client.get("/").text
+
+
 def test_ui_lists_projects_workspace_and_real_evidence(tmp_path: Path) -> None:
     client, project_dir = ui_client(tmp_path)
     performance = {

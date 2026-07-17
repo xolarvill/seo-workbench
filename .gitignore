@@ -6,6 +6,7 @@ __pycache__/
 .uv-python/
 .runtime/
 node_modules/
+ui/dist/
 npm-debug.log*
 
 # External skill packs — cloned by setup.sh

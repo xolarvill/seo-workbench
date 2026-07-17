@@ -1,0 +1,34 @@
+.page { max-width: 1120px; margin: 0 auto; padding: 38px 32px 72px; }
+.header { display: flex; align-items: end; justify-content: space-between; gap: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--separator-strong); }
+.header div { display: grid; gap: 6px; }
+.header span, .nextPanel > span { color: var(--emerald); font: 600 10px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.header h1 { margin: 0; font: 600 40px/1 var(--font-serif); letter-spacing: -.025em; }
+.header p { max-width: 360px; margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.nextPanel { display: grid; grid-template-columns: minmax(160px, .6fr) minmax(260px, 1.5fr) auto; align-items: center; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--separator); }
+.nextPanel strong { font-size: 17px; }
+.nextPanel code { color: var(--emerald); font: 11px var(--font-mono); }
+.nextPanel small { grid-column: 2 / -1; color: var(--muted); }
+.phases { margin: 0; padding: 0; list-style: none; }
+.phases > li { display: grid; grid-template-columns: 76px minmax(0, 1fr); border-bottom: 1px solid var(--separator); }
+.phaseMarker { display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 20px; padding: 24px 12px; border-right: 1px solid var(--separator); color: var(--muted); }
+.phaseMarker span { font: 10px var(--font-mono); }
+.phaseBody { padding: 22px 0 26px 28px; }
+.phaseBody header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.phaseBody h2 { margin: 0; font-size: 15px; text-transform: uppercase; }
+.phaseBody header span { color: var(--muted); font: 10px var(--font-mono); text-transform: uppercase; }
+.steps { margin-top: 14px; border-top: 1px solid var(--separator); }
+.steps > div { min-height: 40px; display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; align-items: center; gap: 10px; border-bottom: 1px solid var(--separator); color: var(--muted); }
+.steps strong { font-size: 12px; font-weight: 500; }
+.steps small { font: 9px var(--font-mono); text-transform: uppercase; }
+.current .phaseMarker, .stepCurrent { color: var(--emerald) !important; }
+.done .phaseMarker, .stepDone { color: var(--ink-muted) !important; }
+@media (max-width: 760px) {
+  .page { padding: 24px 18px 44px; }
+  .header { display: grid; gap: 12px; }
+  .header h1 { font-size: 34px; }
+  .nextPanel { grid-template-columns: 1fr; gap: 8px; }
+  .nextPanel small { grid-column: auto; }
+  .phases > li { grid-template-columns: 48px minmax(0, 1fr); }
+  .phaseMarker { padding-inline: 6px; }
+  .phaseBody { padding-left: 16px; }
+}
