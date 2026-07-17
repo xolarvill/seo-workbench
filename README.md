@@ -10,7 +10,8 @@ Todo:
 - [X] 多店铺管理
 - [X] 审计diff
 - [X] GSC 只读接入
-- [ ] cli improvement: 重写cli方式
+- [X] cli improvement: 本地 `./seo` / `seo-workbench` 命令
+- [X] optional local workbench UI + Markdown editor
 - [ ] docs: readme重写
 - [ ] 定时功能
 
@@ -34,6 +35,21 @@ codex # 使用任意agent
 ./setup.sh --yes     # 非交互安装，适合 agent/CI
 ./setup.sh --local-browser  # 安装 Playwright 固定版本 Chromium，适合基准对比
 ```
+
+## 可选本地 Workbench 界面
+
+```bash
+./seo ui
+./seo --project wildone ui
+./seo ui --port 8877
+./seo ui --no-open
+```
+
+界面只监听 `127.0.0.1`，使用随机本地会话，不提供远程部署或用户账号。它包含项目切换、证据状态、工作流、审计任务、Markdown 文件浏览，以及 source / split / preview 编辑模式。保存使用 revision 检查，若 agent 同时改写文件，界面会保留本地编辑并提示比较或重新加载。
+
+界面是可选的呈现层，不是第二套状态或数据库。关闭界面后，`./seo`、`projects/<id>/state.json`、审计 JSON 和 Markdown 工作流完全照旧。界面开启时会写入 `.runtime/ui/session.json`；agent 应继续使用已有 CLI 和项目文件，文件监控会把新审计与 Markdown 更新实时送到界面。不要读取、输出或复制 `.runtime/ui/token`。
+
+界面的 Run audit 面板只允许执行固定白名单中的只读采集和 diff 命令：basic evidence、technology、Lighthouse、CrUX、GSC collect、audit diff。同一项目一次只运行一个任务；跨项目可以各自运行。首次 GSC OAuth 仍必须由用户在浏览器确认。
 
 ## 技术栈与性能证据
 

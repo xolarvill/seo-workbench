@@ -1,7 +1,9 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 
-import type { WorkbenchEvent } from "./api/types";
+import { fetchJobs, startAction, updateWorkflow } from "./api/client";
+import type { Job, WorkbenchEvent } from "./api/types";
 import { AppShell, type ViewName } from "./components/AppShell";
+import { ActionPanel } from "./features/actions/ActionPanel";
 import { FilesPage } from "./features/files/FilesPage";
 import { OverviewPage } from "./features/overview/OverviewPage";
 import { WorkflowPage } from "./features/workflow/WorkflowPage";
@@ -23,6 +25,8 @@ export function App() {
   const [refreshKey, setRefreshKey] = useState(0);
   const [connected, setConnected] = useState(false);
   const [updatedPaths, setUpdatedPaths] = useState<Record<string, string>>({});
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [actionsOpen, setActionsOpen] = useState(false);
   const { workspace, error: workspaceError, loading } = useWorkspace(selectedProject, refreshKey);
 
   useEffect(() => {
@@ -31,6 +35,11 @@ export function App() {
       setSelectedProject(projects[0].id);
     }
   }, [projects, selectedProject]);
+
+  useEffect(() => {
+    if (!selectedProject) return;
+    fetchJobs(selectedProject).then(setJobs).catch(() => setJobs([]));
+  }, [selectedProject]);
 
   useEffect(() => {
     const onHashChange = () => setActiveView(viewFromHash());
@@ -42,6 +51,7 @@ export function App() {
     if (event.project_id && event.project_id !== selectedProject) return;
     setRefreshKey((value) => value + 1);
     if (event.path) setUpdatedPaths((value) => ({ ...value, [event.path!]: event.at }));
+    if (event.job) setJobs((value) => [event.job!, ...value.filter((job) => job.id !== event.job!.id)]);
   }, [selectedProject]);
   const onConnection = useCallback((value: boolean) => setConnected(value), []);
   useWorkbenchEvents(onEvent, onConnection);
@@ -72,12 +82,16 @@ export function App() {
       connected={connected}
       onProjectChange={(projectId) => { setSelectedProject(projectId); setSelectedFile(null); }}
       onNavigate={navigate}
-      onRunAudit={() => navigate("audits")}
+      onRunAudit={() => setActionsOpen(true)}
     >
       {workspace ? (
         <>
           {activeView === "overview" ? <OverviewPage workspace={workspace} updatedPaths={updatedPaths} onNavigateWorkflow={() => navigate("workflow")} onOpenFile={openFile} /> : null}
-          {activeView === "workflow" ? <WorkflowPage workspace={workspace} /> : null}
+          {activeView === "workflow" ? <WorkflowPage workspace={workspace} onStepAction={(action) => {
+            updateWorkflow(selectedProject, action, workspace.step?.id)
+              .then(() => setRefreshKey((value) => value + 1))
+              .catch(() => setRefreshKey((value) => value + 1));
+          }} /> : null}
           {activeView === "files" || activeView === "content" || activeView === "audits" ? (
             selectedFile ? (
               <Suspense fallback={<div className="loading-screen"><span>Loading editor</span></div>}>
@@ -89,6 +103,16 @@ export function App() {
           ) : null}
         </>
       ) : <div className="error-screen" role="alert">{error || "Project workspace is unavailable."}</div>}
+      <ActionPanel
+        open={actionsOpen}
+        jobs={jobs}
+        onClose={() => setActionsOpen(false)}
+        onRun={(action) => {
+          startAction(selectedProject, action)
+            .then((job) => setJobs((value) => [job, ...value.filter((item) => item.id !== job.id)]))
+            .catch((reason: Error) => setJobs((value) => [{ id: `error-${Date.now()}`, project_id: selectedProject, action, status: "failed", created_at: new Date().toISOString(), started_at: null, finished_at: new Date().toISOString(), exit_code: null, output: reason.message }, ...value]));
+        }}
+      />
     </AppShell>
   );
 }

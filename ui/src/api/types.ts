@@ -86,5 +86,18 @@ export type WorkbenchEvent = {
   project_id?: string;
   path?: string;
   revision?: string;
+  job?: Job;
   at: string;
+};
+
+export type Job = {
+  id: string;
+  project_id: string;
+  action: string;
+  status: "queued" | "running" | "succeeded" | "failed" | "cancelled";
+  created_at: string;
+  started_at: string | null;
+  finished_at: string | null;
+  exit_code: number | null;
+  output: string;
 };

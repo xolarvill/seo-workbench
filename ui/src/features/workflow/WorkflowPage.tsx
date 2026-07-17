@@ -3,7 +3,7 @@ import { Check, Circle, Clock3 } from "lucide-react";
 import type { Workspace } from "../../api/types";
 import styles from "./WorkflowPage.module.css";
 
-export function WorkflowPage({ workspace }: { workspace: Workspace }) {
+export function WorkflowPage({ workspace, onStepAction }: { workspace: Workspace; onStepAction: (action: "start" | "done" | "skip") => void }) {
   return (
     <section className={styles.page} aria-labelledby="workflow-heading">
       <header className={styles.header}>
@@ -15,6 +15,11 @@ export function WorkflowPage({ workspace }: { workspace: Workspace }) {
         <strong>{workspace.next?.label || workspace.step?.label || "Workflow complete"}</strong>
         {workspace.next?.skill ? <code>{workspace.next.skill}</code> : null}
         {workspace.next?.output ? <small>Expected output: {workspace.next.output}</small> : null}
+        {workspace.step ? <div className={styles.controls}>
+          {workspace.step.status !== "in_progress" ? <button type="button" onClick={() => onStepAction("start")}>Start</button> : null}
+          <button type="button" onClick={() => onStepAction("done")}>Mark done</button>
+          <button type="button" onClick={() => onStepAction("skip")}>Skip</button>
+        </div> : null}
       </div>
       <ol className={styles.phases}>
         {workspace.phase_order.map((phaseName, index) => {

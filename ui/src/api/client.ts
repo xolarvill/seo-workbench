@@ -1,4 +1,4 @@
-import type { FileSummary, MarkdownFile, ProjectSummary, Workspace } from "./types";
+import type { FileSummary, Job, MarkdownFile, ProjectSummary, Workspace } from "./types";
 
 
 export class ApiError extends Error {
@@ -62,4 +62,24 @@ export async function saveMarkdown(
     },
   );
   return payload.file;
+}
+
+export async function fetchJobs(projectId: string): Promise<Job[]> {
+  const payload = await request<{ jobs: Job[] }>(`/api/v1/projects/${encodeURIComponent(projectId)}/jobs`);
+  return payload.jobs;
+}
+
+export async function startAction(projectId: string, action: string): Promise<Job> {
+  const payload = await request<{ job: Job }>(`/api/v1/projects/${encodeURIComponent(projectId)}/actions`, {
+    method: "POST",
+    body: JSON.stringify({ action }),
+  });
+  return payload.job;
+}
+
+export async function updateWorkflow(projectId: string, action: "start" | "done" | "skip" | "reset", stepId?: string): Promise<void> {
+  await request(`/api/v1/projects/${encodeURIComponent(projectId)}/workflow`, {
+    method: "POST",
+    body: JSON.stringify({ action, step_id: stepId || null }),
+  });
 }

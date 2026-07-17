@@ -47,7 +47,7 @@ describe("workbench frontend", () => {
   });
 
   it("shows the current workflow instruction and phase states", () => {
-    render(<WorkflowPage workspace={workspace} />);
+    render(<WorkflowPage workspace={workspace} onStepAction={vi.fn()} />);
     expect(screen.getAllByText("Collect evidence").length).toBeGreaterThan(0);
     expect(screen.getByText("technical-audit")).toBeTruthy();
     expect(screen.getByText("DISCOVERY")).toBeTruthy();

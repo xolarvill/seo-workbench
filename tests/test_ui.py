@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -8,7 +9,7 @@ from fastapi.testclient import TestClient
 
 from seo_workbench import state
 from seo_workbench.locks import lock_path, project_lock
-from seo_workbench.ui import COOKIE_NAME, EventHub, create_app
+from seo_workbench.ui import ACTION_COMMANDS, COOKIE_NAME, EventHub, _safe_job_output, create_app
 
 
 def ui_client(tmp_path: Path) -> tuple[TestClient, Path]:
@@ -127,6 +128,41 @@ def test_markdown_api_rejects_runtime_non_markdown_and_traversal_paths(tmp_path:
         assert client.get("/api/v1/projects/store/files/%2E%2E/secret.md").status_code in {400, 404}
 
 
+def test_ui_updates_workflow_through_shared_state_mutation(tmp_path: Path) -> None:
+    client, project_dir = ui_client(tmp_path)
+    before = state.load_state(project_dir)
+    phase, step = state.current_step(before)
+    assert step is not None
+    with client:
+        response = client.post(
+            "/api/v1/projects/store/workflow",
+            json={"action": "start", "step_id": step["id"]},
+        )
+    assert response.status_code == 200
+    updated = state.load_state(project_dir)
+    assert updated["phases"][phase]["steps"][0]["status"] in {"done", "in_progress"}
+    assert next(item for item in updated["phases"][phase]["steps"] if item["id"] == step["id"])["status"] == "in_progress"
+
+
+def test_ui_runs_only_whitelisted_project_jobs(tmp_path: Path, monkeypatch) -> None:
+    client, _ = ui_client(tmp_path)
+    monkeypatch.setitem(ACTION_COMMANDS, "evidence", ("projects", "--json"))
+    with client:
+        assert client.post("/api/v1/projects/store/actions", json={"action": "unknown"}).status_code == 400
+        started = client.post("/api/v1/projects/store/actions", json={"action": "evidence"})
+        assert started.status_code == 202
+        job_id = started.json()["job"]["id"]
+        job = started.json()["job"]
+        for _ in range(100):
+            jobs = client.get("/api/v1/projects/store/jobs").json()["jobs"]
+            job = next(item for item in jobs if item["id"] == job_id)
+            if job["status"] not in {"queued", "running"}:
+                break
+            time.sleep(0.01)
+    assert job["status"] == "succeeded"
+    assert job["exit_code"] == 0
+
+
 def test_state_mutations_are_serialized_by_project_lock(tmp_path: Path) -> None:
     project_dir = tmp_path / "project"
     state.init_state("general", "Store", "https://example.com", project_dir=project_dir)
@@ -159,3 +195,11 @@ def test_event_hub_drops_oldest_event_for_slow_subscriber() -> None:
         hub.publish({"number": number})
     assert queue.qsize() == 100
     assert queue.get_nowait()["number"] == 1
+
+
+def test_ui_job_output_is_bounded_and_redacts_common_secret_fields() -> None:
+    safe = _safe_job_output('token=abc123 api_key: super-secret\n')
+    assert "abc123" not in safe
+    assert "super-secret" not in safe
+    assert len(_safe_job_output("x" * 70_000).encode("utf-8")) <= 64 * 1024
+    assert len(_safe_job_output("测" * 30_000).encode("utf-8")) <= 64 * 1024

@@ -59,6 +59,24 @@ def _command_version(command: list[str]) -> tuple[bool, str]:
     return completed.returncode == 0, detail or "version command returned no output"
 
 
+def _ui_session_detail(session_path: Path) -> tuple[bool, str]:
+    if not session_path.is_file() or session_path.is_symlink():
+        return False, "UI is not running"
+    try:
+        session = state.read_json(session_path)
+        pid = int(session.get("pid", 0))
+        if pid <= 0:
+            return False, "invalid UI session manifest"
+        os.kill(pid, 0)
+        return True, f"active at {session.get('base_url', 'local address')}"
+    except ProcessLookupError:
+        return False, "stale UI session manifest"
+    except PermissionError:
+        return True, "UI process exists"
+    except (OSError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        return False, f"invalid UI session manifest: {exc}"
+
+
 def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
     checks: list[dict[str, Any]] = []
     version_ok = sys.version_info[:2] == (3, 11)
@@ -72,6 +90,13 @@ def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
 
     validation = validate_project(project_dir, workflow_path)
     checks.append(_check("workflow_contract", validation["ok"], f"{len(validation['issues'])} validation issue(s)"))
+
+    ui_modules = all(_module_available(name) for name in ("fastapi", "uvicorn", "watchfiles"))
+    checks.append(_check("ui_python_support", ui_modules, "installed" if ui_modules else "not installed; run ./setup.sh", "info"))
+    ui_index = state.ROOT / "ui/dist/index.html"
+    checks.append(_check("ui_frontend_assets", ui_index.is_file(), str(ui_index) if ui_index.is_file() else "not built; run ./setup.sh", "info"))
+    ui_active, ui_detail = _ui_session_detail(state.ROOT / ".runtime/ui/session.json")
+    checks.append(_check("ui_session", ui_active, ui_detail, "info"))
 
     raw_dir = state.safe_project_path(project_dir, "audits/raw")
     rendered_dir = state.safe_project_path(project_dir, "audits/rendered")

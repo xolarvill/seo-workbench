@@ -49,7 +49,7 @@ export function useFiles(projectId: string | null, refreshKey: number) {
   return { files, error, refresh };
 }
 
-const EVENT_TYPES = ["file.changed", "file.saved", "job.started", "job.updated", "job.finished"];
+const EVENT_TYPES = ["file.changed", "file.saved", "workflow.updated", "job.started", "job.updated", "job.finished"];
 
 export function useWorkbenchEvents(onEvent: (event: WorkbenchEvent) => void, onConnection?: (connected: boolean) => void) {
   useEffect(() => {

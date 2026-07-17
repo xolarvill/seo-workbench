@@ -40,6 +40,19 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
 a { color: var(--emerald); }
 ::selection { color: var(--ink); background: #c5e8dc; }
 
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  inset-block-start: 8px;
+  inset-inline-start: 8px;
+  padding: 9px 12px;
+  color: white;
+  background: var(--graphite);
+  transform: translateY(calc(-100% - 16px));
+}
+
+.skip-link:focus { transform: translateY(0); }
+
 .loading-screen,
 .error-screen {
   min-height: 100vh;

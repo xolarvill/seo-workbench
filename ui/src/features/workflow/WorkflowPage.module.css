@@ -8,6 +8,9 @@
 .nextPanel strong { font-size: 17px; }
 .nextPanel code { color: var(--emerald); font: 11px var(--font-mono); }
 .nextPanel small { grid-column: 2 / -1; color: var(--muted); }
+.controls { grid-column: 2 / -1; display: flex; gap: 8px; }
+.controls button { min-height: 32px; padding: 0 11px; border: 1px solid var(--separator-strong); border-radius: var(--radius-4); color: var(--ink); background: var(--surface); font-size: 10px; cursor: pointer; }
+.controls button:nth-child(2), .controls button:first-child:last-child { color: white; border-color: var(--emerald); background: var(--emerald); }
 .phases { margin: 0; padding: 0; list-style: none; }
 .phases > li { display: grid; grid-template-columns: 76px minmax(0, 1fr); border-bottom: 1px solid var(--separator); }
 .phaseMarker { display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 20px; padding: 24px 12px; border-right: 1px solid var(--separator); color: var(--muted); }
@@ -27,7 +30,7 @@
   .header { display: grid; gap: 12px; }
   .header h1 { font-size: 34px; }
   .nextPanel { grid-template-columns: 1fr; gap: 8px; }
-  .nextPanel small { grid-column: auto; }
+  .nextPanel small, .controls { grid-column: auto; }
   .phases > li { grid-template-columns: 48px minmax(0, 1fr); }
   .phaseMarker { padding-inline: 6px; }
   .phaseBody { padding-left: 16px; }

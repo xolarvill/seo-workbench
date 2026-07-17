@@ -49,9 +49,9 @@ export default function MarkdownWorkspace({ projectId, path, onBack }: { project
         <button type="button" className={styles.back} onClick={onBack}><ArrowLeft aria-hidden="true" size={17} /> Files</button>
         <div className={styles.identity}><strong>{file.path.split("/").at(-1)}</strong><span>{file.path}</span></div>
         <div className={styles.modeSwitch} aria-label="Editor view">
-          <button type="button" aria-pressed={mode === "source"} onClick={() => setMode("source")}><TextCursorInput aria-hidden="true" size={15} /><span>Source</span></button>
-          <button type="button" aria-pressed={mode === "split"} onClick={() => setMode("split")}><Columns2 aria-hidden="true" size={15} /><span>Split</span></button>
-          <button type="button" aria-pressed={mode === "preview"} onClick={() => setMode("preview")}><Eye aria-hidden="true" size={15} /><span>Preview</span></button>
+          <button type="button" aria-label="Source view" aria-pressed={mode === "source"} onClick={() => setMode("source")}><TextCursorInput aria-hidden="true" size={15} /><span>Source</span></button>
+          <button type="button" aria-label="Split view" aria-pressed={mode === "split"} onClick={() => setMode("split")}><Columns2 aria-hidden="true" size={15} /><span>Split</span></button>
+          <button type="button" aria-label="Preview view" aria-pressed={mode === "preview"} onClick={() => setMode("preview")}><Eye aria-hidden="true" size={15} /><span>Preview</span></button>
         </div>
         <span className={dirty ? styles.dirty : styles.saved}>{dirty ? "Unsaved" : status}</span>
         <button type="button" className={styles.save} onClick={() => void save()} disabled={!dirty}><Save aria-hidden="true" size={16} /> Save</button>

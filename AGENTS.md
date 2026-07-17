@@ -40,6 +40,8 @@ The original third-party repos are not runtime dependencies. Their useful conten
 ./seo audit-diff --json
 ./seo validate --json
 ./seo doctor --json
+./seo ui
+./seo --project example-store ui --no-open
 ```
 
 `./seo` is the repository-local launcher for the installed `seo-workbench` console script. Keep `python -m seo_workbench` only as a compatibility and diagnosis fallback.
@@ -65,6 +67,9 @@ Initialize a project:
 - Prefer `seo_workbench_tools/` for machine evidence; do not rewrite probes unless the existing collector cannot supply the field.
 - Run `validate --json` after changing workflow, state, CLI contracts, or skill mappings.
 - Run `doctor --json` when debugging local setup, missing evidence, or optional rendered support.
+- The local UI is optional. Detect an active UI from `.runtime/ui/session.json`, but never read or expose `.runtime/ui/token`. Keep using the same `./seo --project <id> ...` commands and project files; the UI filesystem watcher will surface new evidence and Markdown files automatically.
+- When the UI starts an audit, it invokes the existing project-scoped CLI through a fixed action whitelist. Do not add arbitrary command execution, shell strings, remote binds, or credential entry fields to the UI.
+- Markdown UI writes are limited to `context/`, `strategy/`, `content/`, and `audits/`, use revision-based conflict detection, and must never overwrite concurrent agent edits silently.
 - Treat `projects/<id>/audits/raw/latest.json` as the stable current evidence pointer; timestamped `evidence-*.json` files are the immutable audit records.
 - Project-level `evidence` defaults to a maximum of five representative same-host routes discovered from raw/rendered internal links. Keep discovery bounded, exclude static resources and sensitive query parameters, and use `--crawl-limit 0` for a strict single-URL run.
 - For Headless SEO work, prefer `./seo evidence --rendered --json` when Playwright is available so `headless_audit` includes raw/rendered diffs.
