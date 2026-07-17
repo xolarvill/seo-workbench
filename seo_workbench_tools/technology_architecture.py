@@ -98,7 +98,7 @@ def analyze_architecture(
         if any(token in name.casefold() for token in ("react", "preact", "vue", "angular", "emotion", "goober"))
     }
     performance_risk, performance_evidence = _performance_context(performance)
-    if performance_risk == "unknown":
+    if performance_risk == "unknown" and technologies:
         integration_count = len(frontend) + len(acquisition)
         performance_risk = "high" if integration_count >= 10 else "medium" if integration_count >= 5 else "unknown"
         performance_evidence = [
@@ -108,11 +108,11 @@ def analyze_architecture(
     seo_impacts = [
         {
             "area": "crawl_and_rendering",
-            "risk": "medium" if framework_names else "low",
+            "risk": "medium" if framework_names else "unknown",
             "conclusion": (
                 "Multiple client frameworks or CSS-in-JS runtimes increase rendering complexity; the stack alone does not prove CSR or an indexing defect."
                 if framework_names
-                else "No multi-framework rendering signal was detected, but raw/rendered parity still requires direct verification."
+                else "No framework evidence was detected; absence of a fingerprint is not evidence of server-rendered delivery."
             ),
             "evidence": sorted(framework_names) or frontend,
             "checks": ["compare raw and rendered title, canonical, robots, H1, body, links, and schema", "verify non-200 responses do not depend on JavaScript"],
@@ -120,21 +120,33 @@ def analyze_architecture(
         {
             "area": "performance",
             "risk": performance_risk,
-            "conclusion": "Frontend and third-party architecture can materially affect LCP, INP/TBT, and crawl rendering cost; use measured evidence rather than technology count alone.",
+            "conclusion": (
+                "Frontend and third-party architecture can materially affect LCP, INP/TBT, and crawl rendering cost; use measured evidence rather than technology count alone."
+                if technologies or performance_evidence
+                else "No measured performance or technology evidence is available; performance impact remains unknown."
+            ),
             "evidence": performance_evidence,
             "checks": ["attribute transfer and main-thread time by owner", "remove, delay, or consent-gate non-essential integrations", "re-run comparable multi-run Lighthouse tests"],
         },
         {
             "area": "analytics_consent",
             "risk": "medium" if acquisition else "unknown",
-            "conclusion": "Multiple analytics, advertising, and automation integrations create consent-order, duplicate-event, and data-quality risks.",
+            "conclusion": (
+                "Detected analytics, advertising, or automation integrations require consent-order, duplicate-event, and data-quality validation."
+                if acquisition
+                else "No analytics or advertising integration was detected; runtime, consent-gated, and route-specific tags remain unverified."
+            ),
             "evidence": acquisition + trust,
             "checks": ["verify tags do not fire before the applicable consent state", "deduplicate purchase and conversion events", "test consent behavior by region"],
         },
         {
             "area": "commerce_search_features",
             "risk": "medium" if commerce else "unknown",
-            "conclusion": "Commerce and payment integrations make product schema, regional availability, price, review provenance, and checkout continuity priority validation areas.",
+            "conclusion": (
+                "Detected commerce or payment integrations make product schema, regional availability, price, review provenance, and checkout continuity priority validation areas."
+                if commerce
+                else "No commerce or payment integration was detected; commerce search-feature eligibility remains unverified."
+            ),
             "evidence": commerce,
             "checks": ["validate Product and Merchant listings markup against visible regional content", "verify review markup ownership and eligibility", "keep crawlable product facts outside payment widgets"],
         },

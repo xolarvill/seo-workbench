@@ -126,6 +126,40 @@ def test_headless_audit_flags_rendered_only_schema() -> None:
     assert any("schema appears only after rendering" in item for item in audit["critical"])
 
 
+def test_headless_audit_records_rendered_only_body_links_and_images() -> None:
+    raw = {
+        "url": "https://example.com",
+        "final_url": "https://example.com",
+        "title": "Example",
+        "meta_description": "Description",
+        "canonical": "https://example.com",
+        "robots_meta": "index, follow",
+        "h1": [],
+        "schema_audit": {"schema_types_found": [], "inline_schema_count": 0},
+        "content_audit": {"has_body_text_in_raw_html": False},
+        "link_summary": {"anchor_count": 0},
+        "image_stats": {"total": 0},
+    }
+    rendered = {
+        "title": "Example",
+        "meta_description": "Description",
+        "canonical": "https://example.com",
+        "robots_meta": "index, follow",
+        "h1": [],
+        "schema_types": [],
+        "schema_count": 0,
+        "has_body_text": True,
+        "link_summary": {"anchor_count": 12},
+        "images": {"total": 4},
+    }
+    comparison = build_headless_audit(
+        {"pages": [raw]},
+        {"pages": [{"url": "https://example.com", "viewports": {"desktop_1920x1080": rendered}}]},
+        "general",
+    )["pages"][0]
+    assert {item["field"] for item in comparison["diffs"]} >= {"has_body_text", "link_count", "image_count"}
+
+
 def test_technology_output_contract_and_latest_pointer(tmp_path) -> None:
     report = technology_probe.parse_detector_output(
         """{
@@ -199,6 +233,21 @@ def test_architecture_analysis_connects_stack_to_measured_seo_risk() -> None:
     performance_impact = next(item for item in analysis["seo_impacts"] if item["area"] == "performance")
     assert performance_impact["risk"] == "high"
     assert any("Lighthouse median performance score: 25" in item for item in performance_impact["evidence"])
+
+
+def test_architecture_analysis_does_not_invent_zero_evidence_integrations() -> None:
+    analysis = analyze_architecture(
+        {
+            "scan_mode": "balanced",
+            "pages": [{"fingerprint_inputs": ["raw_html", "script_sources"], "technologies": []}],
+        }
+    )
+    impacts = {item["area"]: item for item in analysis["seo_impacts"]}
+    assert impacts["crawl_and_rendering"]["risk"] == "unknown"
+    assert impacts["analytics_consent"]["evidence"] == []
+    assert "no analytics" in impacts["analytics_consent"]["conclusion"].lower()
+    assert impacts["commerce_search_features"]["evidence"] == []
+    assert "no commerce" in impacts["commerce_search_features"]["conclusion"].lower()
 
 
 def test_collector_latest_pointers_replace_symlinks_without_touching_target(tmp_path) -> None:
@@ -295,6 +344,12 @@ def test_performance_output_contract_and_latest_pointer(tmp_path, monkeypatch) -
         "generated_at": "2026-07-15T00:00:00Z",
         "collection_status": "ok",
         "url": "https://example.com/",
+        "requested_url": "https://example.com/",
+        "final_url": "https://m.example.com/",
+        "main_document_url": "https://m.example.com/",
+        "redirected": True,
+        "run_final_urls": ["https://m.example.com/"],
+        "redirect_consistent": True,
         "form_factor": "mobile",
         "runs_requested": 5,
         "runs_succeeded": 5,
@@ -315,6 +370,7 @@ def test_performance_output_contract_and_latest_pointer(tmp_path, monkeypatch) -
     monkeypatch.setattr(performance_probe, "run_runner", fake_run)
     report = performance_probe.collect("https://example.com", tmp_path, runs=5)
     assert report["collection_status"] == "ok"
+    assert report["final_url"] == "https://m.example.com/"
     assert Path(report["manifest"]["path"]).exists()
     assert (tmp_path / "latest.json").exists()
 

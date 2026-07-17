@@ -304,6 +304,22 @@ async function execute(options) {
 
   const collectionStatus = enoughRuns ? (validRuns.length === options.runs ? 'ok' : 'partial') : 'failed';
   const aggregate = summarizeRuns(validRuns);
+  const runFinalUrls = [...new Set(validRuns
+    .map(run => run.finalUrl || run.finalDisplayedUrl || run.mainDocumentUrl || options.url)
+    .filter(Boolean))];
+  const finalUrl = representative?.finalUrl || representative?.finalDisplayedUrl || representative?.mainDocumentUrl || options.url;
+  const mainDocumentUrl = representative?.mainDocumentUrl || finalUrl;
+  const redirected = finalUrl !== options.url;
+  const redirectConsistent = runFinalUrls.length <= 1;
+  const warnings = aggregate.high_variance
+    ? [{scope: 'performance', message: `high variance detected: ${aggregate.variance_reasons.join('; ')}`}]
+    : [];
+  if (redirected) {
+    warnings.push({scope: 'navigation', message: `requested URL redirected to ${finalUrl}`});
+  }
+  if (!redirectConsistent) {
+    warnings.push({scope: 'navigation', message: `Lighthouse runs ended on different URLs: ${runFinalUrls.join(', ')}`});
+  }
   const summary = {
     schema_version: SCHEMA_VERSION,
     runner_version: RUNNER_VERSION,
@@ -311,6 +327,12 @@ async function execute(options) {
     generated_at: new Date().toISOString(),
     collection_status: collectionStatus,
     url: options.url,
+    requested_url: options.url,
+    final_url: finalUrl,
+    main_document_url: mainDocumentUrl,
+    redirected,
+    run_final_urls: runFinalUrls,
+    redirect_consistent: redirectConsistent,
     form_factor: options.formFactor,
     runs_requested: options.runs,
     runs_succeeded: validRuns.length,
@@ -326,9 +348,7 @@ async function execute(options) {
       benchmark_index: representative?.environment?.benchmarkIndex ?? null,
     },
     errors,
-    warnings: aggregate.high_variance
-      ? [{scope: 'performance', message: `high variance detected: ${aggregate.variance_reasons.join('; ')}`}]
-      : [],
+    warnings,
     artifacts: {
       output_dir: options.outputDir,
       representative_json: representative ? path.join(options.outputDir, 'representative.json') : '',

@@ -44,6 +44,20 @@ def compare_page(raw: dict[str, Any], rendered: dict[str, Any] | None) -> dict[s
     diffs = []
     raw_schema_types = _schema_types(raw)
     rendered_schema_types = _schema_types(rendered or {})
+    raw_links = raw.get("link_summary", {})
+    rendered_links = rendered.get("link_summary", {}) if rendered else {}
+    raw_images = raw.get("image_stats", {})
+    rendered_images = rendered.get("images", {}) if rendered else {}
+    raw_summary = {
+        "has_body_text": raw.get("content_audit", {}).get("has_body_text_in_raw_html", False),
+        "link_count": raw_links.get("anchor_count", 0),
+        "image_count": raw_images.get("total", 0),
+    }
+    rendered_summary = {
+        "has_body_text": (rendered or {}).get("has_body_text", False),
+        "link_count": rendered_links.get("anchor_count", 0),
+        "image_count": rendered_images.get("total", 0),
+    }
 
     if rendered:
         for field in COMPARE_FIELDS:
@@ -57,11 +71,9 @@ def compare_page(raw: dict[str, Any], rendered: dict[str, Any] | None) -> dict[s
             diffs.append({"field": "h1", "raw": raw_h1, "rendered": rendered_h1})
         if raw_schema_types != rendered_schema_types:
             diffs.append({"field": "schema_types", "raw": raw_schema_types, "rendered": rendered_schema_types})
-
-    raw_links = raw.get("link_summary", {})
-    rendered_links = rendered.get("link_summary", {}) if rendered else {}
-    raw_images = raw.get("image_stats", {})
-    rendered_images = rendered.get("images", {}) if rendered else {}
+        for field in ("has_body_text", "link_count", "image_count"):
+            if raw_summary[field] != rendered_summary[field]:
+                diffs.append({"field": field, "raw": raw_summary[field], "rendered": rendered_summary[field]})
 
     return {
         "url": raw.get("url", ""),
@@ -76,9 +88,7 @@ def compare_page(raw: dict[str, Any], rendered: dict[str, Any] | None) -> dict[s
             "h1": _normalize_list(raw.get("h1")),
             "schema_types": raw_schema_types,
             "schema_count": raw.get("schema_audit", {}).get("inline_schema_count", 0),
-            "has_body_text": raw.get("content_audit", {}).get("has_body_text_in_raw_html", False),
-            "link_count": raw_links.get("anchor_count", 0),
-            "image_count": raw_images.get("total", 0),
+            **raw_summary,
         },
         "rendered": {
             "title": (rendered or {}).get("title", ""),
@@ -88,9 +98,7 @@ def compare_page(raw: dict[str, Any], rendered: dict[str, Any] | None) -> dict[s
             "h1": _normalize_list((rendered or {}).get("h1")),
             "schema_types": rendered_schema_types,
             "schema_count": (rendered or {}).get("schema_count", 0),
-            "has_body_text": (rendered or {}).get("has_body_text", False),
-            "link_count": rendered_links.get("anchor_count", 0),
-            "image_count": rendered_images.get("total", 0),
+            **rendered_summary,
         },
     }
 
@@ -126,6 +134,10 @@ def build_headless_audit(bundle: dict[str, Any], rendered: dict[str, Any] | None
                 critical.append(f"{url}: raw/rendered {diff['field']} mismatch")
             elif diff["field"] == "schema_types" and not comparison["raw"]["schema_count"] and comparison["rendered"]["schema_count"]:
                 critical.append(f"{url}: schema appears only after rendering")
+            elif diff["field"] == "has_body_text" and not diff["raw"] and diff["rendered"]:
+                critical.append(f"{url}: body content appears only after rendering")
+            elif diff["field"] == "link_count" and not diff["raw"] and diff["rendered"]:
+                critical.append(f"{url}: discovery links appear only after rendering")
             else:
                 warnings.append(f"{url}: raw/rendered {diff['field']} differs")
 

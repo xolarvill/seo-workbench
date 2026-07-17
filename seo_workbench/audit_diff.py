@@ -157,7 +157,8 @@ def _snapshot_identity(kind: str, snapshot: dict[str, Any]) -> tuple[Any, ...]:
         )
     if kind == "performance":
         return (
-            snapshot.get("url"),
+            snapshot.get("requested_url") or snapshot.get("url"),
+            snapshot.get("final_url"),
             snapshot.get("schema_version"),
             snapshot.get("runner_version"),
             snapshot.get("lighthouse_version"),
@@ -371,7 +372,8 @@ def _performance_comparability(baseline: dict[str, Any], current: dict[str, Any]
     if baseline.get("collection_status") == "failed" or current.get("collection_status") == "failed":
         warnings.append("performance snapshot collection failed")
     for field, before, after in (
-        ("url", baseline.get("url"), current.get("url")),
+        ("requested_url", baseline.get("requested_url") or baseline.get("url"), current.get("requested_url") or current.get("url")),
+        ("final_url", baseline.get("final_url"), current.get("final_url")),
         ("lighthouse_version", baseline.get("lighthouse_version"), current.get("lighthouse_version")),
         ("form_factor", baseline.get("form_factor"), current.get("form_factor")),
         ("runs_requested", baseline.get("runs_requested"), current.get("runs_requested")),

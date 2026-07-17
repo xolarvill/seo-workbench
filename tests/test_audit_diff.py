@@ -54,6 +54,8 @@ def performance_snapshot(score: float, lcp: float, browser: str = "Chrome 149", 
         "runner_version": "0.1.0",
         "generated_at": "2026-07-15T00:00:00Z",
         "url": "https://example.com/",
+        "requested_url": "https://example.com/",
+        "final_url": "https://example.com/",
         "lighthouse_version": "13.4.0",
         "form_factor": "mobile",
         "runs_succeeded": runs,
@@ -65,6 +67,16 @@ def performance_snapshot(score: float, lcp: float, browser: str = "Chrome 149", 
         },
         "environment": {"browser_version": browser, "benchmark_index": 2000},
     }
+
+
+def test_performance_diff_rejects_different_final_navigation_targets() -> None:
+    baseline = performance_snapshot(90, 1000)
+    current = performance_snapshot(80, 1500)
+    current["final_url"] = "https://example.com/mobile/"
+    changes, warnings, comparable = compare_performance(baseline, current)
+    assert comparable is False
+    assert any("final_url differs" in warning for warning in warnings)
+    assert all(item["classification"] == "change" for item in changes)
 
 
 def write_snapshot(path: Path, data: dict) -> Path:

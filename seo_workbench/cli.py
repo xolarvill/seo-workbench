@@ -210,6 +210,10 @@ def cmd_performance(args: argparse.Namespace) -> int:
                 "ok": ok,
                 "path": str(path),
                 "collection_status": collection_status,
+                "requested_url": report.get("requested_url") or report.get("url", ""),
+                "final_url": report.get("final_url", ""),
+                "redirected": report.get("redirected", False),
+                "redirect_consistent": report.get("redirect_consistent", True),
                 "performance_score": report.get("aggregate", {}).get("performance_score", {}),
                 "high_variance": report.get("aggregate", {}).get("high_variance", False),
             }
