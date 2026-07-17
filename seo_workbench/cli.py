@@ -84,17 +84,16 @@ def cmd_status(args: argparse.Namespace) -> int:
 
 
 def cmd_phase(args: argparse.Namespace) -> int:
-    data = state.load_state(args.project_dir)
-    state.set_phase(data, args.phase)
-    state.save_state(data, args.project_dir)
+    state.mutate_state(args.project_dir, lambda data: state.set_phase(data, args.phase))
     print(state.state_path(args.project_dir))
     return 0
 
 
 def cmd_step(args: argparse.Namespace) -> int:
-    data = state.load_state(args.project_dir)
-    phase, step_id = state.update_step(data, args.action, args.step_id)
-    state.save_state(data, args.project_dir)
+    phase, step_id = state.mutate_state(
+        args.project_dir,
+        lambda data: state.update_step(data, args.action, args.step_id),
+    )
     if args.json_output:
         print_json({"ok": True, "action": args.action, "phase": phase, "step": step_id})
         return 0
@@ -124,8 +123,16 @@ def cmd_next(args: argparse.Namespace) -> int:
             print(f"- {path}")
     if contract["output"]:
         print(f"output: {contract['output']}")
-    print(f"after: python -m seo_workbench --project-dir {args.project_dir} step done")
+    print(f"after: ./seo --project-dir {args.project_dir} step done")
     return 0
+
+
+def cmd_ui(args: argparse.Namespace) -> int:
+    try:
+        from seo_workbench.ui import run_ui
+    except ImportError as exc:
+        raise RuntimeError("UI support is not installed; run ./setup.sh") from exc
+    return run_ui(port=args.port, open_browser=not args.no_open, initial_project=args.project)
 
 
 def cmd_evidence(args: argparse.Namespace) -> int:
@@ -545,6 +552,11 @@ def build_parser() -> argparse.ArgumentParser:
     doctor = sub.add_parser("doctor")
     doctor.add_argument("--json", action="store_true", dest="json_output")
     doctor.set_defaults(func=cmd_doctor)
+
+    ui = sub.add_parser("ui")
+    ui.add_argument("--port", type=int, default=8765)
+    ui.add_argument("--no-open", action="store_true")
+    ui.set_defaults(func=cmd_ui)
     return parser
 
 

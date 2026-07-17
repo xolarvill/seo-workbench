@@ -177,6 +177,8 @@ if (( CHECK_ONLY )); then
     || { err "balanced Wappalyzer technology detector is missing"; exit 1; }
   "${PROJECT_ROOT}/.venv/bin/python" -c "import google.auth, google_auth_oauthlib" \
     || { err "Google API authentication support is missing"; exit 1; }
+  "${PROJECT_ROOT}/.venv/bin/python" -c "import fastapi, uvicorn, watchfiles" \
+    || { err "optional local UI support is missing"; exit 1; }
   env PLAYWRIGHT_BROWSERS_PATH="${BROWSER_DIR}" "${PROJECT_ROOT}/.venv/bin/python" \
     -m seo_workbench_tools.browser_runtime --print >/dev/null \
     || { err "Chrome or Chromium is missing"; exit 1; }
@@ -201,7 +203,7 @@ ln -sf "${NODE_BIN}" "${RUNTIME_DIR}/bin/node"
 env UV_CACHE_DIR="${PROJECT_ROOT}/.uv-cache" UV_PYTHON_INSTALL_DIR="${PROJECT_ROOT}/.uv-python" \
   "${UV_BIN}" python install 3.11
 env UV_CACHE_DIR="${PROJECT_ROOT}/.uv-cache" UV_PYTHON_INSTALL_DIR="${PROJECT_ROOT}/.uv-python" \
-  "${UV_BIN}" sync --frozen --python 3.11 --extra rendered --extra technology --extra google --group dev
+  "${UV_BIN}" sync --frozen --python 3.11 --extra rendered --extra technology --extra google --extra ui --group dev
 
 (cd "${PROJECT_ROOT}" && env PATH="$(dirname "${NODE_BIN}"):${PATH}" "${NPM_BIN}" ci)
 

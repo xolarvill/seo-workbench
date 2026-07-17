@@ -5,8 +5,9 @@ import re
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable, TypeVar
 
+from seo_workbench.locks import project_lock
 from seo_workbench_tools.files import atomic_write_text
 
 
@@ -15,6 +16,7 @@ PROJECTS_ROOT = Path("projects")
 DEFAULT_PROJECT_DIR = Path("projects/default")
 DEFAULT_TEMPLATE = ROOT / "templates" / "state.json"
 PROJECT_ID_PATTERN = re.compile(r"^[a-z0-9](?:[a-z0-9-]{0,62})$")
+MutationResult = TypeVar("MutationResult")
 
 
 PROJECT_DIRS = [
@@ -171,6 +173,20 @@ def load_state(project_dir: Path = DEFAULT_PROJECT_DIR) -> dict[str, Any]:
 
 def save_state(data: dict[str, Any], project_dir: Path = DEFAULT_PROJECT_DIR) -> None:
     write_json(state_path(project_dir), data)
+
+
+def mutate_state(
+    project_dir: Path,
+    mutation: Callable[[dict[str, Any]], MutationResult],
+    *,
+    timeout: float = 30,
+) -> MutationResult:
+    """Serialize a complete read, mutate, write state transaction."""
+    with project_lock(project_dir, timeout=timeout):
+        data = load_state(project_dir)
+        result = mutation(data)
+        save_state(data, project_dir)
+        return result
 
 
 def record_history(data: dict[str, Any], action: str, phase: str = "", step_id: str = "", note: str = "") -> None:

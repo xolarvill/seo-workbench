@@ -3,7 +3,9 @@ name = "seo-workbench"
 version = "0.2.0"
 description = "Agent-neutral SEO workflow and audit tools."
 requires-python = ">=3.11,<3.12"
-dependencies = []
+dependencies = [
+    "filelock>=3.18.0,<4",
+]
 
 [project.scripts]
 seo-workbench = "seo_workbench.cli:main"
@@ -23,9 +25,15 @@ google = [
     "google-auth>=2.40.0,<3",
     "google-auth-oauthlib>=1.2.2,<2",
 ]
+ui = [
+    "fastapi>=0.128.0,<1",
+    "uvicorn>=0.35.0,<1",
+    "watchfiles>=1.1.0,<2",
+]
 
 [dependency-groups]
 dev = [
+    "httpx2>=2.7.0,<3",
     "pytest>=8.4.0,<9",
     "pyyaml>=6.0.2,<7",
 ]
