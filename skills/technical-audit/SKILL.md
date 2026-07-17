@@ -104,7 +104,7 @@ Allow: /
   - INP replaced FID on March 12, 2024. FID was fully removed from all Chrome tools (CrUX API, PageSpeed Insights, Lighthouse) on September 9, 2024. Do NOT reference FID anywhere.
 - **CLS** (Cumulative Layout Shift): target <0.1
 - Evaluation uses 75th percentile of real user data
-- Use PageSpeed Insights API or CrUX data if MCP available
+- Use the local `crux` command for real-user field data when its API key is configured
 
 ### 7. Structured Data
 - Detection: JSON-LD (preferred), Microdata, RDFa
@@ -177,9 +177,15 @@ Google updated its JavaScript SEO documentation in December 2025 with critical c
 
 If DataForSEO MCP tools are available, use `on_page_instant_pages` for real page analysis (status codes, page timing, broken links, on-page checks), `on_page_lighthouse` for Lighthouse audits (performance, accessibility, SEO scores), and `domain_analytics_technologies_domain_technologies` for technology stack detection.
 
-## Google API Integration (Optional)
+## Google Evidence Integration (Optional)
 
-If Google API credentials are configured, use `python scripts/pagespeed_check.py <url> --json` for real PSI + CrUX field data (replaces lab-only CWV estimates), `python scripts/crux_history.py <url> --json` for 25-week CWV trends, and `python scripts/gsc_inspect.py <url> --json` for real indexation status per URL.
+- Run `python -m seo_workbench crux --json` for current CrUX field data and 40 weekly history periods. Read `audits/crux/latest.json`; keep its page/origin effective scope and form factor attached to every conclusion.
+- Run `python -m seo_workbench gsc collect --json` after authentication and property binding. Read `audits/gsc/latest.json` for finalized Search Analytics, Sitemap status, and bounded URL Inspection evidence.
+- Use `python -m seo_workbench evidence --crux --gsc --json` only when the user explicitly requests Google evidence or the project is configured for it. These integrations are not part of the default raw crawl.
+- Treat `needs_config` and `needs_auth` as user handoffs. Continue the raw/rendered/technology/Lighthouse audit and state exactly which Google evidence is unavailable.
+- Lighthouse is reproducible lab evidence, CrUX is aggregated real-user field evidence, and GSC is Google Search evidence. Do not combine them into a single score or claim that one disproves the others.
+- CrUX `no_data` commonly means insufficient eligible Chrome traffic. Use Lighthouse as a lab diagnostic, not as fabricated field data.
+- GSC URL Inspection reports only the version in Google's index, not a live crawl. Do not claim current live indexability from it alone.
 
 ## Error Handling
 

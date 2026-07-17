@@ -35,6 +35,9 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --technology --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --performance --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench crux --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench gsc collect --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --crux --gsc --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench audit-diff --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench validate --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench doctor --json
@@ -72,8 +75,13 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 - Performance summaries must preserve `requested_url`, `final_url`, `main_document_url`, per-run final URL consistency, and redirect status. Never compare performance snapshots that ended on different final URLs.
 - Keep Lighthouse traffic behind `network_boundary.guarded_proxy` unless the user explicitly selects `--allow-private`; redact sensitive URL credentials and query values before persisting LHR or HTML artifacts.
 - Treat `projects/<id>/audits/performance/latest.json` as the stable performance pointer; timestamped performance directories are immutable records.
+- Treat Lighthouse as lab evidence and CrUX as field evidence. Never merge their scores or substitute one silently for the other; preserve CrUX URL-to-origin fallback and `no_data` status.
+- CrUX defaults to aggregate, mobile, and desktop current data plus 40 history periods. Treat `projects/<id>/audits/crux/latest.json` as its stable pointer.
+- GSC is read-only and explicit. Keep OAuth clients, tokens, service accounts, and project bindings under ignored `.runtime/` paths; never persist authorization headers or credentials in audit artifacts.
+- `gsc collect` combines finalized 28-day Search Analytics comparison, Sitemap status, and a bounded URL Inspection sample. URL Inspection is indexed-version evidence, not a live test. Treat `needs_auth` as a user handoff, not a site failure.
+- Treat `projects/<id>/audits/gsc/latest.json` as the stable composite GSC pointer; GSC artifacts are private local data with mode `0600`.
 - Keep stores isolated under `projects/<id>/`; prefer `--project <id>` for daily use and retain `--project-dir` for explicit external or test directories.
-- Audit diff compares the newest immutable raw, technology, and performance snapshot with its newest matching URL/runtime baseline. Never classify a performance regression when Lighthouse, form factor, browser version, run count, variance, or benchmark comparability fails.
+- Audit diff compares the newest immutable raw, technology, performance, CrUX, and GSC snapshot with its newest matching identity. Never classify a regression when Lighthouse runtime, CrUX effective scope/form factor, or GSC property/window/data-state comparability fails.
 - Treat `projects/<id>/audits/diffs/latest.json` as the stable current diff pointer; timestamped `audit-diff-*.json` files are immutable records.
 - Do not restore Claude slash commands or external repo dependencies unless the user explicitly asks.
 - Each reform layer should be committed separately.

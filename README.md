@@ -6,10 +6,10 @@
 Todo:
 - [X] tech stack recognization: wappalyzergo integration
 - [X] laboratory test: Lighthouse 本地多次采样与代表结果
-- [ ] real UX: CrUX接入
+- [X] real UX: CrUX 当前值与 40 周历史
 - [X] 多店铺管理
 - [X] 审计diff
-- [ ] GSC接入
+- [X] GSC 只读接入
 - [ ] cli improvement: 重写cli方式
 - [ ] docs: readme重写
 - [ ] 定时功能
@@ -25,7 +25,7 @@ cd seo-workbench
 codex # 使用任意agent
 ```
 
-`setup.sh` 是安装入口，不只是环境检查。它会安装或配置 Python 3.11、Go 快速指纹 helper、balanced Wappalyzer、Node 24 LTS、锁定版本的 Lighthouse、开发验收依赖和浏览器运行时。机器已有 Google Chrome/Chromium 时会直接复用，否则安装项目本地 Chromium。macOS 自动安装系统依赖时需要 Homebrew。Go 模块下载会在官方代理不可用时回退到 `goproxy.cn` 和 direct，可用 `SEO_WORKBENCH_GOPROXY` 覆盖代理链。
+`setup.sh` 是安装入口，不只是环境检查。它会安装或配置 Python 3.11、Go 快速指纹 helper、balanced Wappalyzer、Google OAuth 支持、Node 24 LTS、锁定版本的 Lighthouse、开发验收依赖和浏览器运行时。机器已有 Google Chrome/Chromium 时会直接复用，否则安装项目本地 Chromium。macOS 自动安装系统依赖时需要 Homebrew。Go 模块下载会在官方代理不可用时回退到 `goproxy.cn` 和 direct，可用 `SEO_WORKBENCH_GOPROXY` 覆盖代理链。
 
 ```bash
 ./setup.sh --check   # 只验证，不安装
@@ -41,6 +41,9 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --runs 1 --form-factor desktop --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --performance --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench crux --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench gsc collect --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --crux --gsc --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --rendered --crawl-limit 5 --json
 ```
 
@@ -59,6 +62,44 @@ projects/default/audits/performance/latest.json
 ```
 
 单次运行适合烟测，不适合趋势结论。跨时间比较应保持相同 requested/final URL、form factor、Lighthouse、浏览器版本和机器环境；报告会记录 `browser_version`，其中 `high_variance` 为真或最终 URL 不一致时不应直接判定回归。需要严格固定浏览器时，先运行 `./setup.sh --local-browser`。
+
+### CrUX 真实用户数据
+
+CrUX 与 Lighthouse 独立保存。默认查询页面的 aggregate、mobile、desktop 当前 28 天滚动数据和 40 周历史；页面样本不足时回退到 origin 并显式记录范围，站点流量不足时返回 `no_data`，不会伪造成 Lighthouse 结果。
+
+```bash
+export SEO_WORKBENCH_CRUX_API_KEY="your-key"
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench \
+  --project wildone crux --json
+
+# 指定页面或单一设备
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench \
+  --project wildone crux --url https://example.com/products/item --form-factor mobile --json
+```
+
+API key 也可保存为 `.runtime/google/crux-api-key`，文件不得是 symlink。证据写入 `projects/<id>/audits/crux/`；`latest.json` 是稳定指针。
+
+### Google Search Console
+
+GSC 是只读集成。首次使用需要在 Google Cloud 启用 Search Console API、创建 Desktop OAuth client，然后由用户完成一次浏览器授权：
+
+```bash
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench \
+  --project wildone gsc auth --client-secret /path/to/oauth-client.json
+
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench \
+  --project wildone gsc properties --json
+
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench \
+  --project wildone gsc bind --property sc-domain:example.com --json
+
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench \
+  --project wildone gsc collect --json
+```
+
+`gsc collect` 包含完整 28 天与前 28 天 Search Analytics、Sitemap 状态，以及最多 10 个代表 URL 的 Google 索引版本检查。它不是 live URL test，也不会提交 Sitemap 或请求索引。无界面自动化可用 `gsc auth --service-account /path/to/account.json`，但必须先把该 service account 加入对应 GSC property。
+
+OAuth client、token、service account 和项目绑定位于 `.runtime/`；GSC 审计数据使用 `0600` 权限并被 Git 忽略。完整配置和状态语义见 [Google integrations](docs/google-integrations.md)。
 
 ## 多店铺管理
 
@@ -101,7 +142,7 @@ projects/wildone/audits/diffs/audit-diff-<timestamp>.json
 projects/wildone/audits/diffs/latest.json
 ```
 
-Raw diff 覆盖状态码、跳转、title/meta/canonical/robots、H1、Schema、图片、链接和采集错误；Technology diff 覆盖技术新增、移除与版本；Performance diff 覆盖性能分数和核心指标中位数。Performance 只有在 Lighthouse、form factor、浏览器、有效运行数、波动和 benchmark 环境可比时才会标记回归或改善。
+Raw diff 覆盖状态码、跳转、title/meta/canonical/robots、H1、Schema、图片、链接和采集错误；Technology diff 覆盖技术新增、移除与版本；Performance diff 覆盖性能分数和核心指标中位数；CrUX diff 覆盖同范围、同设备的 p75 与 CWV 等级；GSC diff 覆盖同 property、同时间窗口的搜索表现、索引状态和 Sitemap 错误。任何可比性门槛不满足时都只记录 change，不标记回归或改善。
 
 显式比较仅支持单一类型，并且两个文件必须属于当前店铺：
 
@@ -116,7 +157,8 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 
 - **无自动发布。** `/write` 产出草稿后需手动发布（WordPress 除外）。Headless CMS 的自动发布管线不在当前 scope。
 - **单项目单站点。** 可以管理多个店铺，但每个 `projects/<id>` 仍对应一个站点；单个项目内的多站点/多语言 SEO 不在此版本覆盖。
-- **Lighthouse 是实验室数据。** 当前没有接入 CrUX/PageSpeed field data，也没有定时调度或 LHCI Server。
+- **Lighthouse 与 CrUX 不能互相替代。** Lighthouse 是受控实验室数据；CrUX 是满足流量门槛的 Chrome 聚合数据。当前没有定时调度或 LHCI Server。
+- **GSC URL Inspection 不是实时测试。** API 返回 Google 索引中的版本，且受 property 配额限制；工作台默认每次最多检查 10 个代表 URL。
 - **本地探针不是完整的恶意网站沙箱。** Lighthouse 流量会经过私网过滤代理，但它不能替代操作系统或容器隔离；loopback、RFC1918、link-local 与 CGNAT 默认拒绝。`198.18.0.0/15` 只作为透明代理 fake-IP 范围放行；`--allow-private` 仍只用于明确可信的开发或内网站点。
 
 ## Credit
