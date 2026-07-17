@@ -26,6 +26,7 @@ PROJECT_DIRS = [
     "audits/rendered",
     "audits/technology",
     "audits/performance",
+    "audits/crux",
     "audits/diffs",
 ]
 

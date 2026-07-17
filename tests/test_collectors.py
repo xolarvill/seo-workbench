@@ -4,7 +4,7 @@ from contextlib import nullcontext
 from pathlib import Path
 
 from seo_workbench import state
-from seo_workbench_tools import evidence_bundle, page_probe, performance_probe, rendered_probe, robots_sitemap_probe
+from seo_workbench_tools import crux_probe, evidence_bundle, page_probe, performance_probe, rendered_probe, robots_sitemap_probe
 from seo_workbench_tools.network_boundary import resolve_target
 from seo_workbench_tools.evidence_bundle import collection_status, collect, performance_confidence, write_bundle
 from seo_workbench_tools.headless import build_headless_audit
@@ -654,3 +654,80 @@ def test_proxy_fake_ip_range_is_allowed_without_private_bypass(monkeypatch) -> N
 def test_single_run_performance_is_smoke_confidence_only() -> None:
     assert performance_confidence({"collection_status": "ok", "runs_succeeded": 1, "aggregate": {}}) == 0.6
     assert performance_confidence({"collection_status": "ok", "runs_succeeded": 5, "aggregate": {}}) == 0.9
+
+
+def _crux_payload(scope: str, value: str, p75: int | float = 1200, *, history: bool = False) -> dict:
+    metrics = {}
+    for name in crux_probe.METRICS:
+        if history:
+            metrics[name] = {"percentilesTimeseries": {"p75s": [p75 + 100, p75]}}
+        else:
+            metrics[name] = {"percentiles": {"p75": str(p75) if name == "cumulative_layout_shift" else p75}}
+    record = {"key": {scope: value}, "metrics": metrics}
+    if history:
+        record["collectionPeriods"] = [{"firstDate": {"year": 2026}, "lastDate": {"year": 2026}}]
+    return {"record": record}
+
+
+def test_crux_collects_current_history_and_latest_pointer(tmp_path) -> None:
+    calls = []
+
+    def request(endpoint, body, key, timeout):
+        calls.append((endpoint, body, key, timeout))
+        scope = "url" if "url" in body else "origin"
+        return _crux_payload(scope, body[scope], history="queryHistoryRecord" in endpoint)
+
+    report = crux_probe.collect(
+        "https://example.com/page",
+        tmp_path,
+        form_factors=("aggregate", "mobile"),
+        key="secret-key",
+        requester=request,
+    )
+
+    assert report["collection_status"] == "ok"
+    assert len(calls) == 4
+    assert calls[1][1]["collectionPeriodCount"] == 40
+    assert calls[2][1]["formFactor"] == "PHONE"
+    assert report["summary"]["aggregate"]["core_web_vitals"] == "poor"
+    assert Path(report["manifest"]["path"]).is_file()
+    assert (tmp_path / "latest.json").is_file()
+    assert "secret-key" not in (tmp_path / "latest.json").read_text()
+
+
+def test_crux_page_no_data_falls_back_to_origin_without_mixing_history(tmp_path) -> None:
+    calls = []
+
+    def request(endpoint, body, key, timeout):
+        calls.append(body)
+        if "url" in body:
+            raise crux_probe.CruxNoData("missing")
+        return _crux_payload("origin", body["origin"], history="collectionPeriodCount" in body)
+
+    report = crux_probe.collect(
+        "https://example.com/page", tmp_path, form_factors=("desktop",), key="key", requester=request
+    )
+
+    query = report["queries"][0]
+    assert query["effective_scope"] == "origin"
+    assert query["fallback_reason"] == "page_data_unavailable"
+    assert "origin" in calls[-1]
+    assert "url" not in calls[-1]
+    assert any(item["code"] == "origin_fallback" for item in report["warnings"])
+
+
+def test_crux_no_data_is_not_a_failed_collection(tmp_path) -> None:
+    def request(*args):
+        raise crux_probe.CruxNoData("missing")
+
+    report = crux_probe.collect(
+        "https://example.com", tmp_path, form_factors=("aggregate",), key="key", requester=request
+    )
+    assert report["collection_status"] == "no_data"
+    assert report["errors"] == []
+
+
+def test_crux_classifies_core_web_vitals() -> None:
+    assert crux_probe.classify("largest_contentful_paint", 2500) == "good"
+    assert crux_probe.classify("interaction_to_next_paint", 350) == "needs_improvement"
+    assert crux_probe.classify("cumulative_layout_shift", "0.3") == "poor"

@@ -6,6 +6,7 @@ from pathlib import Path
 
 from seo_workbench import state
 from seo_workbench.audit_diff import AUDIT_KINDS, create_diff
+from seo_workbench.crux import collect_from_state as collect_crux_from_state
 from seo_workbench.doctor import run_doctor
 from seo_workbench.evidence import collect_from_state
 from seo_workbench.performance import collect_from_state as collect_performance_from_state
@@ -227,6 +228,36 @@ def cmd_performance(args: argparse.Namespace) -> int:
     return 0 if ok else 1
 
 
+def cmd_crux(args: argparse.Namespace) -> int:
+    output_dir = args.output_dir or state.safe_project_path(args.project_dir, "audits/crux")
+    path = collect_crux_from_state(
+        state.state_path(args.project_dir),
+        output_dir,
+        url=args.url,
+        form_factors=args.form_factor or ("aggregate", "mobile", "desktop"),
+        timeout=args.timeout,
+    )
+    report = json.loads(path.read_text(encoding="utf-8"))
+    status = report.get("collection_status", "failed")
+    ok = status != "failed"
+    if args.json_output:
+        print_json(
+            {
+                "ok": ok,
+                "path": str(path),
+                "collection_status": status,
+                "requested_url": report.get("requested_url", ""),
+                "form_factors": [item.get("form_factor") for item in report.get("queries", [])],
+                "summary": report.get("summary", {}),
+                "error_count": len(report.get("errors", [])),
+                "warning_count": len(report.get("warnings", [])),
+            }
+        )
+        return 0 if ok else 1
+    print(path)
+    return 0 if ok else 1
+
+
 def cmd_audit_diff(args: argparse.Namespace) -> int:
     report, path = create_diff(
         args.project_dir,
@@ -346,6 +377,18 @@ def build_parser() -> argparse.ArgumentParser:
     performance.add_argument("--allow-private", action="store_true")
     performance.add_argument("--json", action="store_true", dest="json_output")
     performance.set_defaults(func=cmd_performance)
+
+    crux = sub.add_parser("crux")
+    crux.add_argument("--url")
+    crux.add_argument(
+        "--form-factor",
+        action="append",
+        choices=["aggregate", "mobile", "desktop", "tablet"],
+    )
+    crux.add_argument("--timeout", type=float, default=15)
+    crux.add_argument("--output-dir", type=Path)
+    crux.add_argument("--json", action="store_true", dest="json_output")
+    crux.set_defaults(func=cmd_crux)
 
     audit_diff = sub.add_parser("audit-diff")
     audit_diff.add_argument("--kind", choices=["all", *AUDIT_KINDS], default="all")
