@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
+CLI="${PROJECT_ROOT}/.venv/bin/seo-workbench"
+
+if [[ ! -x "${CLI}" ]]; then
+  printf 'seo-workbench is not installed. Run %s/setup.sh first.\n' "${PROJECT_ROOT}" >&2
+  exit 1
+fi
+
+cd "${PROJECT_ROOT}"
+exec "${CLI}" "$@"

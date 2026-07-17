@@ -7,7 +7,7 @@ Python 胶水工具层，用于给 TECHNICAL_AUDIT 阶段提供可复查的机�
 按 `projects/default/state.json` 自动采集：
 
 ```bash
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence
+./seo evidence
 ```
 
 输出：
@@ -23,14 +23,14 @@ env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.pa
 env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.robots_sitemap_probe https://example.com
 env UV_CACHE_DIR=.uv-cache uv run --python 3.11 python -m seo_workbench_tools.evidence_bundle https://example.com --page https://example.com/products/foo
 env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench_tools.rendered_probe https://example.com
-env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench evidence --rendered --json
-env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench evidence --rendered --crawl-limit 5 --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --scan-mode fast --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --technology --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --performance --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench --project example-store audit-diff --json
+./seo evidence --rendered --json
+./seo evidence --rendered --crawl-limit 5 --json
+./seo technology --json
+./seo technology --scan-mode fast --json
+./seo evidence --technology --json
+./seo performance --json
+./seo evidence --performance --json
+./seo --project example-store audit-diff --json
 ```
 
 ## 证据内容

@@ -19,29 +19,30 @@ The original third-party repos are not runtime dependencies. Their useful conten
 ## Daily Commands
 
 ```bash
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench status
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench projects --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench --project example-store status --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench status --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench step done
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench phase TECHNICAL_AUDIT
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --rendered --crawl-limit 5 --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench technology --scan-mode fast --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --technology --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --performance --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench crux --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench gsc collect --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --crux --gsc --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench audit-diff --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench validate --json
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench doctor --json
+./seo status
+./seo projects --json
+./seo --project example-store status --json
+./seo next
+./seo next --json
+./seo step done
+./seo phase TECHNICAL_AUDIT
+./seo evidence
+./seo evidence --json
+./seo evidence --rendered --crawl-limit 5 --json
+./seo technology --json
+./seo technology --scan-mode fast --json
+./seo evidence --technology --json
+./seo performance --json
+./seo evidence --performance --json
+./seo crux --json
+./seo gsc collect --json
+./seo evidence --crux --gsc --json
+./seo audit-diff --json
+./seo validate --json
+./seo doctor --json
 ```
+
+`./seo` is the repository-local launcher for the installed `seo-workbench` console script. Keep `python -m seo_workbench` only as a compatibility and diagnosis fallback.
 
 If uv cannot read its user-profile managed Python, install Python locally for this workspace:
 
@@ -53,7 +54,7 @@ env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv sync --frozen --p
 Initialize a project:
 
 ```bash
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench \
+./seo \
   init shopify-headless --name "Project" --url "https://example.com" \
   --framework hydrogen --hosting oxygen --cms sanity
 ```
@@ -66,7 +67,7 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 - Run `doctor --json` when debugging local setup, missing evidence, or optional rendered support.
 - Treat `projects/<id>/audits/raw/latest.json` as the stable current evidence pointer; timestamped `evidence-*.json` files are the immutable audit records.
 - Project-level `evidence` defaults to a maximum of five representative same-host routes discovered from raw/rendered internal links. Keep discovery bounded, exclude static resources and sensitive query parameters, and use `--crawl-limit 0` for a strict single-URL run.
-- For Headless SEO work, prefer `python -m seo_workbench evidence --rendered --json` when Playwright is available so `headless_audit` includes raw/rendered diffs.
+- For Headless SEO work, prefer `./seo evidence --rendered --json` when Playwright is available so `headless_audit` includes raw/rendered diffs.
 - Evidence collectors should return structured JSON with `collection_status`, `errors`, and `warnings` even when some fetches fail.
 - Technology detection uses the pinned Go helper under `seo_workbench_tools/technology_detector/`; keep its JSON contract stable and update fixtures before changing the fingerprint provider version.
 - `technology` defaults to balanced Wappalyzer detection (page, scripts, robots, and DNS), then adds explicit asset-name fallback and consumes existing rendered runtime evidence when available. Use `--scan-mode fast` for the reproducible Go headers/cookies/raw-HTML path. Never turn a zero detection into a positive absence claim; record runtime-only gaps in `architecture_analysis.evidence_quality`.

@@ -21,9 +21,9 @@ Local modules now cover every non-INIT step in `templates/state.json`.
 Agents should use the same local files and commands:
 
 ```bash
-uv run python -m seo_workbench status
-uv run python -m seo_workbench next
-uv run python -m seo_workbench step done
+./seo status
+./seo next
+./seo step done
 python -m seo_workbench_tools.workflow_evidence
 ```
 

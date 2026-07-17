@@ -179,9 +179,9 @@ If DataForSEO MCP tools are available, use `on_page_instant_pages` for real page
 
 ## Google Evidence Integration (Optional)
 
-- Run `python -m seo_workbench crux --json` for current CrUX field data and 40 weekly history periods. Read `audits/crux/latest.json`; keep its page/origin effective scope and form factor attached to every conclusion.
-- Run `python -m seo_workbench gsc collect --json` after authentication and property binding. Read `audits/gsc/latest.json` for finalized Search Analytics, Sitemap status, and bounded URL Inspection evidence.
-- Use `python -m seo_workbench evidence --crux --gsc --json` only when the user explicitly requests Google evidence or the project is configured for it. These integrations are not part of the default raw crawl.
+- Run `./seo crux --json` for current CrUX field data and 40 weekly history periods. Read `audits/crux/latest.json`; keep its page/origin effective scope and form factor attached to every conclusion.
+- Run `./seo gsc collect --json` after authentication and property binding. Read `audits/gsc/latest.json` for finalized Search Analytics, Sitemap status, and bounded URL Inspection evidence.
+- Use `./seo evidence --crux --gsc --json` only when the user explicitly requests Google evidence or the project is configured for it. These integrations are not part of the default raw crawl.
 - Treat `needs_config` and `needs_auth` as user handoffs. Continue the raw/rendered/technology/Lighthouse audit and state exactly which Google evidence is unavailable.
 - Lighthouse is reproducible lab evidence, CrUX is aggregated real-user field evidence, and GSC is Google Search evidence. Do not combine them into a single score or claim that one disproves the others.
 - CrUX `no_data` commonly means insufficient eligible Chrome traffic. Use Lighthouse as a lab diagnostic, not as fabricated field data.

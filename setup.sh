@@ -169,6 +169,8 @@ info "standalone templates found"
 if (( CHECK_ONLY )); then
   header "Checking project-local runtime"
   [[ -x "${PROJECT_ROOT}/.venv/bin/python" ]] || { err "Python environment is missing"; exit 1; }
+  [[ -x "${PROJECT_ROOT}/.venv/bin/seo-workbench" ]] || { err "seo-workbench CLI entry point is missing"; exit 1; }
+  [[ -x "${PROJECT_ROOT}/seo" ]] || { err "./seo launcher is missing or not executable"; exit 1; }
   [[ -x "${TECH_BIN}" ]] || { err "compiled technology detector is missing"; exit 1; }
   [[ -x "${PROJECT_ROOT}/node_modules/.bin/lighthouse" ]] || { err "Lighthouse dependency is missing"; exit 1; }
   "${PROJECT_ROOT}/.venv/bin/python" -c "import wappalyzer" \
@@ -180,7 +182,8 @@ if (( CHECK_ONLY )); then
     || { err "Chrome or Chromium is missing"; exit 1; }
   (cd "${PROJECT_ROOT}" && "${NODE_BIN}" seo_workbench_tools/lighthouse_runner.mjs --self-test >/dev/null)
   "${TECH_BIN}" -h >/dev/null 2>&1
-  info "project-local Python, Go helper, Wappalyzer, Google auth, Lighthouse, and browser runtime are ready"
+  (cd "${PROJECT_ROOT}" && ./seo --help >/dev/null)
+  info "./seo, project-local Python, Go helper, Wappalyzer, Google auth, Lighthouse, and browser runtime are ready"
   exit 0
 fi
 
@@ -234,13 +237,13 @@ cat <<EOF
 
 Environment ready. Next steps:
   1. Initialize a project with the agent-neutral CLI:
-       env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench init shopify --name "My Store" --url "https://example.com"
+       ./seo init shopify --name "My Store" --url "https://example.com"
 
   2. Check the next workflow step:
-       env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next
+       ./seo next
 
   3. Optional Google evidence requires credentials after setup:
        export SEO_WORKBENCH_CRUX_API_KEY="..."
-       python -m seo_workbench gsc auth --client-secret /path/to/oauth-client.json
+       ./seo gsc auth --client-secret /path/to/oauth-client.json
 
 EOF

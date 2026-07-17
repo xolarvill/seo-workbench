@@ -8,13 +8,13 @@ description: Use for Shopify Headless raw HTML prechecks before technical audit.
 Run machine evidence first:
 
 ```bash
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence
+./seo evidence
 ```
 
 For raw/rendered comparison, run:
 
 ```bash
-env UV_CACHE_DIR=.uv-cache uv run --python 3.11 --extra rendered python -m seo_workbench evidence --rendered
+./seo evidence --rendered
 ```
 
 Read `audits/raw/latest.json`. It mirrors the timestamped evidence bundle and includes `manifest.path`.

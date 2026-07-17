@@ -5,16 +5,16 @@ This repo is now agent-neutral. Claude should use the same local CLI and `skills
 ## Primary Commands
 
 ```bash
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench status
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench next
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench step done
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence
+./seo status
+./seo next
+./seo step done
+./seo evidence
 ```
 
 Initialize:
 
 ```bash
-env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench \
+./seo \
   init shopify-headless --name "Project" --url "https://example.com" \
   --framework hydrogen --hosting oxygen --cms sanity
 ```

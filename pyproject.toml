@@ -5,6 +5,13 @@ description = "Agent-neutral SEO workflow and audit tools."
 requires-python = ">=3.11,<3.12"
 dependencies = []
 
+[project.scripts]
+seo-workbench = "seo_workbench.cli:main"
+
+[build-system]
+requires = ["hatchling>=1.27.0,<2"]
+build-backend = "hatchling.build"
+
 [project.optional-dependencies]
 rendered = [
     "playwright>=1.53.0",
@@ -24,4 +31,18 @@ dev = [
 ]
 
 [tool.uv]
-package = false
+package = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["seo_workbench", "seo_workbench_tools"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "seo_workbench/",
+    "seo_workbench_tools/",
+    "skills/",
+    "templates/",
+    "workflows/",
+    "AGENTS.md",
+    "README.md",
+]
