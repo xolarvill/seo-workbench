@@ -45,11 +45,25 @@ def validate_profile(profile: str) -> str:
 
 
 def profile_dir(profile: str) -> Path:
-    return RUNTIME_ROOT / "profiles" / validate_profile(profile)
+    directory = RUNTIME_ROOT / "profiles" / validate_profile(profile)
+    for candidate in (ROOT / ".runtime", RUNTIME_ROOT, RUNTIME_ROOT / "profiles", directory):
+        if candidate.exists() and candidate.is_symlink():
+            raise ValueError(f"Google credential path cannot contain symlinks: {candidate}")
+    return directory
 
 
 def binding_path(project_dir: Path) -> Path:
-    return project_dir / ".runtime/integrations/google.json"
+    path = project_dir / ".runtime/integrations/google.json"
+    current = project_dir
+    for part in (".runtime", "integrations"):
+        if current.exists() and current.is_symlink():
+            raise ValueError(f"GSC binding path cannot contain symlinks: {current}")
+        current /= part
+    if current.exists() and current.is_symlink():
+        raise ValueError(f"GSC binding path cannot contain symlinks: {current}")
+    if path.exists() and path.is_symlink():
+        raise ValueError(f"GSC binding file cannot be a symlink: {path}")
+    return path
 
 
 def _write_private_json(path: Path, payload: dict[str, Any]) -> None:
@@ -83,7 +97,8 @@ def authenticate(
         source = service_account_path.expanduser().resolve()
         service_account.Credentials.from_service_account_file(str(source), scopes=SCOPES)
         destination = directory / "service-account.json"
-        shutil.copyfile(source, destination)
+        if source != destination.resolve():
+            shutil.copyfile(source, destination)
         destination.chmod(0o600)
         (directory / "token.json").unlink(missing_ok=True)
         (directory / "client-secret.json").unlink(missing_ok=True)
@@ -512,9 +527,26 @@ def collect_all(
     *,
     days: int = 28,
     inspection_limit: int = 10,
+    inspection_urls: list[str] | None = None,
     timeout: float = 30,
     requester: RequestCallable = api_request,
 ) -> dict[str, Any]:
+    try:
+        binding = load_binding(project_dir)
+    except RuntimeError as exc:
+        report = {
+            "schema_version": SCHEMA_VERSION,
+            "collector_version": COLLECTOR_VERSION,
+            "generated_at": _now(),
+            "collection_status": "needs_auth",
+            "profile": "",
+            "property": "",
+            "components": {},
+            "errors": [],
+            "warnings": [{"scope": "gsc", "code": "binding_required", "message": str(exc)}],
+        }
+        _artifact(report, output_dir, "gsc")
+        return report
     components: dict[str, Any] = {}
     errors: list[dict[str, Any]] = []
     warnings: list[dict[str, Any]] = []
@@ -529,7 +561,12 @@ def collect_all(
         (
             "inspection",
             lambda: collect_inspection(
-                project_dir, output_dir / "inspection", limit=inspection_limit, timeout=timeout, requester=requester
+                project_dir,
+                output_dir / "inspection",
+                urls=inspection_urls,
+                limit=inspection_limit,
+                timeout=timeout,
+                requester=requester,
             ),
         ),
     )
@@ -542,8 +579,16 @@ def collect_all(
             components[name] = {"collection_status": "failed", "errors": [{"scope": f"gsc_{name}", "message": str(exc)}]}
             errors.extend(components[name]["errors"])
     successful = [item for item in components.values() if item.get("collection_status") in {"ok", "partial"}]
-    status = "ok" if len(successful) == len(components) and not errors else ("partial" if successful else "failed")
-    binding = load_binding(project_dir)
+    if len(successful) == len(components) and not errors:
+        status = "ok"
+    elif successful:
+        status = "partial"
+    elif errors and all("not authenticated" in item.get("message", "") for item in errors):
+        status = "needs_auth"
+        warnings.append({"scope": "gsc", "code": "authentication_required", "message": errors[0]["message"]})
+        errors = []
+    else:
+        status = "failed"
     report = {
         "schema_version": SCHEMA_VERSION,
         "collector_version": COLLECTOR_VERSION,

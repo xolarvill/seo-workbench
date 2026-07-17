@@ -65,6 +65,8 @@ def api_key() -> str:
     value = os.environ.get("SEO_WORKBENCH_CRUX_API_KEY", "").strip()
     if value:
         return value
+    if API_KEY_PATH.is_symlink():
+        raise RuntimeError("CrUX API key file cannot be a symlink")
     try:
         value = API_KEY_PATH.read_text(encoding="utf-8").strip()
     except OSError:

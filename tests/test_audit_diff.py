@@ -4,6 +4,8 @@ from pathlib import Path
 
 from seo_workbench import state
 from seo_workbench.audit_diff import (
+    compare_crux,
+    compare_gsc,
     compare_performance,
     compare_raw,
     compare_technology,
@@ -280,6 +282,101 @@ def test_contract_version_mismatch_is_not_comparable() -> None:
     changes, warnings, comparable = compare_performance(baseline, current)
     assert comparable is False
     assert any("runner_version" in warning for warning in warnings)
+    assert all(item["classification"] == "change" for item in changes)
+
+
+def crux_snapshot(lcp: float, rating: str = "good", scope: str = "url") -> dict:
+    return {
+        "schema_version": "1.0",
+        "collector_version": "0.1.0",
+        "collection_status": "ok",
+        "requested_url": "https://example.com/",
+        "queries": [
+            {
+                "form_factor": "mobile",
+                "effective_scope": scope,
+                "effective_value": "https://example.com/" if scope == "url" else "https://example.com",
+                "current": {
+                    "summary": {
+                        "metrics": {
+                            "largest_contentful_paint": {"p75": lcp, "rating": rating},
+                            "interaction_to_next_paint": {"p75": 150, "rating": "good"},
+                            "cumulative_layout_shift": {"p75": 0.05, "rating": "good"},
+                        }
+                    }
+                },
+            }
+        ],
+    }
+
+
+def test_crux_diff_tracks_field_regression_and_rejects_scope_change() -> None:
+    changes, warnings, comparable = compare_crux(crux_snapshot(2000), crux_snapshot(3200, "needs_improvement"))
+    assert comparable is True
+    assert warnings == []
+    assert {item["field"] for item in changes if item["classification"] == "regression"} == {
+        "largest_contentful_paint.p75",
+        "largest_contentful_paint.rating",
+    }
+
+    changes, warnings, comparable = compare_crux(crux_snapshot(2000), crux_snapshot(3000, "needs_improvement", "origin"))
+    assert comparable is False
+    assert any("effective scope" in warning for warning in warnings)
+    assert all(item["classification"] == "change" for item in changes)
+
+
+def gsc_snapshot(clicks: float, verdict: str, sitemap_errors: int = 0, days: int = 28) -> dict:
+    return {
+        "schema_version": "1.0",
+        "collector_version": "0.1.0",
+        "collection_status": "ok",
+        "property": "sc-domain:example.com",
+        "components": {
+            "search_analytics": {
+                "collection_status": "ok",
+                "search_type": "web",
+                "data_state": "final",
+                "window_days": days,
+                "compare": True,
+                "windows": {"current": {"totals": {"rows": [{"clicks": clicks, "impressions": 1000, "ctr": 0.1, "position": 5}]}}},
+            },
+            "inspection": {
+                "collection_status": "ok",
+                "inspections": [
+                    {
+                        "url": "https://example.com/",
+                        "inspection_result": {"indexStatusResult": {"verdict": verdict, "robotsTxtState": "ALLOWED"}},
+                    }
+                ],
+            },
+            "sitemaps": {
+                "collection_status": "ok",
+                "sitemaps": [
+                    {
+                        "path": "https://example.com/sitemap.xml",
+                        "errors": sitemap_errors,
+                        "warnings": 0,
+                        "pending": False,
+                        "contents": [{"submitted": 100}],
+                    }
+                ],
+            },
+        },
+    }
+
+
+def test_gsc_diff_compares_search_indexing_and_sitemaps() -> None:
+    changes, warnings, comparable = compare_gsc(gsc_snapshot(100, "PASS"), gsc_snapshot(80, "FAIL", 2))
+    assert comparable is True
+    assert warnings == []
+    regressions = {(item["scope"], item["field"]) for item in changes if item["classification"] == "regression"}
+    assert ("gsc_search_analytics", "clicks") in regressions
+    assert ("gsc_inspection", "verdict") in regressions
+    assert ("gsc_sitemap", "errors") in regressions
+
+    changes, warnings, comparable = compare_gsc(gsc_snapshot(100, "PASS"), gsc_snapshot(80, "FAIL", days=30))
+    assert comparable is False
+    assert any("window_days" in warning for warning in warnings)
     assert all(item["classification"] == "change" for item in changes)
 
 

@@ -111,6 +111,40 @@ def test_evidence_json_surfaces_partial_collection_status(tmp_path: Path, monkey
     assert captured["crawl_limit"] == 5
 
 
+def test_evidence_surfaces_google_configuration_states_without_failing_raw(tmp_path: Path, monkeypatch) -> None:
+    from seo_workbench_tools import crux_probe, workflow_evidence
+
+    project_dir = tmp_path / "project"
+    state.init_state("shopify", "Shop", "https://example.com", project_dir=project_dir)
+
+    def base_bundle(*args, **kwargs):
+        return {
+            "schema_version": "1.0",
+            "collector_version": "0.6.0",
+            "seed_url": "https://example.com",
+            "pages": [{"url": "https://example.com", "status": 200}],
+            "site": {},
+            "errors": [],
+            "warnings": [],
+            "source_confidence": {"performance_field": 0.0, "search_console": 0.0},
+        }
+
+    monkeypatch.setattr(workflow_evidence, "collect", base_bundle)
+    monkeypatch.setattr(crux_probe, "collect", lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("key missing")))
+    path = workflow_evidence.collect_from_state(
+        project_dir / "state.json",
+        15,
+        10,
+        project_dir / "audits/raw",
+        crux=True,
+        gsc=True,
+    )
+    report = json.loads(path.read_text())
+    assert report["collection_status"] == "ok"
+    assert report["crux_audit"]["collection_status"] == "needs_config"
+    assert report["gsc_audit"]["collection_status"] == "needs_auth"
+
+
 def test_project_id_rejects_symlink_escape(tmp_path: Path) -> None:
     projects_root = tmp_path / "projects"
     outside = tmp_path / "outside"

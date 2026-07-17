@@ -18,3 +18,10 @@ projects/*/
 !projects/default/
 !projects/default/**
 projects/default/.DS_Store
+projects/**/.runtime/
+
+# Google field/search evidence is local and can contain private business data.
+projects/default/audits/crux/*
+!projects/default/audits/crux/.gitkeep
+projects/default/audits/gsc/*
+!projects/default/audits/gsc/.gitkeep

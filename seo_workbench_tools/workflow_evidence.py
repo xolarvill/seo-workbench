@@ -30,6 +30,8 @@ def collect_from_state(
     performance: bool = False,
     performance_runs: int = 5,
     performance_form_factor: str = "mobile",
+    crux: bool = False,
+    gsc: bool = False,
     crawl_limit: int = 5,
 ) -> Path:
     state = json.loads(state_path.read_text(encoding="utf-8"))
@@ -52,6 +54,61 @@ def collect_from_state(
         performance_form_factor=performance_form_factor,
         crawl_limit=crawl_limit,
     )
+    if crux:
+        try:
+            from seo_workbench_tools.crux_probe import collect as collect_crux
+
+            crux_report = collect_crux(url, output_dir.parent / "crux", timeout=timeout)
+            bundle["crux_audit"] = {
+                "collection_status": crux_report.get("collection_status", "failed"),
+                "summary": crux_report.get("summary", {}),
+                "manifest": crux_report.get("manifest", {}),
+                "error_count": len(crux_report.get("errors", [])),
+                "warning_count": len(crux_report.get("warnings", [])),
+            }
+            if crux_report.get("collection_status") in {"ok", "partial"}:
+                bundle["source_confidence"]["performance_field"] = 0.95
+            bundle["errors"].extend(crux_report.get("errors", []))
+            bundle["warnings"].extend(crux_report.get("warnings", []))
+        except RuntimeError as exc:
+            bundle["crux_audit"] = {"collection_status": "needs_config", "errors": [], "warnings": [{"message": str(exc)}]}
+            bundle["warnings"].append({"scope": "crux", "code": "configuration_required", "message": str(exc)})
+    if gsc:
+        try:
+            from seo_workbench_tools.gsc_probe import collect_all as collect_gsc
+
+            inspection_urls = [
+                value
+                for page in bundle.get("pages", [])
+                for value in (page.get("final_url"), page.get("url"))
+                if value
+            ]
+            gsc_report = collect_gsc(
+                state_path.parent,
+                output_dir.parent / "gsc",
+                inspection_urls=inspection_urls,
+                timeout=max(timeout, 30),
+            )
+            bundle["gsc_audit"] = {
+                "collection_status": gsc_report.get("collection_status", "failed"),
+                "manifest": gsc_report.get("manifest", {}),
+                "components": {
+                    name: {"collection_status": component.get("collection_status", "failed")}
+                    for name, component in gsc_report.get("components", {}).items()
+                },
+                "error_count": len(gsc_report.get("errors", [])),
+                "warning_count": len(gsc_report.get("warnings", [])),
+            }
+            if gsc_report.get("collection_status") in {"ok", "partial"}:
+                bundle["source_confidence"]["search_console"] = 0.95
+                bundle["errors"].extend(gsc_report.get("errors", []))
+            bundle["warnings"].extend(gsc_report.get("warnings", []))
+        except RuntimeError as exc:
+            bundle["gsc_audit"] = {"collection_status": "needs_auth", "errors": [], "warnings": [{"message": str(exc)}]}
+            bundle["warnings"].append({"scope": "gsc", "code": "authentication_required", "message": str(exc)})
+    from seo_workbench_tools.evidence_bundle import collection_status
+
+    bundle["collection_status"] = collection_status(bundle)
     bundle["state_path"] = str(state_path)
     return write_bundle(bundle, output_dir)
 
@@ -79,6 +136,8 @@ def main(argv: list[str] | None = None) -> int:
     argp.add_argument("--performance", action="store_true")
     argp.add_argument("--performance-runs", type=int, default=5)
     argp.add_argument("--performance-form-factor", choices=["mobile", "desktop"], default="mobile")
+    argp.add_argument("--crux", action="store_true")
+    argp.add_argument("--gsc", action="store_true")
     argp.add_argument("--self-test", action="store_true")
     args = argp.parse_args(argv)
 
@@ -97,6 +156,8 @@ def main(argv: list[str] | None = None) -> int:
             performance=args.performance,
             performance_runs=args.performance_runs,
             performance_form_factor=args.performance_form_factor,
+            crux=args.crux,
+            gsc=args.gsc,
             crawl_limit=args.crawl_limit,
         )
     except (OSError, ValueError, json.JSONDecodeError) as exc:

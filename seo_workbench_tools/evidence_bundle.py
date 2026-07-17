@@ -308,6 +308,8 @@ def collect(
             "rendered_dom": 0.0,
             "technology_fingerprints": 0.0,
             "performance_lab": 0.0,
+            "performance_field": 0.0,
+            "search_console": 0.0,
         },
     }
     rendered_report = None

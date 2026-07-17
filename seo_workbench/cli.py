@@ -134,6 +134,8 @@ def cmd_evidence(args: argparse.Namespace) -> int:
         state.safe_project_path(args.project_dir, "audits/rendered")
         state.safe_project_path(args.project_dir, "audits/technology")
         state.safe_project_path(args.project_dir, "audits/performance")
+        state.safe_project_path(args.project_dir, "audits/crux")
+        state.safe_project_path(args.project_dir, "audits/gsc")
     path = collect_from_state(
         state.state_path(args.project_dir),
         args.timeout,
@@ -144,6 +146,8 @@ def cmd_evidence(args: argparse.Namespace) -> int:
         performance=args.performance,
         performance_runs=args.performance_runs,
         performance_form_factor=args.performance_form_factor,
+        crux=args.crux,
+        gsc=args.gsc,
         crawl_limit=args.crawl_limit,
     )
     report = json.loads(path.read_text(encoding="utf-8"))
@@ -160,6 +164,10 @@ def cmd_evidence(args: argparse.Namespace) -> int:
                 "rendered": args.rendered,
                 "technology": args.technology,
                 "performance": args.performance,
+                "crux": args.crux,
+                "gsc": args.gsc,
+                "crux_status": report.get("crux_audit", {}).get("collection_status", "not_requested"),
+                "gsc_status": report.get("gsc_audit", {}).get("collection_status", "not_requested"),
                 "crawl_limit": args.crawl_limit,
                 "discovered_count": report.get("discovery", {}).get("discovered_count", 0),
                 "possible_spa_shell": report.get("route_sample_audit", {}).get("possible_spa_shell", False),
@@ -269,7 +277,7 @@ def cmd_crux(args: argparse.Namespace) -> int:
 
 def _gsc_result(report: dict, args: argparse.Namespace, *, path: str = "") -> int:
     status = report.get("collection_status", "ok")
-    ok = status != "failed"
+    ok = status in {"ok", "partial"}
     if args.json_output:
         print_json({"ok": ok, "path": path, **report})
     elif path:
@@ -439,6 +447,8 @@ def build_parser() -> argparse.ArgumentParser:
     evidence.add_argument("--performance", action="store_true")
     evidence.add_argument("--performance-runs", type=int, default=5)
     evidence.add_argument("--performance-form-factor", choices=["mobile", "desktop"], default="mobile")
+    evidence.add_argument("--crux", action="store_true")
+    evidence.add_argument("--gsc", action="store_true")
     evidence.add_argument("--json", action="store_true", dest="json_output")
     evidence.set_defaults(func=cmd_evidence)
 

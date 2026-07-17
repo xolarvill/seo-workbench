@@ -46,6 +46,8 @@ def context_for_step(phase: str, step_id: str, project_dir: Path) -> list[str]:
             str(project_dir / "audits/rendered"),
             str(project_dir / "audits/technology/latest.json"),
             str(project_dir / "audits/performance/latest.json"),
+            str(project_dir / "audits/crux/latest.json"),
+            str(project_dir / "audits/gsc/latest.json"),
             str(project_dir / "audits/diffs/latest.json"),
         ]
     if phase == "OFF_PAGE":
@@ -55,6 +57,8 @@ def context_for_step(phase: str, step_id: str, project_dir: Path) -> list[str]:
             *common,
             str(project_dir / "audits/raw/latest.json"),
             str(project_dir / "audits/performance/latest.json"),
+            str(project_dir / "audits/crux/latest.json"),
+            str(project_dir / "audits/gsc/latest.json"),
             str(project_dir / "audits/diffs/latest.json"),
         ]
     return common

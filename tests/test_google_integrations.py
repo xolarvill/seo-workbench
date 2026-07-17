@@ -144,3 +144,12 @@ def test_representative_urls_prioritize_failed_and_canonical_pages(tmp_path) -> 
         "https://example.com/failed",
         "https://example.com/canonical",
     ]
+
+
+def test_binding_rejects_symlinked_runtime_directory(tmp_path) -> None:
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (tmp_path / "project").mkdir()
+    (tmp_path / "project/.runtime").symlink_to(outside, target_is_directory=True)
+    with pytest.raises(ValueError, match="symlink"):
+        gsc_probe.binding_path(tmp_path / "project")

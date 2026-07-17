@@ -11,13 +11,15 @@ from seo_workbench import state
 
 SCHEMA_VERSION = "1.0"
 DIFF_VERSION = "0.1.0"
-AUDIT_KINDS = ("raw", "technology", "performance")
+AUDIT_KINDS = ("raw", "technology", "performance", "crux", "gsc")
 EXPECTED_CONTRACTS = {
     "raw": {"schema_version": "1.0", "collector_version": "0.6.0"},
     # Technology has two provider-specific detector contracts. Snapshot identity
     # already requires matching detector/provider versions before comparison.
     "technology": {"schema_version": "1.0"},
     "performance": {"schema_version": "1.0", "runner_version": "0.1.0"},
+    "crux": {"schema_version": "1.0", "collector_version": "0.1.0"},
+    "gsc": {"schema_version": "1.0", "collector_version": "0.1.0"},
 }
 PERFORMANCE_METRICS = (
     "first-contentful-paint",
@@ -45,6 +47,7 @@ def _atomic_write_json(path: Path, data: dict[str, Any]) -> None:
             temporary = Path(handle.name)
             json.dump(data, handle, ensure_ascii=False, indent=2)
             handle.write("\n")
+        temporary.chmod(0o600)
         temporary.replace(path)
     finally:
         if temporary and temporary.exists():
@@ -65,6 +68,10 @@ def _snapshot_patterns(project_dir: Path, kind: str) -> list[Path]:
         return list(_kind_root(project_dir, kind).glob("technology-*.json"))
     if kind == "performance":
         return list(_kind_root(project_dir, kind).glob("performance-*/summary.json"))
+    if kind == "crux":
+        return list(_kind_root(project_dir, kind).glob("crux-*.json"))
+    if kind == "gsc":
+        return list(_kind_root(project_dir, kind).glob("gsc-*.json"))
     raise ValueError(f"unsupported audit kind: {kind}")
 
 
@@ -165,6 +172,34 @@ def _snapshot_identity(kind: str, snapshot: dict[str, Any]) -> tuple[Any, ...]:
             snapshot.get("form_factor"),
             snapshot.get("runs_requested"),
             _nested(snapshot, "environment.browser_version", ""),
+        )
+    if kind == "crux":
+        query_identity = tuple(
+            sorted(
+                (
+                    item.get("form_factor"),
+                    item.get("effective_scope"),
+                    item.get("effective_value", ""),
+                )
+                for item in snapshot.get("queries", [])
+            )
+        )
+        return (
+            snapshot.get("requested_url"),
+            snapshot.get("schema_version"),
+            snapshot.get("collector_version"),
+            query_identity,
+        )
+    if kind == "gsc":
+        search = snapshot.get("components", {}).get("search_analytics", {})
+        return (
+            snapshot.get("property"),
+            snapshot.get("schema_version"),
+            snapshot.get("collector_version"),
+            search.get("search_type"),
+            search.get("data_state"),
+            search.get("window_days"),
+            search.get("compare"),
         )
     raise ValueError(f"unsupported audit kind: {kind}")
 
@@ -455,10 +490,201 @@ def compare_performance(baseline: dict[str, Any], current: dict[str, Any]) -> tu
     return changes, warnings, comparable
 
 
+def _number(value: Any) -> float | None:
+    try:
+        return float(value) if value is not None else None
+    except (TypeError, ValueError):
+        return None
+
+
+def compare_crux(baseline: dict[str, Any], current: dict[str, Any]) -> tuple[list[dict[str, Any]], list[str], bool]:
+    comparable, warnings = _contract_comparability("crux", baseline, current)
+    if baseline.get("collection_status") not in {"ok", "partial"} or current.get("collection_status") not in {"ok", "partial"}:
+        comparable = False
+        warnings.append("CrUX comparison requires successful field-data snapshots")
+    before_queries = {item.get("form_factor"): item for item in baseline.get("queries", [])}
+    after_queries = {item.get("form_factor"): item for item in current.get("queries", [])}
+    if set(before_queries) != set(after_queries):
+        comparable = False
+        warnings.append("CrUX form factors differ")
+    changes: list[dict[str, Any]] = []
+    rating_rank = {"good": 0, "needs_improvement": 1, "poor": 2}
+    for form_factor in sorted(before_queries.keys() & after_queries.keys()):
+        before = before_queries[form_factor]
+        after = after_queries[form_factor]
+        if (before.get("effective_scope"), before.get("effective_value")) != (
+            after.get("effective_scope"),
+            after.get("effective_value"),
+        ):
+            comparable = False
+            warnings.append(f"CrUX effective scope differs for {form_factor}")
+            continue
+        before_metrics = _nested(before, "current.summary.metrics", {})
+        after_metrics = _nested(after, "current.summary.metrics", {})
+        for metric in sorted(set(before_metrics) | set(after_metrics)):
+            old_value = _number(before_metrics.get(metric, {}).get("p75"))
+            new_value = _number(after_metrics.get(metric, {}).get("p75"))
+            if old_value is not None and new_value is not None and old_value != new_value:
+                minimum = 0.01 if metric == "cumulative_layout_shift" else 50.0
+                significant = abs(new_value - old_value) >= max(minimum, abs(old_value) * 0.05)
+                classification = "change"
+                if comparable and significant:
+                    classification = "improvement" if new_value < old_value else "regression"
+                changes.append(
+                    _change(
+                        "crux",
+                        f"{metric}.p75",
+                        old_value,
+                        new_value,
+                        classification,
+                        key=form_factor,
+                        significant=significant,
+                        delta=new_value - old_value,
+                        delta_percent=((new_value - old_value) / old_value * 100) if old_value else None,
+                    )
+                )
+            old_rating = before_metrics.get(metric, {}).get("rating")
+            new_rating = after_metrics.get(metric, {}).get("rating")
+            if old_rating != new_rating and old_rating in rating_rank and new_rating in rating_rank:
+                classification = "change"
+                if comparable:
+                    classification = "regression" if rating_rank[new_rating] > rating_rank[old_rating] else "improvement"
+                changes.append(
+                    _change(
+                        "crux",
+                        f"{metric}.rating",
+                        old_rating,
+                        new_rating,
+                        classification,
+                        key=form_factor,
+                    )
+                )
+    if not comparable:
+        for item in changes:
+            item["classification"] = "change"
+    return changes, warnings, comparable
+
+
+def _first_row(report: dict[str, Any], path: str) -> dict[str, Any]:
+    rows = _nested(report, path, [])
+    return rows[0] if isinstance(rows, list) and rows and isinstance(rows[0], dict) else {}
+
+
+def compare_gsc(baseline: dict[str, Any], current: dict[str, Any]) -> tuple[list[dict[str, Any]], list[str], bool]:
+    comparable, warnings = _contract_comparability("gsc", baseline, current)
+    if baseline.get("collection_status") not in {"ok", "partial"} or current.get("collection_status") not in {"ok", "partial"}:
+        comparable = False
+        warnings.append("GSC comparison requires successful composite snapshots")
+    if baseline.get("property") != current.get("property"):
+        comparable = False
+        warnings.append("GSC property differs")
+    before_search = _nested(baseline, "components.search_analytics", {})
+    after_search = _nested(current, "components.search_analytics", {})
+    for field in ("search_type", "data_state", "window_days", "compare"):
+        if before_search.get(field) != after_search.get(field):
+            comparable = False
+            warnings.append(f"GSC Search Analytics {field} differs")
+    changes: list[dict[str, Any]] = []
+    before_totals = _first_row(before_search, "windows.current.totals.rows")
+    after_totals = _first_row(after_search, "windows.current.totals.rows")
+    for field, lower_is_better in (("clicks", False), ("impressions", False), ("ctr", False), ("position", True)):
+        old_value = _number(before_totals.get(field))
+        new_value = _number(after_totals.get(field))
+        if old_value is None or new_value is None or old_value == new_value:
+            continue
+        significant = abs(new_value - old_value) >= (0.01 if field == "ctr" else max(1.0, abs(old_value) * 0.05))
+        classification = "change"
+        if comparable and significant:
+            classification = _numeric_classification(old_value, new_value, lower_is_better)
+        changes.append(
+            _change(
+                "gsc_search_analytics",
+                field,
+                old_value,
+                new_value,
+                classification,
+                significant=significant,
+                delta=new_value - old_value,
+                delta_percent=((new_value - old_value) / old_value * 100) if old_value else None,
+            )
+        )
+
+    before_inspections = {
+        item.get("url"): item.get("inspection_result", {})
+        for item in _nested(baseline, "components.inspection.inspections", [])
+        if item.get("url")
+    }
+    after_inspections = {
+        item.get("url"): item.get("inspection_result", {})
+        for item in _nested(current, "components.inspection.inspections", [])
+        if item.get("url")
+    }
+    inspection_fields = (
+        "verdict",
+        "coverageState",
+        "robotsTxtState",
+        "indexingState",
+        "pageFetchState",
+        "googleCanonical",
+        "userCanonical",
+        "lastCrawlTime",
+    )
+    for url in sorted(before_inspections.keys() | after_inspections.keys()):
+        before_status = before_inspections.get(url, {}).get("indexStatusResult", {})
+        after_status = after_inspections.get(url, {}).get("indexStatusResult", {})
+        if url not in before_inspections or url not in after_inspections:
+            changes.append(_change("gsc_inspection", "presence", url in before_inspections, url in after_inspections, key=url))
+            continue
+        for field in inspection_fields:
+            if before_status.get(field) != after_status.get(field):
+                classification = "change"
+                if comparable and field == "verdict":
+                    classification = "improvement" if after_status.get(field) == "PASS" else "regression"
+                changes.append(
+                    _change(
+                        "gsc_inspection",
+                        field,
+                        before_status.get(field),
+                        after_status.get(field),
+                        classification,
+                        key=url,
+                    )
+                )
+
+    before_sitemaps = {item.get("path"): item for item in _nested(baseline, "components.sitemaps.sitemaps", []) if item.get("path")}
+    after_sitemaps = {item.get("path"): item for item in _nested(current, "components.sitemaps.sitemaps", []) if item.get("path")}
+    for path in sorted(before_sitemaps.keys() | after_sitemaps.keys()):
+        before_sitemap = before_sitemaps.get(path)
+        after_sitemap = after_sitemaps.get(path)
+        if before_sitemap is None or after_sitemap is None:
+            changes.append(_change("gsc_sitemap", "presence", bool(before_sitemap), bool(after_sitemap), key=path))
+            continue
+        before_submitted = sum(item.get("submitted", 0) for item in before_sitemap.get("contents", []))
+        after_submitted = sum(item.get("submitted", 0) for item in after_sitemap.get("contents", []))
+        for field, old_value, new_value, lower_is_better in (
+            ("errors", before_sitemap.get("errors", 0), after_sitemap.get("errors", 0), True),
+            ("warnings", before_sitemap.get("warnings", 0), after_sitemap.get("warnings", 0), True),
+            ("pending", before_sitemap.get("pending", False), after_sitemap.get("pending", False), True),
+            ("submitted", before_submitted, after_submitted, False),
+        ):
+            if old_value == new_value:
+                continue
+            classification = "change"
+            if comparable:
+                classification = _numeric_classification(int(old_value), int(new_value), lower_is_better)
+            changes.append(_change("gsc_sitemap", field, old_value, new_value, classification, key=path))
+    if not comparable:
+        for item in changes:
+            item["classification"] = "change"
+    return changes, warnings, comparable
+
+
 COMPARATORS: dict[str, Callable[[dict[str, Any], dict[str, Any]], tuple[list[dict[str, Any]], list[str], bool]]] = {
     "raw": compare_raw,
     "technology": compare_technology,
     "performance": compare_performance,
+    "crux": compare_crux,
+    "gsc": compare_gsc,
 }
 
 
@@ -470,6 +696,10 @@ def _validate_snapshot(kind: str, path: Path, snapshot: dict[str, Any]) -> None:
     if kind == "performance":
         if not snapshot.get("lighthouse_version") or not isinstance(snapshot.get("aggregate"), dict):
             raise ValueError(f"performance snapshot has an invalid contract: {path}")
+    if kind == "crux" and not isinstance(snapshot.get("queries"), list):
+        raise ValueError(f"CrUX snapshot has an invalid contract: {path}")
+    if kind == "gsc" and not isinstance(snapshot.get("components"), dict):
+        raise ValueError(f"GSC snapshot has an invalid contract: {path}")
 
 
 def compare_kind(

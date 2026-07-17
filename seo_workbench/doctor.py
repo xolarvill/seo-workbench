@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import os
 import re
 import shutil
 import subprocess
@@ -14,6 +16,13 @@ from seo_workbench.validation import validate_project
 
 def _check(name: str, ok: bool, detail: str = "", severity: str = "error") -> dict[str, Any]:
     return {"name": name, "ok": ok, "severity": severity, "detail": detail}
+
+
+def _module_available(name: str) -> bool:
+    try:
+        return importlib.util.find_spec(name) is not None
+    except (ImportError, ModuleNotFoundError):
+        return False
 
 
 def _latest(pattern_dir: Path, pattern: str) -> str:
@@ -68,8 +77,12 @@ def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
     rendered_dir = state.safe_project_path(project_dir, "audits/rendered")
     technology_dir = state.safe_project_path(project_dir, "audits/technology")
     performance_dir = state.safe_project_path(project_dir, "audits/performance")
+    crux_dir = state.safe_project_path(project_dir, "audits/crux")
+    gsc_dir = state.safe_project_path(project_dir, "audits/gsc")
     diff_dir = state.safe_project_path(project_dir, "audits/diffs")
     checks.append(_check("raw_evidence_dir", raw_dir.exists(), str(raw_dir), "warning"))
+    checks.append(_check("crux_evidence_dir", crux_dir.exists(), str(crux_dir), "info"))
+    checks.append(_check("gsc_evidence_dir", gsc_dir.exists(), str(gsc_dir), "info"))
     latest_raw = _latest(raw_dir, "evidence-*.json") if raw_dir.exists() else ""
     checks.append(_check("latest_raw_evidence", bool(latest_raw), latest_raw or "no evidence bundle found", "warning"))
 
@@ -85,6 +98,82 @@ def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
             wappalyzer,
             "installed" if wappalyzer else "not installed; run ./setup.sh or use technology --scan-mode fast",
             "warning",
+        )
+    )
+    from seo_workbench_tools import crux_probe, gsc_probe
+
+    crux_key_env = bool(os.environ.get("SEO_WORKBENCH_CRUX_API_KEY", "").strip())
+    crux_key_file = crux_probe.API_KEY_PATH.is_file()
+    checks.append(
+        _check(
+            "crux_api_key",
+            crux_key_env or crux_key_file,
+            "configured via environment" if crux_key_env else (str(crux_probe.API_KEY_PATH) if crux_key_file else "not configured"),
+            "info",
+        )
+    )
+    latest_crux_path = state.safe_project_path(project_dir, "audits/crux/latest.json")
+    latest_crux_status = ""
+    if latest_crux_path.is_file() and not latest_crux_path.is_symlink():
+        try:
+            latest_crux_status = state.read_json(latest_crux_path).get("collection_status", "")
+        except (OSError, ValueError, json.JSONDecodeError):
+            latest_crux_status = "invalid"
+    checks.append(
+        _check(
+            "latest_crux_evidence",
+            latest_crux_status in {"ok", "partial", "no_data"},
+            f"{latest_crux_path} ({latest_crux_status})" if latest_crux_status else "no CrUX evidence found",
+            "info",
+        )
+    )
+
+    google_auth = _module_available("google.auth")
+    google_oauth = _module_available("google_auth_oauthlib")
+    checks.append(
+        _check(
+            "google_auth_support",
+            google_auth and google_oauth,
+            "installed" if google_auth and google_oauth else "not installed; run ./setup.sh",
+            "info",
+        )
+    )
+    try:
+        binding_file = gsc_probe.binding_path(project_dir)
+        binding_ok = binding_file.is_file() and not binding_file.is_symlink()
+        binding_detail = str(binding_file) if binding_ok else "not bound"
+    except ValueError as exc:
+        binding_file = project_dir / ".runtime/integrations/google.json"
+        binding_ok = False
+        binding_detail = str(exc)
+    checks.append(_check("gsc_property_binding", binding_ok, binding_detail, "info"))
+    if binding_ok and google_auth and google_oauth:
+        try:
+            binding = gsc_probe.load_binding(project_dir)
+            credentials = gsc_probe.load_credentials(binding["profile"], refresh=False)
+            refreshable = bool(
+                getattr(credentials, "valid", False)
+                or getattr(credentials, "refresh_token", None)
+                or getattr(credentials, "service_account_email", None)
+            )
+            credential_detail = f"profile {binding['profile']} ({'refreshable' if refreshable else 'reauthentication required'})"
+        except (OSError, RuntimeError, ValueError) as exc:
+            refreshable = False
+            credential_detail = str(exc)
+        checks.append(_check("gsc_credentials", refreshable, credential_detail, "info"))
+    latest_gsc_path = state.safe_project_path(project_dir, "audits/gsc/latest.json")
+    latest_gsc_status = ""
+    if latest_gsc_path.is_file() and not latest_gsc_path.is_symlink():
+        try:
+            latest_gsc_status = state.read_json(latest_gsc_path).get("collection_status", "")
+        except (OSError, ValueError, json.JSONDecodeError):
+            latest_gsc_status = "invalid"
+    checks.append(
+        _check(
+            "latest_gsc_evidence",
+            latest_gsc_status in {"ok", "partial"},
+            f"{latest_gsc_path} ({latest_gsc_status})" if latest_gsc_status else "no GSC evidence found",
+            "info",
         )
     )
 
