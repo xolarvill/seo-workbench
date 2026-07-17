@@ -65,8 +65,9 @@ type pageResult struct {
 var blockedPrefixes = []netip.Prefix{
 	netip.MustParsePrefix("100.64.0.0/10"),
 	netip.MustParsePrefix("192.0.0.0/24"),
-	netip.MustParsePrefix("198.18.0.0/15"),
 }
+
+var proxyFakeIPPrefix = netip.MustParsePrefix("198.18.0.0/15")
 
 func providerVersion() string {
 	info, ok := debug.ReadBuildInfo()
@@ -132,6 +133,9 @@ func validateTarget(target *url.URL) error {
 
 func publicAddress(address netip.Addr) bool {
 	address = address.Unmap()
+	if proxyFakeIPPrefix.Contains(address) {
+		return true
+	}
 	if !address.IsGlobalUnicast() || address.IsPrivate() || address.IsLoopback() || address.IsLinkLocalUnicast() {
 		return false
 	}

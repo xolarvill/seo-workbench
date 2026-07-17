@@ -68,6 +68,13 @@ func TestPrivateAddressesAreBlockedByDefault(t *testing.T) {
 	}
 }
 
+func TestProxyFakeIPRangeIsAllowedByDefault(t *testing.T) {
+	address := netip.MustParseAddr("198.18.0.26")
+	if !publicAddress(address) {
+		t.Fatal("expected transparent-proxy fake IP range to be allowed")
+	}
+}
+
 func TestReportURLsRedactSecrets(t *testing.T) {
 	redacted := redactedURL("https://user:pass@example.com/path?utm_source=test&access_token=secret&X-Amz-Signature=signed#fragment")
 	if strings.Contains(redacted, "user") || strings.Contains(redacted, "secret") || strings.Contains(redacted, "signed") || strings.Contains(redacted, "fragment") {

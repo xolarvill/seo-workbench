@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from seo_workbench_tools.files import atomic_write_text
+from seo_workbench_tools.runtime_signals import detect_tags, detect_technologies
 from seo_workbench_tools.technology_architecture import analyze_architecture
 
 
@@ -137,6 +138,161 @@ def _normalize_wappalyzer_results(
     }
 
 
+def _page_asset_urls(page: dict[str, Any]) -> list[str]:
+    return list(
+        dict.fromkeys(
+            [
+                str(item.get("url", ""))
+                for item in page.get("resources", [])
+                if item.get("url")
+            ]
+            + [
+                str(item.get("href", ""))
+                for item in page.get("links", [])
+                if item.get("href")
+            ]
+        )
+    )
+
+
+def enrich_with_page_evidence(report: dict[str, Any], evidence_pages: list[dict[str, Any]]) -> dict[str, Any]:
+    report_pages = report.setdefault("pages", [])
+    by_url = {
+        str(value): page
+        for page in report_pages
+        for value in (page.get("url"), page.get("final_url"))
+        if value
+    }
+    aggregate_tags: dict[str, dict[str, Any]] = {}
+    for evidence_page in evidence_pages:
+        page = by_url.get(str(evidence_page.get("url", ""))) or by_url.get(str(evidence_page.get("final_url", "")))
+        if page is None:
+            page = {
+                "url": evidence_page.get("url", ""),
+                "final_url": evidence_page.get("final_url", ""),
+                "fingerprint_inputs": [],
+                "technologies": [],
+            }
+            report_pages.append(page)
+        assets = _page_asset_urls(evidence_page)
+        detections = detect_technologies(assets)
+        existing = {str(item.get("name", "")).casefold() for item in page.get("technologies", [])}
+        fallback = []
+        for item in detections:
+            if item["name"].casefold() in existing:
+                continue
+            page.setdefault("technologies", []).append(item)
+            existing.add(item["name"].casefold())
+            fallback.append(item)
+        if assets:
+            page["fingerprint_inputs"] = sorted(set(page.get("fingerprint_inputs", [])) | {"asset_urls"})
+        page["fallback_detections"] = fallback
+        tags = detect_tags(assets)
+        page["tag_audit"] = {
+            "status": "detected" if tags else "not_detected_in_static_assets",
+            "detected": tags,
+            "evidence_quality": "static asset URLs only; runtime, interaction, consent, and route-specific tags remain unverified",
+        }
+        for tag in tags:
+            aggregate_tags.setdefault(tag["name"], tag)
+    report["tag_audit"] = {
+        "status": "detected" if aggregate_tags else "not_detected_in_static_assets",
+        "detected": [aggregate_tags[name] for name in sorted(aggregate_tags)],
+        "evidence_quality": "static asset URLs only; use rendered evidence for runtime requests",
+    }
+    return report
+
+
+def enrich_with_runtime_evidence(report: dict[str, Any], evidence_bundle: dict[str, Any]) -> dict[str, Any]:
+    rendered = evidence_bundle.get("rendered", {})
+    if not rendered:
+        return report
+    report_pages = report.setdefault("pages", [])
+    by_url = {
+        str(value): page
+        for page in report_pages
+        for value in (page.get("url"), page.get("final_url"))
+        if value
+    }
+    aggregate_tags = {
+        item.get("name", ""): item
+        for item in report.get("tag_audit", {}).get("detected", [])
+        if item.get("name")
+    }
+    for runtime_page in rendered.get("pages", []):
+        target = by_url.get(str(runtime_page.get("url", "")))
+        if target is None:
+            target = next(
+                (
+                    by_url.get(str(view.get("url", "")))
+                    for view in runtime_page.get("viewports", {}).values()
+                    if by_url.get(str(view.get("url", ""))) is not None
+                ),
+                None,
+            )
+        if target is None:
+            continue
+        existing = {str(item.get("name", "")).casefold() for item in target.get("technologies", [])}
+        runtime_tags = {
+            item.get("name", ""): item
+            for item in target.get("tag_audit", {}).get("detected", [])
+            if item.get("name")
+        }
+        profile_navigation = {}
+        for profile, view in runtime_page.get("viewports", {}).items():
+            if view.get("error"):
+                continue
+            if view.get("url"):
+                profile_navigation[profile] = view["url"]
+            for item in view.get("technology_signals", []):
+                name = str(item.get("name", ""))
+                if name and name.casefold() not in existing:
+                    target.setdefault("technologies", []).append(item)
+                    existing.add(name.casefold())
+            for item in view.get("analytics_audit", {}).get("detected", []):
+                if item.get("name"):
+                    runtime_tags.setdefault(item["name"], item)
+                    aggregate_tags.setdefault(item["name"], item)
+        target["fingerprint_inputs"] = sorted(
+            set(target.get("fingerprint_inputs", [])) | {"rendered_dom", "runtime_javascript", "network_requests"}
+        )
+        target["runtime_evidence"] = {
+            "generated_at": rendered.get("generated_at", ""),
+            "profile_navigation": profile_navigation,
+        }
+        target["tag_audit"] = {
+            "status": "detected" if runtime_tags else "not_detected_during_observation",
+            "detected": [runtime_tags[name] for name in sorted(runtime_tags)],
+            "evidence_quality": "static assets plus rendered runtime observation; interactions and consent-state changes remain unverified",
+        }
+    report["tag_audit"] = {
+        "status": "detected" if aggregate_tags else "not_detected_during_observation",
+        "detected": [aggregate_tags[name] for name in sorted(aggregate_tags)],
+        "evidence_quality": "static assets plus rendered runtime observation; interactions and consent-state changes remain unverified",
+    }
+    report["runtime_evidence"] = {
+        "generated_at": rendered.get("generated_at", ""),
+        "summary": rendered.get("runtime_summary", {}),
+    }
+    report["architecture_analysis"] = analyze_architecture(report)
+    return report
+
+
+def _collect_page_evidence(urls: list[str], timeout: float, allow_private: bool) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    from seo_workbench_tools import page_probe
+    from seo_workbench_tools.network_boundary import guarded_proxy
+
+    pages = []
+    warnings = []
+    with guarded_proxy(allow_private) as proxy_url, _proxy_environment(proxy_url):
+        for url in urls:
+            try:
+                pages.append(page_probe.probe(url, timeout))
+            except RuntimeError as exc:
+                warnings.append({"scope": "technology_fallback", "url": url, "message": str(exc)})
+    return pages, warnings
+
+
 @contextmanager
 def _proxy_environment(proxy_url: str):
     keys = ("HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy", "NO_PROXY", "no_proxy")
@@ -223,6 +379,9 @@ def collect(
                 "message": f"limited technology fingerprinting to {MAX_TECHNOLOGY_URLS} representative URLs; omitted {omitted_urls}",
             }
         )
+    evidence_pages, fallback_warnings = _collect_page_evidence(unique_urls, timeout, allow_private)
+    enrich_with_page_evidence(report, evidence_pages)
+    report["warnings"].extend(fallback_warnings)
     report["architecture_analysis"] = analyze_architecture(report)
     return report
 
@@ -256,6 +415,14 @@ def collect_from_state(
     if not urls:
         raise ValueError(f"missing project.url in {state_path}")
     report = collect(urls, timeout, allow_private=allow_private, scan_mode=scan_mode)
+    raw_evidence_path = output_dir.parent / "raw/latest.json"
+    if raw_evidence_path.is_file():
+        try:
+            raw_evidence = json.loads(raw_evidence_path.read_text(encoding="utf-8"))
+            if raw_evidence.get("seed_url") == urls[0]:
+                enrich_with_runtime_evidence(report, raw_evidence)
+        except (OSError, json.JSONDecodeError):
+            pass
     performance_path = output_dir.parent / "performance/latest.json"
     performance = None
     if performance_path.is_file():

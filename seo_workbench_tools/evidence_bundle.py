@@ -222,9 +222,11 @@ def collect(
         technology_output_dir = technology_output_dir or DEFAULT_OUTPUT_DIR.parent / "technology"
         try:
             from seo_workbench_tools.technology_probe import collect as collect_technologies
+            from seo_workbench_tools.technology_probe import enrich_with_runtime_evidence
             from seo_workbench_tools.technology_probe import write_report as write_technology_report
 
             technology_report = collect_technologies([url, *extra_pages], timeout=max(timeout, 20))
+            enrich_with_runtime_evidence(technology_report, bundle)
             write_technology_report(technology_report, technology_output_dir)
             bundle["technology_audit"] = technology_report
             if technology_report.get("collection_status") in {"ok", "partial"}:

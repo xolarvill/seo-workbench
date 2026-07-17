@@ -40,6 +40,33 @@ def _rendered_page_map(rendered: dict[str, Any] | None) -> dict[str, dict[str, A
     return mapping
 
 
+def _rendered_record_map(rendered: dict[str, Any] | None) -> dict[str, dict[str, Any]]:
+    if not rendered:
+        return {}
+    mapping = {}
+    for page in rendered.get("pages", []):
+        if page.get("url"):
+            mapping[page["url"]] = page
+        for view in page.get("viewports", {}).values():
+            if view.get("url"):
+                mapping[view["url"]] = page
+    return mapping
+
+
+def _profile_navigation(page: dict[str, Any] | None) -> dict[str, Any]:
+    profiles = {
+        name: {
+            "final_url": view.get("url", ""),
+            "user_agent": view.get("user_agent", ""),
+            "redirected": view.get("navigation", {}).get("redirected", False),
+        }
+        for name, view in (page or {}).get("viewports", {}).items()
+        if not view.get("error") and view.get("url")
+    }
+    final_urls = sorted({item["final_url"] for item in profiles.values() if item["final_url"]})
+    return {"profiles": profiles, "final_urls": final_urls, "varies": len(final_urls) > 1}
+
+
 def compare_page(raw: dict[str, Any], rendered: dict[str, Any] | None) -> dict[str, Any]:
     diffs = []
     raw_schema_types = _schema_types(raw)
@@ -105,6 +132,7 @@ def compare_page(raw: dict[str, Any], rendered: dict[str, Any] | None) -> dict[s
 
 def build_headless_audit(bundle: dict[str, Any], rendered: dict[str, Any] | None, project_type: str = "") -> dict[str, Any]:
     rendered_pages = _rendered_page_map(rendered)
+    rendered_records = _rendered_record_map(rendered)
     pages = []
     critical = []
     warnings = []
@@ -116,6 +144,8 @@ def build_headless_audit(bundle: dict[str, Any], rendered: dict[str, Any] | None
             continue
         rendered_page = rendered_pages.get(raw.get("url", "")) or rendered_pages.get(raw.get("final_url", ""))
         comparison = compare_page(raw, rendered_page)
+        record = rendered_records.get(raw.get("url", "")) or rendered_records.get(raw.get("final_url", ""))
+        comparison["profile_navigation"] = _profile_navigation(record)
         pages.append(comparison)
 
         url = raw.get("url", "")
@@ -128,6 +158,8 @@ def build_headless_audit(bundle: dict[str, Any], rendered: dict[str, Any] | None
             critical.append(f"{url}: raw HTML missing H1")
         if not raw.get("content_audit", {}).get("has_body_text_in_raw_html", False):
             warnings.append(f"{url}: raw HTML has little or no body text")
+        if comparison["profile_navigation"]["varies"]:
+            warnings.append(f"{url}: rendered navigation varies by browser profile")
 
         for diff in comparison["diffs"]:
             if diff["field"] in {"canonical", "robots_meta"}:

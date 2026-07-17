@@ -11,6 +11,11 @@ from urllib.parse import parse_qsl, urlsplit
 
 
 MAX_HEADER_BYTES = 64 * 1024
+PROXY_FAKE_IP_NETWORK = ipaddress.ip_network("198.18.0.0/15")
+
+
+def is_proxy_fake_ip(address: ipaddress.IPv4Address | ipaddress.IPv6Address) -> bool:
+    return isinstance(address, ipaddress.IPv4Address) and address in PROXY_FAKE_IP_NETWORK
 
 
 def sensitive_query_key(key: str) -> bool:
@@ -47,7 +52,7 @@ def resolve_target(host: str, port: int, allow_private: bool) -> tuple[int, tupl
         if raw_address in seen:
             continue
         seen.add(raw_address)
-        if allow_private or address.is_global:
+        if allow_private or address.is_global or is_proxy_fake_ip(address):
             public.append((family, socktype, proto, sockaddr, raw_address))
     if not public:
         raise RuntimeError("target resolves only to non-public addresses; use --allow-private for a trusted local target")
@@ -59,7 +64,13 @@ def inspect_target(url: str, allow_private: bool) -> dict[str, object]:
     parsed = urlsplit(validate_url(url))
     port = parsed.port or (443 if parsed.scheme == "https" else 80)
     _, _, addresses = resolve_target(parsed.hostname or "", port, allow_private)
-    return {"url": url, "hostname": parsed.hostname, "port": port, "resolved_addresses": addresses}
+    return {
+        "url": url,
+        "hostname": parsed.hostname,
+        "port": port,
+        "resolved_addresses": addresses,
+        "proxy_fake_ip": any(is_proxy_fake_ip(ipaddress.ip_address(address)) for address in addresses),
+    }
 
 
 def _read_headers(connection: socket.socket) -> tuple[bytes, bytes]:

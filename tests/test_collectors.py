@@ -4,7 +4,7 @@ from contextlib import nullcontext
 from pathlib import Path
 
 from seo_workbench import state
-from seo_workbench_tools import page_probe, performance_probe, robots_sitemap_probe
+from seo_workbench_tools import page_probe, performance_probe, rendered_probe, robots_sitemap_probe
 from seo_workbench_tools.network_boundary import resolve_target
 from seo_workbench_tools.evidence_bundle import collection_status, collect, performance_confidence, write_bundle
 from seo_workbench_tools.headless import build_headless_audit
@@ -160,6 +160,49 @@ def test_headless_audit_records_rendered_only_body_links_and_images() -> None:
     assert {item["field"] for item in comparison["diffs"]} >= {"has_body_text", "link_count", "image_count"}
 
 
+def test_headless_audit_records_profile_specific_navigation() -> None:
+    raw = {
+        "url": "https://example.com/",
+        "final_url": "https://example.com/",
+        "status": 200,
+        "title": "Example",
+        "meta_description": "Description",
+        "canonical": "https://example.com/",
+        "robots_meta": "index, follow",
+        "h1": ["Example"],
+        "schema_audit": {"schema_types_found": [], "inline_schema_count": 0},
+        "content_audit": {"has_body_text_in_raw_html": True},
+        "link_summary": {"anchor_count": 1},
+        "image_stats": {"total": 0},
+    }
+    base_view = {
+        "title": "Example",
+        "meta_description": "Description",
+        "canonical": "https://example.com/",
+        "robots_meta": "index, follow",
+        "h1": ["Example"],
+        "schema_types": [],
+        "schema_count": 0,
+        "has_body_text": True,
+        "link_summary": {"anchor_count": 1},
+        "images": {"total": 0},
+    }
+    rendered = {
+        "pages": [
+            {
+                "url": "https://example.com/",
+                "viewports": {
+                    "desktop_1920x1080": {**base_view, "url": "https://example.com/desktop/"},
+                    "mobile_375x812": {**base_view, "url": "https://example.com/mobile/"},
+                },
+            }
+        ]
+    }
+    audit = build_headless_audit({"pages": [raw]}, rendered, "general")
+    assert audit["pages"][0]["profile_navigation"]["varies"] is True
+    assert any("navigation varies by browser profile" in item for item in audit["warnings"])
+
+
 def test_technology_output_contract_and_latest_pointer(tmp_path) -> None:
     report = technology_probe.parse_detector_output(
         """{
@@ -200,6 +243,124 @@ def test_balanced_technology_results_normalize_extended_signals(monkeypatch) -> 
     assert report["scan_mode"] == "balanced"
     assert report["pages"][0]["technologies"][0]["name"] == "React"
     assert "script_sources" in report["pages"][0]["fingerprint_inputs"]
+
+
+def test_technology_fallback_uses_explicit_asset_evidence() -> None:
+    report = technology_probe._normalize_wappalyzer_results(
+        {"https://example.com/": {}},
+        ["https://example.com/"],
+        "balanced",
+    )
+    evidence_pages = [
+        {
+            "url": "https://example.com/",
+            "final_url": "https://example.com/",
+            "links": [
+                {"rel": "modulepreload", "href": "https://example.com/js/vue-vendor-abc.js"},
+                {"rel": "modulepreload", "href": "https://example.com/js/swiper-vendor-def.js"},
+            ],
+            "resources": [
+                {"type": "script", "url": "https://hm.baidu.com/hm.js?site=secret"},
+            ],
+        }
+    ]
+    technology_probe.enrich_with_page_evidence(report, evidence_pages)
+    page = report["pages"][0]
+    assert {item["name"] for item in page["technologies"]} >= {"Vue.js", "Swiper", "Baidu Analytics"}
+    assert "asset_urls" in page["fingerprint_inputs"]
+    assert page["tag_audit"]["status"] == "detected"
+    assert "secret" not in json.dumps(page["tag_audit"])
+
+
+def test_technology_report_consumes_existing_runtime_evidence() -> None:
+    report = {
+        "scan_mode": "balanced",
+        "pages": [
+            {
+                "url": "https://example.com/",
+                "final_url": "https://example.com/",
+                "fingerprint_inputs": ["raw_html"],
+                "technologies": [],
+                "tag_audit": {"status": "not_detected_in_static_assets", "detected": []},
+            }
+        ],
+        "tag_audit": {"status": "not_detected_in_static_assets", "detected": []},
+    }
+    evidence = {
+        "seed_url": "https://example.com/",
+        "rendered": {
+            "generated_at": "2026-07-17T00:00:00Z",
+            "runtime_summary": {"technologies": ["Swiper"], "analytics_tags": ["Baidu Analytics"]},
+            "pages": [
+                {
+                    "url": "https://example.com/",
+                    "viewports": {
+                        "desktop_1920x1080": {
+                            "url": "https://example.com/",
+                            "technology_signals": [
+                                {
+                                    "name": "Swiper",
+                                    "version": "",
+                                    "confidence": 90,
+                                    "categories": ["JavaScript libraries"],
+                                    "groups": ["Web development"],
+                                    "evidence": ["https://example.com/swiper-vendor.js"],
+                                }
+                            ],
+                            "analytics_audit": {
+                                "detected": [
+                                    {"name": "Baidu Analytics", "evidence": ["https://hm.baidu.com/hm.js"]}
+                                ]
+                            },
+                        }
+                    },
+                }
+            ],
+        },
+    }
+    technology_probe.enrich_with_runtime_evidence(report, evidence)
+    page = report["pages"][0]
+    assert {item["name"] for item in page["technologies"]} == {"Swiper"}
+    assert {item["name"] for item in report["tag_audit"]["detected"]} == {"Baidu Analytics"}
+    assert {"rendered_dom", "runtime_javascript", "network_requests"}.issubset(page["fingerprint_inputs"])
+
+
+def test_rendered_mobile_profile_uses_mobile_user_agent() -> None:
+    options = rendered_probe.context_options("mobile_375x812", {"width": 375, "height": 812})
+    assert options["is_mobile"] is True
+    assert "Mobile" in options["user_agent"]
+    assert options["viewport"] == {"width": 375, "height": 812}
+
+
+def test_rendered_runtime_summary_keeps_profile_navigation_variants() -> None:
+    report = {
+        "pages": [
+            {
+                "url": "https://example.com/",
+                "viewports": {
+                    "desktop_1920x1080": {
+                        "url": "https://example.com/desktop/",
+                        "technology_signals": [{"name": "Vue.js", "evidence": ["https://example.com/vue-vendor.js"]}],
+                        "analytics_audit": {"detected": []},
+                    },
+                    "mobile_375x812": {
+                        "url": "https://example.com/mobile/",
+                        "technology_signals": [{"name": "Vue.js", "evidence": ["https://example.com/vue-vendor.js"]}],
+                        "analytics_audit": {
+                            "detected": [{"name": "Baidu Analytics", "evidence": ["https://hm.baidu.com/hm.js"]}]
+                        },
+                    },
+                },
+            }
+        ]
+    }
+    summary = rendered_probe.summarize_runtime_report(report)
+    assert summary["navigation_variants"][0]["final_urls"] == [
+        "https://example.com/desktop/",
+        "https://example.com/mobile/",
+    ]
+    assert summary["technologies"] == ["Vue.js"]
+    assert summary["analytics_tags"] == ["Baidu Analytics"]
 
 
 def test_architecture_analysis_connects_stack_to_measured_seo_risk() -> None:
@@ -331,6 +492,7 @@ def test_technology_probe_limits_representative_urls(monkeypatch) -> None:
 
     monkeypatch.setattr(technology_probe, "detector_command", lambda: (["detector"], None))
     monkeypatch.setattr(technology_probe.subprocess, "run", fake_run)
+    monkeypatch.setattr(technology_probe, "_collect_page_evidence", lambda *args: ([], []))
     report = technology_probe.collect([f"https://example.com/{index}" for index in range(12)], scan_mode="fast")
     assert captured["command"].count("-url") == technology_probe.MAX_TECHNOLOGY_URLS
     assert "omitted 2" in report["warnings"][0]["message"]
@@ -420,6 +582,16 @@ def test_performance_proxy_blocks_loopback_resolution(monkeypatch) -> None:
         assert "non-public" in str(exc)
     else:
         raise AssertionError("expected loopback target to be blocked")
+
+
+def test_proxy_fake_ip_range_is_allowed_without_private_bypass(monkeypatch) -> None:
+    monkeypatch.setattr(
+        socket,
+        "getaddrinfo",
+        lambda *args, **kwargs: [(socket.AF_INET, socket.SOCK_STREAM, 6, "", ("198.18.0.26", 443))],
+    )
+    _, _, addresses = resolve_target("public.example", 443, allow_private=False)
+    assert addresses == ["198.18.0.26"]
 
 
 def test_single_run_performance_is_smoke_confidence_only() -> None:

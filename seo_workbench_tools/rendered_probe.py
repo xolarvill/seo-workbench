@@ -10,6 +10,7 @@ from typing import Any
 
 from seo_workbench_tools.browser_runtime import browser_executable
 from seo_workbench_tools.files import atomic_output_path, atomic_write_text
+from seo_workbench_tools.runtime_signals import detect_tags, detect_technologies
 
 
 DEFAULT_OUTPUT_DIR = Path("projects/default/audits/rendered")
@@ -18,6 +19,44 @@ VIEWPORTS = {
     "tablet_768x1024": {"width": 768, "height": 1024},
     "mobile_375x812": {"width": 375, "height": 812},
 }
+MOBILE_USER_AGENT = "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Mobile Safari/537.36"
+
+
+def context_options(viewport_name: str, viewport: dict[str, int]) -> dict[str, Any]:
+    options: dict[str, Any] = {"viewport": viewport}
+    if viewport_name.startswith("mobile_"):
+        options.update({"user_agent": MOBILE_USER_AGENT, "is_mobile": True, "device_scale_factor": 1.75})
+    return options
+
+
+def summarize_runtime_report(report: dict[str, Any]) -> dict[str, Any]:
+    technologies = set()
+    analytics_tags = set()
+    navigation_variants = []
+    for page in report.get("pages", []):
+        profiles = {}
+        for name, view in page.get("viewports", {}).items():
+            if view.get("error"):
+                continue
+            final_url = view.get("url", "")
+            if final_url:
+                profiles[name] = final_url
+            technologies.update(item.get("name", "") for item in view.get("technology_signals", []) if item.get("name"))
+            analytics_tags.update(item.get("name", "") for item in view.get("analytics_audit", {}).get("detected", []) if item.get("name"))
+        final_urls = sorted(set(profiles.values()))
+        navigation_variants.append(
+            {
+                "requested_url": page.get("url", ""),
+                "profiles": profiles,
+                "final_urls": final_urls,
+                "varies": len(final_urls) > 1,
+            }
+        )
+    return {
+        "technologies": sorted(technologies),
+        "analytics_tags": sorted(analytics_tags),
+        "navigation_variants": navigation_variants,
+    }
 
 
 def slugify(value: str) -> str:
@@ -68,8 +107,16 @@ def analyze_page(page: Any) -> dict[str, Any]:
                     above_fold: !!box && box.y < vp.height,
                 };
             }).filter((item) => item.box);
+            const safeUrl = (raw) => {
+                try {
+                    const url = new URL(raw, location.href);
+                    return `${url.origin}${url.pathname}`.slice(0, 240);
+                } catch {
+                    return String(raw || '').split(/[?#]/, 1)[0].slice(0, 240);
+                }
+            };
             const resources = performance.getEntriesByType('resource').map((entry) => ({
-                name: entry.name.slice(0, 180),
+                name: safeUrl(entry.name),
                 initiatorType: entry.initiatorType,
                 transferSize: entry.transferSize || 0,
                 duration: Math.round(entry.duration || 0),
@@ -106,6 +153,8 @@ def analyze_page(page: Any) -> dict[str, Any]:
             const bodyText = (document.body ? document.body.innerText || '' : '').trim();
             return {
                 url: location.href,
+                user_agent: navigator.userAgent,
+                html_lang: document.documentElement.lang || '',
                 title: document.title,
                 meta_description: meta('description'),
                 canonical: (document.querySelector('link[rel="canonical"]') || {}).href || '',
@@ -152,7 +201,8 @@ def analyze_page(page: Any) -> dict[str, Any]:
                         acc[item.initiatorType] = (acc[item.initiatorType] || 0) + 1;
                         return acc;
                     }, {}),
-                    largest: resources.sort((a, b) => b.transferSize - a.transferSize).slice(0, 10),
+                    largest: [...resources].sort((a, b) => b.transferSize - a.transferSize).slice(0, 10),
+                    items: resources.slice(0, 200),
                 },
                 timing: nav ? {
                     dom_content_loaded_ms: Math.round(nav.domContentLoadedEventEnd),
@@ -182,7 +232,7 @@ def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> 
             for url in urls:
                 page_report = {"url": url, "viewports": {}}
                 for viewport_name, viewport in VIEWPORTS.items():
-                    context = browser.new_context(viewport=viewport)
+                    context = browser.new_context(**context_options(viewport_name, viewport))
                     page = context.new_page()
                     console_errors: list[str] = []
                     page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
@@ -197,6 +247,21 @@ def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> 
                         with atomic_output_path(fold_path) as temporary:
                             page.screenshot(path=str(temporary), type="png", full_page=False, timeout=int(timeout * 1000))
                         data = analyze_page(page)
+                        asset_urls = [item.get("name", "") for item in data.get("resources", {}).get("items", [])]
+                        rendered_html = page.content()
+                        data["technology_signals"] = detect_technologies(asset_urls, rendered_html)
+                        detected_tags = detect_tags(asset_urls, rendered_html)
+                        data["analytics_audit"] = {
+                            "status": "detected" if detected_tags else "not_detected_during_observation",
+                            "detected": detected_tags,
+                            "evidence_quality": "runtime resources and rendered DOM after the configured wait; no interactions or consent-state changes",
+                        }
+                        data["navigation"] = {
+                            "requested_url": url,
+                            "final_url": data.get("url", ""),
+                            "redirected": data.get("url", "") != url,
+                            "profile": viewport_name,
+                        }
                         data["screenshots"] = {"full": str(full_path), "fold": str(fold_path)}
                         data["console_errors"] = console_errors[:20]
                         page_report["viewports"][viewport_name] = data
@@ -207,6 +272,7 @@ def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> 
                 report["pages"].append(page_report)
         finally:
             browser.close()
+    report["runtime_summary"] = summarize_runtime_report(report)
     path = output_dir / f"rendered-{slugify(urls[0])}-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}.json"
     atomic_write_text(path, json.dumps(report, ensure_ascii=False, indent=2) + "\n")
     report["output_path"] = str(path)
