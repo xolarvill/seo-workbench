@@ -95,13 +95,20 @@ def test_evidence_json_surfaces_partial_collection_status(tmp_path: Path, monkey
         json.dumps({"collection_status": "partial", "errors": [], "warnings": [{"scope": "page"}]}),
         encoding="utf-8",
     )
-    monkeypatch.setattr("seo_workbench.cli.collect_from_state", lambda *args, **kwargs: report_path)
+    captured = {}
+
+    def fake_collect(*args, **kwargs):
+        captured.update(kwargs)
+        return report_path
+
+    monkeypatch.setattr("seo_workbench.cli.collect_from_state", fake_collect)
 
     assert main(["--project-dir", str(project_dir), "evidence", "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload["ok"] is True
     assert payload["collection_status"] == "partial"
     assert payload["warning_count"] == 1
+    assert captured["crawl_limit"] == 5
 
 
 def test_project_id_rejects_symlink_escape(tmp_path: Path) -> None:

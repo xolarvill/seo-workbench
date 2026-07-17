@@ -134,6 +134,7 @@ def cmd_evidence(args: argparse.Namespace) -> int:
         performance=args.performance,
         performance_runs=args.performance_runs,
         performance_form_factor=args.performance_form_factor,
+        crawl_limit=args.crawl_limit,
     )
     report = json.loads(path.read_text(encoding="utf-8"))
     collection_status = report.get("collection_status", "failed")
@@ -149,6 +150,9 @@ def cmd_evidence(args: argparse.Namespace) -> int:
                 "rendered": args.rendered,
                 "technology": args.technology,
                 "performance": args.performance,
+                "crawl_limit": args.crawl_limit,
+                "discovered_count": report.get("discovery", {}).get("discovered_count", 0),
+                "possible_spa_shell": report.get("route_sample_audit", {}).get("possible_spa_shell", False),
             }
         )
         return 0 if ok else 1
@@ -316,6 +320,7 @@ def build_parser() -> argparse.ArgumentParser:
     evidence = sub.add_parser("evidence")
     evidence.add_argument("--timeout", type=float, default=15)
     evidence.add_argument("--sample-limit", type=int, default=50)
+    evidence.add_argument("--crawl-limit", type=int, default=5)
     evidence.add_argument("--output-dir", type=Path)
     evidence.add_argument("--rendered", action="store_true")
     evidence.add_argument("--technology", action="store_true")

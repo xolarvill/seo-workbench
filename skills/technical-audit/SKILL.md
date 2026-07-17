@@ -141,6 +141,9 @@ Google updated its JavaScript SEO documentation in December 2025 with critical c
 - Assess four SEO relationships: crawl/rendering parity, measured performance ownership, consent/analytics integrity, and commerce search-feature eligibility.
 - Treat a detected technology as presence evidence only. Do not claim it is active on every template or caused a measured issue without network, rendering, or Lighthouse attribution.
 - State the scan mode. Fast mode uses response headers, cookies, and raw HTML. Balanced mode adds scripts, robots, and DNS but can still miss runtime JavaScript, DOM, XHR, interaction-only, gated, or route-specific technologies.
+- Treat fallback detections as evidence only when their explicit asset/runtime evidence is present. Read `tag_audit.evidence_quality`; “not detected during observation” is not a claim that a tag or platform is absent site-wide.
+- Compare rendered `profile_navigation` and Lighthouse requested/final URL. A mobile viewport with a desktop user agent is not valid evidence for UA-specific mobile routing.
+- When sitemap discovery is unavailable, use the bounded representative-route sample and inspect `route_sample_audit` for shared SPA shells and duplicate metadata; do not extrapolate it into a complete crawl.
 
 ## Output
 

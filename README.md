@@ -41,11 +41,14 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench performance --runs 1 --form-factor desktop --json
 env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --performance --json
+env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench evidence --rendered --crawl-limit 5 --json
 ```
 
-`technology` 默认用 balanced Wappalyzer 检查页面、脚本、robots 和 DNS，并把技术按架构层分组，结合现有 Lighthouse 证据输出 SEO 影响。`--scan-mode fast` 使用可复现的 Go headers/cookies/raw-HTML 指纹。两种模式都会声明证据边界，不冒充浏览器扩展的运行时覆盖率。
+`technology` 默认用 balanced Wappalyzer 检查页面、脚本、robots 和 DNS，并对明确的 `vue-vendor`、`swiper-vendor`、分析标签 URL 等资源信号做可追溯 fallback；已有 rendered evidence 时还会合并真实 DOM、网络请求和不同 UA 的最终 URL。`--scan-mode fast` 使用可复现的 Go headers/cookies/raw-HTML 指纹。零检测只表示本次证据未命中，不会被解释为技术或标签一定不存在。
 
-性能分析固定使用 Lighthouse 13.4.0。默认对项目首页顺序运行 5 次，至少 3 次有效才生成代表结果，并保留每次完整 LHR、代表 JSON、HTML 报告、运行环境和波动范围。默认网络边界会逐连接解析并拒绝私网地址，写盘前还会脱敏 URL 中的凭据和敏感查询值：
+项目级 `evidence` 默认从 raw/rendered 内链中抽取最多 5 个同源代表路由，排除静态资源、敏感查询参数和同模板重复 URL，用于发现 SPA 空壳与跨路由重复元数据。`--crawl-limit 0` 可恢复严格单 URL；上限为 20，不是通用爬虫。
+
+性能分析固定使用 Lighthouse 13.4.0。默认对项目首页顺序运行 5 次，至少 3 次有效才生成代表结果，并保留每次完整 LHR、代表 JSON、HTML 报告、运行环境、波动范围、requested/final URL 和跨运行跳转一致性。默认网络边界会逐连接解析并拒绝私网地址，写盘前还会脱敏 URL 中的凭据和敏感查询值：
 
 ```text
 projects/default/audits/performance/performance-*/run-*.json
@@ -55,7 +58,7 @@ projects/default/audits/performance/performance-*/summary.json
 projects/default/audits/performance/latest.json
 ```
 
-单次运行适合烟测，不适合趋势结论。跨时间比较应保持相同 form factor、Lighthouse、浏览器版本和机器环境；报告会记录 `browser_version`，其中 `high_variance` 为真时不应直接判定回归。需要严格固定浏览器时，先运行 `./setup.sh --local-browser`。
+单次运行适合烟测，不适合趋势结论。跨时间比较应保持相同 requested/final URL、form factor、Lighthouse、浏览器版本和机器环境；报告会记录 `browser_version`，其中 `high_variance` 为真或最终 URL 不一致时不应直接判定回归。需要严格固定浏览器时，先运行 `./setup.sh --local-browser`。
 
 ## 多店铺管理
 
@@ -114,7 +117,7 @@ env UV_CACHE_DIR=.uv-cache uv run --frozen --python 3.11 python -m seo_workbench
 - **无自动发布。** `/write` 产出草稿后需手动发布（WordPress 除外）。Headless CMS 的自动发布管线不在当前 scope。
 - **单项目单站点。** 可以管理多个店铺，但每个 `projects/<id>` 仍对应一个站点；单个项目内的多站点/多语言 SEO 不在此版本覆盖。
 - **Lighthouse 是实验室数据。** 当前没有接入 CrUX/PageSpeed field data，也没有定时调度或 LHCI Server。
-- **本地探针不是完整的恶意网站沙箱。** Lighthouse 流量会经过私网过滤代理，但它不能替代操作系统或容器隔离；`--allow-private` 只用于明确可信的开发或内网站点。
+- **本地探针不是完整的恶意网站沙箱。** Lighthouse 流量会经过私网过滤代理，但它不能替代操作系统或容器隔离；loopback、RFC1918、link-local 与 CGNAT 默认拒绝。`198.18.0.0/15` 只作为透明代理 fake-IP 范围放行；`--allow-private` 仍只用于明确可信的开发或内网站点。
 
 ## Credit
 

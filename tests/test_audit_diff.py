@@ -15,7 +15,7 @@ from seo_workbench.audit_diff import (
 def raw_snapshot(generated_at: str, title: str, status: int, missing_alt: int, errors: int) -> dict:
     return {
         "schema_version": "1.0",
-        "collector_version": "0.5.0",
+        "collector_version": "0.6.0",
         "generated_at": generated_at,
         "seed_url": "https://example.com/",
         "pages": [

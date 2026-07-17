@@ -7,18 +7,24 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qsl, urlsplit, urlunsplit
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from seo_workbench_tools import page_probe, robots_sitemap_probe
 from seo_workbench_tools.files import atomic_write_text
 from seo_workbench_tools.headless import build_headless_audit
+from seo_workbench_tools.network_boundary import sensitive_query_key
 
 
 DEFAULT_OUTPUT_DIR = Path("projects/default/audits/raw")
 RESOURCE_SAMPLE_PER_TYPE = 5
 SCHEMA_VERSION = "1.0"
-COLLECTOR_VERSION = "0.5.0"
+COLLECTOR_VERSION = "0.6.0"
+STATIC_SUFFIXES = {
+    ".avif", ".css", ".gif", ".ico", ".jpeg", ".jpg", ".js", ".json", ".map", ".mp3", ".mp4",
+    ".pdf", ".png", ".svg", ".ttf", ".webm", ".webp", ".woff", ".woff2", ".xml", ".zip",
+}
 
 
 def slugify(value: str) -> str:
@@ -142,6 +148,107 @@ def performance_confidence(report: dict[str, Any]) -> float:
     return 0.9
 
 
+def _route_template(url: str) -> str:
+    path = urlsplit(url).path
+    segments = []
+    for segment in path.split("/"):
+        if re.fullmatch(r"\d+", segment):
+            segments.append("{id}")
+        elif re.fullmatch(r"[0-9a-fA-F-]{24,}", segment):
+            segments.append("{token}")
+        else:
+            segments.append(segment)
+    return "/".join(segments)
+
+
+def discover_page_urls(
+    seed_url: str,
+    pages: list[dict[str, Any]],
+    rendered: dict[str, Any] | None,
+    limit: int,
+) -> list[str]:
+    if limit <= 0:
+        return []
+    seed = urlsplit(seed_url)
+    existing = {
+        urlunsplit((*urlsplit(str(value))[:4], ""))
+        for page in pages
+        for value in (page.get("url"), page.get("final_url"))
+        if value
+    }
+    candidates = []
+    for page in pages:
+        candidates.extend(page.get("link_summary", {}).get("sample_internal", []))
+    for page in (rendered or {}).get("pages", []):
+        for view in page.get("viewports", {}).values():
+            if not view.get("error"):
+                candidates.extend(view.get("link_summary", {}).get("sample_internal", []))
+
+    normalized = set()
+    for raw in candidates:
+        try:
+            parsed = urlsplit(str(raw))
+        except ValueError:
+            continue
+        if parsed.scheme not in {"http", "https"} or parsed.hostname != seed.hostname:
+            continue
+        if Path(parsed.path).suffix.casefold() in STATIC_SUFFIXES:
+            continue
+        if any(sensitive_query_key(key) for key, _ in parse_qsl(parsed.query, keep_blank_values=True)):
+            continue
+        candidate = urlunsplit((parsed.scheme, parsed.netloc, parsed.path or "/", parsed.query, ""))
+        if candidate not in existing:
+            normalized.add(candidate)
+
+    selected = []
+    templates = set()
+    for candidate in sorted(normalized, key=lambda item: (bool(urlsplit(item).query), item.count("/"), item)):
+        template = _route_template(candidate)
+        if template in templates:
+            continue
+        templates.add(template)
+        selected.append(candidate)
+        if len(selected) >= limit:
+            break
+    return selected
+
+
+def _duplicate_groups(pages: list[dict[str, Any]], field: str) -> list[dict[str, Any]]:
+    grouped: dict[str, list[str]] = {}
+    for page in pages:
+        value = " ".join(str(page.get(field, "")).split())
+        if value:
+            grouped.setdefault(value, []).append(str(page.get("url", "")))
+    return [
+        {"value": value, "urls": urls, "count": len(urls)}
+        for value, urls in sorted(grouped.items())
+        if len(urls) > 1
+    ]
+
+
+def route_sample_audit(pages: list[dict[str, Any]], discovered_urls: list[str]) -> dict[str, Any]:
+    successful = [page for page in pages if not page.get("error") and 200 <= int(page.get("status", 200) or 0) < 400]
+    raw_shell_pages = sum(
+        not page.get("content_audit", {}).get("has_body_text_in_raw_html", False)
+        and not page.get("link_summary", {}).get("anchor_count", 0)
+        for page in successful
+    )
+    duplicate_titles = _duplicate_groups(successful, "title")
+    duplicate_descriptions = _duplicate_groups(successful, "meta_description")
+    shell_ratio = raw_shell_pages / len(successful) if successful else 0.0
+    possible_spa_shell = len(successful) >= 2 and shell_ratio >= 0.8 and bool(duplicate_titles or duplicate_descriptions)
+    return {
+        "sampled_pages": len(successful),
+        "discovered_pages": len(discovered_urls),
+        "discovered_urls": discovered_urls,
+        "raw_shell_pages": raw_shell_pages,
+        "raw_shell_ratio": round(shell_ratio, 3),
+        "duplicate_title_groups": duplicate_titles,
+        "duplicate_description_groups": duplicate_descriptions,
+        "possible_spa_shell": possible_spa_shell,
+    }
+
+
 def collect(
     url: str,
     extra_pages: list[str],
@@ -156,7 +263,10 @@ def collect(
     performance_output_dir: Path | None = None,
     performance_runs: int = 5,
     performance_form_factor: str = "mobile",
+    crawl_limit: int = 0,
 ) -> dict[str, Any]:
+    if crawl_limit < 0 or crawl_limit > 20:
+        raise ValueError("crawl_limit must be between 0 and 20")
     errors = []
     warnings = []
     pages = []
@@ -200,11 +310,6 @@ def collect(
             "performance_lab": 0.0,
         },
     }
-    bundle["hreflang_audit"] = hreflang_audit(pages, site)
-    bundle["resource_cache_audit"] = resource_cache_audit(pages, timeout)
-    if bundle["resource_cache_audit"].get("issues"):
-        warnings.extend({"scope": "resource_cache", "message": issue} for issue in bundle["resource_cache_audit"]["issues"])
-
     rendered_report = None
     if rendered:
         rendered_output_dir = rendered_output_dir or DEFAULT_OUTPUT_DIR.parent / "rendered"
@@ -218,6 +323,33 @@ def collect(
             errors.append({"scope": "rendered", "url": url, "error": str(exc)})
             warnings.append({"scope": "rendered", "message": "rendered evidence unavailable; install the rendered extra and Chromium"})
 
+    discovered_urls = discover_page_urls(url, pages, rendered_report, crawl_limit)
+    for page_url in discovered_urls:
+        try:
+            pages.append(page_probe.probe(page_url, timeout))
+        except RuntimeError as exc:
+            errors.append({"scope": "discovery", "url": page_url, "error": str(exc)})
+            pages.append({"url": page_url, "error": str(exc)})
+    bundle["discovery"] = {
+        "enabled": crawl_limit > 0,
+        "limit": crawl_limit,
+        "discovered_count": len(discovered_urls),
+        "urls": discovered_urls,
+        "source": "raw and rendered internal-link samples",
+    }
+    bundle["route_sample_audit"] = route_sample_audit(pages, discovered_urls)
+    if bundle["route_sample_audit"]["possible_spa_shell"]:
+        warnings.append(
+            {
+                "scope": "route_sample",
+                "message": "representative routes reuse thin raw HTML and duplicate metadata; possible shared SPA shell",
+            }
+        )
+    bundle["hreflang_audit"] = hreflang_audit(pages, site)
+    bundle["resource_cache_audit"] = resource_cache_audit(pages, timeout)
+    if bundle["resource_cache_audit"].get("issues"):
+        warnings.extend({"scope": "resource_cache", "message": issue} for issue in bundle["resource_cache_audit"]["issues"])
+
     if technology:
         technology_output_dir = technology_output_dir or DEFAULT_OUTPUT_DIR.parent / "technology"
         try:
@@ -225,7 +357,8 @@ def collect(
             from seo_workbench_tools.technology_probe import enrich_with_runtime_evidence
             from seo_workbench_tools.technology_probe import write_report as write_technology_report
 
-            technology_report = collect_technologies([url, *extra_pages], timeout=max(timeout, 20))
+            technology_urls = [page.get("url", "") for page in pages if page.get("url")]
+            technology_report = collect_technologies(technology_urls, timeout=max(timeout, 20))
             enrich_with_runtime_evidence(technology_report, bundle)
             write_technology_report(technology_report, technology_output_dir)
             bundle["technology_audit"] = technology_report
@@ -297,6 +430,7 @@ def main(argv: list[str] | None = None) -> int:
     argp.add_argument("--page", action="append", default=[], help="Extra page URL to include; repeatable")
     argp.add_argument("--timeout", type=float, default=15)
     argp.add_argument("--sample-limit", type=int, default=50)
+    argp.add_argument("--crawl-limit", type=int, default=0, help="Discover and raw-probe up to this many representative internal routes")
     argp.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     argp.add_argument("--rendered", action="store_true")
     argp.add_argument("--performance", action="store_true")
@@ -321,6 +455,7 @@ def main(argv: list[str] | None = None) -> int:
         performance=args.performance,
         performance_runs=args.performance_runs,
         performance_form_factor=args.performance_form_factor,
+        crawl_limit=args.crawl_limit,
     )
     if args.print_json:
         json.dump(bundle, sys.stdout, ensure_ascii=False, indent=2)

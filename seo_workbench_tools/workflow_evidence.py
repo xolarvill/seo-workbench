@@ -30,6 +30,7 @@ def collect_from_state(
     performance: bool = False,
     performance_runs: int = 5,
     performance_form_factor: str = "mobile",
+    crawl_limit: int = 5,
 ) -> Path:
     state = json.loads(state_path.read_text(encoding="utf-8"))
     url = state.get("project", {}).get("url")
@@ -49,6 +50,7 @@ def collect_from_state(
         performance_output_dir=output_dir.parent / "performance",
         performance_runs=performance_runs,
         performance_form_factor=performance_form_factor,
+        crawl_limit=crawl_limit,
     )
     bundle["state_path"] = str(state_path)
     return write_bundle(bundle, output_dir)
@@ -70,6 +72,7 @@ def main(argv: list[str] | None = None) -> int:
     argp.add_argument("--state", type=Path, default=DEFAULT_STATE)
     argp.add_argument("--timeout", type=float, default=15)
     argp.add_argument("--sample-limit", type=int, default=50)
+    argp.add_argument("--crawl-limit", type=int, default=5)
     argp.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     argp.add_argument("--rendered", action="store_true")
     argp.add_argument("--technology", action="store_true")
@@ -94,6 +97,7 @@ def main(argv: list[str] | None = None) -> int:
             performance=args.performance,
             performance_runs=args.performance_runs,
             performance_form_factor=args.performance_form_factor,
+            crawl_limit=args.crawl_limit,
         )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         raise SystemExit(str(exc)) from exc

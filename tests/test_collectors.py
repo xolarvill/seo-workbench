@@ -4,7 +4,7 @@ from contextlib import nullcontext
 from pathlib import Path
 
 from seo_workbench import state
-from seo_workbench_tools import page_probe, performance_probe, rendered_probe, robots_sitemap_probe
+from seo_workbench_tools import evidence_bundle, page_probe, performance_probe, rendered_probe, robots_sitemap_probe
 from seo_workbench_tools.network_boundary import resolve_target
 from seo_workbench_tools.evidence_bundle import collection_status, collect, performance_confidence, write_bundle
 from seo_workbench_tools.headless import build_headless_audit
@@ -78,6 +78,63 @@ def test_bundle_status_fails_when_pages_and_site_fail() -> None:
         "errors": [{"scope": "page", "error": "timeout"}],
     }
     assert collection_status(bundle) == "failed"
+
+
+def test_small_site_discovery_selects_safe_representative_routes() -> None:
+    pages = [
+        {
+            "url": "https://example.com/",
+            "final_url": "https://example.com/",
+            "link_summary": {
+                "sample_internal": [
+                    "https://example.com/product/9",
+                    "https://example.com/product/10",
+                    "https://example.com/about#team",
+                    "https://example.com/assets/app.js",
+                    "https://other.example/contact",
+                ]
+            },
+        }
+    ]
+    rendered = {
+        "pages": [
+            {
+                "url": "https://example.com/",
+                "viewports": {
+                    "desktop_1920x1080": {
+                        "link_summary": {
+                            "sample_internal": [
+                                "https://example.com/product?category=1",
+                                "https://example.com/contact",
+                            ]
+                        }
+                    }
+                },
+            }
+        ]
+    }
+    discovered = evidence_bundle.discover_page_urls("https://example.com/", pages, rendered, limit=5)
+    assert "https://example.com/about" in discovered
+    assert "https://example.com/contact" in discovered
+    assert len([url for url in discovered if "/product/" in url]) == 1
+    assert all("assets/app.js" not in url and "other.example" not in url for url in discovered)
+
+
+def test_route_sample_audit_flags_reused_spa_shell_metadata() -> None:
+    pages = [
+        {
+            "url": f"https://example.com/{path}",
+            "title": "Same title",
+            "meta_description": "Same description",
+            "content_audit": {"has_body_text_in_raw_html": False},
+            "link_summary": {"anchor_count": 0},
+        }
+        for path in ("", "product/9", "about")
+    ]
+    audit = evidence_bundle.route_sample_audit(pages, [page["url"] for page in pages[1:]])
+    assert audit["possible_spa_shell"] is True
+    assert audit["raw_shell_pages"] == 3
+    assert audit["duplicate_title_groups"][0]["value"] == "Same title"
 
 
 def test_headless_audit_flags_rendered_only_schema() -> None:
