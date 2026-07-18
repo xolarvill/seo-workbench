@@ -6,11 +6,12 @@ import { AppShell, type ViewName } from "./components/AppShell";
 import { ActionPanel } from "./features/actions/ActionPanel";
 import { FilesPage } from "./features/files/FilesPage";
 import { OverviewPage } from "./features/overview/OverviewPage";
+import { TutorialsPage } from "./features/tutorials/TutorialsPage";
 import { WorkflowPage } from "./features/workflow/WorkflowPage";
 import { useProjects, useWorkbenchEvents, useWorkspace } from "./hooks/useWorkbenchData";
 
 const MarkdownWorkspace = lazy(() => import("./features/editor/MarkdownWorkspace"));
-const VIEWS = new Set<ViewName>(["overview", "workflow", "content", "audits", "files"]);
+const VIEWS = new Set<ViewName>(["overview", "workflow", "content", "audits", "files", "tutorials"]);
 
 function viewFromHash(): ViewName {
   const value = window.location.hash.replace(/^#\/?/, "").split("/")[0] as ViewName;
@@ -92,6 +93,7 @@ export function App() {
               .then(() => setRefreshKey((value) => value + 1))
               .catch(() => setRefreshKey((value) => value + 1));
           }} /> : null}
+          {activeView === "tutorials" ? <TutorialsPage /> : null}
           {activeView === "files" || activeView === "content" || activeView === "audits" ? (
             selectedFile ? (
               <Suspense fallback={<div className="loading-screen"><span>Loading editor</span></div>}>

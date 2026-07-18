@@ -14,7 +14,7 @@ import type { ProjectSummary } from "../api/types";
 import styles from "./AppShell.module.css";
 
 
-export type ViewName = "overview" | "workflow" | "content" | "audits" | "files";
+export type ViewName = "overview" | "workflow" | "content" | "audits" | "files" | "tutorials";
 
 type AppShellProps = {
   projects: ProjectSummary[];
@@ -81,6 +81,17 @@ export function AppShell({
             </button>
           ))}
         </nav>
+        <div className={styles.helpNavigation}>
+          <button
+            className={activeView === "tutorials" ? styles.activeHelpNav : styles.helpNav}
+            type="button"
+            onClick={() => onNavigate("tutorials")}
+            aria-current={activeView === "tutorials" ? "page" : undefined}
+          >
+            <span className={styles.helpGlyph} aria-hidden="true">?</span>
+            <span>Tutorials</span>
+          </button>
+        </div>
         <div className={styles.connection}>
           <span className={connected ? styles.connectedDot : styles.disconnectedDot} />
           <span>Local only</span>
@@ -96,6 +107,7 @@ export function AppShell({
           <div>
             <button type="button" onClick={() => onNavigate("content")}>Content</button>
             <button type="button" onClick={() => onNavigate("audits")}>Audits</button>
+            <button type="button" aria-current={activeView === "tutorials" ? "page" : undefined} onClick={() => onNavigate("tutorials")}>Tutorials</button>
           </div>
         </details>
       </header>

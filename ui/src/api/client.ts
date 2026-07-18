@@ -1,4 +1,4 @@
-import type { FileSummary, Job, MarkdownFile, ProjectSummary, Workspace } from "./types";
+import type { FileSummary, Job, MarkdownFile, ProjectSummary, TutorialDocument, TutorialSummary, Workspace } from "./types";
 
 
 export class ApiError extends Error {
@@ -46,6 +46,16 @@ export async function fetchMarkdown(projectId: string, path: string): Promise<Ma
     `/api/v1/projects/${encodeURIComponent(projectId)}/files/${path.split("/").map(encodeURIComponent).join("/")}`,
   );
   return payload.file;
+}
+
+export async function fetchTutorials(): Promise<TutorialSummary[]> {
+  const payload = await request<{ tutorials: TutorialSummary[] }>("/api/v1/tutorials");
+  return payload.tutorials;
+}
+
+export async function fetchTutorial(slug: string): Promise<TutorialDocument> {
+  const payload = await request<{ tutorial: TutorialDocument }>(`/api/v1/tutorials/${encodeURIComponent(slug)}`);
+  return payload.tutorial;
 }
 
 export async function saveMarkdown(

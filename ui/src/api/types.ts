@@ -81,6 +81,20 @@ export type MarkdownFile = {
   modified_at: string;
 };
 
+export type TutorialSummary = {
+  slug: string;
+  title: string;
+  description: string;
+  category: string;
+  source: string;
+};
+
+export type TutorialDocument = TutorialSummary & {
+  content: string;
+  revision: string;
+  modified_at: string;
+};
+
 export type WorkbenchEvent = {
   type: string;
   project_id?: string;

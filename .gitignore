@@ -8,6 +8,8 @@ __pycache__/
 node_modules/
 ui/dist/
 npm-debug.log*
+.playwright-cli/
+output/playwright/
 
 # External skill packs — cloned by setup.sh
 claude-seo/

@@ -1,10 +1,17 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { Workspace } from "../api/types";
+import { fetchTutorial, fetchTutorials } from "../api/client";
+import type { TutorialDocument, TutorialSummary, Workspace } from "../api/types";
 import { AppShell } from "../components/AppShell";
 import { MarkdownPreview } from "../features/editor/MarkdownPreview";
+import { TutorialsPage } from "../features/tutorials/TutorialsPage";
 import { WorkflowPage } from "../features/workflow/WorkflowPage";
+
+vi.mock("../api/client", () => ({
+  fetchTutorial: vi.fn(),
+  fetchTutorials: vi.fn(),
+}));
 
 const project = {
   id: "shop",
@@ -37,6 +44,21 @@ const workspace: Workspace = {
   recent_files: [],
 };
 
+const tutorialSummaries: TutorialSummary[] = [
+  { slug: "seo-foundations", title: "SEO 基础知识与证据模型", description: "Evidence", category: "Foundations", source: "SEO基础知识与证据模型.md" },
+  { slug: "growth-diagnosis", title: "SEO 增长诊断与拆解", description: "Growth", category: "Foundations", source: "SEO增长诊断与拆解.md" },
+];
+
+const tutorialDocuments: Record<string, TutorialDocument> = {
+  "seo-foundations": { ...tutorialSummaries[0], content: "# Foundations\n\n[Growth](SEO增长诊断与拆解.md)", revision: "one", modified_at: "2026-07-18T00:00:00Z" },
+  "growth-diagnosis": { ...tutorialSummaries[1], content: "# Growth diagnosis", revision: "two", modified_at: "2026-07-18T00:00:00Z" },
+};
+
+beforeEach(() => {
+  vi.mocked(fetchTutorials).mockResolvedValue(tutorialSummaries);
+  vi.mocked(fetchTutorial).mockImplementation(async (slug) => tutorialDocuments[slug]);
+});
+
 describe("workbench frontend", () => {
   it("renders project navigation and routes button clicks", () => {
     const navigate = vi.fn();
@@ -44,6 +66,8 @@ describe("workbench frontend", () => {
     expect(screen.getAllByText("Example Shop").length).toBeGreaterThan(0);
     fireEvent.click(screen.getAllByRole("button", { name: /Workflow/i })[0]);
     expect(navigate).toHaveBeenCalledWith("workflow");
+    fireEvent.click(screen.getAllByRole("button", { name: /Tutorials/i })[0]);
+    expect(navigate).toHaveBeenCalledWith("tutorials");
   });
 
   it("shows the current workflow instruction and phase states", () => {
@@ -58,5 +82,14 @@ describe("workbench frontend", () => {
     expect(screen.getByRole("heading", { name: "Safe" })).toBeTruthy();
     expect(container.querySelector("script")).toBeNull();
     expect(screen.getByRole("link", { name: "Source" }).getAttribute("rel")).toBe("noreferrer");
+  });
+
+  it("reads local tutorials and follows links between them", async () => {
+    render(<TutorialsPage />);
+    expect(await screen.findByRole("heading", { name: "Foundations" })).toBeTruthy();
+    fireEvent.click(await screen.findByRole("link", { name: "Growth" }));
+    expect(await screen.findByRole("heading", { name: "Growth diagnosis" })).toBeTruthy();
+    expect(fetchTutorial).toHaveBeenCalledWith("growth-diagnosis");
+    expect(screen.getByText("Read only")).toBeTruthy();
   });
 });

@@ -118,18 +118,57 @@
 
 .navItem:active,
 .activeNav:active,
+.helpNav:active,
+.activeHelpNav:active,
 .primaryAction:active,
 .mobileNav button:active {
   transform: scale(0.96);
 }
 
-.connection {
+.helpNavigation {
   margin-top: auto;
+  padding: 14px 4px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.helpNav,
+.activeHelpNav {
+  width: 100%;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius-4);
+  color: rgba(255, 255, 255, 0.48);
+  background: transparent;
+  font: 500 12px/1 var(--font-ui);
+  cursor: pointer;
+  transition: transform 120ms var(--ease-out), background-color 120ms var(--ease-out), color 120ms var(--ease-out);
+}
+
+.activeHelpNav {
+  color: rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.helpGlyph {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font: 600 11px/1 var(--font-mono);
+}
+
+.connection {
+  margin-top: 8px;
   display: flex;
   align-items: center;
   gap: 7px;
-  padding: 16px 8px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  padding: 8px 8px 0;
   color: rgba(255, 255, 255, 0.58);
   font-size: 11px;
 }
@@ -197,6 +236,7 @@
 
 @media (hover: hover) {
   .navItem:hover { color: white; background: rgba(255, 255, 255, 0.05); }
+  .helpNav:hover { color: rgba(255, 255, 255, 0.78); background: rgba(255, 255, 255, 0.04); }
   .primaryAction:hover { background: var(--emerald-dark); }
 }
 
@@ -230,7 +270,8 @@
     background: white;
     box-shadow: var(--shadow-menu);
   }
-  .mobileMore button { width: 100%; min-height: 42px; border: 0; background: transparent; text-align: left; font: 500 14px var(--font-ui); }
+  .mobileMore button { width: 100%; min-height: 42px; border: 0; border-radius: var(--radius-4); background: transparent; text-align: left; font: 500 14px var(--font-ui); }
+  .mobileMore button[aria-current="page"] { color: var(--emerald); background: var(--emerald-wash); }
   .commandBar {
     position: static;
     min-height: 78px;

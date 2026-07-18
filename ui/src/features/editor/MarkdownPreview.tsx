@@ -3,13 +3,32 @@ import remarkGfm from "remark-gfm";
 
 import styles from "./MarkdownWorkspace.module.css";
 
-export function MarkdownPreview({ content }: { content: string }) {
+type MarkdownPreviewProps = {
+  content: string;
+  onLocalLink?: (href: string) => boolean;
+};
+
+export function MarkdownPreview({ content, onLocalLink }: MarkdownPreviewProps) {
   return (
     <article className={styles.preview}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          a: ({ href, children }) => <a href={href} target="_blank" rel="noreferrer">{children}</a>,
+          a: ({ href, children }) => {
+            const external = Boolean(href && /^(?:https?:)?\/\//.test(href));
+            return (
+              <a
+                href={href}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noreferrer" : undefined}
+                onClick={(event) => {
+                  if (href && onLocalLink?.(href)) event.preventDefault();
+                }}
+              >
+                {children}
+              </a>
+            );
+          },
         }}
       >{content}</ReactMarkdown>
     </article>
