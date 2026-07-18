@@ -1,320 +1,229 @@
-# SEO 三件套协同工作流指南
+# SEO Workbench 协同工作流指南
 
-三条开源项目（SuperSEO、SEO Machine、Claude SEO）覆盖 SEO 全链路：**战略→生产→质检→审计**。本指南记录如何将它们串联成一套可复现的工作流。
+SEO Workbench 把站点资料、工作流状态、审计证据和内容文档放进同一个本地项目。CLI 是执行入口，agent 读取本地 skill 完成判断和写作，可选 UI 用来查看结果和编辑 Markdown。
 
-> **📖 本指南默认以 WordPress 为例演示发布流程。** 如果你用 Shopify，请根据技术栈选择对应教程:
-> - **Shopify Liquid (Online Store 2.0)**: `Shopify从0到1-SEO建设进阶教程.md`
-> - **Shopify Headless (Hydrogen / Next.js)**: `Shopify-Hydrogen-Headless-SEO指南.md`
-> - **通用新站**: `从0到1新站SEO建设教程.md`
->
-> 不同技术栈的差异主要在 INIT（技术基线检查）和 TECHNICAL_AUDIT（关注点不同）两个阶段，战略规划、内容生产、质量审查、外链建设四个阶段通用。
+开始前先读 [SEO 基础知识与证据模型](SEO基础知识与证据模型.md)。本文只讲如何操作 Workbench。
 
----
+## 一个站点对应一个项目
 
-## 工具速览
+不同站点的资料放在不同目录：
 
-| 工具 | 定位 | 一句话 |
-|------|------|--------|
-| **SuperSEO** | 内容战略顾问 | 给关键词或URL，Agent 自行读 SERP、分析竞品、输出策略 |
-| **SEO Machine** | 内容生产流水线 | 研究→写作→优化→发布，一竿子到底 |
-| **Claude SEO** | 全站技术审计 | 15 代理并行，诊断技术/内容/性能/结构化数据 |
-
----
-
-## 第一阶段：战略规划（SuperSEO）
-
-**目标：** 搞清楚写什么、按什么顺序写、每篇怎么写。
-
-### 步骤 1：关键词深潜
-
-```
-/superseo:keyword-deep-dive
+```text
+projects/
+├── default/
+├── industrial-supplier/
+└── shopify-store/
 ```
 
-输入目标关键词。Agent 会：
-- 读取 Google SERP 前10
-- 判断搜索意图（信息型/商业型/交易型/导航型）
-- 评估零点击风险、AI Overview 影响
-- 读取前3名竞品的完整页面
-- 输出 90 天排名计划
+项目目录包含公开业务背景、策略、内容草稿和本地审计。凭据、token、GSC 数据及其他私密运行信息保存在被 Git 忽略的 `.runtime/` 和审计目录中。
 
-**产出：** 关键词作战地图——这个词有没有机会、要多久、需要什么强度的内容。
+列出已有项目：
 
-### 步骤 2：话题集群规划
-
-```
-/superseo:topic-cluster-planning
+```bash
+./seo projects --json
 ```
 
-输入种子话题。Agent 会：
-- 扫描该领域的核心话题和子话题
-- 识别支柱页（Hub）和支撑文章（Spoke）
-- 设计内部链接权重矩阵
-- 输出发布顺序建议
+初始化普通站点：
 
-**产出：** Hub & Spoke 内容架构 + 发布路线图。
-
-### 步骤 3：内容简报
-
-```
-/superseo:content-brief
+```bash
+./seo --project my-site init general \
+  --name "My Site" \
+  --url "https://example.com" \
+  --description "网站服务的客户和业务范围"
 ```
 
-为每篇待写文章生成简报。Agent 会：
-- 读取目标关键词的 SERP 前10
-- 分类搜索意图
-- 绘制内容缺口：竞品覆盖了哪些你不具备的角度
-- 给出结构建议 + 页面要素清单
+Shopify Liquid 使用 `shopify`，Hydrogen 或其他 Headless Shopify 使用 `shopify-headless`。已经有状态文件的项目可以使用 `existing`，不要用 `--force` 覆盖仍有价值的资料。
 
-**产出：** 写手可以直接开写的简报（包含标题建议、大纲、必备要点、推荐字数）。
+## 两条并行链路
 
----
+Workbench 有工作流和证据两条链路。工作流记录接下来该做什么，证据记录网站现在是什么状态。
 
-## 第二阶段：内容生产（SEO Machine）
-
-**目标：** 把简报变成一篇 SEO 优化完毕的文章，发布到你的内容平台。
-
-**发布目标按技术栈：** WordPress (REST API 自动发布) / Shopify Blog (手动粘贴) / Headless CMS (手动录入 Sanity/Contentful/Strapi)
-
-### 步骤 4：关键词研究
-
-```
-/research [主题]
+```text
+业务资料和目标
+      │
+      ├── 工作流：战略 → 内容 → 质量 → 技术 → 外链 → 监测
+      │
+      └── 证据：raw → rendered → technology → Lighthouse → CrUX → GSC
 ```
 
-SEO Machine 会：
-- 分析前10竞品的内容长度、标题模式、结构
-- 识别内容缺口
-- 生成研究简报，为写作做准备
+工作流不会自动替你完成专业判断。`next` 返回步骤和对应的本地 skill，agent 读取 skill、项目上下文和证据后执行，再显式更新状态。
 
-### 步骤 5：写文章
-
-```
-/write [主题]
+```bash
+./seo --project my-site status --json
+./seo --project my-site next --json
+./seo --project my-site step start
+./seo --project my-site step done
 ```
 
-自动触发 4 个代理：
-- **SEO 优化器**：关键词密度、标题层级、摘要优化
-- **元数据创建器**：生成5个标题变体 + 5个描述变体
-- **内部链接器**：推荐3-5条精确内链，含锚文本和放置位置
-- **关键词映射器**：分布热力图、LSI 覆盖检查、蚕食风险预警
+需要跳过不适用的步骤时使用 `step skip` 并在项目笔记中说明原因。不要为了让进度条变绿而跳过仍未确认的工作。
 
-**注意：** 写作前确保 `context/brand-voice.md` 和 `context/writing-examples.md` 已配置好品牌语调。
+## 第一次基线采集
 
-### 步骤 6：发布前优化
+普通巡检从原始响应和代表路由开始：
 
-```
-/optimize [文件路径]
+```bash
+./seo --project my-site evidence --json
 ```
 
-最终 SEO 检查：
-- 评分 0-100，不达标返回修改
-- 修复优先级排序（高/中/低）
-- 确认元数据、标题层级、图片Alt文本
+JavaScript 站点、移动端可能跳转的站点，或原始 HTML 内容很少时，增加浏览器渲染：
 
-### 步骤 7：发布到内容平台
-
-**WordPress:**
-```
-/publish-draft [文件路径]
-```
-通过 WordPress REST API 发布，自动携带 Yoast SEO 元数据。
-
-**Shopify (Liquid):** `/write` 产出草稿后手动粘贴到 Shopify Blog。
-
-**Shopify (Headless):** `/write` 产出草稿后手动录入 Headless CMS（Sanity / Contentful / Strapi）。
-
-通过 WordPress REST API 发布，自动携带 Yoast SEO 元数据。
-
-**前置条件：** `wp-config/local.json` 中配置好站点 URL 和应用密码。
-
----
-
-## 第三阶段：质量审查（SuperSEO）
-
-**目标：** 文章发出去了，检查它能不能排上去。
-
-### 步骤 8：页面审计
-
-```
-/superseo:page-audit
+```bash
+./seo --project my-site evidence --rendered --json
 ```
 
-输入已发布页面的 URL。Agent 会从7个维度诊断：
-1. 内容质量
-2. 技术 SEO
-3. E-E-A-T 信号
-4. 内容结构
-5. 内部链接
-6. Schema 标记
-7. 竞争定位（对标前3）
+默认会从同一主机的内部链接中选择少量代表路由，避免把一次基础巡检变成无边界爬虫。只检查项目首页时使用 `--crawl-limit 0`。
 
-### 步骤 9：语义缺口分析
+技术栈识别默认采用 balanced 模式：
 
-```
-/superseo:semantic-gap-analysis
+```bash
+./seo --project my-site technology --json
 ```
 
-如果你的页面排在 4-10 名进不去前3——Agent 对比你的页面和前3名竞品，用 EAV（实体-属性-值）三元组思维输出：
-- 你缺少了哪些实体
-- 你缺少了哪些子话题
-- 你缺少了哪些语义关系
+需要可重复的响应头、Cookie 和原始 HTML 检查时使用：
 
-### 步骤 10：内容改进
-
-```
-/superseo:improve-content
+```bash
+./seo --project my-site technology --scan-mode fast --json
 ```
 
-针对审计和缺口分析的结果重写薄弱段落。运用反 AI 味规则集：
-- 禁用空洞过渡词（"In today's digital landscape"、"It is important to note that"）
-- 禁用模糊夸大语（"comprehensive"、"cutting-edge"、"unparalleled"）
-- 星座测试法：把品牌名去掉，读者还能认出是你写的吗？
+技术检测结果用于理解交付、前端、内容、商务、分析和合规层。未检测到某项技术，只代表它没有出现在本次观察证据中。
 
----
+## 性能证据分开采集
 
-## 第四阶段：全站体检（Claude SEO，周期性）
+Lighthouse 提供可控环境中的实验室诊断：
 
-**目标：** 定期检查技术基础不滑坡。建议每次大改版后 + 每月一次例行。
-
-### 步骤 11：全站审计
-
-```
-/seo audit [网址]
+```bash
+./seo --project my-site performance --json
+./seo --project my-site performance --form-factor desktop --json
 ```
 
-15 个代理同时并行工作（8 个必开 + 7 个条件触发）：
-- **必开：** 技术、内容、Schema、Sitemap、性能、视觉、GEO、SXO
-- **条件触发：** 检测到电商→开电商审计；检测到本地业务→开本地SEO、地图情报；有Google API→开GSC/GMS/GA4数据
+默认进行五次顺序运行并保存完整结果。查看中位表现和运行波动，确认每次最终 URL 一致后再比较。
 
-**产出：** SEO 健康分 (0-100) + PDF 报告。
+CrUX 提供真实 Chrome 用户的当前值和历史趋势：
 
-### 步骤 12：技术SEO深度检查
-
-```
-/seo technical [网址]
+```bash
+./seo --project my-site crux --json
 ```
 
-9 个维度逐一排查：
-- 抓取能力（robots.txt、抓取预算）
-- 索引能力（noindex 误用、canonical 冲突）
-- 安全性（HTTPS、混合内容）
-- URL 结构
-- 移动端适配
-- Core Web Vitals（LCP、INP、CLS）
-- 结构化数据
-- JavaScript 渲染
-- IndexNow 协议
+页面没有足够数据时可能回退到 origin；整个站点流量不足时返回 `no_data`。这两种状态都不等于性能合格或不合格。
 
-### 步骤 13：SEO 漂移监控
+## GSC 是显式的只读证据
 
-```
-/seo drift baseline [网址]    # 建立基线
-/seo drift compare [网址]     # 改版后对比
-/seo drift history [网址]     # 查看历史变化
+首次使用需要由用户完成授权和 property 绑定。配置方法见 [Google integrations](google-integrations.md)。完成后运行：
+
+```bash
+./seo --project my-site gsc collect --json
 ```
 
-这是一套"SEO 的版本控制"：
-- 抓取页面 SEO 关键元素存入 SQLite
-- 17 条对比规则覆盖标题、meta、canonical、hreflang、Schema、结构化内容等
-- 变更分级：INFO / WARNING / CRITICAL
+这会采集完整时间窗口的 Search Analytics 对比、Sitemap 状态和少量代表 URL 的已索引版本。它不会提交 Sitemap、请求索引或执行 live test。
 
-**使用场景：** 每次上线前建基线，上线后立即对比，防止无意中改了 title 或 noindex 导致暴跌。
+没有认证时，普通证据采集仍应继续。`needs_auth` 是需要用户处理的配置状态，不是网站故障。
 
-### 步骤 14：外链审计
+## 一次组合采集
 
-```
-/seo backlinks [网址]
-```
+环境和 Google 集成都准备好后，可以显式组合采集器：
 
-多数据源融合：
-- Moz Link Explorer（DA/PA、垃圾评分、锚文本分布）
-- Bing Webmaster Tools（外链数、竞品对比）
-- Common Crawl Web Graph（PageRank、入度）
-
-**产出：** 外链健康度报告——哪些引荐域好、哪些可疑、竞品在哪里拿链接。
-
----
-
-## 完整流程图
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    第〇步：一次性初始化                      │
-│  SEO Machine: 配置 brand-voice.md, writing-examples.md     │
-│  SEO Machine: 配置 WordPress 发布凭证                       │
-│  Claude SEO: 配置 Google API / Moz API（可选，增强数据）      │
-└─────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────┐
-│             第一阶段：战略规划（SuperSEO）                    │
-│                                                         │
-│  keyword-deep-dive → topic-cluster-planning → content-brief │
-│                                                         │
-│  输出：内容路线图 + 每篇简报                                   │
-└─────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────┐
-│            第二阶段：内容生产（SEO Machine）                  │
-│                                                         │
-│    /research → /write → /optimize → /publish-draft       │
-│                                                         │
-│  输出：已发布、已优化的文章 (WP / Shopify Blog / Headless CMS)    │
-└─────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────┐
-│              第三阶段：质量审查（SuperSEO）                    │
-│                                                         │
-│  page-audit → semantic-gap-analysis → improve-content    │
-│                                                         │
-│  输出：改进方案 → 回到第二阶段 /rewrite 执行                   │
-└─────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────┐
-│           第四阶段：全站体检（Claude SEO，周期性）             │
-│                                                         │
-│   /seo audit → /seo technical → /seo drift → /seo backlinks │
-│                                                         │
-│  输出：健康报告 + 修复优先级 + 漂移记录                         │
-└─────────────────────────────────────────────────────────┘
+```bash
+./seo --project my-site evidence \
+  --rendered \
+  --technology \
+  --performance \
+  --crux \
+  --gsc \
+  --json
 ```
 
----
+每个采集器独立返回 `collection_status`、`errors` 和 `warnings`。一个外部 API 失败，不应抹掉已经成功取得的原始和渲染证据。
 
-## 节奏建议
+## 从审计结果形成任务
 
-| 环节 | 频率 | 工具 |
-|------|------|------|
-| 内容战略规划 | 每季度 | SuperSEO |
-| 关键词深潜 | 每篇新文章前 | SuperSEO |
-| 文章生产 | 按内容日历 | SEO Machine |
-| 已发布页面审计 | 发布后1个月 | SuperSEO |
-| 全站技术审计 | 每月 + 每次改版 | Claude SEO |
-| 漂移基线对比 | 每次上线部署 | Claude SEO |
-| 外链审计 | 每季度 | Claude SEO |
-| E-E-A-T 审计 | 核心页面每季度 | SuperSEO |
+agent 应先读取稳定的 `latest.json` 指针，再按需要打开不可变快照：
 
----
+```text
+audits/raw/latest.json
+audits/technology/latest.json
+audits/performance/latest.json
+audits/crux/latest.json
+audits/gsc/latest.json
+```
 
-## 常见问题
+报告至少区分三类内容：
 
-**Q: 三个工具必须一起用吗？**
+- 已确认的问题，证据能够直接证明故障；
+- 有根据的推断，需要额外验证才能归因；
+- 当前缺口，本次采集没有足够数据。
 
-不必。如果你还没内容，从 SEO Machine 开始（先要有东西可排）。如果你有内容但不排名，从 SuperSEO 的 page-audit + semantic-gap-analysis 开始（诊断问题）。如果你流量突然跌了，从 Claude SEO 的 drift compare 开始（查是不是改坏了什么）。
+技术栈名称本身不是问题。只有 raw/rendered 差异、网络请求、性能归因或配置证据能把某项技术与具体影响连接起来。
 
-**Q: 这三者会不会功能重叠？**
+## 内容战略和生产
 
-有几个交集点但角度不同：
-- SuperSEO 的 `topic-cluster-planning` 和 Claude SEO 的 `seo-cluster` 都做话题集群，但前者重内容策略，后者重 SERP 重叠度计算
-- SuperSEO 的 `page-audit` 和 Claude SEO 的 `seo-page` 都做单页分析，但前者对标竞品，后者面向技术诊断
-- SEO Machine 的 `seo-audit` 技能和 Claude SEO 的 `/seo audit` 功能不同：前者侧重页面级建议，后者是全站多代理并行审计
+内容工作通过项目上下文和本地 skill 完成，不再使用旧项目的 slash command。agent 可以从当前步骤发现相应 skill：
 
-**Q: 需要哪些外部 API 才能跑通全流程？**
+```bash
+./seo --project my-site next --json
+```
 
-- **SuperSEO：** 零依赖，Agent 自己爬 SERP
-- **SEO Machine：** DataForSEO（关键词数据）、GA4 + GSC（效果数据，可选）、WordPress 凭证（WordPress 自动发布必需，Shopify/Headless 用户不需要）
-- **Claude SEO：** Google API（GSC/CrUX/GA4，可选但建议）、Moz API（外链）、DataForSEO（实时 SERP）
+常用 skill 包括：
+
+- `keyword-deep-dive`，分析一个查询的意图、结果类型和竞争环境；
+- `content-brief`，把搜索结果、受众任务和一手资料需求整理成写作简报；
+- `write-content`，根据简报和品牌资料形成草稿；
+- `page-audit`，检查已发布页面与用户任务、搜索结果和技术证据的差距；
+- `technical-audit`，综合 raw、rendered、technology、performance、CrUX 和 GSC。
+
+适合交给 agent 的请求：
+
+> 读取 `my-site` 项目的当前状态、上下文和最新证据。执行 next 返回的 skill，把结果写入对应的项目目录，并说明哪些结论来自实测、哪些需要人工资料。
+
+内容简报不要把竞品字数当成目标。它应明确用户任务、页面类型、必须回答的问题、第一方证据、内部链接和转化路径。
+
+## 审计差异和上线复查
+
+大改版、主题更新、依赖更新或 SEO 修复前后都应保存快照：
+
+```bash
+./seo --project my-site audit-diff --json
+./seo --project my-site audit-diff --kind performance --json
+```
+
+Workbench 会拒绝部分不可比数据，例如 Lighthouse 最终 URL 不同、CrUX 实际范围不同或 GSC property 和窗口不同。此时应调整采集范围，不要强行输出回归结论。
+
+## 可选 UI
+
+```bash
+./seo --project my-site ui
+```
+
+UI 监听本机地址，展示项目、证据、工作流和 Markdown 文件。它调用同一套受限 CLI 动作，不接收任意 shell 命令，也不提供凭据输入框。
+
+UI 打开时，agent 仍然使用相同的 `./seo --project ...` 命令和项目文件。文件监听器会把新的审计和文档显示出来。编辑器使用 revision 检查，避免静默覆盖 agent 或用户的并发修改。
+
+## 推荐工作节奏
+
+频率应跟业务变化绑定：
+
+| 触发条件 | 建议动作 |
+|---|---|
+| 新项目或第一次接手 | doctor、raw、rendered、technology、Lighthouse，配置后补 CrUX 和 GSC |
+| 发布重要模板或迁移 | 发布前后采集同一批代表 URL，并运行 audit diff |
+| 新内容上线 | 检查状态码、canonical、内部链接和 Sitemap，随后观察 GSC 完整数据窗口 |
+| 性能改造 | Lighthouse 定位和回归，CrUX 或 RUM 观察真实用户趋势 |
+| 流量异常 | 先确认 GSC 数据范围，再检查技术 diff、页面变化、查询和设备分布 |
+| 定期维护 | 选择与站点更新频率匹配的周期，不要求所有站点固定每月全量审计 |
+
+## 环境和安全检查
+
+```bash
+./setup.sh --check
+./seo --project my-site doctor --json
+./seo --project my-site validate --json
+```
+
+`doctor` 检查运行环境、可选依赖、Google 配置和最新证据，不会自动打开 OAuth 登录。凭据、token 和私有项目数据留在本地，不应复制进报告、日志或 Git。
+
+## 场景教程
+
+- [从 0 到 1 新站 SEO 建设教程](从0到1新站SEO建设教程.md)
+- [自建普通网站 SEO 指南](自建普通网站SEO指南.md)
+- [Shopify Liquid SEO 指南](Shopify从0到1-SEO建设进阶教程.md)
+- [Shopify Hydrogen SEO 指南](Shopify-Hydrogen-Headless-SEO指南.md)
+- [WooCommerce B2B SEO 指南](WooCommerce-B2B-SEO指南.md)
