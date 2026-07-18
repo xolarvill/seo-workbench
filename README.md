@@ -1,188 +1,178 @@
 # SEO Workbench
 
-基于社区开源项目而创建的SEO工作流，覆盖全链路：初始审计 → 战略规划 → 内容生产 → 质量审查 → 技术审计 → 外链建设 → 持续监控。
+English | [简体中文](README.zh-CN.md)
 
----
-Todo:
-- [X] tech stack recognization: wappalyzergo integration
-- [X] laboratory test: Lighthouse 本地多次采样与代表结果
-- [X] real UX: CrUX 当前值与 40 周历史
-- [X] 多店铺管理
-- [X] 审计diff
-- [X] GSC 只读接入
-- [X] cli improvement: 本地 `./seo` / `seo-workbench` 命令
-- [X] optional local workbench UI + Markdown editor
-- [ ] docs: readme重写
-- [ ] 定时功能
+A local-first workspace for technical SEO audits, content planning, and repeatable evidence collection. Use it from the CLI, let an AI coding agent operate it, or open the optional browser interface.
 
----
+![SEO Workbench overview](docs/assets/workbench-overview.jpg)
 
-## 快速开始
+The screenshot above shows a real project workspace. Audit evidence, workflow state, technology findings, performance results, and working documents stay together instead of being scattered across one-off reports.
+
+## What it does
+
+| Area | Included capabilities |
+| --- | --- |
+| Site evidence | Raw HTML, redirects, metadata, robots.txt, Sitemaps, representative routes, and rendered browser checks |
+| Technology | Wappalyzer-style detection with architecture and SEO impact analysis |
+| Performance | Repeatable multi-run Lighthouse audits plus CrUX field data and 40-week history |
+| Search Console | Read-only Search Analytics, URL Inspection, and Sitemap status collection |
+| Change tracking | Comparable diffs for raw, technology, Lighthouse, CrUX, and GSC evidence |
+| SEO workflow | Strategy, content briefs, production, quality review, technical audits, backlinks, and monitoring |
+| Project management | One local folder per site, with private runtime data excluded from Git |
+
+SEO Workbench is agent-neutral. Codex, Claude Code, or another coding agent can use the same `./seo` commands, project files, and local skills. The CLI remains the source of truth when the UI is closed.
+
+## Quick start
 
 ```bash
 git clone https://github.com/xolarvill/seo-workbench.git
 cd seo-workbench
 ./setup.sh
-codex # 使用任意agent
 ```
 
-安装完成后的日常入口是 `./seo`。激活 `.venv` 后也可直接使用 `seo-workbench`；`python -m seo_workbench` 仅保留为兼容与诊断入口。
-
-`setup.sh` 是安装入口，不只是环境检查。它会安装或配置 Python 3.11、Go 快速指纹 helper、balanced Wappalyzer、Google OAuth 支持、Node 24 LTS、锁定版本的 Lighthouse、开发验收依赖和浏览器运行时。机器已有 Google Chrome/Chromium 时会直接复用，否则安装项目本地 Chromium。macOS 自动安装系统依赖时需要 Homebrew。Go 模块下载会在官方代理不可用时回退到 `goproxy.cn` 和 direct，可用 `SEO_WORKBENCH_GOPROXY` 覆盖代理链。
+Create a project and collect its first evidence:
 
 ```bash
-./setup.sh --check   # 只验证，不安装
-./setup.sh --yes     # 非交互安装，适合 agent/CI
-./setup.sh --local-browser  # 安装 Playwright 固定版本 Chromium，适合基准对比
+./seo --project my-site init general \
+  --name "My Site" --url "https://example.com"
+
+./seo --project my-site evidence --rendered --technology --json
+./seo --project my-site performance --json
 ```
 
-## 可选本地 Workbench 界面
+Open the workbench:
 
 ```bash
-./seo ui
-./seo --project wildone ui
-./seo ui --port 8877
-./seo ui --no-open
+./seo --project my-site ui
 ```
 
-界面只监听 `127.0.0.1`，使用随机本地会话，不提供远程部署或用户账号。它包含项目切换、证据状态、工作流、审计任务、Markdown 文件浏览，以及 source / split / preview 编辑模式。保存使用 revision 检查，若 agent 同时改写文件，界面会保留本地编辑并提示比较或重新加载。
+The interface only listens on `127.0.0.1`. It is optional and uses the same local project files as the CLI.
 
-界面是可选的呈现层，不是第二套状态或数据库。关闭界面后，`./seo`、`projects/<id>/state.json`、审计 JSON 和 Markdown 工作流完全照旧。界面开启时会写入 `.runtime/ui/session.json`；agent 应继续使用已有 CLI 和项目文件，文件监控会把新审计与 Markdown 更新实时送到界面。不要读取、输出或复制 `.runtime/ui/token`。
+## Work with an agent
 
-界面的 Run audit 面板只允许执行固定白名单中的只读采集和 diff 命令：basic evidence、technology、Lighthouse、CrUX、GSC collect、audit diff。同一项目一次只运行一个任务；跨项目可以各自运行。首次 GSC OAuth 仍必须由用户在浏览器确认。
+Run your coding agent from the repository root and give it the project ID. A useful first request is:
 
-## 技术栈与性能证据
+> Audit the `my-site` project, explain the technical and performance findings, then prepare a content SEO strategy using the local workbench.
+
+Agents can discover the current workflow step with:
 
 ```bash
-./seo technology --json
-./seo technology --scan-mode fast --json
-./seo performance --json
-./seo performance --runs 1 --form-factor desktop --json
-./seo evidence --performance --json
-./seo crux --json
-./seo gsc collect --json
-./seo evidence --crux --gsc --json
-./seo evidence --rendered --crawl-limit 5 --json
+./seo --project my-site status --json
+./seo --project my-site next --json
 ```
 
-`technology` 默认用 balanced Wappalyzer 检查页面、脚本、robots 和 DNS，并对明确的 `vue-vendor`、`swiper-vendor`、分析标签 URL 等资源信号做可追溯 fallback；已有 rendered evidence 时还会合并真实 DOM、网络请求和不同 UA 的最终 URL。`--scan-mode fast` 使用可复现的 Go headers/cookies/raw-HTML 指纹。零检测只表示本次证据未命中，不会被解释为技术或标签一定不存在。
+When the UI is open, new audit files and Markdown documents appear there automatically.
 
-项目级 `evidence` 默认从 raw/rendered 内链中抽取最多 5 个同源代表路由，排除静态资源、敏感查询参数和同模板重复 URL，用于发现 SPA 空壳与跨路由重复元数据。`--crawl-limit 0` 可恢复严格单 URL；上限为 20，不是通用爬虫。
+## Workbench interface
 
-性能分析固定使用 Lighthouse 13.4.0。默认对项目首页顺序运行 5 次，至少 3 次有效才生成代表结果，并保留每次完整 LHR、代表 JSON、HTML 报告、运行环境、波动范围、requested/final URL 和跨运行跳转一致性。默认网络边界会逐连接解析并拒绝私网地址，写盘前还会脱敏 URL 中的凭据和敏感查询值：
+The browser interface includes project switching, evidence status, audit actions, workflow progress, file browsing, and a Markdown editor with source, split, and preview modes.
 
-```text
-projects/default/audits/performance/performance-*/run-*.json
-projects/default/audits/performance/performance-*/representative.json
-projects/default/audits/performance/performance-*/report.html
-projects/default/audits/performance/performance-*/summary.json
-projects/default/audits/performance/latest.json
-```
+![SEO Workbench Markdown editor](docs/assets/workbench-editor.jpg)
 
-单次运行适合烟测，不适合趋势结论。跨时间比较应保持相同 requested/final URL、form factor、Lighthouse、浏览器版本和机器环境；报告会记录 `browser_version`，其中 `high_variance` 为真或最终 URL 不一致时不应直接判定回归。需要严格固定浏览器时，先运行 `./setup.sh --local-browser`。
+The editor checks file revisions before saving. If an agent changes the same document, the UI preserves your local edit and asks you to compare or reload instead of overwriting either version.
 
-### CrUX 真实用户数据
+<details>
+<summary>Mobile layout</summary>
 
-CrUX 与 Lighthouse 独立保存。默认查询页面的 aggregate、mobile、desktop 当前 28 天滚动数据和 40 周历史；页面样本不足时回退到 origin 并显式记录范围，站点流量不足时返回 `no_data`，不会伪造成 Lighthouse 结果。
+<p align="center">
+  <img src="docs/assets/workbench-mobile.jpg" alt="SEO Workbench mobile overview" width="375">
+</p>
+
+</details>
+
+## Common commands
 
 ```bash
-export SEO_WORKBENCH_CRUX_API_KEY="your-key"
-./seo \
-  --project wildone crux --json
-
-# 指定页面或单一设备
-./seo \
-  --project wildone crux --url https://example.com/products/item --form-factor mobile --json
-```
-
-API key 也可保存为 `.runtime/google/crux-api-key`，文件不得是 symlink。证据写入 `projects/<id>/audits/crux/`；`latest.json` 是稳定指针。
-
-### Google Search Console
-
-GSC 是只读集成。首次使用需要在 Google Cloud 启用 Search Console API、创建 Desktop OAuth client，然后由用户完成一次浏览器授权：
-
-```bash
-./seo \
-  --project wildone gsc auth --client-secret /path/to/oauth-client.json
-
-./seo \
-  --project wildone gsc properties --json
-
-./seo \
-  --project wildone gsc bind --property sc-domain:example.com --json
-
-./seo \
-  --project wildone gsc collect --json
-```
-
-`gsc collect` 包含完整 28 天与前 28 天 Search Analytics、Sitemap 状态，以及最多 10 个代表 URL 的 Google 索引版本检查。它不是 live URL test，也不会提交 Sitemap 或请求索引。无界面自动化可用 `gsc auth --service-account /path/to/account.json`，但必须先把该 service account 加入对应 GSC property。
-
-OAuth client、token、service account 和项目绑定位于 `.runtime/`；GSC 审计数据使用 `0600` 权限并被 Git 忽略。完整配置和状态语义见 [Google integrations](docs/google-integrations.md)。
-
-## 多店铺管理
-
-每家店铺使用一个独立目录，不需要数据库或中央配置。版本库只跟踪 `projects/default/` 脚手架；其他 `projects/<id>/` 默认由 `.gitignore` 排除，只保留在本机：
-
-```text
-projects/
-├── default/
-├── wildone/
-└── another-store/
-```
-
-```bash
-# 初始化和选择店铺
-./seo \
-  --project wildone init shopify --name "Wild One" --url "https://example.com"
-
-# 列出所有含 state.json 的店铺
+# Projects and workflow
 ./seo projects --json
+./seo --project my-site status --json
+./seo --project my-site next
+./seo --project my-site step done
 
-# 后续命令使用同一个店铺 id
-./seo --project wildone status --json
+# Technical evidence
+./seo --project my-site evidence --rendered --json
+./seo --project my-site technology --json
+./seo --project my-site performance --json
+
+# Google evidence, after configuration
+./seo --project my-site crux --json
+./seo --project my-site gsc collect --json
+
+# Compare recent compatible snapshots
+./seo --project my-site audit-diff --json
+
+# Environment and project checks
+./seo --project my-site validate --json
+./seo --project my-site doctor --json
+./setup.sh --check
 ```
 
-`--project wildone` 等价于 `--project-dir projects/wildone`。店铺 id 只允许小写字母、数字和连字符；现有 `projects/default` 行为保持不变。
+Use `./seo --help` and `./seo <command> --help` for the full command reference.
 
-## 审计 Diff
+## Local project model
 
-默认将当前店铺每种审计的最新不可变记录，与 URL、设备、运行配置和工具版本一致的最近基线比较：
-
-```bash
-./seo \
-  --project wildone audit-diff --json
-```
-
-结果写入：
+Each site has an isolated directory:
 
 ```text
-projects/wildone/audits/diffs/audit-diff-<timestamp>.json
-projects/wildone/audits/diffs/latest.json
+projects/my-site/
+├── state.json
+├── context/
+├── strategy/
+├── content/
+├── audits/
+└── .runtime/
 ```
 
-Raw diff 覆盖状态码、跳转、title/meta/canonical/robots、H1、Schema、图片、链接和采集错误；Technology diff 覆盖技术新增、移除与版本；Performance diff 覆盖性能分数和核心指标中位数；CrUX diff 覆盖同范围、同设备的 p75 与 CWV 等级；GSC diff 覆盖同 property、同时间窗口的搜索表现、索引状态和 Sitemap 错误。任何可比性门槛不满足时都只记录 change，不标记回归或改善。
+Projects other than the distributable `projects/default/` scaffold are ignored by Git. Credentials, Google tokens, property bindings, audit data, and working documents stay on the local machine unless you deliberately export them.
 
-显式比较仅支持单一类型，并且两个文件必须属于当前店铺：
+## Optional Google integrations
 
-```bash
-./seo \
-  --project wildone audit-diff --kind performance \
-  --from projects/wildone/audits/performance/old/summary.json \
-  --to projects/wildone/audits/performance/new/summary.json --json
-```
+CrUX requires a Google API key. GSC supports desktop OAuth and service accounts, requests read-only access, and never submits Sitemaps or indexing requests.
 
-## 已知限制
+See [Google integrations](docs/google-integrations.md) for setup, authentication, evidence scopes, and status meanings.
 
-- **无自动发布。** `/write` 产出草稿后需手动发布（WordPress 除外）。Headless CMS 的自动发布管线不在当前 scope。
-- **单项目单站点。** 可以管理多个店铺，但每个 `projects/<id>` 仍对应一个站点；单个项目内的多站点/多语言 SEO 不在此版本覆盖。
-- **Lighthouse 与 CrUX 不能互相替代。** Lighthouse 是受控实验室数据；CrUX 是满足流量门槛的 Chrome 聚合数据。当前没有定时调度或 LHCI Server。
-- **GSC URL Inspection 不是实时测试。** API 返回 Google 索引中的版本，且受 property 配额限制；工作台默认每次最多检查 10 个代表 URL。
-- **本地探针不是完整的恶意网站沙箱。** Lighthouse 流量会经过私网过滤代理，但它不能替代操作系统或容器隔离；loopback、RFC1918、link-local 与 CGNAT 默认拒绝。`198.18.0.0/15` 只作为透明代理 fake-IP 范围放行；`--allow-private` 仍只用于明确可信的开发或内网站点。
+## Setup requirements
 
-## Credit
+`./setup.sh` creates the Python environment, installs the pinned Python and Node dependencies, builds the Go technology helper and browser UI, and resolves Chrome or Chromium for rendered audits and Lighthouse.
+
+Automatic installation of missing system runtimes currently requires macOS and Homebrew. On other systems, install these prerequisites first:
+
+- Git
+- uv
+- Python 3.11
+- Go 1.25 or newer
+- Node.js 24
+- Chrome or Chromium
+
+## Documentation
+
+- [Google integrations](docs/google-integrations.md)
+- [Standalone workbench architecture](docs/independent-workbench.md)
+- [Preserved SEO capability families](docs/capability-preservation.md)
+- [SEO workflow guide, Chinese](docs/SEO工具链协同工作流指南.md)
+- [Shopify SEO guide, Chinese](docs/Shopify从0到1-SEO建设进阶教程.md)
+- [Shopify Hydrogen SEO guide, Chinese](docs/Shopify-Hydrogen-Headless-SEO指南.md)
+
+## Current boundaries
+
+- The workbench has no built-in scheduler or hosted server.
+- One project represents one site. Use separate project folders for separate sites or stores.
+- Lighthouse lab data, CrUX field data, and GSC search data remain separate evidence sources.
+- GSC OAuth requires the user to approve the first browser authorization.
+- Local probes reject private network targets by default, but they are not a complete sandbox for malicious websites.
+
+## Credits
+
+SEO Workbench preserves and adapts useful ideas and material from:
 
 - [claude-seo](https://github.com/AgriciDaniel/claude-seo)
 - [seomachine](https://github.com/TheCraigHewitt/seomachine)
 - [superseo-skills](https://github.com/inhouseseo/superseo-skills)
 - [wappalyzergo](https://github.com/projectdiscovery/wappalyzergo)
-- [lighthouse](https://github.com/GoogleChrome/lighthouse)
+- [Lighthouse](https://github.com/GoogleChrome/lighthouse)
+
+See the local skill and third-party attribution files for component-specific terms.
+
+## License
+
+[MIT](LICENSE)
