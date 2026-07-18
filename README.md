@@ -1,12 +1,26 @@
 # SEO Workbench
 
-English | [简体中文](README.zh-CN.md)
 
 A local-first workspace for technical SEO audits, content planning, and repeatable evidence collection. Use it from the CLI, let an AI coding agent operate it, or open the optional browser interface.
 
 ![SEO Workbench overview](docs/assets/workbench-overview.jpg)
 
 The screenshot above shows a real project workspace. Audit evidence, workflow state, technology findings, performance results, and working documents stay together instead of being scattered across one-off reports.
+
+---
+Todo:
+- [X] tech stack recognization: wappalyzergo integration
+- [X] laboratory test: Lighthouse 本地多次采样与代表结果
+- [X] real UX: CrUX 当前值与 40 周历史
+- [X] 多店铺管理
+- [X] 审计diff
+- [X] GSC 只读接入
+- [X] cli improvement: 本地 `./seo` / `seo-workbench` 命令
+- [X] optional local workbench UI + Markdown editor
+- [X] docs: readme重写
+- [ ] 定时功能
+
+---
 
 ## What it does
 
@@ -30,6 +44,8 @@ cd seo-workbench
 ./setup.sh
 ```
 
+### Working manually
+
 Create a project and collect its first evidence:
 
 ```bash
@@ -48,7 +64,7 @@ Open the workbench:
 
 The interface only listens on `127.0.0.1`. It is optional and uses the same local project files as the CLI.
 
-## Work with an agent
+### Working with an agent
 
 Run your coding agent from the repository root and give it the project ID. A useful first request is:
 
@@ -109,21 +125,6 @@ The editor checks file revisions before saving. If an agent changes the same doc
 
 Use `./seo --help` and `./seo <command> --help` for the full command reference.
 
-## Local project model
-
-Each site has an isolated directory:
-
-```text
-projects/my-site/
-├── state.json
-├── context/
-├── strategy/
-├── content/
-├── audits/
-└── .runtime/
-```
-
-Projects other than the distributable `projects/default/` scaffold are ignored by Git. Credentials, Google tokens, property bindings, audit data, and working documents stay on the local machine unless you deliberately export them.
 
 ## Optional Google integrations
 
