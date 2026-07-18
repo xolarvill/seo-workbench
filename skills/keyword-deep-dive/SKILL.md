@@ -33,11 +33,11 @@ Note for each top 3:
 
 Classify dominant intent: **Informational / Commercial Investigation / Transactional / Navigational**.
 
-**Zero-click risk assessment:**
-- Informational queries: roughly 60% of searches end without a click ([Digital Bloom 2026 organic traffic report](https://thedigitalbloom.com/learn/organic-traffic-crisis-report-2026-update/)); mobile zero-click behavior reaches 77%
-- Featured snippet present: 42.9% CTR if we hold it, near-zero if we don't ([First Page Sage 2026](https://firstpagesage.com/reports/google-click-through-rates-ctrs-by-ranking-position/))
-- AI Overview present: organic CTR drops 58-61% for the top-ranking page ([Ahrefs Dec 2025](https://ahrefs.com/blog/ai-overviews-reduce-clicks-update/) / [Seer Interactive](https://www.seerinteractive.com/insights/aio-impact-on-google-ctr-september-2025-update)); brands cited in the AI Overview earn 35% more clicks
-- Flag clearly if the keyword has structurally low click-through potential
+**Click-opportunity assessment:**
+- Record the current result layout, including AI features, featured snippets, local, shopping, video, image, forum, and knowledge results.
+- Explain which user needs may be satisfied on the results page and which still require a site visit.
+- Use GSC impressions, clicks, CTR, devices, and countries when available. Do not apply a universal zero-click percentage or vendor CTR curve to one keyword.
+- If citing an external CTR study, identify its dataset, date, market, and limitations. Keep it separate from observed site evidence.
 
 ## Step 3: Assess SERP Features
 
@@ -71,7 +71,7 @@ Fetch and read the top 3 pages. For each:
 
 ### Keyword Profile
 - Keyword | Apparent search intent | Estimated difficulty (Easy / Moderate / Hard based on SERP competition, not a KD score)
-- SERP features present and their CTR impact
+- SERP features present and their likely click implications, clearly separated from measured GSC impact
 - Zero-click risk: Low / Medium / High
 
 ### Competitive Read
@@ -87,11 +87,11 @@ Specific subtopics or angles that top-ranking pages don't cover well. These are 
 
 **Quick assessment:**
 - Is this keyword worth pursuing? (Intent match to business? Traffic potential? Zero-click risk?)
-- Realistic timeline: Easy (3-6 months) / Moderate (6-12 months) / Hard (12-24 months authority play)
+- Plausible scenarios, dependencies, and review windows. Do not promise a ranking position or fixed timeline from a single SERP snapshot.
 
 **Content requirements:**
 - Content type to build (matches SERP)
-- Word count target (average of top 5 + 10%)
+- Required scope and evidence; competitor word counts are context, not a target
 - Sections that MUST be covered (from competitive read)
 - Unique angle this page should take (from gap analysis)
 - E-E-A-T signals required
@@ -100,7 +100,7 @@ Specific subtopics or angles that top-ranking pages don't cover well. These are 
 
 **Position diagnosis:**
 - Current position apparent from Google? (If not in top 100, note this)
-- Compared to the top 3, what's missing? Specific content depth? Word count? Intent alignment?
+- Compared to the top 3, what's missing? Specific evidence, task coverage, format, intent alignment, or usability?
 
 **Optimization plan:**
 - Quick wins (title/meta rewrite for CTR, add missing section, fix intent mismatch)
@@ -109,19 +109,19 @@ Specific subtopics or angles that top-ranking pages don't cover well. These are 
 
 ### Title Tag & Meta Rewrites
 
-Propose 2 title tag options (max 60 chars) and 1 meta description (max 160 chars). Each with reasoning.
+Propose 2 title options and 1 meta description. Include a preview-length warning when useful, but do not treat 60/160 characters as ranking limits.
 
 ### Ranking Timeline Estimate
 
 - Current position (or "unranked"): [X]
-- Realistic 90-day target: [Y]
+- 90-day indicators to review: indexing, impressions, query coverage, CTR, qualified visits, and conversions as applicable
 - Effort: Low (CTR fix) / Medium (content update) / High (new content + internal links)
 
 ## What to Ignore
 
 - **KD scores alone** — meaningless without reading the actual SERP. Use the read above instead.
-- **High volume, zero-click keywords** — impressions without clicks aren't worth the effort unless you need brand exposure
-- **Fighting Wikipedia, Reddit, or news aggregators** for positions 1-3 — different content types, unwinnable
+- **Volume without business fit** — judge the query by audience, click opportunity, conversion path, and strategic value
+- **Assuming a result type is unwinnable** — explain format and authority disadvantages, then identify a different intent or asset when appropriate
 
 ## Next Step
 
@@ -129,11 +129,4 @@ Need a full content brief to execute the ranking plan? Use `content-brief` with 
 
 ## Bundled references
 
-Load from `references/` only when the step calls for them.
-
-- **`ctr-benchmarks-by-position.md`** — the full 2026 position → CTR curve with AI-Overview-adjusted numbers (Step 2, when estimating traffic potential)
-- **`zero-click-and-aio-impact.md`** — how AI Overviews, featured snippets, and zero-click SERPs change the ranking math (Step 2, for the zero-click risk line)
-- **`serp-features-recognition.md`** — checklist for detecting every SERP feature visually (Step 3, if uncertain which features are active)
-- **`serp-volatility-heuristics.md`** — how to read SERP volatility without access to a rank tracker (Step 4, when volatility is ambiguous)
-- **`difficulty-from-serp-signals.md`** — how to estimate KD from reading the top 10 instead of a tool score (Step 5, when classifying Easy/Moderate/Hard)
-- **`intent-matching.md`** — the full Informational / Commercial / Transactional / Navigational decision framework (Step 2, when intent is mixed)
+Load references only when they help interpret the current result page. `serp-features-recognition.md` can help inventory visible features and `serp-volatility-heuristics.md` can frame uncertainty. Do not load bundled CTR curves, universal zero-click percentages, or fixed ranking timelines as site evidence. Prefer current GSC data and clearly sourced, dated market studies.

@@ -26,51 +26,15 @@ metadata:
 - JavaScript rendering: check if critical content requires JS execution
 - Crawl budget: for large sites (>10k pages), efficiency matters
 
-#### AI Crawler Management
+#### Non-search crawler management
 
-As of 2025-2026, AI companies actively crawl the web to train models and power AI search. Managing these crawlers via robots.txt is a critical technical SEO consideration.
-
-**Known AI crawlers:**
-
-| Crawler | Company | robots.txt token | Purpose |
-|---------|---------|-----------------|---------|
-| GPTBot | OpenAI | `GPTBot` | Model training |
-| ChatGPT-User | OpenAI | `ChatGPT-User` | Real-time browsing |
-| ClaudeBot | Anthropic | `ClaudeBot` | Model training |
-| PerplexityBot | Perplexity | `PerplexityBot` | Search index + training |
-| Bytespider | ByteDance | `Bytespider` | Model training |
-| Google-Extended | Google | `Google-Extended` | Gemini training (NOT search) |
-| CCBot | Common Crawl | `CCBot` | Open dataset |
-
-**Key distinctions:**
-- Blocking `Google-Extended` prevents Gemini training use but does NOT affect Google Search indexing or AI Overviews (those use `Googlebot`)
-- Blocking `GPTBot` prevents OpenAI training but does NOT prevent ChatGPT from citing your content via browsing (`ChatGPT-User`)
-- ~3-5% of websites now use AI-specific robots.txt rules
-
-**Example, selective AI crawler blocking:**
-```
-# Allow search indexing, block AI training crawlers
-User-agent: GPTBot
-Disallow: /
-
-User-agent: Google-Extended
-Disallow: /
-
-User-agent: Bytespider
-Disallow: /
-
-# Allow all other crawlers (including Googlebot for search)
-User-agent: *
-Allow: /
-```
-
-**Recommendation:** Consider your AI visibility strategy before blocking. Being cited by AI systems drives brand awareness and referral traffic. Cross-reference the `seo-geo` skill for full AI visibility optimization.
+Training, retrieval, assistant, archive, and search crawlers may use different tokens and policies. These change over time. Before recommending a rule, verify the operator's current official documentation and distinguish it from Google Search crawling. Treat `robots.txt` as a crawl preference, not authentication, copyright enforcement, or proof that content will disappear from an index.
 
 ### 2. Indexability
 - Canonical tags: self-referencing, no conflicts with noindex
 - Duplicate content: near-duplicates, parameter URLs, www vs non-www
-- Thin content: pages below minimum word counts per type
-- Pagination: rel=next/prev or load-more pattern
+- Low-value or duplicate pages: judge purpose, uniqueness, task completion, and index demand, not minimum word counts
+- Pagination: sequential pages remain reachable with crawlable links; do not rely on `rel=next/prev` as an indexing signal
 - Hreflang: correct for multi-language/multi-region sites
 - Index bloat: unnecessary pages consuming crawl budget
 
@@ -88,15 +52,15 @@ Allow: /
 - Clean URLs: descriptive, hyphenated, no query parameters for content
 - Hierarchy: logical folder structure reflecting site architecture
 - Redirects: no chains (max 1 hop), 301 for permanent moves
-- URL length: flag >100 characters
+- URL complexity: flag unstable identifiers, duplicate parameters, excessive nesting, or operational limits; length alone is not an SEO defect
 - Trailing slashes: consistent usage
 
 ### 5. Mobile Optimization
 - Responsive design: viewport meta tag, responsive CSS
-- Touch targets: minimum 48x48px with 8px spacing
-- Font size: minimum 16px base
+- Touch targets and spacing: test real mobile usability and Lighthouse accessibility findings; do not fail every control against one universal pixel rule
+- Text readability: test viewport, zoom, contrast, wrapping, and representative devices; do not require one universal base font size
 - No horizontal scroll
-- Mobile-first indexing: Google indexes mobile version. **Mobile-first indexing is 100% complete as of July 5, 2024.** Google now crawls and indexes ALL websites exclusively with the mobile Googlebot user-agent.
+- Mobile-first indexing: compare mobile and desktop content, links, metadata, structured data, images, and final URLs. Use the rendered mobile profile and do not assume a desktop-only check represents Google Search.
 
 ### 6. Core Web Vitals
 - **LCP** (Largest Contentful Paint): target <2.5s
@@ -114,7 +78,7 @@ Allow: /
 ### 8. JavaScript Rendering
 - Check if content visible in initial HTML vs requires JS
 - Identify client-side rendered (CSR) vs server-side rendered (SSR)
-- Flag SPA frameworks (React, Vue, Angular) that may cause indexing issues
+- Identify SPA frameworks (React, Vue, Angular) as architecture evidence, then test raw/rendered parity before calling them an indexing issue
 - Verify dynamic rendering setup if applicable
 
 #### JavaScript SEO: Canonical & Indexing Guidance (December 2025)
@@ -149,6 +113,8 @@ Google updated its JavaScript SEO documentation in December 2025 with critical c
 
 ### Technical Score: XX/100
 
+The score is an internal prioritization aid, not a Google score or ranking-factor total. Evidence, severity, affected templates, and business impact take precedence.
+
 ### Category Breakdown
 | Category | Status | Score |
 |----------|--------|-------|
@@ -175,7 +141,7 @@ Google updated its JavaScript SEO documentation in December 2025 with critical c
 
 ## DataForSEO Integration (Optional)
 
-If DataForSEO MCP tools are available, use `on_page_instant_pages` for real page analysis (status codes, page timing, broken links, on-page checks), `on_page_lighthouse` for Lighthouse audits (performance, accessibility, SEO scores), and `domain_analytics_technologies_domain_technologies` for technology stack detection.
+Use the local raw/rendered collectors, technology detector, Lighthouse runner, CrUX, GSC, and immutable audit artifacts first. If DataForSEO tools are explicitly available, use them only as supplementary evidence and label their collection scope. Do not replace the Workbench baseline or diff identity with an external score.
 
 ## Google Evidence Integration (Optional)
 

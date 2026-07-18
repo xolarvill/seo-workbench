@@ -5,9 +5,9 @@ description: Use when auditing a page for E-E-A-T signals. The agent reads the p
 
 # E-E-A-T Audit
 
-Scores a page on Experience, Expertise, Authoritativeness, and Trustworthiness — the four signals Google's quality raters use to evaluate content. Tells you what's missing and how to add it.
+Reviews a page through Experience, Expertise, Authoritativeness, and Trustworthiness concepts from Google's quality-rater guidance. The scorecard is an internal editorial diagnostic, not a Google score, a direct ranking-factor measurement, or a prediction.
 
-Real E-E-A-T is demonstrated, not declared. An author bio is table stakes. What matters is whether the content *feels* like it was written by someone who has actually done the thing.
+Real E-E-A-T is demonstrated, not declared. What matters is verifiable evidence that the author or organization understands the subject, not a manufactured first-person tone.
 
 ## Input
 
@@ -15,7 +15,7 @@ Real E-E-A-T is demonstrated, not declared. An author bio is table stakes. What 
 
 ## Role
 
-You are a senior content quality evaluator with 10+ years reading for Google's quality rater framework. You can tell within 30 seconds of reading whether an author has done the thing they're writing about.
+You are a senior content quality evaluator. Look for verifiable evidence and disclose uncertainty. A page alone may not prove the author's real-world experience.
 
 ## Step 1: Read the Page
 
@@ -38,7 +38,7 @@ Fetch and read the full rendered page. Note everything that could be an E-E-A-T 
 
 **Strong signals (8-10):**
 - First-person observations with specific details
-- "When I tried this, X happened"
+- First-person accounts supported by specific, plausible details or artifacts
 - Original photos/screenshots from the author's own work
 - Failure stories with specific lessons
 - Details only hands-on experience would know (the "smell test")
@@ -51,7 +51,7 @@ Fetch and read the full rendered page. Note everything that could be an E-E-A-T 
 - "According to studies..." without identifying which ones
 
 **Absent (1-3):**
-- No first-person anywhere
+- No direct evidence, method, sourcing, ownership, or relevant attribution
 - No specific stories
 - No details beyond what's already on the top 10 ranking pages
 
@@ -123,6 +123,8 @@ Fetch and read the full rendered page. Note everything that could be an E-E-A-T 
 
 ### E-E-A-T Scorecard
 
+Use this only to compare editorial gaps within the project. Do not call it Google's assessment or combine it with technical, Lighthouse, CrUX, or GSC data into one ranking score.
+
 | Signal | Score | Key Gap |
 |---|---|---|
 | Experience | /10 | |
@@ -138,13 +140,13 @@ Specific observations. "The screenshot in Section 3 is clearly from the author's
 ### What's Missing
 
 Specific gaps with specific fixes:
-- "No first-person observations in the first 500 words. Add: 'When I first tested this at [company name], the result surprised me — [specific outcome].'"
+- "The page gives advice without showing its source or method. Add a real test, example, primary citation, or limitation supplied by the responsible expert."
 - "The claim about 42% improvement isn't sourced. Either cite the primary study or drop the number."
 - "No author bio links to a LinkedIn or profile page. Add: a one-sentence bio with a credential anchor and an external link to the author's profile."
 
 ### Fastest Wins
 
-Three changes you could make in under 30 minutes that would lift the E-E-A-T score materially. Ordered by impact.
+Three low-effort changes that would improve evidence or transparency. Do not invent credentials, experience, reviews, dates, or first-party results.
 
 ### Structural Recommendations
 

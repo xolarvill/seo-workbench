@@ -1,116 +1,101 @@
-# Technique 13: Structured Data & SERP Feature Capture
+# Structured Data and Extractable Content
 
-## What It Is
-Using structured data (JSON-LD schema markup) and content formatting to capture SERP features -- featured snippets, FAQ dropdowns, How-To cards, and rich results that increase visibility, CTR, and NavBoost signals.
+Structured data describes page entities and can make a page eligible for supported search appearances. It does not guarantee a rich result, ranking improvement, click-through lift, featured snippet, or AI citation.
 
-## Why It Works
-SERP features occupy prime real estate above or within organic results. Pages with rich results get 20-40% higher CTR than plain blue links. Higher CTR feeds NavBoost (Google's click-based ranking signal), creating a compound ranking advantage.
+## Source of truth
 
-Additionally, structured data is how content gets cited by AI Overviews and AI search engines. Without it, your content is less likely to be selected as a source for AI-generated answers.
+Before recommending or generating markup:
 
-## SERP Features by Content Type
+1. Identify the visible entity and page purpose.
+2. Use the repository's `schema` skill for current type status and validation.
+3. Verify Google's current Search Gallery documentation for rich-result eligibility.
+4. Use Schema.org only for properties that accurately describe visible facts.
+5. Validate syntax and required properties, then monitor GSC enhancement reports when available.
 
-| Content Type | Target SERP Features | Schema Types |
-|-------------|---------------------|-------------|
-| Blog post | Featured snippet, PAA | Article, FAQPage |
-| How-to guide | HowTo card, Featured snippet | HowTo, FAQPage |
-| Product page | Product rich result, Review stars | Product, Review, Offer |
-| FAQ page | FAQ dropdown | FAQPage |
-| Comparison | Comparison table, Review stars | Article, Product, Review |
-| Recipe | Recipe card | Recipe |
-| Event | Event listing | Event |
-| Local business | Local pack, Knowledge panel | LocalBusiness |
+Do not reuse old vendor lift percentages or treat a patent, correlation, or case study as a guaranteed effect.
 
-## Step-by-Step Process
+## Current boundaries
 
-### Step 1: Identify Feature Opportunities
-1. Use SERP feature detection from to see which features appear for target keywords
-2. Search the keyword manually -- what features are currently showing?
-3. Note: featured snippets, PAA boxes, FAQ dropdowns, HowTo cards, video carousels
-4. Check if any competitor has a SERP feature you could capture
+- `FAQPage` rich results are restricted to eligible authoritative government and health sites. A normal FAQ page can still be useful without FAQ rich results.
+- Google removed HowTo rich results. Do not add `HowTo` solely for Google visibility.
+- Deprecated or retired rich-result types must not be recommended as active search features.
+- Product, Offer, Review, AggregateRating, Article, LocalBusiness, Event, JobPosting, VideoObject, and other types have specific eligibility and policy requirements.
+- Product price, availability, rating, review, author, and date values must match visible, current facts.
+- Customer-specific or login-only price and availability must not leak into public JSON-LD.
 
-### Step 2: Content Formatting for Featured Snippets
-5. **Paragraph snippets** (most common):
-   - Place a direct answer in 40-60 words immediately after an H2 matching the query
-   - Start with the definition/answer, then expand
-   - Example: "What is information gain?" -> H2 -> 45-word direct answer -> detailed explanation
-6. **List snippets**:
-   - Use numbered or bulleted lists with clear H2 header
-   - 5-8 items is optimal
-   - Each item should be a clear, scannable point
-7. **Table snippets**:
-   - Use HTML tables with clear column headers
-   - 3-5 columns, 4-10 rows
-   - Comparison data is ideal for table snippets
+## Content formatting is separate from schema
 
-### Step 3: FAQ Schema Implementation
-8. Identify 3-5 questions users ask about the topic (use PAA boxes as source)
-9. Include each question as an H2 or H3
-10. Answer directly in 40-100 words
-11. Implement FAQPage schema with each Q&A pair:
-   ```json
-   {
-     "@context": "https://schema.org",
-     "@type": "FAQPage",
-     "mainEntity": [{
-       "@type": "Question",
-       "name": "What is information gain in SEO?",
-       "acceptedAnswer": {
-         "@type": "Answer",
-         "text": "Information gain in SEO measures how much new, unique information your content provides compared to other pages on the same topic. Google's patented Information Gain Score rewards pages that add original data, perspectives, or insights not found in competing results."
-       }
-     }]
-   }
-   ```
+Clear content can help users and extraction systems even when no rich-result type applies:
 
-### Step 4: HowTo Schema
-12. For tutorial/guide content, implement HowTo schema:
-    - Each step as a separate `HowToStep`
-    - Include `estimatedCost` and `totalTime` when applicable
-    - Add `tool` and `supply` arrays
-    - Include images per step when possible
+- answer the main question near the point where the user asks it;
+- use ordered steps for genuine sequences;
+- use tables for consistent comparisons;
+- define units, dates, entities, and assumptions;
+- use descriptive headings and stable anchor links;
+- cite primary sources beside material claims;
+- explain limitations and update history.
 
-### Step 5: Article/Product Schema
-13. **Article schema** (for blog posts, guides):
-    - `author` with name and URL
-    - `datePublished` and `dateModified`
-    - `image` (required for rich results)
-    - `headline` matching H1
-14. **Product schema** (for product/review pages):
-    - `offers` with price, availability, currency
-    - `review` with `ratingValue` and `bestRating`
-    - `brand` entity
+Do not force every answer into 40 to 60 words. Do not add a fixed number of PAA questions or FAQs. Choose the format that preserves accuracy and context.
 
-### Step 6: Validation
-15. Test all structured data with Google's Rich Results Test
-16. Monitor Search Console for structured data errors
-17. Verify rich results appear in SERPs after indexing
+## Candidate types by real page entity
 
-## Tips
+| Page entity | Candidate markup | Key checks |
+|---|---|---|
+| Organization | Organization | legal/display name, canonical URL, logo, real profiles |
+| Local location | LocalBusiness subtype | address, phone, hours, service area, page visibility |
+| Editorial article | Article, BlogPosting, NewsArticle | author, publisher, dates, headline, image |
+| Public product | Product, ProductGroup | identity, variants, brand, identifiers, visible details |
+| Public offer | Offer | price, currency, availability, URL, transaction reality |
+| First-party or permitted review | Review, AggregateRating | visible review text, source, count, policy compliance |
+| Software product | SoftwareApplication | operating system, category, offer or pricing facts |
+| Video | VideoObject | watch page, thumbnail, upload date, duration, access |
+| Event | Event | real dates, location, status, offer, cancellation updates |
+| Job | JobPosting | genuine opening, location, employer, valid through date |
+| Navigation trail | BreadcrumbList | matches visible or logical site hierarchy |
 
-- **PAA as keyword research**: "People Also Ask" questions are literally Google telling you what related queries users search. Answer them in your content -> potential FAQ rich results.
-- **Featured snippet "sniping"**: Find a keyword where the current featured snippet is mediocre. Write a better, more direct answer in the same format. Google swaps snippets regularly.
-- **Don't over-schema**: Adding 50 FAQ items or marking up content that doesn't qualify for a schema type can trigger manual actions. Only mark up content that genuinely matches the schema type.
-- **AI Overview sourcing**: Structured data helps your content get selected as a source for AI Overviews. Content with clear schema markup is easier for AI systems to parse and cite.
+Use the most specific truthful type. More markup is not automatically better.
 
-## Common Mistakes
+## Minimal Article example
 
-1. **FAQ schema for non-questions**: Only use FAQPage schema for actual Q&A content. Using it for bullet points or regular content is a misuse.
-2. **Missing required fields**: Schema without required fields (like `image` for Article) won't generate rich results
-3. **Duplicate schema**: Having both FAQPage and HowTo on the same page can conflict. Choose the primary schema type.
-4. **Not monitoring**: Structured data can break (especially after CMS updates). Monitor Search Console regularly.
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Visible page headline",
+  "mainEntityOfPage": "https://example.com/article/",
+  "datePublished": "2026-07-01",
+  "dateModified": "2026-07-15",
+  "author": {
+    "@type": "Person",
+    "name": "Verified author name",
+    "url": "https://example.com/authors/name/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Publisher name",
+    "url": "https://example.com/"
+  },
+  "image": "https://example.com/images/article.jpg"
+}
+```
 
-## GEO (AI Citation) Impact
+Every value above must be replaced with facts from the page or project. Never publish placeholders.
 
-Structured data directly impacts AI citation rates:
-- **FAQ schema has 3.2x higher citation rate** in AI Overviews
-- **92% of AI Overview citations** come from top-10 ranking pages -- SERP features help you get there
-- **Answer-first formatting** (40-60 word direct answers under H2s) produces +340% AI citations
-- Content with clear schema markup is easier for AI systems to parse and cite
+## Validation workflow
 
-Write comprehensive content (for Google) with clear, extractable summary answers at the start of each section (for AI). The overlap between SERP feature optimization and AI citation optimization is ~80%.
+- Parse the JSON-LD and resolve syntax errors.
+- Check that URLs are absolute, canonical, fetchable, and appropriate.
+- Compare markup with rendered visible content.
+- Run the Google Rich Results Test for supported Google features.
+- Run Schema Markup Validator for broader Schema.org vocabulary.
+- Recheck after theme, CMS, app, or template changes.
+- Use GSC to monitor detected items and errors, remembering that detection does not guarantee display.
 
-## Tools Used
-- SERP feature detection -- identify which features appear for target keywords
-- keyword search -- find keywords with featured snippet opportunities
-- page-level SEO data -- check current SERP feature status for existing pages
+## Common failures
+
+- Marking up hidden, fabricated, stale, or customer-specific facts.
+- Adding Product or Review markup to a comparison article that does not represent a genuine product or review entity.
+- Duplicating incompatible JSON-LD from a theme, app, and custom template.
+- Using FAQ or HowTo markup because an old template promises a rich result.
+- Assuming JavaScript-injected markup is equivalent without checking the rendered and indexed versions.
+- Reporting schema presence as proof that Google trusts, ranks, or cites the page.

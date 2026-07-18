@@ -22,8 +22,8 @@
       "steps": [
         {"id": "keyword-dive-product", "label": "核心品类关键词深潜 (1-3个)", "status": "pending"},
         {"id": "keyword-dive-info", "label": "信息型关键词深潜 (3-5个)", "status": "pending"},
-        {"id": "cluster-plan", "label": "话题集群规划 (Hub + 8-12 Spoke)", "status": "pending"},
-        {"id": "content-briefs", "label": "内容简报生成 (每篇Spoke一个简报)", "status": "pending"}
+        {"id": "cluster-plan", "label": "按用户任务规划话题集群与内部链接", "status": "pending"},
+        {"id": "content-briefs", "label": "为已确认的内容机会生成简报", "status": "pending"}
       ]
     },
     "CONTENT_PRODUCTION": {

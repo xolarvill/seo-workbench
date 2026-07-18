@@ -17,18 +17,7 @@ If no topic is given, ask for one before proceeding.
 
 ## Business context persistence
 
-Business context (audience, tone, language, brand voice, examples) shapes every article. Don't re-ask these questions every session.
-
-**First use**: ask 4-5 questions and save the answers somewhere persistent in your agent's environment. Use the safest default first:
-
-- **Claude Code**: `~/.claude/projects/<path>/memory/business-context.md` is the recommended default. Do NOT write to `./CLAUDE.md` unless the user explicitly asks for it — `CLAUDE.md` is the user's project instructions file and appending unsolicited content to it can surprise them on every subsequent agent turn.
-- **Claude Desktop / Claude.ai**: save to a Project's context or a pinned note.
-- **Cursor**: `.cursor/rules/business-context.md`.
-- **Any other agent**: `seo-context.md` in the working directory.
-
-Always confirm the write location with the user before saving. If any of these are unavailable or the user objects, fall back to re-asking the questions each session.
-
-**Every use after that**: load that file first. If missing, ask where the user saved it or re-ask the questions.
+Business context (audience, tone, language, brand voice, examples) shapes every article. In this Workbench, read the current project's `context/`, `strategy/`, existing content, and state before asking repeated questions. Save new business context only inside the current project after the user authorizes the content. Never write it to global agent instructions or another store's folder.
 
 Questions on first use:
 - What does the business do, and who is it for?
@@ -52,7 +41,7 @@ State it plainly:
 
 Wait for confirmation.
 
-Load `references/content-types-overview.md` for the decision table covering all 23 content types. Then load the specific template from `references/content-types/<type>.md` (e.g., `references/content-types/how-to.md`) for H1/H2 structure, schema, featured snippet format, CTA placement, word count targets. The 19 content types bundled as full templates: how-to, definition, comparison, listicle, pillar-page, faq-page, landing-page, service-page, case-study, statistics-page, news-article, glossary-page, alternatives-page, buying-guide, product-page, category-page, integration-page, location-page, programmatic-page. For the 4 types covered only by the overview table (thought-leadership, product-reviews, pricing-pages, about-pages), those live under `eeat-audit/references/content-types/` because the E-E-A-T bar for them is the load-bearing factor.
+Load `references/content-types-overview.md` for optional page patterns. Then load one relevant template when it helps. Template headings, lengths, CTA positions, and schema suggestions are starting points, not requirements. The `schema` skill and current Google documentation are authoritative for rich-result eligibility.
 
 ## Phase 3: Knowledge Extraction
 
@@ -71,18 +60,18 @@ Ask one at a time. Keep it quick.
 
 ## Phase 4: Write the Article
 
-**Length**: Do not target a specific word count. Match the depth of top-ranking content from Phase 1. Length follows intent and competition — never pad to hit a number.
+**Length**: Do not target a specific word count or copy competitor depth mechanically. Cover the user's task with enough verified evidence and explanation, then stop.
 
 Produce the complete article in clean markdown. Follow ALL of these rules:
 
 ### Voice and Stance
 - Write like a practitioner talking to a peer. Not a textbook, not a press release.
-- Take clear positions. "We tested this and X works better than Y" beats "both X and Y have merits."
+- Take clear positions when evidence supports them. Never claim “we tested” unless the project contains that test or the user supplied it.
 - Use "you" and "I/we" — write to one person, not an audience.
-- Include specific numbers, names, dates. Never "many companies" — always "[Company] in [year]."
+- Use specific numbers, names, and dates only when verified or supplied by the user. Never invent specificity to make prose sound experienced.
 - Weave in interview answers as first-person experience. Preserve phrasing where it sounds natural.
 - Use contractions: "doesn't" not "does not."
-- Show thinking changing: "At first I thought this was a branding problem — turns out it was pricing all along." Self-correction is a human signal.
+- Preserve genuine changes in reasoning when they exist; do not fabricate a personal story as a stylistic device.
 - Anchor in real context — reference current events, industry shifts, or cultural touchstones where relevant.
 
 ### Rhythm and Structure
@@ -96,8 +85,8 @@ Produce the complete article in clean markdown. Follow ALL of these rules:
 - Don't summarize at the end of sections unless genuinely complex (3+ subsections).
 
 ### Show, Don't Just State
-- Don't state facts. Show them through brief scenarios. Instead of "page speed affects rankings" — "You click a search result. Three seconds pass. Still loading. You hit back. Google tracked every millisecond."
-- For claims backed by experience, narrate the moment: what was tried, what happened, what surprised you.
+- Use concrete examples when they clarify a real mechanism. Do not turn an uncertain ranking claim into a fictional scenario.
+- For claims backed by documented experience, explain what was tried, what happened, and what remained uncertain.
 
 ### Anti-Slop Rules
 
@@ -127,15 +116,15 @@ delve, landscape (metaphorical), testament, leverage, utilize, robust, seamless,
 - **Service/landing page**: PAS framework. Pain point first, agitate consequences, then solution
 
 ### SEO Structure
-- Primary keyword in meta title, H1, first 100 words, 2-3 H2s. ~2% body density, naturally distributed.
-- Place a 40-60 word direct answer immediately after the most important H2 — targets featured snippets. "How" queries get ordered lists, "what is" gets paragraphs, comparisons get tables.
-- Weave 2-3 PAA questions into the article as H2/H3 headings with direct answers.
-- Include 3-5 internal links per 1,000 words. Use descriptive anchor text — never "click here."
+- Make the topic clear in the title, main heading, introduction, and relevant sections without exact-match quotas or density targets.
+- Put direct answers where they improve time to value. Paragraphs, lists, and tables should match the information, not a fixed snippet formula.
+- Use PAA questions only when they support the page's main task.
+- Add internal links where they help users continue a task or understand a relationship. Use descriptive anchor text and do not target a per-word quota.
 - Front-load value. The first screen is the highest-value real estate. No preamble paragraphs.
 
-### Long Article Strategy (1,500+ words)
+### Long Article Strategy
 - Write section by section. Track what you've covered to prevent repetition and voice drift.
-- At least 30% of the article must contain details no generic AI could produce: the user's data, examples, opinions, experience.
+- The article should contain enough first-party evidence, examples, analysis, or experience to justify publishing it. Do not fabricate these elements or enforce an arbitrary percentage.
 
 ### Final Checks
 
@@ -160,18 +149,12 @@ Load from `references/` only when the step or rule calls for them. Don't preload
 - Commercial: `alternatives-page.md`, `buying-guide.md`, `product-page.md`, `category-page.md`, `integration-page.md`, `location-page.md`, `programmatic-page.md`
 - `references/content-types-overview.md` for the decision table across all 23 content types (load this FIRST if unsure which type to pick)
 
-**Writing technique modules** (`references/`) — load when the matching Phase 4 rule needs more depth:
+**Writing technique modules** (`references/`) — load only when the matching rule needs more depth:
 - `anti-slop-ruleset.md` — full tiered banned vocab + structural tell list (when the inline anti-slop block isn't catching something)
 - `voice-injection-playbook.md` — voice and register techniques (when the draft reads flat)
-- `information-gain-writing.md` — the 30% rule and how to satisfy it (for the "So What" test)
-- `serp-driven-writing.md` — how Phase 1 research shapes the article (if the draft drifts from the SERP intent)
-- `intent-matching.md` — length and format decisions from intent (when the SERP is mixed)
 - `eeat-signal-embedding.md` — how to surface experience without a bio section
-- `structured-data-snippets.md` — JSON-LD and featured snippet formatting per content type
-- `geo-optimization.md` — optimizing for AI Overview / generative engine citation
-- `navboost-engagement.md` — engagement signal writing (dwell time, scroll depth)
-- `quality-scoring.md` — self-scoring rubric to run before delivery
-- `writing-pipeline.md` — the research → draft → edit loop
-- `seo-optimization-layer.md` — keyword placement, internal linking, metadata pass
+- `structured-data-snippets.md` — current structured-data eligibility boundaries and content formatting
 - `fact-checking.md` — how to verify every specific number and claim
 - `human-input-framework.md` — the knowledge-extraction questions (reinforces Phase 3)
+
+Other archived technique notes may contain vendor benchmarks, fixed keyword densities, outdated rich-result advice, or hypotheses about private ranking systems. Do not load them as execution rules. Current project evidence, the shared content-type overview, the `schema` skill, and current primary documentation override them.

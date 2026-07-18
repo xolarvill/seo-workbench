@@ -46,7 +46,7 @@ State your recommended hub format with reasoning.
 
 ## Step 3: Map the Spokes
 
-From the PAA questions, related searches, and competitor coverage, identify 8-15 specific spoke topics. Each spoke should:
+From business needs, GSC queries, user research, PAA questions, related searches, and competitor coverage, identify only the spoke topics that deserve distinct pages. A small cluster may need three pages; a complex domain may need many more. Each spoke should:
 - Target a long-tail keyword or specific question
 - Go deeper on one narrow sub-topic than the hub can
 - Link back to the hub (primary)
@@ -55,7 +55,7 @@ From the PAA questions, related searches, and competitor coverage, identify 8-15
 For each spoke, specify:
 - Target keyword / question it answers
 - Content type (how-to / definition / comparison / case study / listicle)
-- Approximate word count
+- Required scope, evidence, and format
 - Why it matters for the cluster (what sub-topic does it own?)
 
 **Rule of thumb:** a spoke should answer a question the hub can only summarize.
@@ -63,44 +63,40 @@ For each spoke, specify:
 ## Step 4: Map the Internal Linking
 
 Draw the link graph:
-- Every spoke links to the hub with a keyword-rich anchor
+- Every spoke links to the hub when that relationship helps the reader, using a descriptive anchor
 - Hub links to every spoke (usually in a "In this guide" TOC or a "Related deep dives" section)
-- Related spokes link to each other (but sparingly — don't over-link)
-- External links from the hub to 3-5 authoritative sources in the space
+- Related spokes link to each other when the next step is useful
+- Cite the primary and authoritative sources needed to support claims; do not target a fixed link count
 
-**Critical:** the first link from any spoke TO the hub is what Google's algorithm weights most heavily. Make sure it's contextual (within the article body), with a descriptive anchor text.
+Place important contextual links where users are likely to need them. Do not claim a universal “first link” weighting rule without site-specific test evidence.
 
 ## Step 5: Publishing Order
 
-Don't publish the hub first. Publish 3-4 high-quality spokes first, then the hub with links to them. Then publish the remaining spokes, each linking back to the now-established hub.
-
-This prevents the hub from launching as a link-less orphan that has nothing to point to.
+Choose the publishing order from user value and production readiness. A useful hub can launch first as a navigation and scope page; existing spokes can launch first when they provide the evidence the hub needs. Never publish an empty hub or delay a complete useful page only to follow a formula.
 
 ## Step 6: Output
 
 ### Cluster Overview
 - Seed topic | Estimated difficulty (Easy / Moderate / Hard) based on SERP competition
-- Realistic timeline to build out (how many articles, how many months)
+- Delivery estimate based on actual research, writing, review, design, and implementation capacity
 
 ### Hub
 - Recommended format (Ultimate guide / Pillar + chapters / Category)
 - Target keyword (the broad seed)
 - Main H2 sections (roughly 5-10)
-- Approximate word count
+- Required scope and evidence
 - What the hub should NOT cover in depth (save that for spokes)
 
 ### Spoke List
 
-| # | Spoke Topic | Target Keyword | Content Type | Words | Hub Anchor Text |
+| # | Spoke Topic | Target Query/Task | Content Type | Evidence Needed | Hub Anchor Text |
 |---|---|---|---|---|---|
 
-8-15 rows. Sorted by priority: highest-impact/easiest-to-rank first.
+Include only justified pages. Sort by audience value, business fit, available evidence, dependency, and search opportunity.
 
 ### Publishing Sequence
 
-1. **Month 1**: 3-4 spokes (pick from rows 1-4)
-2. **Month 2**: Publish the hub, link it to the published spokes
-3. **Month 3-4**: Remaining spokes, each linking back to the hub
+Provide a dependency-aware sequence with owners or prerequisites. Use dates only when publishing capacity is known.
 
 ### Internal Link Map
 A simple list showing which spokes link to which other spokes. Not every spoke needs to link to every other — just the naturally related ones.
@@ -109,14 +105,17 @@ A simple list showing which spokes link to which other spokes. Not every spoke n
 3-5 authoritative external sources the hub should cite. (Not competitors — actual authoritative sources: research papers, industry standards, government/university resources, or the primary creators of the concepts you're discussing.)
 
 ### Success Metrics
-- **Month 3**: Hub should rank somewhere in top 50 for the seed keyword
-- **Month 6**: At least 2-3 spokes ranking in top 20 for their long-tail keywords
-- **Month 9**: Hub ranking top 20, cluster driving consistent organic traffic
-- **Month 12**: Cluster becomes a topical authority signal for the whole domain
+- Published and indexed canonical pages
+- Growth in relevant query and page impressions from GSC
+- Qualified clicks, assisted conversions, leads, sales, or product discovery as applicable
+- Internal-link and orphan-page coverage
+- Content accuracy, freshness, and evidence maintenance
+
+Set review windows rather than guaranteed positions. Rankings depend on competition, site history, links, demand, and search-system changes.
 
 ## What to Ignore
 
-- **Publishing everything at once** — Google needs time to see the cluster form. Spread it over 3-4 months.
+- **Publishing to a calendar instead of readiness** — release useful, reviewed pages at a sustainable cadence
 - **Over-linking between spokes** — if it doesn't feel natural in the article, skip it
 - **Keyword density in the hub** — the hub is about breadth, not keyword stuffing
 
@@ -128,8 +127,6 @@ For each spoke, use `content-brief` with the spoke's target keyword to produce a
 
 Load from `references/` only when the step calls for them.
 
-- **`first-link-weight-evidence.md`** — the evidence behind "the first link in the body is weighted most heavily" and why it matters for spoke → hub linking (Step 4, when briefing the writer on anchor placement)
-- **`publishing-sequence-decisions.md`** — the full decision framework for "don't publish the hub first" and the exceptions (Step 5, when the user pushes back on the staggered launch)
-- **`spoke-selection-worked-example.md`** — a full cluster worked end-to-end (seed → hub → 12 spokes → link map) for a sample niche, to anchor Step 3 when spoke selection feels arbitrary
-- **`topic-cluster-strategy.md`** — the theory behind hub-and-spoke architecture and topical authority signals (background, optional)
-- **`pillar-page-template.md`** — exact H1/H2 structure for the hub page (Step 2, after the hub format is chosen)
+- **`spoke-selection-worked-example.md`** — an illustrative cluster; do not copy its page count or schedule as a quota
+- **`topic-cluster-strategy.md`** — optional architecture background; treat “topical authority” claims as a planning model, not a measured Google score
+- **`pillar-page-template.md`** — optional hub outline; adapt it to the actual user task

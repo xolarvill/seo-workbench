@@ -1,219 +1,147 @@
 ---
 name: drift
 description: >
-  SEO drift monitoring: capture baselines of SEO-critical elements, detect changes,
-  and track regressions over time. Git for SEO — baseline, diff, and track changes
-  to your on-page SEO. Use when user says "SEO drift", "baseline", "track changes",
-  "did anything break", "SEO regression", "compare SEO", "before and after",
-  "monitor SEO changes", or "deployment check".
+  Compare immutable Workbench audit snapshots to find SEO regressions while
+  preserving collection identity and comparability. Use for before/after,
+  release checks, audit diff, regression, or monitoring requests.
 user-invokable: true
-argument-hint: "baseline|compare|history <url>"
+argument-hint: "[raw|technology|performance|crux|gsc]"
 license: MIT
 metadata:
-  author: AgriciDaniel
-  original_author: "Dan Colta (Pro Hub Challenge)"
-  version: "1.9.6"
   category: seo
 ---
 
-# SEO Drift Monitor (April 2026)
+# SEO Audit Diff
 
-Git for your SEO. Capture baselines, detect regressions, track changes over time.
+Use the repository's project-scoped `audit-diff` command. Do not use the removed `/seo drift` commands, external `~/.cache/claude-seo` database, or legacy scripts.
 
----
+## Evidence model
 
-## Commands
+Collectors write immutable timestamped snapshots plus a stable `latest.json` pointer inside the current project:
 
-| Command | Purpose |
-|---------|---------|
-| `/seo drift baseline <url>` | Capture current SEO state as a "known good" snapshot |
-| `/seo drift compare <url>` | Compare current page state to stored baseline |
-| `/seo drift history <url>` | Show change history and past comparisons |
+| Kind | Evidence | Important identity boundaries |
+|---|---|---|
+| `raw` | HTTP, HTML, metadata, links, route sample | requested site and crawl contract |
+| `technology` | fingerprint evidence and architecture analysis | provider, scan mode, target identity |
+| `performance` | sequential Lighthouse runs and aggregation | runtime, profiles, requested/final URLs |
+| `crux` | current and historical field metrics | effective URL/origin scope and form factor |
+| `gsc` | Search Analytics, URL Inspection, Sitemap | property, search type, window, finalized state |
 
----
+The command selects the newest snapshot and the newest earlier snapshot with matching identity. If only one matching snapshot exists, report `no_baseline`. If the identity or evidence contract is incompatible, report the comparability warning instead of classifying a regression.
 
-## What It Captures
+## Standard workflow
 
-Every baseline records these SEO-critical elements:
+Before a release or material SEO change, collect the relevant baseline:
 
-| Element | Field | Source |
-|---------|-------|--------|
-| Title tag | `title` | `parse_html.py` |
-| Meta description | `meta_description` | `parse_html.py` |
-| Canonical URL | `canonical` | `parse_html.py` |
-| Robots directives | `meta_robots` | `parse_html.py` |
-| H1 headings | `h1` (array) | `parse_html.py` |
-| H2 headings | `h2` (array) | `parse_html.py` |
-| H3 headings | `h3` (array) | `parse_html.py` |
-| JSON-LD schema | `schema` (array) | `parse_html.py` |
-| Open Graph tags | `open_graph` (dict) | `parse_html.py` |
-| Core Web Vitals | `cwv` (dict) | `pagespeed_check.py` |
-| HTTP status code | `status_code` | `fetch_page.py` |
-| HTML content hash | `html_hash` (SHA-256) | Computed |
-| Schema content hash | `schema_hash` (SHA-256) | Computed |
-
----
-
-## How Comparison Works
-
-The comparison engine applies **17 rules across 3 severity levels**. Load
-`references/comparison-rules.md` for the full rule set with thresholds,
-recommended actions, and cross-skill references.
-
-### Severity Levels
-
-| Level | Meaning | Response Time |
-|-------|---------|---------------|
-| **CRITICAL** | SEO-breaking change, likely traffic loss | Immediate |
-| **WARNING** | Potential impact, needs investigation | Within 1 week |
-| **INFO** | Awareness only, may be intentional | Review at convenience |
-
----
-
-## Storage
-
-All data is stored locally in SQLite:
-
-```
-~/.cache/claude-seo/drift/baselines.db
-```
-
-### Tables
-
-- **baselines**: Captured snapshots with all SEO elements
-- **comparisons**: Diff results with triggered rules and severities
-
-URL normalization ensures consistent matching: lowercase scheme/host, strip
-default ports (80/443), sort query parameters, remove UTM parameters, strip
-trailing slashes.
-
----
-
-## Command: `baseline`
-
-Captures the current state of a page and stores it.
-
-**Steps:**
-1. Validate URL (SSRF protection via `google_auth.validate_url()`)
-2. Fetch page via `scripts/fetch_page.py`
-3. Parse HTML via `scripts/parse_html.py`
-4. Optionally fetch CWV via `scripts/pagespeed_check.py` (use `--skip-cwv` to skip)
-5. Hash HTML body and schema content (SHA-256)
-6. Store snapshot in SQLite
-
-**Execution:**
 ```bash
-python scripts/drift_baseline.py <url>
-python scripts/drift_baseline.py <url> --skip-cwv
+./seo --project <id> evidence --rendered --technology --json
+./seo --project <id> performance --json
 ```
 
-**Output:** JSON with baseline ID, timestamp, URL, and summary of captured elements.
+Add CrUX or GSC only when explicitly needed and configured:
 
----
-
-## Command: `compare`
-
-Fetches the current page state and diffs it against the most recent baseline.
-
-**Steps:**
-1. Validate URL
-2. Load most recent baseline from SQLite (or specific `--baseline-id`)
-3. Fetch and parse current page state
-4. Run all 17 comparison rules
-5. Classify findings by severity
-6. Store comparison result
-7. Output JSON diff report
-
-**Execution:**
 ```bash
-python scripts/drift_compare.py <url>
-python scripts/drift_compare.py <url> --baseline-id 5
-python scripts/drift_compare.py <url> --skip-cwv
+./seo --project <id> crux --json
+./seo --project <id> gsc collect --json
 ```
 
-**Output:** JSON with all triggered rules, old/new values, severity, and actions.
+After the release, repeat the same collectors with the same target and options. Then compare:
 
-After comparison, offer to generate an HTML report:
 ```bash
-python scripts/drift_report.py <comparison_json_file> --output drift-report.html
+./seo --project <id> audit-diff --json
 ```
 
----
+Compare one kind:
 
-## Command: `history`
-
-Shows all baselines and comparisons for a URL.
-
-**Execution:**
 ```bash
-python scripts/drift_history.py <url>
-python scripts/drift_history.py <url> --limit 10
+./seo --project <id> audit-diff --kind raw --json
+./seo --project <id> audit-diff --kind technology --json
+./seo --project <id> audit-diff --kind performance --json
+./seo --project <id> audit-diff --kind crux --json
+./seo --project <id> audit-diff --kind gsc --json
 ```
 
-**Output:** JSON array of baselines (newest first) with timestamps and comparison summaries.
+Explicit files are supported for one kind only:
 
----
-
-## Cross-Skill Integration
-
-When drift is detected, recommend the appropriate specialized skill:
-
-| Finding | Recommendation |
-|---------|----------------|
-| Schema removed or modified | Run `/seo schema <url>` for full validation |
-| CWV regression | Run `/seo technical <url>` for performance audit |
-| Title or meta description changed | Run `/seo page <url>` for content analysis |
-| Canonical changed or removed | Run `/seo technical <url>` for indexability check |
-| Noindex added | Run `/seo technical <url>` for crawlability audit |
-| H1/heading structure changed | Run `/seo content <url>` for E-E-A-T review |
-| OG tags removed | Run `/seo page <url>` for social sharing analysis |
-| Status code changed to error | Run `/seo technical <url>` for full diagnostics |
-
----
-
-## Error Handling
-
-| Scenario | Action |
-|----------|--------|
-| URL unreachable | Report error from `fetch_page.py`. Do not guess state. Suggest user verify URL. |
-| No baseline exists for URL | Inform user and suggest running `baseline` first. |
-| SSRF blocked (private IP) | Report `validate_url()` rejection. Never bypass. |
-| SQLite database missing | Auto-create on first use. No error. |
-| CWV fetch fails (no API key) | Store `null` for CWV fields. Skip CWV rules during comparison. |
-| Page returns 4xx/5xx | Still capture as baseline (status code IS a tracked field). |
-| Multiple baselines exist | Use most recent unless `--baseline-id` specified. |
-
----
-
-## Security
-
-- **All URL fetching** goes through `scripts/fetch_page.py` which enforces SSRF protection
-  (blocks private IPs, loopback, reserved ranges, GCP metadata endpoints)
-- **No curl, no subprocess HTTP calls** -- only the project's validated fetch pipeline
-- **All SQLite queries** use parameterized placeholders (`?`), never string interpolation
-- **TLS always verified** -- no `verify=False` anywhere in the pipeline
-
----
-
-## Typical Workflows
-
-### Pre/Post Deployment Check
-```
-/seo drift baseline https://example.com     # Before deploy
-# ... deploy happens ...
-/seo drift compare https://example.com      # After deploy
+```bash
+./seo --project <id> audit-diff \
+  --kind raw \
+  --from projects/<id>/audits/raw/evidence-<before>.json \
+  --to projects/<id>/audits/raw/evidence-<after>.json \
+  --json
 ```
 
-### Ongoing Monitoring
-```
-/seo drift baseline https://example.com     # Initial capture
-# ... weeks later ...
-/seo drift compare https://example.com      # Check for drift
-/seo drift history https://example.com      # Review all changes
+Both paths must remain inside that kind's project audit directory and share the same audit identity.
+
+## Interpretation order
+
+For every comparison:
+
+1. Read `status`, `comparable`, warnings, baseline path, and current path.
+2. Confirm collection status and final URL before interpreting changes.
+3. Separate confirmed changes from collection gaps and architecture inferences.
+4. Identify affected templates or routes rather than extrapolating from one page.
+5. Prioritize by indexability, user impact, business importance, and confidence.
+
+Do not call a change a regression merely because a score moved. Confirm the underlying metric or document change and its evidence boundary.
+
+## Kind-specific rules
+
+### Raw and rendered evidence
+
+Review status, final URL, title, description, canonical, robots, headings, links, schema presence, navigation, and raw/rendered differences. A deliberate content change is not automatically a defect. A new `noindex`, wrong canonical, soft 404, broken navigation, or missing primary content deserves urgent verification.
+
+### Technology
+
+Detection is presence evidence, not a complete inventory. A missing fingerprint can reflect route, consent, runtime, scan mode, or provider changes. Use `architecture_analysis.evidence_quality` and explicit asset evidence before concluding that a dependency was removed.
+
+### Lighthouse
+
+Compare only matching runtime, profile, requested URL, main document, and final URL conditions. Keep individual LHR runs available. Lighthouse is lab evidence; do not replace it with CrUX or combine their scores.
+
+### CrUX
+
+Compare only the same effective scope and form factor. A page-to-origin fallback changes meaning. `no_data` usually means eligible field data is unavailable, not that performance is good or bad.
+
+### GSC
+
+Compare Search Analytics only when property, search type, window length, and finalized state match. URL Inspection describes Google's indexed version, not a live test. Sitemap fields indicate submitted and processed state, not guaranteed index coverage.
+
+## Output
+
+Read the current report from:
+
+```text
+projects/<id>/audits/diffs/latest.json
 ```
 
-### Investigating a Traffic Drop
-```
-/seo drift compare https://example.com      # What changed?
-/seo drift history https://example.com      # When did it change?
-```
+Timestamped `audit-diff-*.json` files are immutable records. The report should explain:
+
+- what changed;
+- whether the snapshots are comparable;
+- evidence confidence and collection gaps;
+- which routes or templates are affected;
+- the smallest verification or fix;
+- whether the change appears intentional.
+
+If the optional UI is active, continue using the same CLI and project files. The filesystem watcher will surface the new diff automatically. Never read or expose the UI token.
+
+## Error handling
+
+| Status | Action |
+|---|---|
+| `no_data` | Run the relevant collector or report why it is unavailable |
+| `no_baseline` | Preserve the current snapshot and repeat the same collection after a meaningful change or interval |
+| not comparable | Explain the mismatched identity or contract and recollect under matching conditions |
+| partial collection | Use surviving evidence, list missing components, and avoid absence claims |
+| GSC `needs_auth` | Hand authentication back to the user; continue non-Google evidence |
+| CrUX `no_data` | Keep Lighthouse as separate lab evidence; do not fabricate field data |
+
+## Cross-skill follow-up
+
+- Raw/rendered or canonical issue: `technical-audit`
+- Structured-data issue: `schema`
+- Content or intent change: `page-audit`
+- Trust or evidence issue: `eeat-audit`
+- Lighthouse or CrUX change: `technical-audit`
+- Query, index, or Sitemap change: `technical-audit` with GSC evidence

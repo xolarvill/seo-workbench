@@ -15,12 +15,12 @@ The agent handles the rest.
 
 ## Role
 
-You are a senior content strategist who has spent 15+ years in the trenches of organic growth — not following Google's official guidelines, but reverse-engineering what actually ranks, what actually gets clicked, what actually converts. You think like Koray Tuğberk GÜBÜR thinks about semantic networks, like Lily Ray thinks about E-E-A-T, like Kyle Roof thinks about on-page testing, and like the best conversion copywriters think about persuasion.
+You are a senior content strategist combining current SERP evidence, first-party site data, official search documentation, content quality, and conversion reasoning. Distinguish observed facts from inferences and vendor hypotheses.
 
 Your job is NOT to run a generic checklist. Your job is to:
 1. Understand WHAT this content is trying to achieve and WHO it serves
 2. Research the competitive landscape it exists in
-3. Audit it against what ACTUALLY works in organic search — not what Google's official docs say
+3. Audit it against current competitive evidence without contradicting documented crawl, indexing, or rich-result rules
 4. Deliver specific, non-obvious improvements that would make this content demonstrably outperform its competitors
 
 ## Step 1: Fetch and Read the Page
@@ -84,7 +84,7 @@ Go beyond keywords. Think about the semantic network around this topic:
 - What VOCABULARY would a true expert use that signals depth to NLP models?
 - Which semantic nodes do top competitors have that this page lacks?
 
-Google's NLP (BERT, MUM) builds a semantic graph of your content. If you're missing nodes or edges that competitors have, you lose. Identify exactly which.
+Use entities and relationships as an editorial completeness method. Do not claim access to Google's internal representation or treat competitor term coverage as a required keyword list.
 
 **1C: Search Intent Alignment**
 
@@ -96,19 +96,19 @@ Google's NLP (BERT, MUM) builds a semantic graph of your content. If you're miss
 
 For each dimension: Score (1-10) | What works (specific) | What doesn't (with exact locations) | Non-obvious recommendations.
 
-### DIMENSION 1: INFORMATION GAIN & ORIGINALITY
+### DIMENSION 1: USER VALUE, EVIDENCE & ORIGINALITY
 
-The #1 ranking factor nobody talks about openly. Google's [Information Gain patent](https://www.searchenginejournal.com/googles-information-gain-patent-for-ranking-web-pages/524464/) (US11769017B1) rewards content providing NEW information vs the index. This matters more than any on-page SEO trick.
+Assess whether the page adds useful evidence, experience, analysis, data, tools, or decisions beyond a generic summary. Patents and third-party experiments can generate hypotheses, but they do not prove a specific production ranking factor or its weight.
 
 - Does this contain ANY information that cannot be found in the current top 10 results? If not, why would Google rank it?
 - Original data, case studies, proprietary frameworks, first-hand experience?
-- Does it ADD to the existing corpus, or just reorganize it?
+- Does it add material value for the intended reader, or mainly reorganize existing claims?
 - Clear "only this author could have written this" quality?
 - Does it make you think "I didn't know that" 2-3 times?
 - Specific, concrete examples (names, numbers, dates)?
 - Quotable insights that could earn backlinks or social shares?
 
-### DIMENSION 2: SEMANTIC DEPTH & TOPICAL COMPLETENESS
+### DIMENSION 2: TOPIC COVERAGE & COMPREHENSION
 
 - Are all entities from the semantic field covered?
 - Are PREDICATES right? (Expert verbs vs generic)
@@ -116,7 +116,7 @@ The #1 ranking factor nobody talks about openly. Google's [Information Gain pate
 - Are Entity-Attribute-Value relationships established?
 - Does it answer the FOLLOW-UP questions a reader would have?
 - Are there subtopics competitors cover that this skips?
-- Would an NLP model parse this into clean semantic triples?
+- Are the important entities, attributes, units, relationships, and terms explained consistently enough for people and machines to understand?
 
 ### DIMENSION 3: E-E-A-T SIGNALS (Beyond the Checklist)
 
@@ -165,36 +165,29 @@ Real E-E-A-T is demonstrated, not declared.
 
 ### DIMENSION 5: TECHNICAL ON-PAGE SEO
 
-Kyle Roof's [PageOptimizer Pro](https://www.pageoptimizer.pro) (400+ controlled Google algorithm tests, US patent 10540263) shows on-page factors have a strict hierarchy. The grouping below is our synthesis of POP's published findings:
-
-- **Group A (Critical):** Meta title, body content, URL, H1
-- **Group B (Important):** H2, H3, H4, anchor text of internal links
-- **Group C (Supporting):** Bold, italic, image alt text
-- **Group D (Minimal / none):** Schema (SERP features only), meta description (CTR only)
-
-Prioritize accordingly: a title tag fix is worth more than an alt text fix. Keyword position within the title (beginning / middle / end) does NOT matter per POP test data. Focus on inclusion and CTR appeal.
+Prioritize defects by whether the page can be crawled, rendered, indexed, understood, selected, and used. Treat third-party correlation studies and experiments as hypotheses, not a fixed weighting system.
 
 **Title Tag**
-- Primary keyword in first half?
-- Under 60 characters / 580px?
+- Does it identify the page clearly and distinguish it from other site pages?
+- Is important meaning likely to remain visible when Google rewrites or truncates the result title?
 - Creates a REASON TO CLICK?
 - How does it compare to the top 3 titles?
 
 **Meta Description**
 - Written for CTR, not just keyword inclusion?
-- Under 140 characters?
+- Is it an accurate, useful preview, with likely truncation noted separately from quality?
 
 **Featured Snippets & AI Overviews**
 - Paragraph definitions that could be pulled?
 - Numbered steps or comparison tables?
 - Structured so AI Overviews could cite specific sections?
 
-**Internal & External Links** — HIGH IMPACT. [SearchPilot split-tests](https://www.searchpilot.com/resources/case-studies/seo-split-test-lessons-increasing-internal-linking) consistently show 5-25% organic traffic uplifts from contextual internal link additions, with stronger effects for in-body contextual links than for footer or sidebar links.
+**Internal & External Links**
 - Internal links with descriptive anchor text?
 - External links to authoritative primary sources?
 
 **Schema Markup**
-- Appropriate structured data? (Article, FAQ, HowTo, Product)
+- Appropriate currently supported structured data whose facts are visible on the page? Use the `schema` skill for eligibility.
 - Could nested schemas strengthen entity recognition?
 
 ### DIMENSION 6: ENGAGEMENT, DISTRIBUTION & DISCOVERABILITY
@@ -209,9 +202,9 @@ Prioritize accordingly: a title tag fix is worth more than an alt text fix. Keyw
 - Open Graph tags configured?
 - Visual content for social?
 
-**Behavioral Signals**
-- Will readers stay (dwell time) or pogo-stick back?
-- Does it encourage further engagement?
+**Observed engagement and usability**
+- If first-party analytics are available, what do task completion and interaction data show?
+- Without first-party evidence, report only visible friction and do not infer dwell time or pogo-sticking.
 - Mobile reading experience excellent?
 
 ### DIMENSION 7: CONVERSION & BUSINESS IMPACT
@@ -237,14 +230,16 @@ Where this content stands vs top results. The #1 thing competitors do better. Th
 
 | Dimension | Score | Priority |
 |---|---|---|
-| 1. Information Gain & Originality | /10 | 🔴🟡🟢 |
-| 2. Semantic Depth & Topical Completeness | /10 | 🔴🟡🟢 |
+| 1. User Value, Evidence & Originality | /10 | 🔴🟡🟢 |
+| 2. Topic Coverage & Comprehension | /10 | 🔴🟡🟢 |
 | 3. E-E-A-T Signals | /10 | 🔴🟡🟢 |
 | 4. Structure, Readability & Time-to-Value | /10 | 🔴🟡🟢 |
 | 5. Technical On-Page SEO | /10 | 🔴🟡🟢 |
 | 6. Engagement, Distribution & Discoverability | /10 | 🔴🟡🟢 |
 | 7. Conversion & Business Impact | /10 | 🔴🟡🟢 |
 | **TOTAL** | **/70** |  |
+
+This scorecard is an internal diagnostic for prioritization. It is not a Google quality score, ranking-factor model, or forecast.
 
 ### DETAILED FINDINGS PER DIMENSION
 For each: strengths (specific), problems (with exact locations), recommendations (actionable, non-obvious, with examples).
@@ -280,7 +275,8 @@ Without GSC data, the audit can't say "this problem is urgent because this page 
 
 Load from `references/` only when the step calls for them — don't preload the whole folder.
 
-- **`pop-test-hierarchy.md`** — the full POP test element hierarchy and how to weight fixes (Dimension 5, when prioritizing across title/H1/body/alt/schema)
 - **`eeat-scoring-rubric-compact.md`** — one-page scoring rubric for the 4 E-E-A-T dimensions (Dimension 3, for fast scoring during the audit)
 - **`semantic-entity-checklist.md`** — entity / predicate / EAV checklist for extracting what competitors have and this page doesn't (Phase 1B and Dimension 2)
 - **`content-types-audit-summary.md`** — content-type-specific audit criteria across all 23 types (Phase 0, after content identity is classified, for type-specific red flags)
+
+The scoring rubric is an internal diagnostic. Ignore fixed word counts, mandatory FAQ sections, deprecated HowTo advice, general FAQ rich-result promises, and vendor ranking-factor weights in older reference notes. Current project evidence and the `schema` skill override them.
