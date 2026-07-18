@@ -5,8 +5,9 @@ The operational references are in English. The practical SEO tutorials are writt
 ## Start here
 
 1. [SEO 基础知识与证据模型](SEO基础知识与证据模型.md) explains what can be observed, inferred, measured, or only verified by Google data.
-2. [SEO 工具链协同工作流指南](SEO工具链协同工作流指南.md) maps Workbench commands to decisions and deliverables.
-3. [从 0 到 1 新站 SEO 建设教程](从0到1新站SEO建设教程.md) covers discovery, launch, measurement, and iteration for a new site.
+2. [SEO 增长诊断与拆解](SEO增长诊断与拆解.md) connects search visibility to visits, products, conversion, and revenue without turning diagnostic models into ranking formulas.
+3. [SEO 工具链协同工作流指南](SEO工具链协同工作流指南.md) maps Workbench commands to decisions and deliverables.
+4. [从 0 到 1 新站 SEO 建设教程](从0到1新站SEO建设教程.md) covers discovery, launch, measurement, and iteration for a new site.
 
 ## Choose the site guide
 
