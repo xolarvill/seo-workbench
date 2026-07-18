@@ -32,10 +32,71 @@ COOKIE_NAME = "seo_workbench_session"
 DEFAULT_PORT = 8765
 DEFAULT_RUNTIME_DIR = state.ROOT / ".runtime" / "ui"
 DEFAULT_FRONTEND_DIR = state.ROOT / "ui" / "dist"
+DEFAULT_TUTORIALS_DIR = state.ROOT / "docs"
 MARKDOWN_ROOTS = {"context", "strategy", "content", "audits"}
 MARKDOWN_SUFFIXES = {".md", ".markdown"}
 MAX_MARKDOWN_BYTES = 2 * 1024 * 1024
+MAX_TUTORIAL_BYTES = 2 * 1024 * 1024
 WATCHED_SUFFIXES = {".json", ".md", ".markdown", ".html", ".png", ".webp"}
+
+TUTORIALS: tuple[dict[str, str], ...] = (
+    {
+        "slug": "seo-foundations",
+        "title": "SEO 基础知识与证据模型",
+        "description": "抓取、渲染、索引、内容质量和证据边界。",
+        "category": "Foundations",
+        "filename": "SEO基础知识与证据模型.md",
+    },
+    {
+        "slug": "growth-diagnosis",
+        "title": "SEO 增长诊断与拆解",
+        "description": "把展示、点击、访问、商品和收入拆成可验证的问题。",
+        "category": "Foundations",
+        "filename": "SEO增长诊断与拆解.md",
+    },
+    {
+        "slug": "workbench-workflow",
+        "title": "SEO Workbench 协同工作流",
+        "description": "从项目、证据和 skill 到任务、复查与审计差异。",
+        "category": "Workbench",
+        "filename": "SEO工具链协同工作流指南.md",
+    },
+    {
+        "slug": "new-site",
+        "title": "从 0 到 1 新站 SEO 建设",
+        "description": "新站的信息架构、上线证据、内容和测量顺序。",
+        "category": "Site guides",
+        "filename": "从0到1新站SEO建设教程.md",
+    },
+    {
+        "slug": "shopify-liquid",
+        "title": "Shopify Liquid SEO",
+        "description": "主题模板、商品、集合、Markets 和应用边界。",
+        "category": "Site guides",
+        "filename": "Shopify从0到1-SEO建设进阶教程.md",
+    },
+    {
+        "slug": "shopify-hydrogen",
+        "title": "Shopify Hydrogen Headless SEO",
+        "description": "路由、原始与渲染证据、Storefront API 和边缘交付。",
+        "category": "Site guides",
+        "filename": "Shopify-Hydrogen-Headless-SEO指南.md",
+    },
+    {
+        "slug": "woocommerce-b2b",
+        "title": "WooCommerce B2B SEO",
+        "description": "公开目录、询价、角色定价和缓存边界。",
+        "category": "Site guides",
+        "filename": "WooCommerce-B2B-SEO指南.md",
+    },
+    {
+        "slug": "custom-site",
+        "title": "自建普通网站 SEO",
+        "description": "HTTP 合同、HTML、路由、Sitemap 和发布检查。",
+        "category": "Site guides",
+        "filename": "自建普通网站SEO指南.md",
+    },
+)
 
 
 class FileUpdate(BaseModel):
@@ -252,6 +313,25 @@ def _markdown_files(project_dir: Path) -> list[dict[str, Any]]:
     return sorted(files, key=lambda item: item["path"])
 
 
+def _tutorial_path(tutorials_dir: Path, tutorial: dict[str, str]) -> Path:
+    root = tutorials_dir.resolve(strict=False)
+    path = (root / tutorial["filename"]).resolve(strict=False)
+    try:
+        path.relative_to(root)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail="Tutorial path is outside the documentation directory") from exc
+    if path.is_symlink() or not path.is_file():
+        raise HTTPException(status_code=404, detail="Tutorial not found")
+    return path
+
+
+def _tutorial(slug: str) -> dict[str, str]:
+    tutorial = next((item for item in TUTORIALS if item["slug"] == slug), None)
+    if tutorial is None:
+        raise HTTPException(status_code=404, detail="Tutorial not found")
+    return tutorial
+
+
 def _load_optional_json(project_dir: Path, relative_path: str) -> dict[str, Any] | None:
     try:
         path = state.safe_project_path(project_dir, relative_path)
@@ -356,6 +436,7 @@ def create_app(
     projects_root: Path = state.PROJECTS_ROOT,
     runtime_dir: Path = DEFAULT_RUNTIME_DIR,
     frontend_dir: Path | None = DEFAULT_FRONTEND_DIR,
+    tutorials_dir: Path = DEFAULT_TUTORIALS_DIR,
     watch_files: bool = True,
 ) -> FastAPI:
     session_token = token or secrets.token_urlsafe(32)
@@ -412,6 +493,35 @@ def create_app(
     @app.get("/api/v1/health")
     def health() -> dict[str, Any]:
         return {"ok": True, "protocol_version": UI_PROTOCOL_VERSION, "projects_root": str(projects_root)}
+
+    @app.get("/api/v1/tutorials")
+    def tutorials() -> dict[str, Any]:
+        items = [
+            {key: value for key, value in tutorial.items() if key != "filename"}
+            | {"source": tutorial["filename"]}
+            for tutorial in TUTORIALS
+            if (tutorials_dir / tutorial["filename"]).is_file()
+            and not (tutorials_dir / tutorial["filename"]).is_symlink()
+        ]
+        return {"ok": True, "count": len(items), "tutorials": items}
+
+    @app.get("/api/v1/tutorials/{slug}")
+    def tutorial(slug: str) -> dict[str, Any]:
+        metadata = _tutorial(slug)
+        path = _tutorial_path(tutorials_dir, metadata)
+        content = path.read_bytes()
+        if len(content) > MAX_TUTORIAL_BYTES:
+            raise HTTPException(status_code=413, detail="Tutorial is too large to display")
+        public = {key: value for key, value in metadata.items() if key != "filename"} | {"source": metadata["filename"]}
+        return {
+            "ok": True,
+            "tutorial": public
+            | {
+                "content": content.decode("utf-8"),
+                "revision": _revision(content),
+                "modified_at": datetime.fromtimestamp(path.stat().st_mtime, timezone.utc).isoformat(),
+            },
+        }
 
     @app.get("/api/v1/projects")
     def projects() -> dict[str, Any]:

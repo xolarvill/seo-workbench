@@ -17,11 +17,15 @@ def ui_client(tmp_path: Path) -> tuple[TestClient, Path]:
     project_dir = projects_root / "store"
     state.init_state("shopify", "Store", "https://example.com", project_dir=project_dir)
     (project_dir / "strategy/cluster-plan.md").write_text("# Original\n", encoding="utf-8")
+    tutorials_dir = tmp_path / "docs"
+    tutorials_dir.mkdir()
+    (tutorials_dir / "SEO基础知识与证据模型.md").write_text("# SEO Foundations\n\nLocal tutorial.\n", encoding="utf-8")
     app = create_app(
         token="test-token",
         projects_root=projects_root,
         runtime_dir=tmp_path / ".runtime/ui",
         frontend_dir=None,
+        tutorials_dir=tutorials_dir,
         watch_files=False,
     )
     client = TestClient(app)
@@ -95,6 +99,24 @@ def test_ui_lists_projects_workspace_and_real_evidence(tmp_path: Path) -> None:
     statuses = {item["id"]: item["status"] for item in workspace["evidence"]["items"]}
     assert statuses["crux"] == "needs_key"
     assert statuses["gsc"] == "not_bound"
+
+
+def test_ui_serves_allowlisted_tutorials_as_read_only_content(tmp_path: Path) -> None:
+    client, _ = ui_client(tmp_path)
+    with client:
+        listed = client.get("/api/v1/tutorials")
+        opened = client.get("/api/v1/tutorials/seo-foundations")
+        missing = client.get("/api/v1/tutorials/not-allowlisted")
+        mutation = client.put("/api/v1/tutorials/seo-foundations", json={"content": "changed"})
+
+    assert listed.status_code == 200
+    assert listed.json()["count"] == 1
+    assert listed.json()["tutorials"][0]["source"] == "SEO基础知识与证据模型.md"
+    assert opened.status_code == 200
+    assert opened.json()["tutorial"]["content"].startswith("# SEO Foundations")
+    assert opened.json()["tutorial"]["revision"]
+    assert missing.status_code == 404
+    assert mutation.status_code == 405
 
 
 def test_markdown_api_saves_with_revision_and_rejects_stale_write(tmp_path: Path) -> None:
