@@ -147,12 +147,10 @@ Automatic installation of missing system runtimes currently requires macOS and H
 
 ## Documentation
 
+- [SEO tutorial index](docs/README.md)
 - [Google integrations](docs/google-integrations.md)
 - [Standalone workbench architecture](docs/independent-workbench.md)
 - [Preserved SEO capability families](docs/capability-preservation.md)
-- [SEO workflow guide, Chinese](docs/SEO工具链协同工作流指南.md)
-- [Shopify SEO guide, Chinese](docs/Shopify从0到1-SEO建设进阶教程.md)
-- [Shopify Hydrogen SEO guide, Chinese](docs/Shopify-Hydrogen-Headless-SEO指南.md)
 
 ## Current boundaries
 
