@@ -25,6 +25,6 @@
   "side_panel": {
     "default_path": "sidepanel.html"
   },
-  "permissions": ["activeTab", "scripting", "sidePanel", "storage", "tabs"],
+  "permissions": ["activeTab", "scripting", "sidePanel", "storage"],
   "host_permissions": ["http://127.0.0.1/*", "http://localhost/*"]
 }

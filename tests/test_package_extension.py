@@ -16,12 +16,14 @@ def test_package_extension_builds_rooted_zip_and_checksum(tmp_path: Path) -> Non
         "version": "0.1.0",
         "side_panel": {"default_path": "sidepanel.html"},
         "background": {"service_worker": "service-worker.js"},
+        "permissions": ["activeTab", "scripting", "sidePanel", "storage"],
         "host_permissions": ["http://127.0.0.1/*", "http://localhost/*"],
     }
     files = {
         "manifest.json": json.dumps(manifest),
         "sidepanel.html": "<main>SEO Workbench</main>",
         "service-worker.js": "void 0;",
+        "sidepanel.js": "void 0;",
         "icons/icon-16.png": "16",
         "icons/icon-32.png": "32",
         "icons/icon-48.png": "48",
@@ -51,3 +53,12 @@ def test_package_extension_builds_rooted_zip_and_checksum(tmp_path: Path) -> Non
     assert mismatch.returncode == 2
     assert "does not match tag version" in mismatch.stderr
     assert "Traceback" not in mismatch.stderr
+
+    (dist / ".env").write_text("SECRET=value", encoding="utf-8")
+    unsafe = subprocess.run(
+        [sys.executable, "scripts/package_extension.py", "--dist", str(dist), "--output", str(output)],
+        text=True,
+        capture_output=True,
+    )
+    assert unsafe.returncode == 2
+    assert "unexpected files: .env" in unsafe.stderr

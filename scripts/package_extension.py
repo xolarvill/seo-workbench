@@ -13,6 +13,7 @@ from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 REQUIRED_FILES = {
     "manifest.json",
     "sidepanel.html",
+    "sidepanel.js",
     "service-worker.js",
     "icons/icon-16.png",
     "icons/icon-32.png",
@@ -20,6 +21,8 @@ REQUIRED_FILES = {
     "icons/icon-128.png",
 }
 LOOPBACK_HOSTS = {"http://127.0.0.1/*", "http://localhost/*"}
+PERMISSIONS = {"activeTab", "scripting", "sidePanel", "storage"}
+ASSET_SUFFIXES = {".css", ".js", ".woff", ".woff2"}
 
 
 def validate(dist: Path, expected_version: str | None) -> tuple[str, list[Path]]:
@@ -43,11 +46,21 @@ def validate(dist: Path, expected_version: str | None) -> tuple[str, list[Path]]
         raise ValueError(f"extension build is incomplete: {', '.join(missing)}")
     if set(manifest.get("host_permissions", [])) != LOOPBACK_HOSTS:
         raise ValueError("extension host permissions must remain loopback-only")
+    if set(manifest.get("permissions", [])) != PERMISSIONS:
+        raise ValueError("extension permissions do not match the reviewed allowlist")
     files = sorted(path for path in dist.rglob("*") if path.is_file())
     if any(path.is_symlink() for path in files):
         raise ValueError("extension package cannot contain symlinks")
     if any(path.suffix == ".map" for path in files):
         raise ValueError("extension package cannot contain source maps")
+    unexpected = [
+        path.relative_to(dist).as_posix()
+        for path in files
+        if path.relative_to(dist).as_posix() not in REQUIRED_FILES
+        and not (path.parent == dist / "assets" and path.suffix in ASSET_SUFFIXES)
+    ]
+    if unexpected:
+        raise ValueError(f"extension package contains unexpected files: {', '.join(unexpected)}")
     return version, files
 
 

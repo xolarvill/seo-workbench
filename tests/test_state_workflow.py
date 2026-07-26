@@ -47,6 +47,13 @@ def test_init_steps_declare_skill_context_and_output(tmp_path: Path) -> None:
     assert str(tmp_path / "context/brand-voice.md") in keywords["context"]
 
 
+def test_agent_context_includes_optional_browser_evidence(tmp_path: Path) -> None:
+    workflow = load_workflow(DEFAULT_WORKFLOW)
+    for phase, step in (("TECHNICAL_AUDIT", "technical-audit"), ("MONITORING", "technical-recheck")):
+        contract = next_contract(workflow, phase, {"id": step, "label": step}, tmp_path)
+        assert str(tmp_path / "audits/browser/latest.json") in contract["context"]
+
+
 def test_project_id_and_discovery_keep_stores_isolated(tmp_path: Path) -> None:
     projects_root = tmp_path / "projects"
     first = state.project_dir_from_id("store-one", projects_root)

@@ -5,6 +5,7 @@ import { fetchTutorial, fetchTutorials } from "../api/client";
 import type { TutorialDocument, TutorialSummary, Workspace } from "../api/types";
 import { AppShell } from "../components/AppShell";
 import { MarkdownPreview } from "../features/editor/MarkdownPreview";
+import { EvidenceRail } from "../features/overview/EvidenceRail";
 import { TutorialsPage } from "../features/tutorials/TutorialsPage";
 import { WorkflowPage } from "../features/workflow/WorkflowPage";
 
@@ -75,6 +76,12 @@ describe("workbench frontend", () => {
     expect(screen.getAllByText("Collect evidence").length).toBeGreaterThan(0);
     expect(screen.getByText("technical-audit")).toBeTruthy();
     expect(screen.getByText("DISCOVERY")).toBeTruthy();
+  });
+
+  it("renders optional browser evidence", () => {
+    render(<EvidenceRail items={[{ id: "browser", label: "Browser", status: "complete" }]} />);
+    expect(screen.getByText("Browser")).toBeTruthy();
+    expect(screen.getByText("Ready")).toBeTruthy();
   });
 
   it("renders Markdown without enabling raw HTML", () => {

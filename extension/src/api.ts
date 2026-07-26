@@ -109,6 +109,8 @@ export async function openCodex(baseUrl: string, token: string): Promise<void> {
 export async function disconnect(baseUrl: string, token: string): Promise<void> {
   try {
     await request(baseUrl, "/api/v1/extension/session", { method: "DELETE" }, token);
+  } catch {
+    // The local token is still discarded when the Workbench is unavailable.
   } finally {
     await chrome.storage.local.remove("workbenchToken");
   }

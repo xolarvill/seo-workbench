@@ -32,7 +32,7 @@ projects/<id>/audits/browser/
 
 Timestamped files are immutable records. `latest.json` is the stable pointer. Captures are observations from an interactive browser, not replacements for raw HTML, Playwright, Lighthouse, CrUX, or GSC evidence.
 
-The extension never submits cookies, local storage, form values, authorization headers, complete HTML, or sensitive query values. The server validates size, schema, project, URL, and extension authorization before writing.
+The extension never submits cookies, local storage, form values, authorization headers, complete HTML, or sensitive query values. The server validates request size and every nested schema field, rejects unknown fields, redacts sensitive query values, and confirms the project and extension authorization before writing. Captured page text is marked as untrusted external data for downstream agents.
 
 ## Product surface
 
@@ -58,7 +58,9 @@ Pairing flow:
 4. Approve the listed scopes in the authenticated Workbench session.
 5. Return to the side panel, choose the matched project, and click **Save capture** when evidence should be persisted.
 
-Disconnecting revokes the server-side client and removes the browser token. The inspector, JSON export, and handoff copy continue working without a connection.
+Pairing tokens expire after 30 days. Disconnecting revokes the server-side client and removes the browser token; a local operator can revoke all clients independently by removing the ignored `.runtime/ui/extensions.json` registry while the UI is stopped. The inspector, JSON export, and handoff copy continue working without a connection.
+
+The side panel invalidates a capture when the active tab navigates or changes. Save also rechecks the tab identity and URL, and no unmatched hostname is silently assigned to the first project.
 
 `Open in Codex` is a narrow local action. The server resolves the fixed repository root and executes `codex app <root>` without a shell. The extension cannot provide a command, prompt, or filesystem path.
 
@@ -76,7 +78,7 @@ The requested permissions are deliberately narrow:
 - `activeTab` and `scripting` inspect the page only after the toolbar action is used.
 - `sidePanel` presents the inspector without modifying the page.
 - `storage` keeps local connection settings and the paired token.
-- `tabs` opens the explicit approval, Workbench, and Codex handoff surfaces.
+- Chrome's permission-free `tabs.create()` opens explicit approval and Workbench surfaces; no broad `tabs` browsing-history permission is requested.
 - Loopback host access is limited to `http://127.0.0.1/*` and `http://localhost/*`.
 
 Restricted browser pages such as `chrome://` cannot be inspected. Open an `http` or `https` page and retry. If the Workbench uses a non-default port, change only the loopback URL in the Workbench tab.
@@ -106,7 +108,7 @@ artifact: seo-workbench-chrome-v0.1.0.zip
 checksum: seo-workbench-chrome-v0.1.0.zip.sha256
 ```
 
-A `chrome-v*` tag runs tests, builds the Manifest V3 package, validates its contents and version, creates a checksum, and publishes both files to a GitHub Release. A manual workflow builds the same artifacts without publishing a release. Chrome Web Store publication is separate because it requires a store account and OAuth credentials.
+A `chrome-v*` tag runs tests in a read-only build job, builds the Manifest V3 package, validates its contents and version, creates a checksum, and passes only the artifacts to a write-scoped GitHub Release job. A manual workflow builds the same artifacts without publishing a release. Chrome Web Store publication is separate because it requires a store account and OAuth credentials.
 
 Local release rehearsal:
 
@@ -124,7 +126,7 @@ git tag chrome-v0.1.0
 git push origin chrome-v0.1.0
 ```
 
-The packager rejects missing entry points, source maps, symlinks, non-loopback host permissions, and a tag/Manifest version mismatch. ZIP entries use a fixed timestamp so identical inputs produce a stable archive and checksum.
+The packager rejects missing entry points, unexpected or hidden files, source maps, symlinks, permission drift, non-loopback host permissions, and a tag/Manifest version mismatch. ZIP entries use a fixed timestamp so identical inputs produce a stable archive and checksum.
 
 ## Commercial maturity target: 8/10
 

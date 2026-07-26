@@ -43,6 +43,7 @@ def context_for_step(phase: str, step_id: str, project_dir: Path) -> list[str]:
         return [
             *common,
             str(project_dir / "audits/raw/latest.json"),
+            str(project_dir / "audits/browser/latest.json"),
             str(project_dir / "audits/rendered"),
             str(project_dir / "audits/technology/latest.json"),
             str(project_dir / "audits/performance/latest.json"),
@@ -56,6 +57,7 @@ def context_for_step(phase: str, step_id: str, project_dir: Path) -> list[str]:
         return [
             *common,
             str(project_dir / "audits/raw/latest.json"),
+            str(project_dir / "audits/browser/latest.json"),
             str(project_dir / "audits/performance/latest.json"),
             str(project_dir / "audits/crux/latest.json"),
             str(project_dir / "audits/gsc/latest.json"),

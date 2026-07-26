@@ -1,4 +1,4 @@
-import { BarChart3, Braces, Check, CircleAlert, FileSearch, Gauge, SearchX } from "lucide-react";
+import { BarChart3, Braces, Check, CircleAlert, FileSearch, Gauge, ScanSearch, SearchX } from "lucide-react";
 
 import type { EvidenceItem } from "../../api/types";
 import styles from "./Overview.module.css";
@@ -6,6 +6,7 @@ import styles from "./Overview.module.css";
 
 const icons = {
   raw: FileSearch,
+  browser: ScanSearch,
   technology: Braces,
   performance: Gauge,
   crux: BarChart3,
@@ -17,6 +18,8 @@ function statusLabel(status: string) {
   const labels: Record<string, string> = {
     ok: "Ready",
     ready: "Ready",
+    complete: "Ready",
+    not_collected: "Not collected",
     partial: "Partial",
     needs_key: "Needs key",
     not_bound: "Not bound",
@@ -28,7 +31,7 @@ function statusLabel(status: string) {
 }
 
 function tone(status: string) {
-  if (["ok", "ready"].includes(status)) return styles.ready;
+  if (["ok", "ready", "complete"].includes(status)) return styles.ready;
   if (["failed", "not_bound"].includes(status)) return styles.failed;
   return styles.warning;
 }
@@ -44,7 +47,7 @@ export function EvidenceRail({ items }: { items: EvidenceItem[] }) {
           return (
             <div className={styles.evidenceItem} key={item.id}>
               <span className={`${styles.statusIcon} ${tone(item.status)}`}>
-                {item.status === "ok" ? <Check size={13} aria-hidden="true" /> : null}
+                {["ok", "ready", "complete"].includes(item.status) ? <Check size={13} aria-hidden="true" /> : null}
               </span>
               <Icon aria-hidden="true" size={22} strokeWidth={1.5} />
               <span>

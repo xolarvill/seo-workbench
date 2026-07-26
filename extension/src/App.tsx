@@ -98,6 +98,7 @@ function EmptyState({ error, onRetry }: { error: string; onRetry: () => void }) 
 export function App() {
   const [activeTab, setActiveTab] = useState<TabName>("overview");
   const [capture, setCapture] = useState<BrowserCapture | null>(null);
+  const [scannedTabId, setScannedTabId] = useState<number | null>(null);
   const [status, setStatus] = useState<"scanning" | "ready" | "error">("scanning");
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
@@ -111,6 +112,9 @@ export function App() {
   const scan = useCallback(async () => {
     setStatus("scanning");
     setError("");
+    setCapture(null);
+    setScannedTabId(null);
+    setProjectId("");
     try {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
       if (!tab?.id || !tab.url || !/^https?:/.test(tab.url)) {
@@ -119,6 +123,7 @@ export function App() {
       const [result] = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: inspectPage });
       if (!result?.result) throw new Error("Chrome did not return a page snapshot.");
       setCapture(buildCapture(result.result, chrome.runtime.getManifest().version));
+      setScannedTabId(tab.id);
       setStatus("ready");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "The active page could not be inspected.");
@@ -128,13 +133,35 @@ export function App() {
 
   useEffect(() => { void scan(); }, [scan]);
 
+  useEffect(() => {
+    const invalidate = () => {
+      setCapture(null);
+      setScannedTabId(null);
+      setProjectId("");
+      setError("The active page changed. Click the extension toolbar icon, then inspect again.");
+      setStatus("error");
+    };
+    const onActivated = ({ tabId }: { tabId: number }) => {
+      if (scannedTabId !== null && tabId !== scannedTabId) invalidate();
+    };
+    const onUpdated = (tabId: number, changeInfo: { url?: string }) => {
+      if (scannedTabId === tabId && changeInfo.url) invalidate();
+    };
+    chrome.tabs.onActivated.addListener(onActivated);
+    chrome.tabs.onUpdated.addListener(onUpdated);
+    return () => {
+      chrome.tabs.onActivated.removeListener(onActivated);
+      chrome.tabs.onUpdated.removeListener(onUpdated);
+    };
+  }, [scannedTabId]);
+
   const refreshWorkbench = useCallback(async () => {
     const stored = await loadConnection();
     setWorkbenchBaseUrl(stored.baseUrl);
     setWorkbenchStatus("checking");
     setWorkbenchMessage("");
     try {
-      await health(stored.baseUrl);
+      if (!await health(stored.baseUrl)) throw new Error("The local Workbench does not support extension pairing.");
       if (!stored.token) {
         setWorkbenchStatus("available");
         return;
@@ -163,7 +190,8 @@ export function App() {
     const matched = workbenchProjects.find((project) => {
       try { return new URL(project.url).hostname === pageHost; } catch { return false; }
     });
-    setProjectId((matched || workbenchProjects[0]).id);
+    if (matched) setProjectId(matched.id);
+    else setWorkbenchMessage("No project matched this hostname. Choose a project before saving.");
   }, [capture, projectId, workbenchProjects]);
 
   const connectWorkbench = async () => {
@@ -186,6 +214,14 @@ export function App() {
 
   const saveToWorkbench = async () => {
     if (!capture || !projectId) return;
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    if (tab?.id !== scannedTabId || tab.url !== capture.final_url) {
+      setCapture(null);
+      setScannedTabId(null);
+      setError("The active page changed. Inspect it again before saving.");
+      setStatus("error");
+      return;
+    }
     setWorkbenchMessage("Saving immutable browser evidence…");
     try {
       const artifact = await saveCapture(workbenchBaseUrl, workbenchToken, projectId, capture);
@@ -435,6 +471,7 @@ function Workbench({
         <p>The repository remains the source of truth. This capture is written only when you choose a project and save it.</p>
         <label className="field-label" htmlFor="workbench-project">Project</label>
         <select id="workbench-project" value={projectId} onChange={(event) => onProject(event.target.value)}>
+          <option value="" disabled>Select a project…</option>
           {workbenchProjects.map((project) => <option key={project.id} value={project.id}>{project.name || project.id}</option>)}
         </select>
         <button className="wide-primary" disabled={!projectId} onClick={onSave}><Save size={15} /> Save capture</button>

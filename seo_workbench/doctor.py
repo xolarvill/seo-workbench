@@ -99,6 +99,7 @@ def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
     checks.append(_check("ui_session", ui_active, ui_detail, "info"))
 
     raw_dir = state.safe_project_path(project_dir, "audits/raw")
+    browser_dir = state.safe_project_path(project_dir, "audits/browser")
     rendered_dir = state.safe_project_path(project_dir, "audits/rendered")
     technology_dir = state.safe_project_path(project_dir, "audits/technology")
     performance_dir = state.safe_project_path(project_dir, "audits/performance")
@@ -106,10 +107,26 @@ def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
     gsc_dir = state.safe_project_path(project_dir, "audits/gsc")
     diff_dir = state.safe_project_path(project_dir, "audits/diffs")
     checks.append(_check("raw_evidence_dir", raw_dir.exists(), str(raw_dir), "warning"))
+    checks.append(_check("browser_evidence_dir", browser_dir.exists(), str(browser_dir), "info"))
     checks.append(_check("crux_evidence_dir", crux_dir.exists(), str(crux_dir), "info"))
     checks.append(_check("gsc_evidence_dir", gsc_dir.exists(), str(gsc_dir), "info"))
     latest_raw = _latest(raw_dir, "evidence-*.json") if raw_dir.exists() else ""
     checks.append(_check("latest_raw_evidence", bool(latest_raw), latest_raw or "no evidence bundle found", "warning"))
+    latest_browser = browser_dir / "latest.json"
+    browser_status = ""
+    if latest_browser.is_file() and not latest_browser.is_symlink():
+        try:
+            browser_status = state.read_json(latest_browser).get("collection_status", "")
+        except (OSError, ValueError, json.JSONDecodeError):
+            browser_status = "invalid"
+    checks.append(
+        _check(
+            "latest_browser_evidence",
+            browser_status in {"complete", "partial"},
+            f"{latest_browser} ({browser_status})" if browser_status else "not collected; the Chrome extension is optional",
+            "info",
+        )
+    )
 
     checks.append(_check("rendered_evidence_dir", rendered_dir.exists(), str(rendered_dir), "warning"))
     latest_rendered = _latest(rendered_dir, "rendered-*.json") if rendered_dir.exists() else ""
