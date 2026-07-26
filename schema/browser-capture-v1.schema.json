@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seo-workbench.local/schema/browser-capture-v1.schema.json",
+  "title": "SEO Workbench browser capture v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "capture_id", "captured_at", "collection_status", "requested_url", "final_url",
+    "document", "headings", "images", "links", "structured_data", "hreflang", "social",
+    "performance_observation", "source", "findings", "summary", "errors", "warnings"
+  ],
+  "properties": {
+    "schema_version": { "const": "browser-capture-v1" },
+    "capture_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "captured_at": { "type": "string", "format": "date-time" },
+    "collection_status": { "enum": ["complete", "partial", "failed"] },
+    "requested_url": { "type": "string", "format": "uri", "maxLength": 16384 },
+    "final_url": { "type": "string", "format": "uri", "maxLength": 16384 },
+    "document": { "$ref": "#/$defs/document" },
+    "headings": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/$defs/heading" } },
+    "images": { "$ref": "#/$defs/images" },
+    "links": { "$ref": "#/$defs/links" },
+    "structured_data": { "$ref": "#/$defs/structuredData" },
+    "hreflang": { "type": "array", "maxItems": 512, "items": { "$ref": "#/$defs/hreflang" } },
+    "social": { "$ref": "#/$defs/social" },
+    "performance_observation": { "$ref": "#/$defs/performanceObservation" },
+    "source": { "$ref": "#/$defs/source" },
+    "findings": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/$defs/finding" } },
+    "summary": { "$ref": "#/$defs/summary" },
+    "errors": { "type": "array", "maxItems": 256, "items": { "$ref": "#/$defs/text" } },
+    "warnings": { "type": "array", "maxItems": 256, "items": { "$ref": "#/$defs/text" } }
+  },
+  "$defs": {
+    "text": { "type": "string", "maxLength": 16384 },
+    "nonNegativeInteger": { "type": "integer", "minimum": 0 },
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "description", "canonical", "robots", "lang", "viewport", "word_count"],
+      "properties": {
+        "title": { "$ref": "#/$defs/text" },
+        "description": { "$ref": "#/$defs/text" },
+        "canonical": { "$ref": "#/$defs/text" },
+        "robots": { "$ref": "#/$defs/text" },
+        "lang": { "$ref": "#/$defs/text" },
+        "viewport": { "$ref": "#/$defs/text" },
+        "word_count": { "$ref": "#/$defs/nonNegativeInteger" }
+      }
+    },
+    "heading": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "text"],
+      "properties": {
+        "level": { "type": "integer", "minimum": 1, "maximum": 6 },
+        "text": { "$ref": "#/$defs/text" }
+      }
+    },
+    "images": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "missing_alt", "empty_alt", "lazy_loaded", "missing_dimensions"],
+      "properties": {
+        "total": { "$ref": "#/$defs/nonNegativeInteger" },
+        "missing_alt": { "$ref": "#/$defs/nonNegativeInteger" },
+        "empty_alt": { "$ref": "#/$defs/nonNegativeInteger" },
+        "lazy_loaded": { "$ref": "#/$defs/nonNegativeInteger" },
+        "missing_dimensions": { "$ref": "#/$defs/nonNegativeInteger" }
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "internal", "external", "nofollow", "sponsored", "ugc", "empty_anchor"],
+      "properties": {
+        "total": { "$ref": "#/$defs/nonNegativeInteger" },
+        "internal": { "$ref": "#/$defs/nonNegativeInteger" },
+        "external": { "$ref": "#/$defs/nonNegativeInteger" },
+        "nofollow": { "$ref": "#/$defs/nonNegativeInteger" },
+        "sponsored": { "$ref": "#/$defs/nonNegativeInteger" },
+        "ugc": { "$ref": "#/$defs/nonNegativeInteger" },
+        "empty_anchor": { "$ref": "#/$defs/nonNegativeInteger" }
+      }
+    },
+    "structuredData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["blocks", "types", "parse_errors"],
+      "properties": {
+        "blocks": { "$ref": "#/$defs/nonNegativeInteger" },
+        "types": { "type": "array", "maxItems": 512, "items": { "$ref": "#/$defs/text" } },
+        "parse_errors": { "$ref": "#/$defs/nonNegativeInteger" }
+      }
+    },
+    "hreflang": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lang", "href"],
+      "properties": { "lang": { "$ref": "#/$defs/text" }, "href": { "$ref": "#/$defs/text" } }
+    },
+    "social": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["open_graph", "twitter"],
+      "properties": {
+        "open_graph": { "$ref": "#/$defs/socialMap" },
+        "twitter": { "$ref": "#/$defs/socialMap" }
+      }
+    },
+    "socialMap": {
+      "type": "object",
+      "maxProperties": 256,
+      "additionalProperties": { "$ref": "#/$defs/text" }
+    },
+    "performanceObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "dom_content_loaded_ms", "load_ms", "transfer_size_bytes", "decoded_body_size_bytes", "resource_count"],
+      "properties": {
+        "source": { "const": "browser_navigation_timing" },
+        "dom_content_loaded_ms": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "load_ms": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "transfer_size_bytes": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "decoded_body_size_bytes": { "$ref": "#/$defs/nullableNonNegativeInteger" },
+        "resource_count": { "$ref": "#/$defs/nonNegativeInteger" }
+      }
+    },
+    "nullableNonNegativeInteger": {
+      "anyOf": [{ "$ref": "#/$defs/nonNegativeInteger" }, { "type": "null" }]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "extension_version", "user_agent", "viewport"],
+      "properties": {
+        "kind": { "const": "chrome_extension" },
+        "extension_version": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "user_agent": { "$ref": "#/$defs/text" },
+        "viewport": { "$ref": "#/$defs/viewport" }
+      }
+    },
+    "viewport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "device_pixel_ratio"],
+      "properties": {
+        "width": { "$ref": "#/$defs/nonNegativeInteger" },
+        "height": { "$ref": "#/$defs/nonNegativeInteger" },
+        "device_pixel_ratio": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "severity", "title", "detail"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "severity": { "enum": ["critical", "warning", "passed"] },
+        "title": { "$ref": "#/$defs/text" },
+        "detail": { "$ref": "#/$defs/text" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["critical", "warning", "passed"],
+      "properties": {
+        "critical": { "$ref": "#/$defs/nonNegativeInteger" },
+        "warning": { "$ref": "#/$defs/nonNegativeInteger" },
+        "passed": { "$ref": "#/$defs/nonNegativeInteger" }
+      }
+    }
+  }
+}

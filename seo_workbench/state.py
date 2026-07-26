@@ -26,6 +26,7 @@ PROJECT_DIRS = [
     "content/drafts",
     "audits/raw",
     "audits/rendered",
+    "audits/browser",
     "audits/technology",
     "audits/performance",
     "audits/crux",

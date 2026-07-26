@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -9,7 +10,7 @@ from fastapi.testclient import TestClient
 
 from seo_workbench import state
 from seo_workbench.locks import lock_path, project_lock
-from seo_workbench.ui import ACTION_COMMANDS, COOKIE_NAME, EventHub, _safe_job_output, create_app
+from seo_workbench.ui import ACTION_COMMANDS, COOKIE_NAME, BrowserCapture, EventHub, _safe_job_output, create_app
 
 
 def ui_client(tmp_path: Path) -> tuple[TestClient, Path]:
@@ -31,6 +32,35 @@ def ui_client(tmp_path: Path) -> tuple[TestClient, Path]:
     client = TestClient(app)
     client.cookies.set(COOKIE_NAME, "test-token")
     return client, project_dir
+
+
+def browser_capture(url: str = "https://example.com/product?utm_source=test&token=secret") -> dict:
+    return {
+        "schema_version": "browser-capture-v1",
+        "capture_id": "7b260d67-3b08-4b59-b775-cec7ccdcf25c",
+        "captured_at": "2026-07-26T03:00:00Z",
+        "collection_status": "complete",
+        "requested_url": url,
+        "final_url": url,
+        "document": {"title": "Example", "description": "Summary", "canonical": "https://example.com/product", "robots": "", "lang": "en", "viewport": "width=device-width", "word_count": 20},
+        "headings": [{"level": 1, "text": "Example"}],
+        "images": {"total": 0, "missing_alt": 0, "empty_alt": 0, "lazy_loaded": 0, "missing_dimensions": 0},
+        "links": {"total": 0, "internal": 0, "external": 0, "nofollow": 0, "sponsored": 0, "ugc": 0, "empty_anchor": 0},
+        "structured_data": {"blocks": 0, "types": [], "parse_errors": 0},
+        "hreflang": [],
+        "social": {"open_graph": {}, "twitter": {}},
+        "performance_observation": {"source": "browser_navigation_timing", "dom_content_loaded_ms": 100, "load_ms": 200, "transfer_size_bytes": 1000, "decoded_body_size_bytes": 2000, "resource_count": 2},
+        "source": {"kind": "chrome_extension", "extension_version": "0.1.0", "user_agent": "Chrome test", "viewport": {"width": 1280, "height": 720, "device_pixel_ratio": 1}},
+        "findings": [],
+        "summary": {"critical": 0, "warning": 0, "passed": 0},
+        "errors": [],
+        "warnings": [],
+    }
+
+
+def test_browser_capture_schema_matches_server_contract() -> None:
+    schema = json.loads((state.ROOT / "schema/browser-capture-v1.schema.json").read_text(encoding="utf-8"))
+    assert set(schema["properties"]) == set(BrowserCapture.model_fields)
 
 
 def test_ui_requires_local_session_but_health_is_public(tmp_path: Path) -> None:
@@ -77,6 +107,155 @@ def test_ui_accepts_nucleus_identity_headers_without_local_cookie(tmp_path: Path
             json={"action": "unknown"},
         )
         assert passed.status_code == 400
+
+
+def test_extension_pairing_persists_redacted_browser_capture(tmp_path: Path) -> None:
+    client, project_dir = ui_client(tmp_path)
+    origin = "chrome-extension://abcdefghijklmnopabcdefghijklmnop"
+    headers = {"Origin": origin}
+    verifier = "v" * 48
+    verifier_hash = hashlib.sha256(verifier.encode()).hexdigest()
+
+    with client:
+        extension_health = client.get("/api/v1/health", headers=headers)
+        assert extension_health.status_code == 200
+        assert "projects_root" not in extension_health.json()
+        assert client.get("/api/v1/extension/projects", headers=headers).status_code == 401
+        preflight = client.options("/api/v1/extension/projects", headers=headers)
+        assert preflight.status_code == 204
+        assert preflight.headers["access-control-allow-origin"] == origin
+        started = client.post(
+            "/api/v1/extension/pairings",
+            headers=headers,
+            json={"verifier_hash": verifier_hash, "extension_version": "0.1.0"},
+        )
+        assert started.status_code == 201
+        assert started.headers["access-control-allow-origin"] == origin
+        pairing_id = started.json()["pairing_id"]
+
+        approval = client.get(f"/extension/pair/{pairing_id}")
+        assert approval.status_code == 200
+        assert approval.headers["x-frame-options"] == "DENY"
+        assert "frame-ancestors 'none'" in approval.headers["content-security-policy"]
+        assert client.post(f"/extension/pair/{pairing_id}/approve", headers={"Origin": "http://testserver:9999"}).status_code == 403
+        assert client.post(f"/extension/pair/{pairing_id}/approve").status_code == 200
+        finished = client.post(
+            f"/api/v1/extension/pairings/{pairing_id}/token",
+            headers=headers,
+            json={"verifier": verifier},
+        )
+        token = finished.json()["token"]
+        authorized = headers | {"Authorization": f"Bearer {token}"}
+
+        projects = client.get("/api/v1/extension/projects", headers=authorized)
+        assert projects.status_code == 200
+        capture = browser_capture()
+        capture["findings"] = [{"id": "canonical", "severity": "warning", "title": "Canonical", "detail": capture["final_url"]}]
+        capture["social"]["open_graph"] = {"og:url": capture["final_url"]}
+        saved = client.post(
+            "/api/v1/extension/projects/store/captures",
+            headers=authorized,
+            json={"capture": capture},
+        )
+
+    assert saved.status_code == 201
+    artifact = project_dir / saved.json()["artifact"]
+    latest = project_dir / "audits/browser/latest.json"
+    assert artifact.is_file() and latest.is_file() and artifact != latest
+    persisted_text = latest.read_text(encoding="utf-8")
+    persisted = json.loads(persisted_text)
+    assert "secret" not in persisted_text
+    assert "secret" not in persisted["final_url"]
+    assert "%5BREDACTED%5D" in persisted["final_url"]
+    registry = tmp_path / ".runtime/ui/extensions.json"
+    assert token not in registry.read_text(encoding="utf-8")
+    assert registry.stat().st_mode & 0o777 == 0o600
+
+
+def test_extension_capture_rejects_private_page_data(tmp_path: Path) -> None:
+    client, _ = ui_client(tmp_path)
+    origin = "chrome-extension://abcdefghijklmnopabcdefghijklmnop"
+    token = "paired-token"
+    registry = tmp_path / ".runtime/ui/extensions.json"
+    registry.parent.mkdir(parents=True)
+    registry.write_text(
+        json.dumps({"clients": [{"id": "client", "origin": origin, "token_hash": hashlib.sha256(token.encode()).hexdigest(), "expires_at": "2999-01-01T00:00:00+00:00"}]}),
+        encoding="utf-8",
+    )
+    capture = browser_capture()
+    capture["cookies"] = "private"
+    capture["source"]["cookie_header"] = "private"
+    with client:
+        response = client.post(
+            "/api/v1/extension/projects/store/captures",
+            headers={"Origin": origin, "Authorization": f"Bearer {token}"},
+            json={"capture": capture},
+        )
+    assert response.status_code == 422
+    assert "cookies" in response.text
+    assert "cookie_header" in response.text
+
+
+def test_extension_rejects_expired_token_and_oversized_capture(tmp_path: Path) -> None:
+    client, _ = ui_client(tmp_path)
+    origin = "chrome-extension://abcdefghijklmnopabcdefghijklmnop"
+    token = "paired-token"
+    registry = tmp_path / ".runtime/ui/extensions.json"
+    registry.parent.mkdir(parents=True)
+    client_record = {"id": "client", "origin": origin, "token_hash": hashlib.sha256(token.encode()).hexdigest(), "expires_at": "2020-01-01T00:00:00+00:00"}
+    registry.write_text(json.dumps({"clients": [client_record]}), encoding="utf-8")
+    headers = {"Origin": origin, "Authorization": f"Bearer {token}"}
+    with client:
+        assert client.get("/api/v1/extension/projects", headers=headers).status_code == 401
+        client_record["expires_at"] = "2999-01-01T00:00:00+00:00"
+        registry.write_text(json.dumps({"clients": [client_record]}), encoding="utf-8")
+        oversized = client.post(
+            "/api/v1/extension/projects/store/captures",
+            headers=headers,
+            content=b"x" * (2 * 1024 * 1024 + 1025),
+        )
+    assert oversized.status_code == 413
+
+
+def test_codex_launch_timeout_reaps_process_and_throttles(tmp_path: Path, monkeypatch) -> None:
+    client, _ = ui_client(tmp_path)
+    origin = "chrome-extension://abcdefghijklmnopabcdefghijklmnop"
+    token = "paired-token"
+    registry = tmp_path / ".runtime/ui/extensions.json"
+    registry.parent.mkdir(parents=True)
+    registry.write_text(
+        json.dumps({"clients": [{"id": "client", "origin": origin, "token_hash": hashlib.sha256(token.encode()).hexdigest(), "expires_at": "2999-01-01T00:00:00+00:00"}]}),
+        encoding="utf-8",
+    )
+
+    class HangingProcess:
+        returncode = None
+        terminated = False
+
+        async def wait(self):
+            if not self.terminated:
+                raise TimeoutError
+            self.returncode = -15
+
+        def terminate(self):
+            self.terminated = True
+
+        def kill(self):
+            self.returncode = -9
+
+    process = HangingProcess()
+
+    async def create_process(*args, **kwargs):
+        return process
+
+    monkeypatch.setattr("seo_workbench.ui.asyncio.create_subprocess_exec", create_process)
+    headers = {"Origin": origin, "Authorization": f"Bearer {token}"}
+    with client:
+        first = client.post("/api/v1/extension/open-codex", headers=headers)
+        second = client.post("/api/v1/extension/open-codex", headers=headers)
+    assert first.status_code == 504
+    assert process.terminated is True
+    assert second.status_code == 429
 
 
 def test_ui_bootstrap_preserves_project_and_serves_built_frontend(tmp_path: Path) -> None:

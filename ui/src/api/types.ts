@@ -11,7 +11,7 @@ export type ProjectSummary = {
 };
 
 export type EvidenceItem = {
-  id: "raw" | "technology" | "performance" | "crux" | "gsc" | "diff";
+  id: "raw" | "browser" | "technology" | "performance" | "crux" | "gsc" | "diff";
   label: string;
   status: string;
 };
