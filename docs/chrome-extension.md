@@ -108,6 +108,24 @@ checksum: seo-workbench-chrome-v0.1.0.zip.sha256
 
 A `chrome-v*` tag runs tests, builds the Manifest V3 package, validates its contents and version, creates a checksum, and publishes both files to a GitHub Release. A manual workflow builds the same artifacts without publishing a release. Chrome Web Store publication is separate because it requires a store account and OAuth credentials.
 
+Local release rehearsal:
+
+```bash
+npm run extension:typecheck
+npm run extension:test
+npm run extension:package
+(cd dist/releases && shasum -a 256 -c seo-workbench-chrome-v0.1.0.zip.sha256)
+```
+
+Release only from a version-matching tag:
+
+```bash
+git tag chrome-v0.1.0
+git push origin chrome-v0.1.0
+```
+
+The packager rejects missing entry points, source maps, symlinks, non-loopback host permissions, and a tag/Manifest version mismatch. ZIP entries use a fixed timestamp so identical inputs produce a stable archive and checksum.
+
 ## Commercial maturity target: 8/10
 
 The first release is complete only when all of these are evidenced:

@@ -8,6 +8,7 @@ __pycache__/
 node_modules/
 ui/dist/
 extension/dist/
+dist/
 npm-debug.log*
 .playwright-cli/
 output/playwright/

@@ -15,7 +15,8 @@
     "ui:test": "vitest run --config ui/vitest.config.ts",
     "extension:build": "vite build --config extension/vite.config.ts",
     "extension:typecheck": "tsc --project extension/tsconfig.json --noEmit",
-    "extension:test": "vitest run --config extension/vitest.config.ts"
+    "extension:test": "vitest run --config extension/vitest.config.ts",
+    "extension:package": "npm run extension:build && python3 scripts/package_extension.py"
   },
   "dependencies": {
     "@codemirror/lang-markdown": "6.5.1",
