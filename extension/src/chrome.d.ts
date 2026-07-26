@@ -2,15 +2,27 @@ declare namespace chrome {
   namespace runtime {
     const id: string;
     function getManifest(): { version: string };
+    function sendMessage(message: unknown): Promise<unknown>;
+    const onMessage: {
+      addListener(callback: (message: unknown) => void): void;
+      removeListener(callback: (message: unknown) => void): void;
+    };
+  }
+
+  namespace action {
+    const onClicked: {
+      addListener(callback: (tab: tabs.Tab) => void | Promise<void>): void;
+    };
   }
 
   namespace sidePanel {
-    function setPanelBehavior(options: { openPanelOnActionClick: boolean }): Promise<void>;
+    function open(options: { windowId: number }): Promise<void>;
   }
 
   namespace tabs {
     interface Tab {
       id?: number;
+      windowId?: number;
       url?: string;
       title?: string;
     }

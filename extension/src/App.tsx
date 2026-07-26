@@ -41,6 +41,7 @@ import type { BrowserCapture, Finding } from "./types";
 
 type TabName = "overview" | "structure" | "assets" | "signals" | "workbench";
 type WorkbenchStatus = "checking" | "offline" | "available" | "connecting" | "connected";
+type ScanRequest = { type: "scan-active-tab"; tabId: number; url?: string };
 
 const tabs: Array<{ id: TabName; label: string }> = [
   { id: "overview", label: "Overview" },
@@ -109,29 +110,41 @@ export function App() {
   const [projectId, setProjectId] = useState("");
   const [workbenchMessage, setWorkbenchMessage] = useState("");
 
-  const scan = useCallback(async () => {
+  const scan = useCallback(async (request?: ScanRequest) => {
     setStatus("scanning");
     setError("");
     setCapture(null);
     setScannedTabId(null);
     setProjectId("");
     try {
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      if (!tab?.id || !tab.url || !/^https?:/.test(tab.url)) {
-        throw new Error("Open a public http or https page, then reopen SEO Workbench.");
-      }
+      const [active] = request ? [] : await chrome.tabs.query({ active: true, currentWindow: true });
+      const tab = request ? { id: request.tabId, url: request.url } : active;
+      if (!tab?.id) throw new Error("No active browser tab was found.");
+      if (!tab.url) throw new Error("Click the SEO Workbench toolbar icon to grant access to this page.");
+      if (!/^https?:/.test(tab.url)) throw new Error("Open a public http or https page, then click the SEO Workbench toolbar icon.");
       const [result] = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: inspectPage });
       if (!result?.result) throw new Error("Chrome did not return a page snapshot.");
       setCapture(buildCapture(result.result, chrome.runtime.getManifest().version));
       setScannedTabId(tab.id);
       setStatus("ready");
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "The active page could not be inspected.");
+      const message = caught instanceof Error ? caught.message : "The active page could not be inspected.";
+      setError(/cannot access contents|host permission/i.test(message)
+        ? "Click the SEO Workbench toolbar icon to grant access to this page."
+        : message);
       setStatus("error");
     }
   }, []);
 
-  useEffect(() => { void scan(); }, [scan]);
+  useEffect(() => {
+    const onMessage = (message: unknown) => {
+      const request = message as Partial<ScanRequest>;
+      if (request.type === "scan-active-tab" && typeof request.tabId === "number") void scan(request as ScanRequest);
+    };
+    chrome.runtime.onMessage.addListener(onMessage);
+    void scan();
+    return () => chrome.runtime.onMessage.removeListener(onMessage);
+  }, [scan]);
 
   useEffect(() => {
     const invalidate = () => {
