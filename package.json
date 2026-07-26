@@ -12,7 +12,10 @@
     "ui:dev": "vite --config ui/vite.config.ts",
     "ui:build": "vite build --config ui/vite.config.ts",
     "ui:typecheck": "tsc --project ui/tsconfig.json --noEmit",
-    "ui:test": "vitest run --config ui/vitest.config.ts"
+    "ui:test": "vitest run --config ui/vitest.config.ts",
+    "extension:build": "vite build --config extension/vite.config.ts",
+    "extension:typecheck": "tsc --project extension/tsconfig.json --noEmit",
+    "extension:test": "vitest run --config extension/vitest.config.ts"
   },
   "dependencies": {
     "@codemirror/lang-markdown": "6.5.1",
