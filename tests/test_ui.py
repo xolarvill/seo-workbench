@@ -50,6 +50,35 @@ def test_ui_requires_local_session_but_health_is_public(tmp_path: Path) -> None:
         assert COOKIE_NAME in boot.cookies
 
 
+def test_ui_accepts_nucleus_identity_headers_without_local_cookie(tmp_path: Path) -> None:
+    projects_root = tmp_path / "projects"
+    state.init_state("shopify", "Store", "https://example.com", project_dir=projects_root / "store")
+    app = create_app(
+        token="secret",
+        projects_root=projects_root,
+        runtime_dir=tmp_path / ".runtime/ui",
+        frontend_dir=None,
+        watch_files=False,
+    )
+    nucleus_headers = {"host": "seo.nucleus.localhost:8080", "x-nucleus-user-id": "user-1"}
+    with TestClient(app) as client:
+        assert client.get("/health", headers={"host": "seo.nucleus.localhost:8080"}).status_code == 200
+        assert client.get("/api/v1/projects", headers={"host": "seo.nucleus.localhost:8080"}).status_code == 401
+        assert client.get("/api/v1/projects", headers=nucleus_headers).status_code == 200
+        rejected = client.post(
+            "/api/v1/projects/store/workflow",
+            headers={**nucleus_headers, "origin": "http://evil.example"},
+            json={"action": "unknown"},
+        )
+        assert rejected.status_code == 403
+        passed = client.post(
+            "/api/v1/projects/store/workflow",
+            headers={**nucleus_headers, "origin": "http://seo.nucleus.localhost:8080"},
+            json={"action": "unknown"},
+        )
+        assert passed.status_code == 400
+
+
 def test_ui_bootstrap_preserves_project_and_serves_built_frontend(tmp_path: Path) -> None:
     frontend = tmp_path / "dist"
     frontend.mkdir()

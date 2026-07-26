@@ -33,6 +33,9 @@ DEFAULT_PORT = 8765
 DEFAULT_RUNTIME_DIR = state.ROOT / ".runtime" / "ui"
 DEFAULT_FRONTEND_DIR = state.ROOT / "ui" / "dist"
 DEFAULT_TUTORIALS_DIR = state.ROOT / "docs"
+LOCAL_HOSTS = {"127.0.0.1", "localhost", "testserver"}
+DEFAULT_NUCLEUS_HOSTS = {"seo.nucleus.localhost"}
+NUCLEUS_HOSTS_ENV = "SEO_WORKBENCH_NUCLEUS_HOSTS"
 MARKDOWN_ROOTS = {"context", "strategy", "content", "audits"}
 MARKDOWN_SUFFIXES = {".md", ".markdown"}
 MAX_MARKDOWN_BYTES = 2 * 1024 * 1024
@@ -258,6 +261,20 @@ def _revision(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
 
 
+def _configured_nucleus_hosts() -> set[str]:
+    raw = os.environ.get(NUCLEUS_HOSTS_ENV)
+    if raw is None:
+        return set(DEFAULT_NUCLEUS_HOSTS)
+    return {item.strip().lower() for item in raw.split(",") if item.strip()}
+
+
+def _trusted_origin_host(origin: str | None, nucleus_hosts: set[str]) -> bool:
+    if not origin:
+        return True
+    hostname = (urlparse(origin).hostname or "").lower()
+    return hostname in LOCAL_HOSTS or hostname in nucleus_hosts
+
+
 def _secure_runtime_dir(path: Path) -> None:
     if path.is_symlink():
         raise ValueError(f"UI runtime directory cannot be a symlink: {path}")
@@ -465,14 +482,28 @@ def create_app(
     app.state.session_token = session_token
     app.state.event_hub = hub
     app.state.job_manager = jobs
+    app.state.nucleus_hosts = _configured_nucleus_hosts()
 
     @app.middleware("http")
     async def local_session(request: Request, call_next):
-        hostname = request.url.hostname or ""
-        if hostname not in {"127.0.0.1", "localhost", "testserver"}:
+        hostname = (request.url.hostname or "").lower()
+        nucleus_hosts = app.state.nucleus_hosts
+        local_request = hostname in LOCAL_HOSTS
+        nucleus_request = hostname in nucleus_hosts
+        nucleus_user_id = request.headers.get("x-nucleus-user-id", "").strip()
+        if not local_request and not nucleus_request:
             return JSONResponse({"detail": "SEO Workbench UI only accepts local requests"}, status_code=403)
-        if request.url.path == "/api/v1/health":
+        if request.url.path in {"/health", "/api/v1/health"}:
             return await call_next(request)
+        if nucleus_request and nucleus_user_id:
+            if request.method not in {"GET", "HEAD", "OPTIONS"} and not _trusted_origin_host(
+                request.headers.get("origin"),
+                nucleus_hosts,
+            ):
+                return JSONResponse({"detail": "cross-origin mutations are blocked"}, status_code=403)
+            return await call_next(request)
+        if not local_request:
+            return JSONResponse({"detail": "Nucleus identity header required"}, status_code=401)
         supplied = request.query_params.get("token")
         if request.method == "GET" and request.url.path == "/" and supplied == session_token:
             remaining = [(key, value) for key, value in request.query_params.multi_items() if key != "token"]
@@ -485,11 +516,11 @@ def create_app(
                 return JSONResponse({"detail": "local UI session required"}, status_code=401)
             return HTMLResponse("Open this workbench with ./seo ui.", status_code=401)
         if request.method not in {"GET", "HEAD", "OPTIONS"}:
-            origin = request.headers.get("origin")
-            if origin and (urlparse(origin).hostname or "") not in {"127.0.0.1", "localhost", "testserver"}:
+            if not _trusted_origin_host(request.headers.get("origin"), nucleus_hosts):
                 return JSONResponse({"detail": "cross-origin mutations are blocked"}, status_code=403)
         return await call_next(request)
 
+    @app.get("/health")
     @app.get("/api/v1/health")
     def health() -> dict[str, Any]:
         return {"ok": True, "protocol_version": UI_PROTOCOL_VERSION, "projects_root": str(projects_root)}
