@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seo-workbench.local/schema/browser-capture-v1.schema.json",
+  "title": "SEO Workbench browser capture v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "capture_id", "captured_at", "collection_status", "requested_url", "final_url",
+    "document", "headings", "images", "links", "structured_data", "hreflang", "social",
+    "performance_observation", "source", "findings", "summary", "errors", "warnings"
+  ],
+  "properties": {
+    "schema_version": { "const": "browser-capture-v1" },
+    "capture_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "captured_at": { "type": "string", "format": "date-time" },
+    "collection_status": { "enum": ["complete", "partial", "failed"] },
+    "requested_url": { "type": "string", "format": "uri" },
+    "final_url": { "type": "string", "format": "uri" },
+    "document": { "$ref": "#/$defs/document" },
+    "headings": { "type": "array", "items": { "$ref": "#/$defs/heading" } },
+    "images": { "type": "object" },
+    "links": { "type": "object" },
+    "structured_data": { "type": "object" },
+    "hreflang": { "type": "array", "items": { "$ref": "#/$defs/hreflang" } },
+    "social": { "type": "object" },
+    "performance_observation": { "type": "object" },
+    "source": {
+      "type": "object",
+      "required": ["kind", "extension_version", "user_agent", "viewport"],
+      "properties": { "kind": { "const": "chrome_extension" } }
+    },
+    "findings": { "type": "array", "items": { "$ref": "#/$defs/finding" } },
+    "summary": {
+      "type": "object",
+      "required": ["critical", "warning", "passed"],
+      "properties": {
+        "critical": { "type": "integer", "minimum": 0 },
+        "warning": { "type": "integer", "minimum": 0 },
+        "passed": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "warnings": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "document": {
+      "type": "object",
+      "required": ["title", "description", "canonical", "robots", "lang", "viewport", "word_count"]
+    },
+    "heading": {
+      "type": "object",
+      "required": ["level", "text"],
+      "properties": {
+        "level": { "type": "integer", "minimum": 1, "maximum": 6 },
+        "text": { "type": "string" }
+      }
+    },
+    "hreflang": {
+      "type": "object",
+      "required": ["lang", "href"],
+      "properties": { "lang": { "type": "string" }, "href": { "type": "string", "format": "uri" } }
+    },
+    "finding": {
+      "type": "object",
+      "required": ["id", "severity", "title", "detail"],
+      "properties": {
+        "id": { "type": "string" },
+        "severity": { "enum": ["critical", "warning", "passed"] },
+        "title": { "type": "string" },
+        "detail": { "type": "string" }
+      }
+    }
+  }
+}

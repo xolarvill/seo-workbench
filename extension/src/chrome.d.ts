@@ -1,5 +1,6 @@
 declare namespace chrome {
   namespace runtime {
+    const id: string;
     function getManifest(): { version: string };
   }
 

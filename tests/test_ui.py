@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -33,6 +34,30 @@ def ui_client(tmp_path: Path) -> tuple[TestClient, Path]:
     return client, project_dir
 
 
+def browser_capture(url: str = "https://example.com/product?utm_source=test&token=secret") -> dict:
+    return {
+        "schema_version": "browser-capture-v1",
+        "capture_id": "7b260d67-3b08-4b59-b775-cec7ccdcf25c",
+        "captured_at": "2026-07-26T03:00:00Z",
+        "collection_status": "complete",
+        "requested_url": url,
+        "final_url": url,
+        "document": {"title": "Example", "description": "Summary", "canonical": "https://example.com/product", "robots": "", "lang": "en", "viewport": "width=device-width", "word_count": 20},
+        "headings": [{"level": 1, "text": "Example"}],
+        "images": {"total": 0, "missing_alt": 0, "empty_alt": 0, "lazy_loaded": 0, "missing_dimensions": 0},
+        "links": {"total": 0, "internal": 0, "external": 0, "nofollow": 0, "sponsored": 0, "ugc": 0, "empty_anchor": 0},
+        "structured_data": {"blocks": 0, "types": [], "parse_errors": 0},
+        "hreflang": [],
+        "social": {"open_graph": {}, "twitter": {}},
+        "performance_observation": {"source": "browser_navigation_timing", "dom_content_loaded_ms": 100, "load_ms": 200, "transfer_size_bytes": 1000, "decoded_body_size_bytes": 2000, "resource_count": 2},
+        "source": {"kind": "chrome_extension", "extension_version": "0.1.0", "user_agent": "Chrome test", "viewport": {"width": 1280, "height": 720, "device_pixel_ratio": 1}},
+        "findings": [],
+        "summary": {"critical": 0, "warning": 0, "passed": 0},
+        "errors": [],
+        "warnings": [],
+    }
+
+
 def test_ui_requires_local_session_but_health_is_public(tmp_path: Path) -> None:
     projects_root = tmp_path / "projects"
     app = create_app(
@@ -48,6 +73,79 @@ def test_ui_requires_local_session_but_health_is_public(tmp_path: Path) -> None:
         boot = client.get("/?token=secret", follow_redirects=False)
         assert boot.status_code == 303
         assert COOKIE_NAME in boot.cookies
+
+
+def test_extension_pairing_persists_redacted_browser_capture(tmp_path: Path) -> None:
+    client, project_dir = ui_client(tmp_path)
+    origin = "chrome-extension://abcdefghijklmnopabcdefghijklmnop"
+    headers = {"Origin": origin}
+    verifier = "v" * 48
+    verifier_hash = hashlib.sha256(verifier.encode()).hexdigest()
+
+    with client:
+        assert client.get("/api/v1/extension/projects", headers=headers).status_code == 401
+        preflight = client.options("/api/v1/extension/projects", headers=headers)
+        assert preflight.status_code == 204
+        assert preflight.headers["access-control-allow-origin"] == origin
+        started = client.post(
+            "/api/v1/extension/pairings",
+            headers=headers,
+            json={"verifier_hash": verifier_hash, "extension_version": "0.1.0"},
+        )
+        assert started.status_code == 201
+        assert started.headers["access-control-allow-origin"] == origin
+        pairing_id = started.json()["pairing_id"]
+
+        assert client.get(f"/extension/pair/{pairing_id}").status_code == 200
+        assert client.post(f"/extension/pair/{pairing_id}/approve").status_code == 200
+        finished = client.post(
+            f"/api/v1/extension/pairings/{pairing_id}/token",
+            headers=headers,
+            json={"verifier": verifier},
+        )
+        token = finished.json()["token"]
+        authorized = headers | {"Authorization": f"Bearer {token}"}
+
+        projects = client.get("/api/v1/extension/projects", headers=authorized)
+        assert projects.status_code == 200
+        saved = client.post(
+            "/api/v1/extension/projects/store/captures",
+            headers=authorized,
+            json={"capture": browser_capture()},
+        )
+
+    assert saved.status_code == 201
+    artifact = project_dir / saved.json()["artifact"]
+    latest = project_dir / "audits/browser/latest.json"
+    assert artifact.is_file() and latest.is_file() and artifact != latest
+    persisted = json.loads(latest.read_text(encoding="utf-8"))
+    assert "secret" not in persisted["final_url"]
+    assert "%5BREDACTED%5D" in persisted["final_url"]
+    registry = tmp_path / ".runtime/ui/extensions.json"
+    assert token not in registry.read_text(encoding="utf-8")
+    assert registry.stat().st_mode & 0o777 == 0o600
+
+
+def test_extension_capture_rejects_private_page_data(tmp_path: Path) -> None:
+    client, _ = ui_client(tmp_path)
+    origin = "chrome-extension://abcdefghijklmnopabcdefghijklmnop"
+    token = "paired-token"
+    registry = tmp_path / ".runtime/ui/extensions.json"
+    registry.parent.mkdir(parents=True)
+    registry.write_text(
+        json.dumps({"clients": [{"id": "client", "origin": origin, "token_hash": hashlib.sha256(token.encode()).hexdigest()}]}),
+        encoding="utf-8",
+    )
+    capture = browser_capture()
+    capture["cookies"] = "private"
+    with client:
+        response = client.post(
+            "/api/v1/extension/projects/store/captures",
+            headers={"Origin": origin, "Authorization": f"Bearer {token}"},
+            json={"capture": capture},
+        )
+    assert response.status_code == 400
+    assert "cookies" in response.json()["detail"]
 
 
 def test_ui_bootstrap_preserves_project_and_serves_built_frontend(tmp_path: Path) -> None:

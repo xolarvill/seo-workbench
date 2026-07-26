@@ -27,7 +27,7 @@ Browser captures use `schema/browser-capture-v1.schema.json` and preserve the ex
 ```text
 projects/<id>/audits/browser/
 ├── latest.json
-└── browser-capture-<UTC timestamp>.json
+└── browser-capture-<UTC timestamp>-<capture id>.json
 ```
 
 Timestamped files are immutable records. `latest.json` is the stable pointer. Captures are observations from an interactive browser, not replacements for raw HTML, Playwright, Lighthouse, CrUX, or GSC evidence.
@@ -48,9 +48,38 @@ No traffic, backlink, Whois, rank, or paid-provider estimate is invented from pa
 
 ## Local integration
 
-The extension connects only to the loopback Workbench UI. Pairing is an explicit user gesture and produces a revocable token scoped to project discovery, workspace reads, and browser capture writes. Pairing tokens live under ignored `.runtime/` paths and never enter project artifacts.
+The extension connects only to the loopback Workbench UI. Pairing is an explicit user gesture and produces a revocable token scoped to project discovery, browser capture writes, and fixed Workbench/Codex launch actions. The browser stores the token locally; the Workbench stores only its SHA-256 hash under ignored `.runtime/` paths. Tokens never enter project artifacts.
+
+Pairing flow:
+
+1. Start the local UI with `./seo ui`.
+2. Open the extension's **Workbench** tab and confirm the loopback URL.
+3. Click **Connect securely**. The extension creates a one-time verifier and opens a local approval page.
+4. Approve the listed scopes in the authenticated Workbench session.
+5. Return to the side panel, choose the matched project, and click **Save capture** when evidence should be persisted.
+
+Disconnecting revokes the server-side client and removes the browser token. The inspector, JSON export, and handoff copy continue working without a connection.
 
 `Open in Codex` is a narrow local action. The server resolves the fixed repository root and executes `codex app <root>` without a shell. The extension cannot provide a command, prompt, or filesystem path.
+
+## Local installation
+
+```bash
+npm ci
+npm run extension:build
+```
+
+Then open `chrome://extensions`, enable Developer mode, choose **Load unpacked**, and select `extension/dist`. The extension opens as a Chrome side panel when its toolbar icon is clicked.
+
+The requested permissions are deliberately narrow:
+
+- `activeTab` and `scripting` inspect the page only after the toolbar action is used.
+- `sidePanel` presents the inspector without modifying the page.
+- `storage` keeps local connection settings and the paired token.
+- `tabs` opens the explicit approval, Workbench, and Codex handoff surfaces.
+- Loopback host access is limited to `http://127.0.0.1/*` and `http://localhost/*`.
+
+Restricted browser pages such as `chrome://` cannot be inspected. Open an `http` or `https` page and retry. If the Workbench uses a non-default port, change only the loopback URL in the Workbench tab.
 
 ## Brand
 
@@ -95,4 +124,3 @@ The first release is complete only when all of these are evidenced:
 10. Automatic ZIP, checksum, and GitHub Release with install and privacy documentation.
 
 Out of scope for 8/10: accounts, billing, cloud sync, team collaboration, paid data providers, Chrome Web Store OAuth publication, Firefox/Safari ports, arbitrary terminal execution, and embedded AI chat.
-

@@ -32,6 +32,7 @@ button:focus-visible { outline: 2px solid var(--emerald); outline-offset: 2px; }
 .brand span { color: #adb4b1; font-size: 10px; }
 .local-status { display: flex; align-items: center; gap: 6px; font: 600 9px/1 "Azeret Mono", monospace; letter-spacing: .08em; color: #bdc4c1; }
 .local-status span { width: 6px; height: 6px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 0 3px rgba(19,138,104,.2); }
+.local-status.connected { color: #d8eee7; }
 
 .scan-rail { position: relative; height: 27px; padding: 0 16px; display: flex; align-items: center; overflow: hidden; background: #232725; color: #bdc4c1; font: 500 9px/1 "Azeret Mono", monospace; letter-spacing: .04em; }
 .scan-progress { position: absolute; inset: auto 0 0; height: 2px; transform-origin: left; background: var(--emerald); }
@@ -100,7 +101,19 @@ button:focus-visible { outline: 2px solid var(--emerald); outline-offset: 2px; }
 .connection-icon { width: 44px; height: 44px; margin: 0 auto 14px; display: grid; place-items: center; color: var(--muted); background: var(--canvas); }
 .connection-card h2 { margin: 8px 0; font-size: 17px; }
 .connection-card p { margin: 0 auto 18px; max-width: 310px; color: var(--muted); font-size: 11px; line-height: 1.55; }
-.connect-preview { width: 100%; min-height: 42px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--line); background: #fafbf9; color: var(--muted); font-size: 10px; }
+.connection-icon.connected { color: var(--emerald); background: var(--emerald-soft); }
+.field-label { display: block; margin: 14px 0 6px; text-align: left; color: var(--muted); font: 600 9px/1.2 "Azeret Mono", monospace; letter-spacing: .05em; text-transform: uppercase; }
+.connection-card input, .connection-card select { width: 100%; height: 40px; padding: 0 10px; border: 1px solid var(--line); border-radius: 0; outline: 0; color: var(--ink); background: white; font: 400 10px/1 "Azeret Mono", monospace; }
+.connection-card input:focus, .connection-card select:focus { border-color: var(--emerald); box-shadow: 0 0 0 1px var(--emerald); }
+.connection-card input:disabled { color: var(--muted); background: var(--canvas); }
+.wide-primary { width: 100%; min-height: 42px; margin-top: 9px; display: flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--graphite); color: white; background: var(--graphite); font-size: 10px; font-weight: 600; cursor: pointer; }
+.wide-primary:disabled { cursor: not-allowed; opacity: .5; }
+.connection-actions { margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.connection-actions button { min-height: 38px; display: flex; align-items: center; justify-content: center; gap: 6px; border: 1px solid var(--line); color: var(--ink); background: white; font-size: 9px; font-weight: 600; cursor: pointer; }
+.connection-actions button:disabled { cursor: not-allowed; opacity: .5; }
+.connection-message { margin: 11px 0 0 !important; padding: 9px 10px; overflow-wrap: anywhere; text-align: left; color: var(--ink) !important; background: var(--emerald-soft); font: 400 9px/1.45 "Azeret Mono", monospace !important; }
+.text-button { margin: 13px auto 0; padding: 4px; border: 0; color: var(--muted); background: transparent; font-size: 9px; text-decoration: underline; cursor: pointer; }
+.privacy-note { margin-top: 13px; display: flex; align-items: center; justify-content: center; gap: 4px; color: var(--muted); font-size: 9px; }
 
 .action-bar { position: fixed; z-index: 2; right: 0; bottom: 0; left: 0; height: 61px; padding: 9px 12px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 8px; background: rgba(255,255,255,.96); border-top: 1px solid var(--line); backdrop-filter: blur(8px); }
 .primary-button, .secondary-button { min-height: 40px; display: flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid var(--graphite); font-size: 10px; font-weight: 600; cursor: pointer; }

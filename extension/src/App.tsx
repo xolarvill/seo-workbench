@@ -5,6 +5,7 @@ import {
   ChevronRight,
   CircleAlert,
   Clipboard,
+  Database,
   Download,
   ExternalLink,
   FileText,
@@ -12,17 +13,34 @@ import {
   Link2,
   LoaderCircle,
   MonitorUp,
+  PlugZap,
   RefreshCw,
+  Save,
   ScanSearch,
+  SquareTerminal,
   Unplug,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
+import {
+  DEFAULT_WORKBENCH_URL,
+  disconnect,
+  health,
+  loadConnection,
+  openCodex,
+  openWorkbench,
+  pair,
+  projects,
+  saveCapture,
+  setBaseUrl as persistBaseUrl,
+  type WorkbenchProject,
+} from "./api";
 import { buildCapture, inspectPage } from "./inspector";
 import type { BrowserCapture, Finding } from "./types";
 
 
 type TabName = "overview" | "structure" | "assets" | "signals" | "workbench";
+type WorkbenchStatus = "checking" | "offline" | "available" | "connecting" | "connected";
 
 const tabs: Array<{ id: TabName; label: string }> = [
   { id: "overview", label: "Overview" },
@@ -83,6 +101,12 @@ export function App() {
   const [status, setStatus] = useState<"scanning" | "ready" | "error">("scanning");
   const [error, setError] = useState("");
   const [copied, setCopied] = useState(false);
+  const [workbenchStatus, setWorkbenchStatus] = useState<WorkbenchStatus>("checking");
+  const [workbenchBaseUrl, setWorkbenchBaseUrl] = useState(DEFAULT_WORKBENCH_URL);
+  const [workbenchToken, setWorkbenchToken] = useState("");
+  const [workbenchProjects, setWorkbenchProjects] = useState<WorkbenchProject[]>([]);
+  const [projectId, setProjectId] = useState("");
+  const [workbenchMessage, setWorkbenchMessage] = useState("");
 
   const scan = useCallback(async () => {
     setStatus("scanning");
@@ -103,6 +127,73 @@ export function App() {
   }, []);
 
   useEffect(() => { void scan(); }, [scan]);
+
+  const refreshWorkbench = useCallback(async () => {
+    const stored = await loadConnection();
+    setWorkbenchBaseUrl(stored.baseUrl);
+    setWorkbenchStatus("checking");
+    setWorkbenchMessage("");
+    try {
+      await health(stored.baseUrl);
+      if (!stored.token) {
+        setWorkbenchStatus("available");
+        return;
+      }
+      try {
+        const found = await projects(stored.baseUrl, stored.token);
+        setWorkbenchToken(stored.token);
+        setWorkbenchProjects(found);
+        setWorkbenchStatus("connected");
+      } catch {
+        await chrome.storage.local.remove("workbenchToken");
+        setWorkbenchToken("");
+        setWorkbenchStatus("available");
+        setWorkbenchMessage("The previous connection expired. Pair again to reconnect.");
+      }
+    } catch {
+      setWorkbenchStatus("offline");
+    }
+  }, []);
+
+  useEffect(() => { void refreshWorkbench(); }, [refreshWorkbench]);
+
+  useEffect(() => {
+    if (projectId || !capture || !workbenchProjects.length) return;
+    const pageHost = new URL(capture.final_url).hostname;
+    const matched = workbenchProjects.find((project) => {
+      try { return new URL(project.url).hostname === pageHost; } catch { return false; }
+    });
+    setProjectId((matched || workbenchProjects[0]).id);
+  }, [capture, projectId, workbenchProjects]);
+
+  const connectWorkbench = async () => {
+    setWorkbenchStatus("connecting");
+    setWorkbenchMessage("Opening a local approval tab…");
+    try {
+      const baseUrl = await persistBaseUrl(workbenchBaseUrl);
+      const token = await pair(baseUrl, () => setWorkbenchMessage("Approve the connection in the opened tab."));
+      const found = await projects(baseUrl, token);
+      setWorkbenchBaseUrl(baseUrl);
+      setWorkbenchToken(token);
+      setWorkbenchProjects(found);
+      setWorkbenchStatus("connected");
+      setWorkbenchMessage("Connected. Captures are saved only when you click Save capture.");
+    } catch (caught) {
+      setWorkbenchStatus("available");
+      setWorkbenchMessage(caught instanceof Error ? caught.message : "Workbench connection failed.");
+    }
+  };
+
+  const saveToWorkbench = async () => {
+    if (!capture || !projectId) return;
+    setWorkbenchMessage("Saving immutable browser evidence…");
+    try {
+      const artifact = await saveCapture(workbenchBaseUrl, workbenchToken, projectId, capture);
+      setWorkbenchMessage(`Saved ${artifact}`);
+    } catch (caught) {
+      setWorkbenchMessage(caught instanceof Error ? caught.message : "Capture could not be saved.");
+    }
+  };
 
   const download = () => {
     if (!capture) return;
@@ -133,8 +224,8 @@ export function App() {
           <img src="/icons/icon-32.png" alt="" />
           <div><strong>SEO Workbench</strong><span>On-page SEO inspector</span></div>
         </div>
-        <div className="local-status" title="The extension is working locally without a Workbench connection">
-          <span /> LOCAL
+        <div className={`local-status ${workbenchStatus === "connected" ? "connected" : ""}`} title={workbenchStatus === "connected" ? "Connected to the local SEO Workbench" : "The extension works locally without a Workbench connection"}>
+          <span /> {workbenchStatus === "connected" ? "CONNECTED" : "LOCAL"}
         </div>
       </header>
 
@@ -177,7 +268,33 @@ export function App() {
                 {activeTab === "structure" && <Structure capture={capture} />}
                 {activeTab === "assets" && <Assets capture={capture} />}
                 {activeTab === "signals" && <Signals capture={capture} />}
-                {activeTab === "workbench" && <Workbench />}
+                {activeTab === "workbench" && (
+                  <Workbench
+                    baseUrl={workbenchBaseUrl}
+                    status={workbenchStatus}
+                    projects={workbenchProjects}
+                    projectId={projectId}
+                    message={workbenchMessage}
+                    onBaseUrl={setWorkbenchBaseUrl}
+                    onProject={setProjectId}
+                    onConnect={() => void connectWorkbench()}
+                    onSave={() => void saveToWorkbench()}
+                    onOpen={() => void openWorkbench(workbenchBaseUrl, projectId)}
+                    onCodex={async () => {
+                      setWorkbenchMessage("Opening Codex for this repository…");
+                      try { await openCodex(workbenchBaseUrl, workbenchToken); setWorkbenchMessage("Codex launch requested."); }
+                      catch (caught) { setWorkbenchMessage(caught instanceof Error ? caught.message : "Codex could not be opened."); }
+                    }}
+                    onDisconnect={async () => {
+                      await disconnect(workbenchBaseUrl, workbenchToken);
+                      setWorkbenchToken("");
+                      setWorkbenchProjects([]);
+                      setProjectId("");
+                      setWorkbenchStatus("available");
+                      setWorkbenchMessage("Disconnected. The inspector remains fully available.");
+                    }}
+                  />
+                )}
               </>
             )}
           </main>
@@ -282,14 +399,68 @@ function Signals({ capture }: { capture: BrowserCapture }) {
   );
 }
 
-function Workbench() {
+function Workbench({
+  baseUrl,
+  status,
+  projects: workbenchProjects,
+  projectId,
+  message,
+  onBaseUrl,
+  onProject,
+  onConnect,
+  onSave,
+  onOpen,
+  onCodex: onOpenCodex,
+  onDisconnect,
+}: {
+  baseUrl: string;
+  status: WorkbenchStatus;
+  projects: WorkbenchProject[];
+  projectId: string;
+  message: string;
+  onBaseUrl: (value: string) => void;
+  onProject: (value: string) => void;
+  onConnect: () => void;
+  onSave: () => void;
+  onOpen: () => void;
+  onCodex: () => void;
+  onDisconnect: () => void;
+}) {
+  if (status === "connected") {
+    return (
+      <section className="connection-card connected-card">
+        <div className="connection-icon connected"><Database size={22} /></div>
+        <div className="eyebrow">CONNECTED · EXPLICIT SAVE</div>
+        <h2>Project evidence bridge</h2>
+        <p>The repository remains the source of truth. This capture is written only when you choose a project and save it.</p>
+        <label className="field-label" htmlFor="workbench-project">Project</label>
+        <select id="workbench-project" value={projectId} onChange={(event) => onProject(event.target.value)}>
+          {workbenchProjects.map((project) => <option key={project.id} value={project.id}>{project.name || project.id}</option>)}
+        </select>
+        <button className="wide-primary" disabled={!projectId} onClick={onSave}><Save size={15} /> Save capture</button>
+        <div className="connection-actions">
+          <button onClick={onOpen} disabled={!projectId}><ExternalLink size={14} /> Open Workbench</button>
+          <button onClick={onOpenCodex}><SquareTerminal size={14} /> Open Codex</button>
+        </div>
+        {message && <p className="connection-message" role="status">{message}</p>}
+        <button className="text-button" onClick={onDisconnect}>Disconnect extension</button>
+      </section>
+    );
+  }
+
   return (
     <section className="connection-card">
-      <div className="connection-icon"><Unplug size={22} /></div>
+      <div className="connection-icon">{status === "connecting" || status === "checking" ? <LoaderCircle className="spin" size={22} /> : status === "available" ? <PlugZap size={22} /> : <Unplug size={22} />}</div>
       <div className="eyebrow">OPTIONAL CONNECTION</div>
-      <h2>Keep working offline</h2>
-      <p>This inspector is complete on its own. Connect the local SEO Workbench only when you want durable project evidence and agent handoff.</p>
-      <button className="connect-preview" disabled>Connection arrives in the next implementation layer <ChevronRight size={15} /></button>
+      <h2>{status === "available" ? "Workbench detected" : status === "connecting" ? "Waiting for approval" : status === "checking" ? "Checking local Workbench" : "Keep working offline"}</h2>
+      <p>{status === "offline" ? "The local Workbench is not running. Inspection and JSON export remain fully available." : "Connect only when you want durable project evidence and agent handoff."}</p>
+      <label className="field-label" htmlFor="workbench-url">Local Workbench URL</label>
+      <input id="workbench-url" value={baseUrl} onChange={(event) => onBaseUrl(event.target.value)} disabled={status === "connecting" || status === "checking"} spellCheck={false} />
+      <button className="wide-primary" onClick={onConnect} disabled={status === "connecting" || status === "checking"}>
+        {status === "connecting" ? <LoaderCircle className="spin" size={15} /> : <PlugZap size={15} />} Connect securely
+      </button>
+      {message && <p className="connection-message" role="status">{message}</p>}
+      <div className="privacy-note"><ChevronRight size={13} /> No cookies, HTML, forms, or automatic agent actions.</div>
     </section>
   );
 }
