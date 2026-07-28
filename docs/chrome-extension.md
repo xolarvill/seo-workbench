@@ -81,7 +81,7 @@ The requested permissions are deliberately narrow:
 - Chrome's permission-free `tabs.create()` opens explicit approval and Workbench surfaces; no broad `tabs` browsing-history permission is requested.
 - Loopback host access is limited to `http://127.0.0.1/*` and `http://localhost/*`.
 
-Restricted browser pages such as `chrome://` cannot be inspected. Because Chrome can reopen a persistent side panel without granting `activeTab`, start or refresh an inspection by clicking the SEO Workbench toolbar icon on the target page. If the Workbench uses a non-default port, change only the loopback URL in the Workbench tab.
+Restricted browser pages such as `chrome://` cannot be inspected. Because Chrome can reopen a persistent side panel without granting `activeTab`, start or refresh an inspection by clicking the SEO Workbench toolbar icon on the target page. The service worker explicitly disables Chrome's automatic action-to-panel behavior so that this click reaches the extension and grants page access. If the Workbench uses a non-default port, change only the loopback URL in the Workbench tab.
 
 ## Brand
 

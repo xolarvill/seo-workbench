@@ -17,6 +17,7 @@ declare namespace chrome {
 
   namespace sidePanel {
     function open(options: { windowId: number }): Promise<void>;
+    function setPanelBehavior(options: { openPanelOnActionClick: boolean }): Promise<void>;
   }
 
   namespace tabs {

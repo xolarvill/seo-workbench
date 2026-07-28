@@ -1,3 +1,5 @@
+chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: false }).catch(() => undefined);
+
 chrome.action.onClicked.addListener(async (tab) => {
   if (tab.id === undefined || tab.windowId === undefined) return;
   await chrome.sidePanel.open({ windowId: tab.windowId });
