@@ -8,6 +8,34 @@ SEO Workbench uses the official CrUX and Search Console REST APIs. CrUX, Lightho
 
 All credential material is stored below `.runtime/google/` with private file permissions. Per-project property bindings are stored at `projects/<id>/.runtime/integrations/google.json`. These paths, CrUX artifacts, and GSC artifacts are ignored even for `projects/default`.
 
+## Visual credential management
+
+Start the local UI and open **Integrations**:
+
+```bash
+./seo --project example-store ui
+```
+
+The Integrations workspace supports the complete operator flow:
+
+1. Store, rotate, verify, or remove the workspace CrUX API key.
+2. Import a Google Desktop OAuth JSON file and complete consent in the browser, or import a service account JSON file.
+3. List Search Console properties visible to the selected auth profile.
+4. Bind one exact property to the current SEO project.
+5. Run CrUX or GSC evidence collection and inspect the resulting status.
+6. Disconnect project bindings and delete unused auth profiles.
+
+Security rules:
+
+- Credential APIs are available only on the local `127.0.0.1` or `localhost` Workbench session. Nucleus and other remote hosts cannot use them.
+- Secret values are write-only. Status responses contain credential type, profile name, service account identity when applicable, and timestamps, but never API keys, OAuth secrets, private keys, or tokens.
+- UI imports accept JSON content only, never arbitrary filesystem paths or shell commands. Payloads are limited to 128 KB.
+- Credential files and project bindings use mode `0600`; credential directories use mode `0700`.
+- A profile cannot be deleted while any project is bound to it. Disconnect those projects first.
+- Environment-managed CrUX keys remain read-only in the UI. Restart the UI with a different environment value to rotate them.
+
+The CLI remains available for automation and recovery. UI and CLI use the same runtime files and binding contract.
+
 ## CrUX
 
 Enable the Chrome UX Report API in a Google Cloud project and create an API key. Supply it through `SEO_WORKBENCH_CRUX_API_KEY` or `.runtime/google/crux-api-key`.

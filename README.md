@@ -81,7 +81,9 @@ When the UI is open, new audit files and Markdown documents appear there automat
 
 ## Workbench interface
 
-The browser interface includes project switching, evidence status, audit actions, workflow progress, file browsing, and a Markdown editor with source, split, and preview modes.
+The browser interface includes project switching, evidence status, audit actions, workflow progress, local Google credential management, file browsing, and a Markdown editor with source, split, and preview modes.
+
+Open **Integrations** to configure CrUX and GSC without exposing secret values to project files or audit output. Credential mutations are local-only, use fixed API actions, and persist below ignored `.runtime/` paths with private permissions.
 
 ![SEO Workbench Markdown editor](docs/assets/workbench-editor.jpg)
 

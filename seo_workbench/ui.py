@@ -80,6 +80,13 @@ TUTORIALS: tuple[dict[str, str], ...] = (
         "filename": "SEO工具链协同工作流指南.md",
     },
     {
+        "slug": "google-integrations",
+        "title": "Google 数据源与凭证",
+        "description": "CrUX 密钥、GSC OAuth、service account、property 绑定和本地安全边界。",
+        "category": "Workbench",
+        "filename": "google-integrations.md",
+    },
+    {
         "slug": "new-site",
         "title": "从 0 到 1 新站 SEO 建设",
         "description": "新站的信息架构、上线证据、内容和测量顺序。",

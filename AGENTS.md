@@ -68,7 +68,7 @@ Initialize a project:
 - Run `validate --json` after changing workflow, state, CLI contracts, or skill mappings.
 - Run `doctor --json` when debugging local setup, missing evidence, or optional rendered support.
 - The local UI is optional. Detect an active UI from `.runtime/ui/session.json`, but never read or expose `.runtime/ui/token`. Keep using the same `./seo --project <id> ...` commands and project files; the UI filesystem watcher will surface new evidence and Markdown files automatically.
-- When the UI starts an audit, it invokes the existing project-scoped CLI through a fixed action whitelist. Do not add arbitrary command execution, shell strings, remote binds, or credential entry fields to the UI.
+- When the UI starts an audit, it invokes the existing project-scoped CLI through a fixed action whitelist. Do not add arbitrary command execution, shell strings, or remote binds. Credential management is limited to the fixed local-only Google integration APIs: secret values are write-only, never returned, stored below ignored `.runtime/` paths with private permissions, and never accepted through arbitrary filesystem paths or a generic environment editor.
 - Markdown UI writes are limited to `context/`, `strategy/`, `content/`, and `audits/`, use revision-based conflict detection, and must never overwrite concurrent agent edits silently.
 - Treat `projects/<id>/audits/raw/latest.json` as the stable current evidence pointer; timestamped `evidence-*.json` files are the immutable audit records.
 - The Chrome extension is optional. Treat missing browser evidence as `not_collected`; never block the core CLI or workflow on extension installation.

@@ -67,7 +67,8 @@ Surface hierarchy uses background-color steps and 1px separators. The graphite n
 - Do show agent updates without stealing focus.
 - Do keep one strong primary action per screen.
 - Do not use repeated rounded dashboard cards.
-- Do not expose credentials or `.runtime` files.
+- Do show credential readiness, scope, identity metadata, and safe next actions in Integrations.
+- Do not reveal secret values, runtime paths, OAuth tokens, private keys, or API keys after submission.
 - Do not overwrite a locally edited Markdown document after an agent update.
 - Do not invent audit metrics or dates.
 - Do not add decorative motion.
