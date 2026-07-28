@@ -276,7 +276,7 @@ export function IntegrationsPage({ projectId, refreshKey, onRunAction }: Props) 
           <div><span>Granted scopes</span><strong>{shopify.scopes.length}</strong><small>{visibleShopifyScopes.join(", ") || "No resource scopes reported"}{shopify.scopes.length > visibleShopifyScopes.length ? `, +${shopify.scopes.length - visibleShopifyScopes.length} more` : ""}</small></div>
           <div data-warning={shopify.write_scope_count > 0 ? "true" : undefined}><span>Permission posture</span><strong>{shopify.write_scope_count ? `${shopify.write_scope_count} write scopes granted` : "Read scopes only"}</strong><small>Last verified {formatDate(shopify.verified_at)}</small></div>
         </section> : null}
-        <form className={styles.configuration} onSubmit={submitShopify}>
+        <form className={`${styles.configuration} ${styles.shopifyConfiguration}`} onSubmit={submitShopify}>
           <div className={styles.shopifyFields}>
             <label className={styles.field}>
               <span>Shopify shop domain</span>
