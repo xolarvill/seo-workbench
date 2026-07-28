@@ -7,6 +7,7 @@ import json
 import os
 import re
 import secrets
+import shutil
 import signal
 import sys
 import threading
@@ -19,12 +20,13 @@ from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunsplit
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Response, StreamingResponse
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, SecretStr
 from watchfiles import Change, awatch
 
 from seo_workbench import state
 from seo_workbench.locks import project_lock
 from seo_workbench.workflow import DEFAULT_WORKFLOW, load_workflow, next_contract
+from seo_workbench_tools import gsc_probe
 from seo_workbench_tools.files import atomic_write_text
 from seo_workbench_tools.network_boundary import sensitive_query_key
 
@@ -46,6 +48,7 @@ MAX_TUTORIAL_BYTES = 2 * 1024 * 1024
 WATCHED_SUFFIXES = {".json", ".md", ".markdown", ".html", ".png", ".webp"}
 EXTENSION_ORIGIN = re.compile(r"^chrome-extension://[a-p]{32}$")
 MAX_BROWSER_CAPTURE_BYTES = 2 * 1024 * 1024
+MAX_GOOGLE_CREDENTIAL_BYTES = 128 * 1024
 FORBIDDEN_CAPTURE_KEYS = {"authorization", "cookie", "cookies", "form_data", "headers", "html", "local_storage", "session_storage"}
 EXTENSION_TOKEN_LIFETIME = timedelta(days=30)
 PAIRING_RESPONSE_HEADERS = {
@@ -126,6 +129,30 @@ class ActionRequest(BaseModel):
 class WorkflowActionRequest(BaseModel):
     action: str
     step_id: str | None = None
+
+
+class CruxKeyUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    api_key: SecretStr
+
+
+class GscCredentialImport(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    profile: str = Field(pattern=r"^[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}$")
+    credential_type: Literal["oauth", "service_account"]
+    credential: dict[str, Any]
+
+
+class GscProfileRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    profile: str = Field(pattern=r"^[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}$")
+
+
+class GscBindingUpdate(GscProfileRequest):
+    property: str = Field(min_length=1, max_length=2_048)
 
 
 class ExtensionPairingRequest(BaseModel):
@@ -566,6 +593,142 @@ def _secure_runtime_dir(path: Path) -> None:
     path.chmod(0o700)
 
 
+def _require_local_credential_access(request: Request) -> None:
+    if (request.url.hostname or "").lower() not in LOCAL_HOSTS:
+        raise HTTPException(
+            status_code=403,
+            detail="Credential management is available only from the local Workbench URL",
+        )
+
+
+def _google_runtime_root(runtime_dir: Path) -> Path:
+    return runtime_dir.parent / "google"
+
+
+def _credential_profile_summary(profile: str, runtime_root: Path) -> dict[str, Any]:
+    directory = gsc_probe.profile_dir(profile, runtime_root=runtime_root)
+    service_path = directory / "service-account.json"
+    token_path = directory / "token.json"
+    client_path = directory / "client-secret.json"
+    if service_path.is_file() and not service_path.is_symlink():
+        credential_type = "service_account"
+        files = [service_path]
+    elif token_path.is_file() and client_path.is_file() and not token_path.is_symlink() and not client_path.is_symlink():
+        credential_type = "oauth"
+        files = [token_path, client_path]
+    else:
+        return {"profile": profile, "credential_type": "unknown", "status": "incomplete", "updated_at": None}
+
+    status = "ready"
+    try:
+        credentials = gsc_probe.load_credentials(profile, refresh=False, runtime_root=runtime_root)
+        if not (
+            getattr(credentials, "valid", False)
+            or getattr(credentials, "refresh_token", None)
+            or getattr(credentials, "service_account_email", None)
+        ):
+            status = "reauth_required"
+    except (OSError, RuntimeError, ValueError):
+        status = "reauth_required"
+
+    principal = None
+    if credential_type == "service_account":
+        try:
+            candidate = json.loads(service_path.read_text(encoding="utf-8")).get("client_email")
+            if isinstance(candidate, str) and len(candidate) <= 254:
+                principal = candidate
+        except (OSError, json.JSONDecodeError):
+            status = "reauth_required"
+    updated = max(path.stat().st_mtime for path in files)
+    return {
+        "profile": profile,
+        "credential_type": credential_type,
+        "status": status,
+        "principal": principal,
+        "updated_at": datetime.fromtimestamp(updated, timezone.utc).isoformat(),
+    }
+
+
+def _google_integration_status(project_dir: Path, runtime_dir: Path) -> dict[str, Any]:
+    runtime_root = _google_runtime_root(runtime_dir)
+    key_path = runtime_root / "crux-api-key"
+    key_from_env = bool(os.environ.get("SEO_WORKBENCH_CRUX_API_KEY", "").strip())
+    key_from_file = key_path.is_file() and not key_path.is_symlink()
+    key_unsafe = key_path.is_symlink()
+
+    profiles: list[dict[str, Any]] = []
+    profiles_root = runtime_root / "profiles"
+    if profiles_root.is_dir() and not profiles_root.is_symlink():
+        for directory in sorted(profiles_root.iterdir(), key=lambda item: item.name.casefold()):
+            if not directory.is_dir() or directory.is_symlink():
+                continue
+            try:
+                profiles.append(_credential_profile_summary(directory.name, runtime_root))
+            except ValueError:
+                continue
+
+    binding = None
+    binding_path = gsc_probe.binding_path(project_dir)
+    if binding_path.is_file() and not binding_path.is_symlink():
+        try:
+            loaded = gsc_probe.load_binding(project_dir)
+            binding = {
+                "profile": loaded["profile"],
+                "property": loaded["property"],
+                "permission_level": loaded.get("permission_level", ""),
+                "bound_at": loaded.get("bound_at"),
+            }
+        except (OSError, RuntimeError, ValueError, json.JSONDecodeError):
+            binding = {"status": "invalid"}
+
+    profile_by_name = {item["profile"]: item for item in profiles}
+    if not profiles:
+        gsc_status = "needs_auth"
+    elif not binding:
+        gsc_status = "not_bound"
+    elif binding.get("status") == "invalid":
+        gsc_status = "invalid_binding"
+    elif binding.get("profile") not in profile_by_name:
+        gsc_status = "missing_profile"
+    else:
+        gsc_status = profile_by_name[str(binding["profile"])]["status"]
+
+    crux_source = "environment" if key_from_env else ("private_file" if key_from_file else "missing")
+    return {
+        "access": "local_only",
+        "crux": {
+            "status": "unsafe_path" if key_unsafe else ("ready" if key_from_env or key_from_file else "needs_key"),
+            "configured": key_from_env or key_from_file,
+            "source": crux_source,
+            "removable": key_from_file and not key_from_env,
+        },
+        "gsc": {"status": gsc_status, "profiles": profiles, "binding": binding},
+        "security": {
+            "secrets_returned": False,
+            "storage_mode": "0600",
+            "scope": "local runtime",
+        },
+    }
+
+
+def _profile_users(profile: str, projects_root: Path) -> list[str]:
+    users: list[str] = []
+    if not projects_root.is_dir() or projects_root.is_symlink():
+        return users
+    for project_dir in projects_root.iterdir():
+        if not project_dir.is_dir() or project_dir.is_symlink():
+            continue
+        binding = project_dir / ".runtime/integrations/google.json"
+        if not binding.is_file() or binding.is_symlink():
+            continue
+        try:
+            if json.loads(binding.read_text(encoding="utf-8")).get("profile") == profile:
+                users.append(project_dir.name)
+        except (OSError, json.JSONDecodeError):
+            continue
+    return sorted(users)
+
+
 def _project(project_id: str, projects_root: Path) -> Path:
     try:
         project_dir = state.project_dir_from_id(project_id, projects_root)
@@ -785,6 +948,14 @@ def create_app(
             return JSONResponse({"detail": "SEO Workbench UI only accepts local requests"}, status_code=403)
         path = request.url.path
         origin = _extension_origin(request)
+
+        if "/integrations/google" in path and request.method not in {"GET", "HEAD", "OPTIONS", "DELETE"}:
+            try:
+                content_length = int(request.headers.get("content-length", "0"))
+            except ValueError:
+                return JSONResponse({"detail": "invalid Content-Length"}, status_code=400)
+            if content_length > MAX_GOOGLE_CREDENTIAL_BYTES:
+                return JSONResponse({"detail": "Google credential payload exceeds the 128 KB limit"}, status_code=413)
 
         def extension_response(response):
             if origin:
@@ -1033,6 +1204,162 @@ def create_app(
     def workspace(project_id: str) -> dict[str, Any]:
         project_dir = _project(project_id, projects_root)
         return {"ok": True, "workspace": _workspace(project_id, project_dir, runtime_dir)}
+
+    @app.get("/api/v1/projects/{project_id}/integrations/google")
+    def google_integrations(project_id: str, request: Request) -> dict[str, Any]:
+        _require_local_credential_access(request)
+        project_dir = _project(project_id, projects_root)
+        return {"ok": True, "integration": _google_integration_status(project_dir, runtime_dir)}
+
+    @app.put("/api/v1/projects/{project_id}/integrations/google/crux")
+    def save_crux_key(project_id: str, request: Request, update: CruxKeyUpdate) -> dict[str, Any]:
+        _require_local_credential_access(request)
+        project_dir = _project(project_id, projects_root)
+        if os.environ.get("SEO_WORKBENCH_CRUX_API_KEY", "").strip():
+            raise HTTPException(status_code=409, detail="CrUX is managed by the UI process environment")
+        value = update.api_key.get_secret_value().strip()
+        if not value or len(value) > 512 or any(character.isspace() for character in value):
+            raise HTTPException(status_code=400, detail="CrUX API key must be 1-512 characters without whitespace")
+        runtime_root = _google_runtime_root(runtime_dir)
+        key_path = runtime_root / "crux-api-key"
+        if key_path.is_symlink():
+            raise HTTPException(status_code=400, detail="CrUX API key path cannot be a symlink")
+        try:
+            _secure_runtime_dir(runtime_root)
+            atomic_write_text(key_path, value + "\n", mode=0o600)
+        except (OSError, ValueError) as exc:
+            raise HTTPException(status_code=500, detail="CrUX API key could not be stored securely") from exc
+        hub.publish({"type": "integration.updated", "project_id": project_id, "integration": "crux", "at": _timestamp()})
+        return {"ok": True, "integration": _google_integration_status(project_dir, runtime_dir)}
+
+    @app.delete("/api/v1/projects/{project_id}/integrations/google/crux")
+    def delete_crux_key(project_id: str, request: Request) -> dict[str, Any]:
+        _require_local_credential_access(request)
+        project_dir = _project(project_id, projects_root)
+        if os.environ.get("SEO_WORKBENCH_CRUX_API_KEY", "").strip():
+            raise HTTPException(status_code=409, detail="CrUX is managed by the UI process environment")
+        key_path = _google_runtime_root(runtime_dir) / "crux-api-key"
+        if key_path.is_symlink():
+            raise HTTPException(status_code=400, detail="CrUX API key path cannot be a symlink")
+        key_path.unlink(missing_ok=True)
+        hub.publish({"type": "integration.updated", "project_id": project_id, "integration": "crux", "at": _timestamp()})
+        return {"ok": True, "integration": _google_integration_status(project_dir, runtime_dir)}
+
+    @app.post("/api/v1/projects/{project_id}/integrations/google/gsc/credentials")
+    def import_gsc_credentials(project_id: str, request: Request, update: GscCredentialImport) -> dict[str, Any]:
+        _require_local_credential_access(request)
+        project_dir = _project(project_id, projects_root)
+        runtime_root = _google_runtime_root(runtime_dir)
+        try:
+            profile_dir = gsc_probe.profile_dir(update.profile, runtime_root=runtime_root)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        if profile_dir.exists() and any(profile_dir.iterdir()):
+            raise HTTPException(
+                status_code=409,
+                detail="This profile already exists. Use a new profile name for credential rotation.",
+            )
+        if update.credential_type == "oauth" and not isinstance(update.credential.get("installed"), dict):
+            raise HTTPException(status_code=400, detail="OAuth credentials must be a Google Desktop app JSON file")
+        if update.credential_type == "service_account" and update.credential.get("type") != "service_account":
+            raise HTTPException(status_code=400, detail="Service account credentials must be a Google service account JSON file")
+        serialized = json.dumps(update.credential, ensure_ascii=False)
+        if len(serialized.encode("utf-8")) > MAX_GOOGLE_CREDENTIAL_BYTES:
+            raise HTTPException(status_code=413, detail="Google credential payload exceeds the 128 KB limit")
+
+        import_dir = runtime_root / "imports"
+        import_path = import_dir / f"credential-{secrets.token_hex(12)}.json"
+        try:
+            _secure_runtime_dir(runtime_root)
+            _secure_runtime_dir(import_dir)
+            atomic_write_text(import_path, serialized + "\n", mode=0o600)
+            kwargs = {"runtime_root": runtime_root}
+            if update.credential_type == "oauth":
+                gsc_probe.authenticate(update.profile, client_secret=import_path, **kwargs)
+            else:
+                gsc_probe.authenticate(update.profile, service_account_path=import_path, **kwargs)
+        except (OSError, RuntimeError, ValueError) as exc:
+            if profile_dir.exists() and not profile_dir.is_symlink():
+                shutil.rmtree(profile_dir)
+            raise HTTPException(
+                status_code=400,
+                detail="Google authentication did not complete. Check the credential type and consent flow.",
+            ) from exc
+        finally:
+            import_path.unlink(missing_ok=True)
+        hub.publish({"type": "integration.updated", "project_id": project_id, "integration": "gsc", "at": _timestamp()})
+        return {"ok": True, "integration": _google_integration_status(project_dir, runtime_dir)}
+
+    @app.post("/api/v1/projects/{project_id}/integrations/google/gsc/properties")
+    def gsc_properties(project_id: str, request: Request, profile: GscProfileRequest) -> dict[str, Any]:
+        _require_local_credential_access(request)
+        _project(project_id, projects_root)
+        try:
+            result = gsc_probe.list_properties(
+                profile.profile,
+                runtime_root=_google_runtime_root(runtime_dir),
+            )
+        except (OSError, RuntimeError, ValueError) as exc:
+            raise HTTPException(
+                status_code=400,
+                detail="Search Console could not list properties for this profile. Reauthenticate and check API access.",
+            ) from exc
+        return {"ok": True, "profile": profile.profile, "properties": result["properties"]}
+
+    @app.put("/api/v1/projects/{project_id}/integrations/google/gsc/binding")
+    def save_gsc_binding(project_id: str, request: Request, update: GscBindingUpdate) -> dict[str, Any]:
+        _require_local_credential_access(request)
+        project_dir = _project(project_id, projects_root)
+        try:
+            gsc_probe.bind_property(
+                project_dir,
+                update.property,
+                profile=update.profile,
+                runtime_root=_google_runtime_root(runtime_dir),
+            )
+        except (OSError, RuntimeError, ValueError) as exc:
+            raise HTTPException(
+                status_code=400,
+                detail="The selected Search Console property is not accessible or does not cover this project.",
+            ) from exc
+        hub.publish({"type": "integration.updated", "project_id": project_id, "integration": "gsc", "at": _timestamp()})
+        return {"ok": True, "integration": _google_integration_status(project_dir, runtime_dir)}
+
+    @app.delete("/api/v1/projects/{project_id}/integrations/google/gsc/binding")
+    def delete_gsc_binding(project_id: str, request: Request) -> dict[str, Any]:
+        _require_local_credential_access(request)
+        project_dir = _project(project_id, projects_root)
+        try:
+            binding_path = gsc_probe.binding_path(project_dir)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        if binding_path.is_symlink():
+            raise HTTPException(status_code=400, detail="GSC binding path cannot be a symlink")
+        binding_path.unlink(missing_ok=True)
+        hub.publish({"type": "integration.updated", "project_id": project_id, "integration": "gsc", "at": _timestamp()})
+        return {"ok": True, "integration": _google_integration_status(project_dir, runtime_dir)}
+
+    @app.delete("/api/v1/projects/{project_id}/integrations/google/gsc/profiles/{profile}")
+    def delete_gsc_profile(project_id: str, profile: str, request: Request) -> dict[str, Any]:
+        _require_local_credential_access(request)
+        project_dir = _project(project_id, projects_root)
+        try:
+            profile = gsc_probe.validate_profile(profile)
+            profile_dir = gsc_probe.profile_dir(profile, runtime_root=_google_runtime_root(runtime_dir))
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        users = _profile_users(profile, projects_root)
+        if users:
+            raise HTTPException(
+                status_code=409,
+                detail=f"Disconnect this profile from these projects first: {', '.join(users)}",
+            )
+        if profile_dir.is_symlink():
+            raise HTTPException(status_code=400, detail="GSC profile path cannot be a symlink")
+        if profile_dir.is_dir():
+            shutil.rmtree(profile_dir)
+        hub.publish({"type": "integration.updated", "project_id": project_id, "integration": "gsc", "at": _timestamp()})
+        return {"ok": True, "integration": _google_integration_status(project_dir, runtime_dir)}
 
     @app.get("/api/v1/projects/{project_id}/files")
     def files(project_id: str) -> dict[str, Any]:

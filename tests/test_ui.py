@@ -11,6 +11,7 @@ from fastapi.testclient import TestClient
 from seo_workbench import state
 from seo_workbench.locks import lock_path, project_lock
 from seo_workbench.ui import ACTION_COMMANDS, COOKIE_NAME, BrowserCapture, EventHub, _safe_job_output, create_app
+from seo_workbench_tools import gsc_probe
 
 
 def ui_client(tmp_path: Path) -> tuple[TestClient, Path]:
@@ -307,6 +308,122 @@ def test_ui_lists_projects_workspace_and_real_evidence(tmp_path: Path) -> None:
     statuses = {item["id"]: item["status"] for item in workspace["evidence"]["items"]}
     assert statuses["crux"] == "needs_key"
     assert statuses["gsc"] == "not_bound"
+
+
+def test_google_integration_api_stores_crux_key_without_returning_it(tmp_path: Path) -> None:
+    client, _ = ui_client(tmp_path)
+    secret = "test-crux-key-123456"
+    key_path = tmp_path / ".runtime/google/crux-api-key"
+
+    with client:
+        before = client.get("/api/v1/projects/store/integrations/google")
+        saved = client.put(
+            "/api/v1/projects/store/integrations/google/crux",
+            json={"api_key": secret},
+        )
+        after = client.get("/api/v1/projects/store/integrations/google")
+
+    assert before.json()["integration"]["crux"]["status"] == "needs_key"
+    assert saved.status_code == 200
+    assert secret not in saved.text
+    assert key_path.read_text(encoding="utf-8").strip() == secret
+    assert key_path.stat().st_mode & 0o777 == 0o600
+    assert after.json()["integration"]["crux"] == {
+        "status": "ready",
+        "configured": True,
+        "source": "private_file",
+        "removable": True,
+    }
+
+    with client:
+        removed = client.delete("/api/v1/projects/store/integrations/google/crux")
+    assert removed.status_code == 200
+    assert not key_path.exists()
+
+
+def test_google_integration_api_refuses_to_override_environment_key(tmp_path: Path, monkeypatch) -> None:
+    client, _ = ui_client(tmp_path)
+    monkeypatch.setenv("SEO_WORKBENCH_CRUX_API_KEY", "environment-secret")
+    with client:
+        status = client.get("/api/v1/projects/store/integrations/google")
+        saved = client.put(
+            "/api/v1/projects/store/integrations/google/crux",
+            json={"api_key": "replacement-key"},
+        )
+    assert status.json()["integration"]["crux"]["source"] == "environment"
+    assert saved.status_code == 409
+    assert "environment-secret" not in saved.text
+
+
+def test_google_integration_api_manages_gsc_profile_and_binding(tmp_path: Path, monkeypatch) -> None:
+    client, project_dir = ui_client(tmp_path)
+    credential = {"installed": {"client_id": "client-id", "client_secret": "client-secret"}}
+
+    def fake_authenticate(profile: str, *, client_secret=None, service_account_path=None, runtime_root=None, **kwargs):
+        directory = gsc_probe.profile_dir(profile, runtime_root=runtime_root)
+        directory.mkdir(parents=True, mode=0o700)
+        (directory / "client-secret.json").write_text(json.dumps(credential), encoding="utf-8")
+        (directory / "token.json").write_text("{}", encoding="utf-8")
+        for path in directory.iterdir():
+            path.chmod(0o600)
+        return {"profile": profile, "credential_type": "oauth"}
+
+    class Credentials:
+        valid = True
+        refresh_token = "refreshable"
+        service_account_email = None
+
+    properties = [{"site_url": "sc-domain:example.com", "permission_level": "siteOwner"}]
+    monkeypatch.setattr(gsc_probe, "authenticate", fake_authenticate)
+    monkeypatch.setattr(gsc_probe, "load_credentials", lambda profile, **kwargs: Credentials())
+    monkeypatch.setattr(
+        gsc_probe,
+        "list_properties",
+        lambda profile="default", **kwargs: {"collection_status": "ok", "properties": properties},
+    )
+
+    with client:
+        imported = client.post(
+            "/api/v1/projects/store/integrations/google/gsc/credentials",
+            json={"profile": "default", "credential_type": "oauth", "credential": credential},
+        )
+        listed = client.post(
+            "/api/v1/projects/store/integrations/google/gsc/properties",
+            json={"profile": "default"},
+        )
+        bound = client.put(
+            "/api/v1/projects/store/integrations/google/gsc/binding",
+            json={"profile": "default", "property": "sc-domain:example.com"},
+        )
+        blocked_delete = client.delete(
+            "/api/v1/projects/store/integrations/google/gsc/profiles/default"
+        )
+
+    assert imported.status_code == 200
+    assert "client-secret" not in imported.text
+    assert listed.json()["properties"] == properties
+    assert bound.json()["integration"]["gsc"]["status"] == "ready"
+    binding_path = project_dir / ".runtime/integrations/google.json"
+    assert binding_path.stat().st_mode & 0o777 == 0o600
+    assert blocked_delete.status_code == 409
+
+    with client:
+        assert client.delete("/api/v1/projects/store/integrations/google/gsc/binding").status_code == 200
+        deleted = client.delete("/api/v1/projects/store/integrations/google/gsc/profiles/default")
+    assert deleted.status_code == 200
+    assert not (tmp_path / ".runtime/google/profiles/default").exists()
+
+
+def test_google_credential_management_is_local_only(tmp_path: Path) -> None:
+    client, _ = ui_client(tmp_path)
+    headers = {
+        "host": "seo.nucleus.localhost:8080",
+        "origin": "http://seo.nucleus.localhost:8080",
+        "x-nucleus-user-id": "operator-1",
+    }
+    with client:
+        response = client.get("/api/v1/projects/store/integrations/google", headers=headers)
+    assert response.status_code == 403
 
 
 def test_ui_serves_allowlisted_tutorials_as_read_only_content(tmp_path: Path) -> None:

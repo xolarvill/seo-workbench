@@ -44,9 +44,10 @@ def validate_profile(profile: str) -> str:
     return profile
 
 
-def profile_dir(profile: str) -> Path:
-    directory = RUNTIME_ROOT / "profiles" / validate_profile(profile)
-    for candidate in (ROOT / ".runtime", RUNTIME_ROOT, RUNTIME_ROOT / "profiles", directory):
+def profile_dir(profile: str, *, runtime_root: Path | None = None) -> Path:
+    root = runtime_root or RUNTIME_ROOT
+    directory = root / "profiles" / validate_profile(profile)
+    for candidate in (root.parent, root, root / "profiles", directory):
         if candidate.exists() and candidate.is_symlink():
             raise ValueError(f"Google credential path cannot contain symlinks: {candidate}")
     return directory
@@ -86,11 +87,12 @@ def authenticate(
     client_secret: Path | None = None,
     service_account_path: Path | None = None,
     open_browser: bool = True,
+    runtime_root: Path | None = None,
 ) -> dict[str, Any]:
     profile = validate_profile(profile)
     if (client_secret is None) == (service_account_path is None):
         raise ValueError("choose exactly one of --client-secret or --service-account")
-    directory = profile_dir(profile)
+    directory = profile_dir(profile, runtime_root=runtime_root)
     directory.mkdir(parents=True, exist_ok=True, mode=0o700)
     if service_account_path is not None:
         _, _, service_account = _load_google_auth()
@@ -124,9 +126,9 @@ def authenticate(
     return {"profile": profile, "credential_type": "oauth", "path": str(directory / "token.json")}
 
 
-def load_credentials(profile: str, *, refresh: bool = True) -> Any:
+def load_credentials(profile: str, *, refresh: bool = True, runtime_root: Path | None = None) -> Any:
     AuthRequest, user_credentials, service_account = _load_google_auth()
-    directory = profile_dir(profile)
+    directory = profile_dir(profile, runtime_root=runtime_root)
     service_path = directory / "service-account.json"
     if service_path.is_file():
         credentials = service_account.Credentials.from_service_account_file(str(service_path), scopes=SCOPES)
@@ -186,8 +188,13 @@ def list_properties(
     *,
     timeout: float = 20,
     requester: RequestCallable = api_request,
+    runtime_root: Path | None = None,
 ) -> dict[str, Any]:
-    credentials = load_credentials(profile)
+    credentials = (
+        load_credentials(profile)
+        if runtime_root is None
+        else load_credentials(profile, runtime_root=runtime_root)
+    )
     payload = requester("GET", f"{API_BASE}/sites", None, credentials, timeout)
     properties = [
         {"site_url": item.get("siteUrl", ""), "permission_level": item.get("permissionLevel", "")}
@@ -228,12 +235,21 @@ def bind_property(
     profile: str = "default",
     timeout: float = 20,
     requester: RequestCallable = api_request,
+    runtime_root: Path | None = None,
 ) -> dict[str, Any]:
     state = json.loads((project_dir / "state.json").read_text(encoding="utf-8"))
     project_url = state.get("project", {}).get("url", "")
     if not project_url:
         raise ValueError("project.url is missing")
-    available = list_properties(profile, timeout=timeout, requester=requester)["properties"]
+    if runtime_root is None:
+        available = list_properties(profile, timeout=timeout, requester=requester)["properties"]
+    else:
+        available = list_properties(
+            profile,
+            timeout=timeout,
+            requester=requester,
+            runtime_root=runtime_root,
+        )["properties"]
     match = next((item for item in available if item["site_url"] == site_url), None)
     if not match:
         raise ValueError(f"GSC property is not accessible to profile '{profile}': {site_url}")
