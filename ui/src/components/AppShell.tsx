@@ -9,7 +9,7 @@ import {
   Play,
   ShieldCheck,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 
 import type { ProjectSummary } from "../api/types";
 import styles from "./AppShell.module.css";
@@ -48,8 +48,13 @@ export function AppShell({
   onRunAudit,
   children,
 }: AppShellProps) {
+  const mobileMore = useRef<HTMLDetailsElement>(null);
   const project = projects.find((item) => item.id === selectedProject);
   const primaryMobile = navigation.filter((item) => ["overview", "workflow", "files"].includes(item.id));
+  const navigateMobile = (view: ViewName) => {
+    mobileMore.current?.removeAttribute("open");
+    onNavigate(view);
+  };
 
   return (
     <div className={styles.shell}>
@@ -104,13 +109,13 @@ export function AppShell({
 
       <header className={styles.mobileHeader}>
         <span className={styles.mobileWordmark}>SEO WORKBENCH</span>
-        <details className={styles.mobileMore}>
+        <details ref={mobileMore} className={styles.mobileMore}>
           <summary aria-label="More navigation"><MoreVertical aria-hidden="true" size={24} /></summary>
           <div>
-            <button type="button" onClick={() => onNavigate("content")}>Content</button>
-            <button type="button" onClick={() => onNavigate("audits")}>Audits</button>
-            <button type="button" aria-current={activeView === "integrations" ? "page" : undefined} onClick={() => onNavigate("integrations")}>Integrations</button>
-            <button type="button" aria-current={activeView === "tutorials" ? "page" : undefined} onClick={() => onNavigate("tutorials")}>Tutorials</button>
+            <button type="button" onClick={() => navigateMobile("content")}>Content</button>
+            <button type="button" onClick={() => navigateMobile("audits")}>Audits</button>
+            <button type="button" aria-current={activeView === "integrations" ? "page" : undefined} onClick={() => navigateMobile("integrations")}>Integrations</button>
+            <button type="button" aria-current={activeView === "tutorials" ? "page" : undefined} onClick={() => navigateMobile("tutorials")}>Tutorials</button>
           </div>
         </details>
       </header>

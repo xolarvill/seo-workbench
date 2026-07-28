@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { fetchTutorial, fetchTutorials } from "../api/client";
@@ -71,6 +71,17 @@ describe("workbench frontend", () => {
     expect(navigate).toHaveBeenCalledWith("integrations");
     fireEvent.click(screen.getAllByRole("button", { name: /Tutorials/i })[0]);
     expect(navigate).toHaveBeenCalledWith("tutorials");
+  });
+
+  it("closes mobile navigation after choosing a destination", () => {
+    const navigate = vi.fn();
+    const { container } = render(<AppShell projects={[project]} selectedProject="shop" activeView="overview" connected onProjectChange={vi.fn()} onNavigate={navigate} onRunAudit={vi.fn()}><p>Workspace</p></AppShell>);
+    const menu = container.querySelector("details");
+    expect(menu).not.toBeNull();
+    menu!.open = true;
+    fireEvent.click(within(menu!).getByRole("button", { name: "Integrations" }));
+    expect(menu!.open).toBe(false);
+    expect(navigate).toHaveBeenCalledWith("integrations");
   });
 
   it("shows the current workflow instruction and phase states", () => {
