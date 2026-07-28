@@ -102,6 +102,21 @@
 .ledger strong { font-size: 12px; }
 
 .configuration { display: grid; grid-template-columns: minmax(280px, 1fr) auto; align-items: end; gap: 22px; padding: 22px 24px 24px; }
+.shopifyFields { display: grid; grid-template-columns: minmax(220px, .8fr) minmax(280px, 1.2fr); gap: 12px; }
+.shopifyDetails {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 1px solid var(--separator);
+  background: var(--canvas);
+}
+.shopifyDetails > div { min-width: 0; min-height: 78px; display: grid; align-content: center; gap: 5px; padding: 14px 24px; border-right: 1px solid var(--separator); }
+.shopifyDetails > div:last-child { border-right: 0; }
+.shopifyDetails span { color: var(--muted); font: 9px/1 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; }
+.shopifyDetails strong { overflow: hidden; font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.shopifyDetails small { overflow: hidden; color: var(--muted); font-size: 9px; line-height: 1.45; text-overflow: ellipsis; white-space: nowrap; }
+.shopifyDetails [data-warning="true"] { color: var(--amber); background: var(--amber-wash); }
+.shopifyDetails [data-warning="true"] span,
+.shopifyDetails [data-warning="true"] small { color: currentColor; }
 .field,
 .fileField { display: grid; gap: 7px; color: var(--ink); font-size: 11px; font-weight: 600; }
 .field input,
@@ -231,6 +246,7 @@
   .page { padding-inline: 22px; }
   .configuration { grid-template-columns: 1fr; align-items: start; }
   .gscGrid { grid-template-columns: 1fr; }
+  .shopifyFields { grid-template-columns: 1fr; }
   .panel + .panel { border-top: 1px solid var(--separator); border-left: 0; }
 }
 
@@ -243,11 +259,14 @@
   .integrationHeader > .statusReady,
   .integrationHeader > .statusAttention { grid-column: 2; justify-self: start; }
   .ledger,
-  .steps { grid-template-columns: 1fr; }
+  .steps,
+  .shopifyDetails { grid-template-columns: 1fr; }
   .ledger > div,
-  .steps li { min-height: 58px; padding-inline: 18px; border-right: 0; border-bottom: 1px solid var(--separator); }
+  .steps li,
+  .shopifyDetails > div { min-height: 58px; padding-inline: 18px; border-right: 0; border-bottom: 1px solid var(--separator); }
   .ledger > div:last-child,
-  .steps li:last-child { border-bottom: 0; }
+  .steps li:last-child,
+  .shopifyDetails > div:last-child { border-bottom: 0; }
   .configuration,
   .panel { padding: 18px; }
   .twoFields { grid-template-columns: 1fr; }

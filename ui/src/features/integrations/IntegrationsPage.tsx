@@ -7,6 +7,7 @@ import {
   LockKeyhole,
   RefreshCw,
   SearchCheck,
+  Store,
   Trash2,
   Upload,
 } from "lucide-react";
@@ -17,13 +18,17 @@ import {
   deleteCruxKey,
   deleteGscBinding,
   deleteGscProfile,
+  deleteShopifyCredentials,
   fetchGoogleIntegration,
   fetchGscProperties,
+  fetchShopifyIntegration,
   importGscCredentials,
   saveCruxKey,
   saveGscBinding,
+  saveShopifyCredentials,
+  verifyShopifyCredentials,
 } from "../../api/client";
-import type { GoogleIntegration, GscProperty } from "../../api/types";
+import type { GoogleIntegration, GscProperty, ShopifyIntegration } from "../../api/types";
 import styles from "./IntegrationsPage.module.css";
 
 
@@ -44,6 +49,9 @@ function statusLabel(status: string): string {
     unsafe_path: "Unsafe path",
     missing_profile: "Profile missing",
     invalid_binding: "Invalid binding",
+    needs_credentials: "Needs credentials",
+    invalid: "Invalid credentials",
+    not_applicable: "Not applicable",
   };
   return labels[status] || status.replaceAll("_", " ");
 }
@@ -71,10 +79,13 @@ type Props = {
 
 export function IntegrationsPage({ projectId, refreshKey, onRunAction }: Props) {
   const [integration, setIntegration] = useState<GoogleIntegration | null>(null);
+  const [shopify, setShopify] = useState<ShopifyIntegration | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [cruxKey, setCruxKey] = useState("");
+  const [shopDomain, setShopDomain] = useState("");
+  const [shopifyToken, setShopifyToken] = useState("");
   const [credentialType, setCredentialType] = useState<"oauth" | "service_account">("oauth");
   const [profileName, setProfileName] = useState("default");
   const [credentialFile, setCredentialFile] = useState<File | null>(null);
@@ -86,8 +97,17 @@ export function IntegrationsPage({ projectId, refreshKey, onRunAction }: Props) 
   useEffect(() => {
     let active = true;
     setError(null);
-    fetchGoogleIntegration(projectId)
-      .then((result) => { if (active) setIntegration(result); })
+    setIntegration(null);
+    setShopify(null);
+    setShopDomain("");
+    setShopifyToken("");
+    Promise.all([fetchGoogleIntegration(projectId), fetchShopifyIntegration(projectId)])
+      .then(([googleResult, shopifyResult]) => {
+        if (!active) return;
+        setIntegration(googleResult);
+        setShopify(shopifyResult);
+        setShopDomain(shopifyResult.shop_domain || "");
+      })
       .catch((reason) => { if (active) setError(messageFrom(reason)); });
     return () => { active = false; };
   }, [projectId, refreshKey]);
@@ -119,6 +139,41 @@ export function IntegrationsPage({ projectId, refreshKey, onRunAction }: Props) 
     if (!cruxKey.trim()) return;
     await mutate("crux-save", () => saveCruxKey(projectId, cruxKey), "CrUX key stored. The value will not be shown again.");
     setCruxKey("");
+  }
+
+  async function submitShopify(event: FormEvent) {
+    event.preventDefault();
+    if (!shopDomain.trim() || !shopifyToken.trim()) return;
+    setBusy("shopify-save");
+    setError(null);
+    setNotice(null);
+    try {
+      const result = await saveShopifyCredentials(projectId, shopDomain, shopifyToken);
+      setShopify(result);
+      setShopDomain(result.shop_domain || shopDomain);
+      setShopifyToken("");
+      setNotice("Shopify Admin API connected. The access token will not be shown again.");
+    } catch (reason) {
+      setError(messageFrom(reason));
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function mutateShopify(label: string, task: () => Promise<ShopifyIntegration>, success: string) {
+    setBusy(label);
+    setError(null);
+    setNotice(null);
+    try {
+      const result = await task();
+      setShopify(result);
+      setShopDomain(result.shop_domain || "");
+      setNotice(success);
+    } catch (reason) {
+      setError(messageFrom(reason));
+    } finally {
+      setBusy(null);
+    }
   }
 
   async function importCredential(event: FormEvent) {
@@ -180,12 +235,13 @@ export function IntegrationsPage({ projectId, refreshKey, onRunAction }: Props) 
     }
   }
 
-  if (!integration && !error) return <div className={styles.state}>Loading local integration status</div>;
+  if ((!integration || !shopify) && !error) return <div className={styles.state}>Loading local integration status</div>;
 
   const crux = integration?.crux;
   const gsc = integration?.gsc;
   const activeProfile = gsc?.profiles.find((profile) => profile.profile === selectedProfile);
   const boundProfile = gsc?.binding?.profile;
+  const visibleShopifyScopes = shopify?.scopes.slice(0, 8) || [];
 
   return (
     <section className={styles.page} aria-label="SEO integrations">
@@ -193,7 +249,7 @@ export function IntegrationsPage({ projectId, refreshKey, onRunAction }: Props) 
         <div>
           <span>LOCAL TRUST LEDGER</span>
           <h1>SEO integrations</h1>
-          <p>Configure Google evidence sources without exposing secret values to project files, logs, or API responses.</p>
+          <p>Configure Shopify and Google evidence sources without exposing secret values to project files, logs, or API responses.</p>
         </div>
         <div className={styles.securityMark}>
           <LockKeyhole aria-hidden="true" size={18} />
@@ -203,6 +259,71 @@ export function IntegrationsPage({ projectId, refreshKey, onRunAction }: Props) 
 
       {error ? <div className={styles.error} role="alert"><CircleAlert aria-hidden="true" size={17} /><span>{error}</span></div> : null}
       {notice ? <div className={styles.notice} role="status"><Check aria-hidden="true" size={17} /><span>{notice}</span></div> : null}
+
+      {shopify?.applicable ? <article className={styles.integration}>
+        <header className={styles.integrationHeader}>
+          <Store aria-hidden="true" size={22} />
+          <div><span>COMMERCE SOURCE</span><h2>Shopify Admin API</h2><p>Project-scoped store access for future product, collection, content, and theme evidence.</p></div>
+          <Status value={shopify.status} />
+        </header>
+        <div className={styles.ledger}>
+          <div><span>Credential scope</span><strong>This SEO project</strong></div>
+          <div><span>API version</span><strong>{shopify.api_version}</strong></div>
+          <div><span>Secret visibility</span><strong>Write only</strong></div>
+        </div>
+        {shopify.configured ? <section className={styles.shopifyDetails} aria-label="Shopify connection details">
+          <div><span>Connected store</span><strong>{shopify.shop_name || shopify.shop_domain}</strong><small>{shopify.shop_domain}</small></div>
+          <div><span>Granted scopes</span><strong>{shopify.scopes.length}</strong><small>{visibleShopifyScopes.join(", ") || "No resource scopes reported"}{shopify.scopes.length > visibleShopifyScopes.length ? `, +${shopify.scopes.length - visibleShopifyScopes.length} more` : ""}</small></div>
+          <div data-warning={shopify.write_scope_count > 0 ? "true" : undefined}><span>Permission posture</span><strong>{shopify.write_scope_count ? `${shopify.write_scope_count} write scopes granted` : "Read scopes only"}</strong><small>Last verified {formatDate(shopify.verified_at)}</small></div>
+        </section> : null}
+        <form className={styles.configuration} onSubmit={submitShopify}>
+          <div className={styles.shopifyFields}>
+            <label className={styles.field}>
+              <span>Shopify shop domain</span>
+              <input
+                aria-label="Shopify shop domain"
+                value={shopDomain}
+                onChange={(event) => setShopDomain(event.target.value)}
+                placeholder="store.myshopify.com"
+                autoCapitalize="none"
+                autoComplete="off"
+                spellCheck={false}
+                disabled={Boolean(busy)}
+                required
+              />
+              <small>Use the permanent .myshopify.com domain, not the public storefront domain.</small>
+            </label>
+            <label className={styles.field}>
+              <span>{shopify.configured ? "Replace Admin API access token" : "Admin API access token"}</span>
+              <input
+                aria-label="Admin API access token"
+                type="password"
+                value={shopifyToken}
+                onChange={(event) => setShopifyToken(event.target.value)}
+                placeholder={shopify.configured ? "Enter a new token to rotate" : "Enter the custom app access token"}
+                autoComplete="off"
+                spellCheck={false}
+                disabled={Boolean(busy)}
+                required
+              />
+              <small>The Workbench verifies the store and granted scopes before saving.</small>
+            </label>
+          </div>
+          <div className={styles.actions}>
+            <button className={styles.primary} type="submit" disabled={!shopDomain.trim() || !shopifyToken.trim() || Boolean(busy)}>
+              <KeyRound aria-hidden="true" size={16} />{busy === "shopify-save" ? "Verifying" : shopify.configured ? "Replace connection" : "Connect Shopify"}
+            </button>
+            <button type="button" disabled={!shopify.configured || Boolean(busy)} onClick={() => void mutateShopify("shopify-verify", () => verifyShopifyCredentials(projectId), "Shopify connection verified.")}>
+              <RefreshCw aria-hidden="true" size={15} />{busy === "shopify-verify" ? "Verifying" : "Verify connection"}
+            </button>
+            {shopify.removable ? <button className={styles.danger} type="button" disabled={Boolean(busy)} onClick={() => {
+              if (window.confirm("Remove this project's Shopify Admin API credentials? Existing evidence files will remain.")) {
+                void mutateShopify("shopify-delete", () => deleteShopifyCredentials(projectId), "Shopify connection removed.");
+              }
+            }}><Trash2 aria-hidden="true" size={15} />Remove connection</button> : null}
+          </div>
+        </form>
+      </article> : null}
 
       <article className={styles.integration}>
         <header className={styles.integrationHeader}>

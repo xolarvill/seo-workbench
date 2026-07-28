@@ -57,6 +57,22 @@ export type GscProperty = {
   permission_level: string;
 };
 
+export type ShopifyIntegration = {
+  access: "local_only";
+  applicable: boolean;
+  status: string;
+  configured: boolean;
+  source: "private_file" | "missing";
+  shop_domain: string | null;
+  shop_name: string | null;
+  api_version: string;
+  scopes: string[];
+  write_scope_count: number;
+  verified_at: string | null;
+  removable: boolean;
+  secret_visibility: "write_only";
+};
+
 export type FileSummary = {
   path: string;
   name: string;

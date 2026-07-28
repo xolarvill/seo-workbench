@@ -1,4 +1,4 @@
-import type { FileSummary, GoogleIntegration, GscProperty, Job, MarkdownFile, ProjectSummary, TutorialDocument, TutorialSummary, Workspace } from "./types";
+import type { FileSummary, GoogleIntegration, GscProperty, Job, MarkdownFile, ProjectSummary, ShopifyIntegration, TutorialDocument, TutorialSummary, Workspace } from "./types";
 
 
 export class ApiError extends Error {
@@ -102,6 +102,37 @@ export async function deleteGscBinding(projectId: string): Promise<GoogleIntegra
 export async function deleteGscProfile(projectId: string, profile: string): Promise<GoogleIntegration> {
   const payload = await request<{ integration: GoogleIntegration }>(
     `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/google/gsc/profiles/${encodeURIComponent(profile)}`,
+    { method: "DELETE" },
+  );
+  return payload.integration;
+}
+
+export async function fetchShopifyIntegration(projectId: string): Promise<ShopifyIntegration> {
+  const payload = await request<{ integration: ShopifyIntegration }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/shopify`,
+  );
+  return payload.integration;
+}
+
+export async function saveShopifyCredentials(projectId: string, shopDomain: string, accessToken: string): Promise<ShopifyIntegration> {
+  const payload = await request<{ integration: ShopifyIntegration }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/shopify/credentials`,
+    { method: "PUT", body: JSON.stringify({ shop_domain: shopDomain, access_token: accessToken }) },
+  );
+  return payload.integration;
+}
+
+export async function verifyShopifyCredentials(projectId: string): Promise<ShopifyIntegration> {
+  const payload = await request<{ integration: ShopifyIntegration }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/shopify/verify`,
+    { method: "POST", body: "{}" },
+  );
+  return payload.integration;
+}
+
+export async function deleteShopifyCredentials(projectId: string): Promise<ShopifyIntegration> {
+  const payload = await request<{ integration: ShopifyIntegration }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/shopify/credentials`,
     { method: "DELETE" },
   );
   return payload.integration;
