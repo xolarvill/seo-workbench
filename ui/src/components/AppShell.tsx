@@ -4,6 +4,7 @@ import {
   FolderOpen,
   GitBranch,
   House,
+  KeyRound,
   MoreVertical,
   Play,
   ShieldCheck,
@@ -14,7 +15,7 @@ import type { ProjectSummary } from "../api/types";
 import styles from "./AppShell.module.css";
 
 
-export type ViewName = "overview" | "workflow" | "content" | "audits" | "files" | "tutorials";
+export type ViewName = "overview" | "workflow" | "content" | "audits" | "files" | "integrations" | "tutorials";
 
 type AppShellProps = {
   projects: ProjectSummary[];
@@ -32,6 +33,7 @@ const navigation = [
   { id: "workflow" as const, label: "Workflow", icon: GitBranch },
   { id: "content" as const, label: "Content", icon: FileText },
   { id: "audits" as const, label: "Audits", icon: ShieldCheck },
+  { id: "integrations" as const, label: "Integrations", icon: KeyRound },
   { id: "files" as const, label: "Files", icon: FolderOpen },
 ];
 
@@ -107,6 +109,7 @@ export function AppShell({
           <div>
             <button type="button" onClick={() => onNavigate("content")}>Content</button>
             <button type="button" onClick={() => onNavigate("audits")}>Audits</button>
+            <button type="button" aria-current={activeView === "integrations" ? "page" : undefined} onClick={() => onNavigate("integrations")}>Integrations</button>
             <button type="button" aria-current={activeView === "tutorials" ? "page" : undefined} onClick={() => onNavigate("tutorials")}>Tutorials</button>
           </div>
         </details>

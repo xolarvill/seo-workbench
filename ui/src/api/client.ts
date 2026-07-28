@@ -1,4 +1,4 @@
-import type { FileSummary, Job, MarkdownFile, ProjectSummary, TutorialDocument, TutorialSummary, Workspace } from "./types";
+import type { FileSummary, GoogleIntegration, GscProperty, Job, MarkdownFile, ProjectSummary, TutorialDocument, TutorialSummary, Workspace } from "./types";
 
 
 export class ApiError extends Error {
@@ -34,6 +34,77 @@ export async function fetchProjects(): Promise<ProjectSummary[]> {
 export async function fetchWorkspace(projectId: string): Promise<Workspace> {
   const payload = await request<{ workspace: Workspace }>(`/api/v1/projects/${encodeURIComponent(projectId)}/workspace`);
   return payload.workspace;
+}
+
+export async function fetchGoogleIntegration(projectId: string): Promise<GoogleIntegration> {
+  const payload = await request<{ integration: GoogleIntegration }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/google`,
+  );
+  return payload.integration;
+}
+
+export async function saveCruxKey(projectId: string, apiKey: string): Promise<GoogleIntegration> {
+  const payload = await request<{ integration: GoogleIntegration }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/google/crux`,
+    { method: "PUT", body: JSON.stringify({ api_key: apiKey }) },
+  );
+  return payload.integration;
+}
+
+export async function deleteCruxKey(projectId: string): Promise<GoogleIntegration> {
+  const payload = await request<{ integration: GoogleIntegration }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/google/crux`,
+    { method: "DELETE" },
+  );
+  return payload.integration;
+}
+
+export async function importGscCredentials(
+  projectId: string,
+  profile: string,
+  credentialType: "oauth" | "service_account",
+  credential: Record<string, unknown>,
+): Promise<GoogleIntegration> {
+  const payload = await request<{ integration: GoogleIntegration }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/google/gsc/credentials`,
+    {
+      method: "POST",
+      body: JSON.stringify({ profile, credential_type: credentialType, credential }),
+    },
+  );
+  return payload.integration;
+}
+
+export async function fetchGscProperties(projectId: string, profile: string): Promise<GscProperty[]> {
+  const payload = await request<{ properties: GscProperty[] }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/google/gsc/properties`,
+    { method: "POST", body: JSON.stringify({ profile }) },
+  );
+  return payload.properties;
+}
+
+export async function saveGscBinding(projectId: string, profile: string, property: string): Promise<GoogleIntegration> {
+  const payload = await request<{ integration: GoogleIntegration }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/google/gsc/binding`,
+    { method: "PUT", body: JSON.stringify({ profile, property }) },
+  );
+  return payload.integration;
+}
+
+export async function deleteGscBinding(projectId: string): Promise<GoogleIntegration> {
+  const payload = await request<{ integration: GoogleIntegration }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/google/gsc/binding`,
+    { method: "DELETE" },
+  );
+  return payload.integration;
+}
+
+export async function deleteGscProfile(projectId: string, profile: string): Promise<GoogleIntegration> {
+  const payload = await request<{ integration: GoogleIntegration }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/integrations/google/gsc/profiles/${encodeURIComponent(profile)}`,
+    { method: "DELETE" },
+  );
+  return payload.integration;
 }
 
 export async function fetchFiles(projectId: string): Promise<FileSummary[]> {

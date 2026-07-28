@@ -16,6 +16,47 @@ export type EvidenceItem = {
   status: string;
 };
 
+export type GoogleCredentialProfile = {
+  profile: string;
+  credential_type: "oauth" | "service_account" | "unknown";
+  status: "ready" | "reauth_required" | "incomplete";
+  principal?: string | null;
+  updated_at: string | null;
+};
+
+export type GooglePropertyBinding = {
+  profile?: string;
+  property?: string;
+  permission_level?: string;
+  bound_at?: string | null;
+  status?: "invalid";
+};
+
+export type GoogleIntegration = {
+  access: "local_only";
+  crux: {
+    status: string;
+    configured: boolean;
+    source: "environment" | "private_file" | "missing";
+    removable: boolean;
+  };
+  gsc: {
+    status: string;
+    profiles: GoogleCredentialProfile[];
+    binding: GooglePropertyBinding | null;
+  };
+  security: {
+    secrets_returned: false;
+    storage_mode: string;
+    scope: string;
+  };
+};
+
+export type GscProperty = {
+  site_url: string;
+  permission_level: string;
+};
+
 export type FileSummary = {
   path: string;
   name: string;

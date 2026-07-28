@@ -67,6 +67,8 @@ describe("workbench frontend", () => {
     expect(screen.getAllByText("Example Shop").length).toBeGreaterThan(0);
     fireEvent.click(screen.getAllByRole("button", { name: /Workflow/i })[0]);
     expect(navigate).toHaveBeenCalledWith("workflow");
+    fireEvent.click(screen.getAllByRole("button", { name: /Integrations/i })[0]);
+    expect(navigate).toHaveBeenCalledWith("integrations");
     fireEvent.click(screen.getAllByRole("button", { name: /Tutorials/i })[0]);
     expect(navigate).toHaveBeenCalledWith("tutorials");
   });

@@ -5,13 +5,14 @@ import type { Job, WorkbenchEvent } from "./api/types";
 import { AppShell, type ViewName } from "./components/AppShell";
 import { ActionPanel } from "./features/actions/ActionPanel";
 import { FilesPage } from "./features/files/FilesPage";
+import { IntegrationsPage } from "./features/integrations/IntegrationsPage";
 import { OverviewPage } from "./features/overview/OverviewPage";
 import { TutorialsPage } from "./features/tutorials/TutorialsPage";
 import { WorkflowPage } from "./features/workflow/WorkflowPage";
 import { useProjects, useWorkbenchEvents, useWorkspace } from "./hooks/useWorkbenchData";
 
 const MarkdownWorkspace = lazy(() => import("./features/editor/MarkdownWorkspace"));
-const VIEWS = new Set<ViewName>(["overview", "workflow", "content", "audits", "files", "tutorials"]);
+const VIEWS = new Set<ViewName>(["overview", "workflow", "content", "audits", "files", "integrations", "tutorials"]);
 
 function viewFromHash(): ViewName {
   const value = window.location.hash.replace(/^#\/?/, "").split("/")[0] as ViewName;
@@ -72,6 +73,12 @@ export function App() {
   const fileRoot = useMemo(() => activeView === "content" ? "content" : activeView === "audits" ? "audits" : undefined, [activeView]);
   const error = projectError || workspaceError;
 
+  const runAuditAction = useCallback(async (action: string) => {
+    if (!selectedProject) throw new Error("Select a project before running evidence.");
+    const job = await startAction(selectedProject, action);
+    setJobs((value) => [job, ...value.filter((item) => item.id !== job.id)]);
+  }, [selectedProject]);
+
   if (error && projects.length === 0) return <div className="error-screen" role="alert">{error}</div>;
   if (!selectedProject || (!workspace && loading)) return <div className="loading-screen"><span>Opening local workbench</span></div>;
 
@@ -94,6 +101,7 @@ export function App() {
               .catch(() => setRefreshKey((value) => value + 1));
           }} /> : null}
           {activeView === "tutorials" ? <TutorialsPage /> : null}
+          {activeView === "integrations" ? <IntegrationsPage projectId={selectedProject} refreshKey={refreshKey} onRunAction={runAuditAction} /> : null}
           {activeView === "files" || activeView === "content" || activeView === "audits" ? (
             selectedFile ? (
               <Suspense fallback={<div className="loading-screen"><span>Loading editor</span></div>}>
@@ -110,8 +118,7 @@ export function App() {
         jobs={jobs}
         onClose={() => setActionsOpen(false)}
         onRun={(action) => {
-          startAction(selectedProject, action)
-            .then((job) => setJobs((value) => [job, ...value.filter((item) => item.id !== job.id)]))
+          runAuditAction(action)
             .catch((reason: Error) => setJobs((value) => [{ id: `error-${Date.now()}`, project_id: selectedProject, action, status: "failed", created_at: new Date().toISOString(), started_at: null, finished_at: new Date().toISOString(), exit_code: null, output: reason.message }, ...value]));
         }}
       />
