@@ -81,9 +81,9 @@ When the UI is open, new audit files and Markdown documents appear there automat
 
 ## Workbench interface
 
-The browser interface includes project switching, evidence status, audit actions, workflow progress, local Google credential management, file browsing, and a Markdown editor with source, split, and preview modes.
+The browser interface includes project switching, evidence status, audit actions, workflow progress, local Shopify and Google credential management, file browsing, and a Markdown editor with source, split, and preview modes.
 
-Open **Integrations** to configure CrUX and GSC without exposing secret values to project files or audit output. Credential mutations are local-only, use fixed API actions, and persist below ignored `.runtime/` paths with private permissions.
+Open **Integrations** to configure Shopify Admin API, CrUX, and GSC without exposing secret values to project files or audit output. Credential mutations are local-only, use fixed API actions, and persist below ignored `.runtime/` paths with private permissions.
 
 ![SEO Workbench Markdown editor](docs/assets/workbench-editor.jpg)
 
@@ -134,6 +134,12 @@ CrUX requires a Google API key. GSC supports desktop OAuth and service accounts,
 
 See [Google integrations](docs/google-integrations.md) for setup, authentication, evidence scopes, and status meanings.
 
+## Optional Shopify integration
+
+Shopify projects can store one project-scoped Admin API access token. The Workbench verifies the canonical `.myshopify.com` domain and granted access scopes before saving, never returns the token, and warns when the connected app has write scopes.
+
+See [Shopify integrations](docs/shopify-integrations.md) for custom app setup, rotation, and security boundaries.
+
 ## Setup requirements
 
 `./setup.sh` creates the Python environment, installs the pinned Python and Node dependencies, builds the Go technology helper and browser UI, and resolves Chrome or Chromium for rendered audits and Lighthouse.
@@ -151,6 +157,7 @@ Automatic installation of missing system runtimes currently requires macOS and H
 
 - [SEO tutorial index](docs/README.md)
 - [Google integrations](docs/google-integrations.md)
+- [Shopify integrations](docs/shopify-integrations.md)
 - [Standalone workbench architecture](docs/independent-workbench.md)
 - [Preserved SEO capability families](docs/capability-preservation.md)
 

@@ -97,6 +97,13 @@ TUTORIALS: tuple[dict[str, str], ...] = (
         "filename": "google-integrations.md",
     },
     {
+        "slug": "shopify-integrations",
+        "title": "Shopify 凭证与权限",
+        "description": "Admin API token、店铺身份、授权 scope 和项目级本地安全边界。",
+        "category": "Workbench",
+        "filename": "shopify-integrations.md",
+    },
+    {
         "slug": "new-site",
         "title": "从 0 到 1 新站 SEO 建设",
         "description": "新站的信息架构、上线证据、内容和测量顺序。",

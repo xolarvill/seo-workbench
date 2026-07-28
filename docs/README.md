@@ -23,6 +23,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 ## Operations and architecture
 
 - [Google integrations](google-integrations.md): CrUX and read-only GSC configuration, evidence scopes, and status meanings.
+- [Shopify integrations](shopify-integrations.md): Admin API credential setup, granted scopes, rotation, and project isolation.
 - [Standalone workbench architecture](independent-workbench.md): local setup, project isolation, CLI boundaries, and runtime design.
 - [Preserved SEO capability families](capability-preservation.md): provenance and capability-preservation notes from the standalone refactor.
 
