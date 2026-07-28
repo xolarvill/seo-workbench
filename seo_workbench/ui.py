@@ -16,7 +16,9 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Annotated, Any, AsyncIterator, Literal
+from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunsplit
+from urllib.request import Request as UrlRequest, urlopen
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Response, StreamingResponse
@@ -49,6 +51,14 @@ WATCHED_SUFFIXES = {".json", ".md", ".markdown", ".html", ".png", ".webp"}
 EXTENSION_ORIGIN = re.compile(r"^chrome-extension://[a-p]{32}$")
 MAX_BROWSER_CAPTURE_BYTES = 2 * 1024 * 1024
 MAX_GOOGLE_CREDENTIAL_BYTES = 128 * 1024
+MAX_SHOPIFY_RESPONSE_BYTES = 256 * 1024
+SHOPIFY_API_VERSION = "2026-07"
+SHOPIFY_DOMAIN = re.compile(r"^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.myshopify\.com$")
+SHOPIFY_SCOPE = re.compile(r"^[a-z][a-z0-9_]{0,127}$")
+SHOPIFY_CREDENTIAL_QUERY = """query WorkbenchCredentialCheck {
+  shop { name myshopifyDomain }
+  currentAppInstallation { accessScopes { handle } }
+}"""
 FORBIDDEN_CAPTURE_KEYS = {"authorization", "cookie", "cookies", "form_data", "headers", "html", "local_storage", "session_storage"}
 EXTENSION_TOKEN_LIFETIME = timedelta(days=30)
 PAIRING_RESPONSE_HEADERS = {
@@ -160,6 +170,13 @@ class GscProfileRequest(BaseModel):
 
 class GscBindingUpdate(GscProfileRequest):
     property: str = Field(min_length=1, max_length=2_048)
+
+
+class ShopifyCredentialUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    shop_domain: str = Field(min_length=1, max_length=253)
+    access_token: SecretStr
 
 
 class ExtensionPairingRequest(BaseModel):
@@ -718,6 +735,132 @@ def _google_integration_status(project_dir: Path, runtime_dir: Path) -> dict[str
     }
 
 
+def _shopify_credential_path(project_dir: Path) -> Path:
+    return state.safe_project_path(project_dir, ".runtime/integrations/shopify.json")
+
+
+def _shopify_project(project_dir: Path) -> bool:
+    return state.load_state(project_dir).get("project", {}).get("type") in {"shopify", "shopify-headless"}
+
+
+def _normalize_shopify_domain(value: str) -> str:
+    domain = value.strip().lower()
+    if domain.startswith("https://"):
+        parsed = urlparse(domain)
+        if parsed.path not in {"", "/"} or parsed.query or parsed.fragment or parsed.username or parsed.password or parsed.port:
+            raise ValueError("Enter only the canonical store.myshopify.com domain")
+        domain = parsed.hostname or ""
+    if not SHOPIFY_DOMAIN.fullmatch(domain):
+        raise ValueError("Shopify domain must use the canonical store.myshopify.com format")
+    return domain
+
+
+def _verify_shopify_credentials(shop_domain: str, access_token: str, timeout: float = 15) -> dict[str, Any]:
+    request = UrlRequest(
+        f"https://{shop_domain}/admin/api/{SHOPIFY_API_VERSION}/graphql.json",
+        data=json.dumps({"query": SHOPIFY_CREDENTIAL_QUERY}).encode("utf-8"),
+        headers={
+            "Content-Type": "application/json",
+            "User-Agent": "SEO-Workbench/0.2",
+            "X-Shopify-Access-Token": access_token,
+        },
+        method="POST",
+    )
+    try:
+        with urlopen(request, timeout=timeout) as response:
+            content = response.read(MAX_SHOPIFY_RESPONSE_BYTES + 1)
+    except HTTPError as exc:
+        if exc.code in {401, 403}:
+            raise ValueError("Shopify rejected this Admin API access token") from exc
+        raise ValueError(f"Shopify Admin API returned HTTP {exc.code}") from exc
+    except (OSError, URLError) as exc:
+        raise ValueError("Shopify Admin API could not be reached") from exc
+    if len(content) > MAX_SHOPIFY_RESPONSE_BYTES:
+        raise ValueError("Shopify Admin API response exceeded the safety limit")
+    try:
+        payload = json.loads(content)
+        data = payload["data"]
+        shop = data["shop"]
+        installation = data["currentAppInstallation"]
+        returned_domain = _normalize_shopify_domain(shop["myshopifyDomain"])
+        scopes = sorted(
+            {
+                item["handle"]
+                for item in installation["accessScopes"]
+                if isinstance(item, dict)
+                and isinstance(item.get("handle"), str)
+                and SHOPIFY_SCOPE.fullmatch(item["handle"])
+            }
+        )
+    except (KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        raise ValueError("Shopify Admin API returned an invalid credential response") from exc
+    if payload.get("errors") or returned_domain != shop_domain:
+        raise ValueError("Shopify credential verification did not match this store")
+    return {
+        "shop_name": str(shop["name"])[:200],
+        "shop_domain": returned_domain,
+        "scopes": scopes[:256],
+        "verified_at": _timestamp(),
+    }
+
+
+def _shopify_integration_status(project_dir: Path) -> dict[str, Any]:
+    applicable = _shopify_project(project_dir)
+    base = {
+        "access": "local_only",
+        "applicable": applicable,
+        "status": "needs_credentials" if applicable else "not_applicable",
+        "configured": False,
+        "source": "missing",
+        "shop_domain": None,
+        "shop_name": None,
+        "api_version": SHOPIFY_API_VERSION,
+        "scopes": [],
+        "write_scope_count": 0,
+        "verified_at": None,
+        "removable": False,
+        "secret_visibility": "write_only",
+    }
+    try:
+        path = _shopify_credential_path(project_dir)
+    except ValueError:
+        return {**base, "status": "unsafe_path"}
+    if path.is_symlink():
+        return {**base, "status": "unsafe_path"}
+    if not path.is_file():
+        return base
+    try:
+        stored = json.loads(path.read_text(encoding="utf-8"))
+        domain = _normalize_shopify_domain(stored["shop_domain"])
+        token = stored["access_token"]
+        scopes = stored["scopes"]
+        if not isinstance(token, str) or not token or not isinstance(scopes, list):
+            raise ValueError("invalid credential file")
+        safe_scopes = sorted(item for item in scopes if isinstance(item, str) and SHOPIFY_SCOPE.fullmatch(item))[:256]
+    except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError):
+        return {**base, "status": "invalid", "source": "private_file", "removable": True}
+    return {
+        **base,
+        "status": "ready",
+        "configured": True,
+        "source": "private_file",
+        "shop_domain": domain,
+        "shop_name": str(stored.get("shop_name", ""))[:200] or None,
+        "scopes": safe_scopes,
+        "write_scope_count": sum(scope.startswith("write_") for scope in safe_scopes),
+        "verified_at": stored.get("verified_at"),
+        "removable": True,
+    }
+
+
+def _write_shopify_credentials(project_dir: Path, access_token: str, verified: dict[str, Any]) -> None:
+    path = _shopify_credential_path(project_dir)
+    _secure_runtime_dir(path.parent.parent)
+    _secure_runtime_dir(path.parent)
+    payload = {"schema_version": "1.0", **verified, "access_token": access_token}
+    atomic_write_text(path, json.dumps(payload, ensure_ascii=False, indent=2) + "\n", mode=0o600)
+
+
 def _profile_users(profile: str, projects_root: Path) -> list[str]:
     users: list[str] = []
     if not projects_root.is_dir() or projects_root.is_symlink():
@@ -963,6 +1106,13 @@ def create_app(
                 return JSONResponse({"detail": "invalid Content-Length"}, status_code=400)
             if content_length > MAX_GOOGLE_CREDENTIAL_BYTES:
                 return JSONResponse({"detail": "Google credential payload exceeds the 128 KB limit"}, status_code=413)
+        if "/integrations/shopify" in path and request.method not in {"GET", "HEAD", "OPTIONS", "DELETE"}:
+            try:
+                content_length = int(request.headers.get("content-length", "0"))
+            except ValueError:
+                return JSONResponse({"detail": "invalid Content-Length"}, status_code=400)
+            if content_length > 8 * 1024:
+                return JSONResponse({"detail": "Shopify credential payload exceeds the 8 KB limit"}, status_code=413)
 
         def extension_response(response):
             if origin:
@@ -1367,6 +1517,71 @@ def create_app(
             shutil.rmtree(profile_dir)
         hub.publish({"type": "integration.updated", "project_id": project_id, "integration": "gsc", "at": _timestamp()})
         return {"ok": True, "integration": _google_integration_status(project_dir, runtime_dir)}
+
+    @app.get("/api/v1/projects/{project_id}/integrations/shopify")
+    def shopify_integrations(project_id: str, request: Request) -> dict[str, Any]:
+        _require_local_credential_access(request)
+        project_dir = _project(project_id, projects_root)
+        return {"ok": True, "integration": _shopify_integration_status(project_dir)}
+
+    @app.put("/api/v1/projects/{project_id}/integrations/shopify/credentials")
+    def save_shopify_credentials(project_id: str, request: Request, update: ShopifyCredentialUpdate) -> dict[str, Any]:
+        _require_local_credential_access(request)
+        project_dir = _project(project_id, projects_root)
+        if not _shopify_project(project_dir):
+            raise HTTPException(status_code=409, detail="Shopify credentials require a Shopify project")
+        try:
+            shop_domain = _normalize_shopify_domain(update.shop_domain)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        access_token = update.access_token.get_secret_value().strip()
+        if len(access_token) < 8 or len(access_token) > 512 or any(character.isspace() for character in access_token):
+            raise HTTPException(status_code=400, detail="Admin API access token must be 8-512 characters without whitespace")
+        try:
+            verified = _verify_shopify_credentials(shop_domain, access_token)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        try:
+            with project_lock(project_dir, lock_root=runtime_dir.parent / "locks"):
+                _write_shopify_credentials(project_dir, access_token, verified)
+        except (OSError, ValueError) as exc:
+            raise HTTPException(status_code=500, detail="Shopify credentials could not be stored securely") from exc
+        hub.publish({"type": "integration.updated", "project_id": project_id, "integration": "shopify", "at": _timestamp()})
+        return {"ok": True, "integration": _shopify_integration_status(project_dir)}
+
+    @app.post("/api/v1/projects/{project_id}/integrations/shopify/verify")
+    def verify_shopify_credentials(project_id: str, request: Request) -> dict[str, Any]:
+        _require_local_credential_access(request)
+        project_dir = _project(project_id, projects_root)
+        try:
+            path = _shopify_credential_path(project_dir)
+            stored = json.loads(path.read_text(encoding="utf-8"))
+            shop_domain = _normalize_shopify_domain(stored["shop_domain"])
+            access_token = stored["access_token"]
+            if not isinstance(access_token, str):
+                raise ValueError("invalid token")
+            verified = _verify_shopify_credentials(shop_domain, access_token)
+            with project_lock(project_dir, lock_root=runtime_dir.parent / "locks"):
+                _write_shopify_credentials(project_dir, access_token, verified)
+        except (KeyError, OSError, TypeError, ValueError, json.JSONDecodeError) as exc:
+            raise HTTPException(status_code=400, detail="Shopify credentials could not be verified. Reconnect this store.") from exc
+        hub.publish({"type": "integration.updated", "project_id": project_id, "integration": "shopify", "at": _timestamp()})
+        return {"ok": True, "integration": _shopify_integration_status(project_dir)}
+
+    @app.delete("/api/v1/projects/{project_id}/integrations/shopify/credentials")
+    def delete_shopify_credentials(project_id: str, request: Request) -> dict[str, Any]:
+        _require_local_credential_access(request)
+        project_dir = _project(project_id, projects_root)
+        try:
+            path = _shopify_credential_path(project_dir)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        if path.is_symlink():
+            raise HTTPException(status_code=400, detail="Shopify credential path cannot be a symlink")
+        with project_lock(project_dir, lock_root=runtime_dir.parent / "locks"):
+            path.unlink(missing_ok=True)
+        hub.publish({"type": "integration.updated", "project_id": project_id, "integration": "shopify", "at": _timestamp()})
+        return {"ok": True, "integration": _shopify_integration_status(project_dir)}
 
     @app.get("/api/v1/projects/{project_id}/files")
     def files(project_id: str) -> dict[str, Any]:

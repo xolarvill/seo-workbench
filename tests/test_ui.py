@@ -8,7 +8,7 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from seo_workbench import state
+from seo_workbench import state, ui as ui_module
 from seo_workbench.locks import lock_path, project_lock
 from seo_workbench.ui import ACTION_COMMANDS, COOKIE_NAME, BrowserCapture, EventHub, _safe_job_output, create_app
 from seo_workbench_tools import gsc_probe
@@ -423,6 +423,77 @@ def test_google_credential_management_is_local_only(tmp_path: Path) -> None:
     }
     with client:
         response = client.get("/api/v1/projects/store/integrations/google", headers=headers)
+    assert response.status_code == 403
+
+
+def test_shopify_integration_api_verifies_and_stores_write_only_token(tmp_path: Path, monkeypatch) -> None:
+    client, project_dir = ui_client(tmp_path)
+    secret = "shpat_test_secret_123456"
+    calls: list[tuple[str, str]] = []
+
+    def fake_verify(shop_domain: str, access_token: str, timeout: float = 15) -> dict:
+        calls.append((shop_domain, access_token))
+        return {
+            "shop_name": "Example Store",
+            "shop_domain": shop_domain,
+            "scopes": ["read_content", "read_products", "write_products"],
+            "verified_at": "2026-07-28T09:00:00+00:00",
+        }
+
+    monkeypatch.setattr(ui_module, "_verify_shopify_credentials", fake_verify)
+    with client:
+        before = client.get("/api/v1/projects/store/integrations/shopify")
+        saved = client.put(
+            "/api/v1/projects/store/integrations/shopify/credentials",
+            json={"shop_domain": "example-store.myshopify.com", "access_token": secret},
+        )
+        verified = client.post("/api/v1/projects/store/integrations/shopify/verify")
+
+    assert before.json()["integration"]["status"] == "needs_credentials"
+    assert saved.status_code == 200
+    assert secret not in saved.text
+    status = saved.json()["integration"]
+    assert status["shop_name"] == "Example Store"
+    assert status["write_scope_count"] == 1
+    assert status["secret_visibility"] == "write_only"
+    assert calls == [
+        ("example-store.myshopify.com", secret),
+        ("example-store.myshopify.com", secret),
+    ]
+    credential_path = project_dir / ".runtime/integrations/shopify.json"
+    assert json.loads(credential_path.read_text(encoding="utf-8"))["access_token"] == secret
+    assert credential_path.stat().st_mode & 0o777 == 0o600
+    assert verified.status_code == 200
+    assert secret not in verified.text
+
+    with client:
+        removed = client.delete("/api/v1/projects/store/integrations/shopify/credentials")
+    assert removed.status_code == 200
+    assert removed.json()["integration"]["status"] == "needs_credentials"
+    assert not credential_path.exists()
+
+
+def test_shopify_integration_rejects_non_shopify_domain_before_network(tmp_path: Path, monkeypatch) -> None:
+    client, _ = ui_client(tmp_path)
+    monkeypatch.setattr(ui_module, "_verify_shopify_credentials", lambda *args, **kwargs: (_ for _ in ()).throw(AssertionError("network should not run")))
+    with client:
+        response = client.put(
+            "/api/v1/projects/store/integrations/shopify/credentials",
+            json={"shop_domain": "example.com", "access_token": "shpat_test_secret"},
+        )
+    assert response.status_code == 400
+    assert "myshopify.com" in response.json()["detail"]
+
+
+def test_shopify_credential_management_is_local_only(tmp_path: Path) -> None:
+    client, _ = ui_client(tmp_path)
+    headers = {
+        "host": "seo.nucleus.localhost:8080",
+        "origin": "http://seo.nucleus.localhost:8080",
+        "x-nucleus-user-id": "operator-1",
+    }
+    with client:
+        response = client.get("/api/v1/projects/store/integrations/shopify", headers=headers)
     assert response.status_code == 403
 
 
