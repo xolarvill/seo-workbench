@@ -5,13 +5,13 @@ import type { Job, WorkbenchEvent } from "./api/types";
 import { AppShell, type ViewName } from "./components/AppShell";
 import { ActionPanel } from "./features/actions/ActionPanel";
 import { FilesPage } from "./features/files/FilesPage";
-import { IntegrationsPage } from "./features/integrations/IntegrationsPage";
 import { OverviewPage } from "./features/overview/OverviewPage";
 import { TutorialsPage } from "./features/tutorials/TutorialsPage";
 import { WorkflowPage } from "./features/workflow/WorkflowPage";
 import { useProjects, useWorkbenchEvents, useWorkspace } from "./hooks/useWorkbenchData";
 
 const MarkdownWorkspace = lazy(() => import("./features/editor/MarkdownWorkspace"));
+const IntegrationsPage = lazy(() => import("./features/integrations/IntegrationsPage").then((module) => ({ default: module.IntegrationsPage })));
 const VIEWS = new Set<ViewName>(["overview", "workflow", "content", "audits", "files", "integrations", "tutorials"]);
 
 function viewFromHash(): ViewName {
@@ -101,7 +101,11 @@ export function App() {
               .catch(() => setRefreshKey((value) => value + 1));
           }} /> : null}
           {activeView === "tutorials" ? <TutorialsPage /> : null}
-          {activeView === "integrations" ? <IntegrationsPage projectId={selectedProject} refreshKey={refreshKey} onRunAction={runAuditAction} /> : null}
+          {activeView === "integrations" ? (
+            <Suspense fallback={<div className="loading-screen"><span>Opening integrations</span></div>}>
+              <IntegrationsPage projectId={selectedProject} refreshKey={refreshKey} onRunAction={runAuditAction} />
+            </Suspense>
+          ) : null}
           {activeView === "files" || activeView === "content" || activeView === "audits" ? (
             selectedFile ? (
               <Suspense fallback={<div className="loading-screen"><span>Loading editor</span></div>}>
