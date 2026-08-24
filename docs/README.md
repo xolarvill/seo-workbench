@@ -8,6 +8,10 @@ The operational references are in English. The practical SEO tutorials are writt
 2. [SEO 增长诊断与拆解](SEO增长诊断与拆解.md) connects search visibility to visits, products, conversion, and revenue without turning diagnostic models into ranking formulas.
 3. [SEO 工具链协同工作流指南](SEO工具链协同工作流指南.md) maps Workbench commands to decisions and deliverables.
 4. [从 0 到 1 新站 SEO 建设教程](从0到1新站SEO建设教程.md) covers discovery, launch, measurement, and iteration for a new site.
+5. [BLOG 生产线操作教程](BLOG生产线操作教程.md) is the day-to-day Workbench-led path from topic approval through Shopify scheduling, GSC inspection, and Feishu notification.
+6. [Technical SEO Audit](technical-audit.md) documents the bounded crawl, deterministic rules, GSC priority model, diff, scheduling, and Feishu notification loop.
+7. [SEO 迭代闭环](SEO迭代闭环.md) covers the Pages action loop, change records, outcome review, aggregate business signals, technical issue verification, and backlink snapshots.
+8. [统计学 SEO 操作手册](统计学SEO操作手册.md) defines production prerequisites, measurement-regime duties, statistical methods, UI surfaces, and recovery rules.
 
 ## Choose the site guide
 
@@ -24,6 +28,8 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 
 - [Google integrations](google-integrations.md): CrUX and read-only GSC configuration, evidence scopes, and status meanings.
 - [Shopify integrations](shopify-integrations.md): Admin API credential setup, granted scopes, rotation, and project isolation.
+- [Statistical SEO operations](统计学SEO操作手册.md): the minimum operator preparation, daily collection entry point, measurement boundaries, and metric catalog.
+- [Hexcal BLOG adapter](hexcal-blog-migration.md): optional Feishu field aliases, ownership boundaries, and retained production capabilities.
 - [Standalone workbench architecture](independent-workbench.md): local setup, project isolation, CLI boundaries, and runtime design.
 - [Preserved SEO capability families](capability-preservation.md): provenance and capability-preservation notes from the standalone refactor.
 
@@ -37,6 +43,10 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 | How does the page perform in a controlled run? | Lighthouse |
 | How did eligible Chrome users experience it? | CrUX |
 | What did Google Search report? | GSC |
+| Which technical issues are tied to page performance and historical change? | technical audit |
+| Which shipped SEO changes are winning or regressing after their review date? | change ledger + GSC + optional aggregate business signals |
+| Which same-site pages need action, review, or observation now? | Pages workspace + full-site portfolio |
+| Which external links are new, confirmed lost, or pointing to known 404/410 targets? | same-source backlink snapshots + technical inventory |
 | What changed between comparable collections? | audit diff |
 
 Do not merge these sources into one SEO score. Keep URL, final URL, collection scope, device or form factor, data window, and confidence attached to every conclusion.

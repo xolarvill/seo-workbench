@@ -1,6 +1,6 @@
 # Google integrations
 
-SEO Workbench uses the official CrUX and Search Console REST APIs. CrUX, Lighthouse, and GSC remain separate evidence sources so an agent can explain whether a conclusion comes from lab execution, aggregated Chrome users, or Google Search.
+SEO Workbench uses the official CrUX, Search Console, and Google Analytics Data APIs. CrUX, Lighthouse, GSC, and GA4 remain separate evidence sources so an agent can explain whether a conclusion comes from lab execution, aggregated Chrome users, Google Search, or first-party site behavior.
 
 ## Setup boundary
 
@@ -10,13 +10,13 @@ All credential material is stored below `.runtime/google/` with private file per
 
 ## Visual credential management
 
-Start the local UI and open **Integrations**:
+Start the local UI and open **Connections**:
 
 ```bash
 ./seo --project example-store ui
 ```
 
-The Integrations workspace supports the complete operator flow:
+The Connections workspace supports the complete operator flow:
 
 1. Store, rotate, verify, or remove the workspace CrUX API key.
 2. Import a Google Desktop OAuth JSON file and complete consent in the browser, or import a service account JSON file.
@@ -25,9 +25,19 @@ The Integrations workspace supports the complete operator flow:
 5. Run CrUX or GSC evidence collection and inspect the resulting status.
 6. Disconnect project bindings and delete unused auth profiles.
 
+GA4 uses a separate `analytics.readonly` token and an explicit project-to-property binding. A 28-day collection stores landing-page and acquisition-channel aggregates ending two complete days ago by default; it does not collect user or event identifiers. To compare with finalized GSC and Shopify evidence, pass the GSC window's exact end date to both business collectors.
+
+```bash
+./seo --project example-store ga4 properties --profile ga4 --json
+./seo --project example-store ga4 bind --profile ga4 --property 123456789 --json
+./seo --project example-store ga4 collect --end-date 2026-08-10 --json
+```
+
+For routine production use, prefer `./seo --project example-store statistics collect --json`. It selects the finalized GSC end date, aligns GA4 and Shopify automatically, persists aggregate date-by-page history, and refuses incomparable windows. Record tracking, consent, property, or key-event definition changes with `statistics regime add`; see the [statistical SEO operations manual](统计学SEO操作手册.md).
+
 Security rules:
 
-- Credential APIs are available only on the local `127.0.0.1` or `localhost` Workbench session. Nucleus and other remote hosts cannot use them.
+- Credential APIs are available only on the local `127.0.0.1` or `localhost` Workbench session. Remote hosts cannot use them.
 - Secret values are write-only. Status responses contain credential type, profile name, service account identity when applicable, and timestamps, but never API keys, OAuth secrets, private keys, or tokens.
 - UI imports accept JSON content only, never arbitrary filesystem paths or shell commands. Payloads are limited to 128 KB.
 - Credential files and project bindings use mode `0600`; credential directories use mode `0700`.
@@ -84,7 +94,7 @@ Binding rejects inaccessible properties and properties that do not cover the pro
 ./seo --project example-store gsc collect --json
 ```
 
-- Search Analytics uses finalized web data and compares the latest complete 28-day window with the preceding 28 days. Page and query rows paginate to the API's 50,000-row exposure ceiling.
+- Search Analytics uses finalized web data and compares the latest complete 28-day window with the preceding 28 days. Query, page, query-page, device, and country rows paginate to the API's 50,000-row exposure ceiling. Query-page rows support landing-page ownership and multiple-page signals; country remains a separate market slice and is not merged into page totals.
 - Inspection chooses the homepage and representative URLs from current evidence, deduplicates them, enforces the bound property, and stops immediately on quota exhaustion. It describes Google's indexed version, not a live test.
 - Sitemap collection is read-only and excludes the deprecated `indexed` field.
 - `gsc collect` writes component snapshots plus a composite `audits/gsc/latest.json` used by audit diff.

@@ -144,6 +144,7 @@ audits/technology/latest.json
 audits/performance/latest.json
 audits/crux/latest.json
 audits/gsc/latest.json
+audits/content-portfolio/latest.json
 ```
 
 报告至少区分三类内容：
@@ -153,6 +154,39 @@ audits/gsc/latest.json
 - 当前缺口，本次采集没有足够数据。
 
 技术栈名称本身不是问题。只有 raw/rendered 差异、网络请求、性能归因或配置证据能把某项技术与具体影响连接起来。
+
+## Keywords 持续闭环
+
+一级导航 **Keywords** 不是新的任务库。它在读取时联合以下事实源：
+
+- `strategy/keyword-pool.jsonl`：人工决策和关键词采集字段；
+- `audits/gsc/search-analytics/latest.json`：当前观察到的 query 表现；
+- `audits/keywords/dataforseo/latest.json`：按需付费采集的市场量、CPC、付费竞争度、意图、趋势和 SERP；
+- `strategy/keyword-dives/*.md`：agent 深潜结果；
+- `content/blog-pipeline.jsonl` 与 `state.contentQueue`：生产状态和 Content ID；
+- `audits/content-portfolio/latest.json`：目标页面、query ownership 和最新 Statistics 投影。
+
+GSC 中尚未进入关键词池的 query 先显示为只读候选。Query 保留 GSC 观察到的原始表达和 exact-query 指标；Keyword 保存长期策略决策；Cluster 汇总已归属的相关 keyword/query；Target URL 指定计划承接页面。首次写入 `decision`、cluster、目标 URL、Content item 或 note 时，Workbench 才把该 query 物化到 `keyword-pool.jsonl`，不会复制整份 GSC 数据。人工字段只有 `decision`、`cluster_ref`、`target_url`、`target_content_id`、`note` 和由系统写入的 `updated_at`。`discovered → researched → mapped → in_production → live → measured` 阶段根据 research、Content、Portfolio 和 GSC 自动推导，不能人工改写；同一 Cluster 任一已归属 query 获得可比较 GSC 证据时，Cluster 聚合可进入 measured，但缺失 query 仍不解释为零。
+
+日常操作顺序：
+
+1. 在 **Opportunity Pool** 筛选 `unreviewed`，结合 priority 与 GSC impressions 决定 prioritize、hold 或 drop。
+2. 在单行抽屉或批量栏设置现有 cluster、同域 URL/站内路径和现有 Content ID。抽屉将 Strategy 与 Query evidence 分区，分别展示 exact-query 和 Cluster 聚合，避免把观察值当成人工字段。**Topic Map** 每个 Cluster 只显示一行，用于发现未归属、多个计划目标、多个 Content item、同一 query 多 URL 竞争和缺少内容承接的簇。
+3. 在 **Research** 打开已有 deep-dive。缺少文档时使用 **Agent deep dive**；UI 复制基于 `skills/keyword-deep-dive/SKILL.md` 的请求并打开 Codex，不预先创建空 Markdown。商业/交易意图写入稳定的 `strategy/keyword-dives/product-<slug>.md`，其他意图写入 `info-<slug>.md`。
+4. 从关键词进入 Content 生产，上线后从目标 URL 进入 Pages；Pages 的 top query 和 ownership conflict 也能返回 Keywords。
+5. 用现有 **Refresh statistics** 采集 GSC/GA4/Shopify 聚合证据，再查看 measured 阶段。Workbench 不保存第二份关键词指标。
+
+批量操作可选择当前页或全部筛选结果，单次上限 1,000 条。Workbench 会先验证所有 cluster、Content ID 和 target URL，再在一个项目锁内按 file revision 原子写入；任一字段非法则整批不写，并发修改返回冲突并要求重新检查。未知 JSONL 字段、Feishu `source_record` 和历史 string/list `cluster_ref` 均保留。缺少 GSC、Portfolio 或业务证据表示 `not observed`，不能解释为零流量、未收录或没有页面。
+
+Semrush 与 Google Ads 仍通过现有文件采集命令进入同一关键词池，不需要外部关键词数据库或常驻 SERP 服务：
+
+```bash
+./seo --project my-site keywords collect \
+  --google-ads-csv google-ads.csv \
+  --semrush-xlsx semrush.xlsx --json
+```
+
+DataForSEO 使用 REST v3，不引入 SDK。单个关键词可在抽屉中确认后采集 Keyword Overview 和 depth-10 Live SERP；Volume、CPC、付费搜索 Competition、Intent、12 个月趋势和 SERP 结果保存在独立 evidence artifact，Score 仍是 Workbench 的 `priority_score`。这两条接口均按请求计费，所以不随页面加载或 Statistics refresh 自动运行；缺少 provider evidence 显示为未采集，而不是零。
 
 ## 内容战略和生产
 
@@ -193,7 +227,9 @@ Workbench 会拒绝部分不可比数据，例如 Lighthouse 最终 URL 不同�
 ./seo --project my-site ui
 ```
 
-UI 监听本机地址，展示项目、证据、工作流和 Markdown 文件。它调用同一套受限 CLI 动作，不接收任意 shell 命令，也不提供凭据输入框。
+UI 监听本机地址，展示项目、证据、工作流和 Markdown 文件。它调用同一套受限 CLI 动作，不接收任意 shell 命令。
+
+Keywords 与 Pages 是日常经营入口。Keywords 处理 query 的筛选、研究、归属和阶段；Pages 处理 URL 的动作与复盘。先运行 `./seo --project my-site pages refresh --json`，再打开 `Actions → Now`。`Review` 收纳到期变更和待复验技术问题，`Watch` 保留监测和等数据页面；`All pages` 和 `Query conflicts` 用于追查证据。轻动作只更新现有本地台账，发布、重定向、重爬和站点修改仍回到 Content 或 Audit 并经原确认流程。
 
 UI 打开时，agent 仍然使用相同的 `./seo --project ...` 命令和项目文件。文件监听器会把新的审计和文档显示出来。编辑器使用 revision 检查，避免静默覆盖 agent 或用户的并发修改。
 

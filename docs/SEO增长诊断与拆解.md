@@ -243,6 +243,18 @@ Google 集成准备好后补充：
 ./seo --project <id> gsc collect --json
 ```
 
+对已经上线的改动，先记录假设和复查日期，再在窗口成熟后评价：
+
+```bash
+./seo --project <id> changes add --url https://example.com/page --type content \
+  --hypothesis "提升合格自然点击" --metric clicks --metric conversions --json
+./seo --project <id> business-signals import --from-file business-signals.csv --json
+./seo --project <id> changes evaluate <change_id> --json
+./seo --project <id> pages refresh --json
+```
+
+`changes evaluate` 只给出前后窗口的描述性证据，不作因果声明。`pages refresh` 合并 GSC、技术审计和线上内容 URL；某来源缺失表示 `not_observed`，不补成 0，也不能据此断言未收录或页面不存在。窗口重叠、长度不同、新内容未满 28 天或展示量不足时会要求继续观察，而不是强行给优化结论。
+
 按下面的顺序写诊断：
 
 1. 明确业务指标、时间窗口和变化起点。
@@ -250,9 +262,9 @@ Google 集成准备好后补充：
 3. 选择一个最能区分假设的维度做拆分。
 4. 把 Workbench、GSC、站内分析和商务数据放在各自能证明的范围内。
 5. 写出已确认事实、推断、缺口和下一项验证。
-6. 修复后用相同范围重新采集，并运行 `audit-diff`。
+6. 修复后用相同范围重新采集，并运行 `audit-diff` 或对应的 `changes evaluate`。
 
-Workbench 当前不会读取订单、CRM 或私密客服资料。需要使用这些数据时，先在业务系统中做聚合和匿名化，再把结论或安全样本写入当前项目。
+Workbench 可对已配置的 GA4 与 Shopify 项目执行只读采集，并按页面合并 sessions、key events 和商品净额；CRM 或私密客服等其他来源仍需先按页面和前后窗口聚合、匿名化，再通过 `business-signals import` 导入。不要导入用户、订单或事件标识符。完整执行格式见 [SEO 迭代闭环](SEO迭代闭环.md)。
 
 ## 诊断输出模板
 
