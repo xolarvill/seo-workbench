@@ -15,12 +15,14 @@ from seo_workbench.shopify_crawler import build_crawler_access
 from seo_workbench.cli import main
 from seo_workbench.tech_audit import (
     CrawlConfig,
+    CONFIG_FINGERPRINT_VERSION,
     RULES,
     TechAuditViewQuery,
     _classify_response,
     _retry_after_seconds,
     _xml_entries,
     _parse_html,
+    _semantic_config_fingerprint,
     continue_tech_audit,
     delete_tech_audit_run,
     evaluate_rules,
@@ -148,6 +150,15 @@ def test_normalize_url_and_html_fields() -> None:
 
 def test_page_template_ignores_locale_prefixes() -> None:
     assert page_template("https://example.com/de/products/desk") == "product"
+
+
+def test_semantic_config_fingerprint_ignores_collection_parameters() -> None:
+    base = CrawlConfig(allow_private=False)
+    relaxed = CrawlConfig(allow_private=True, max_urls=10, timeout=5.0, concurrency=1)
+    assert _semantic_config_fingerprint(base) == _semantic_config_fingerprint(relaxed)
+    strict = CrawlConfig(high_depth=5)
+    assert _semantic_config_fingerprint(base) != _semantic_config_fingerprint(strict)
+    assert CONFIG_FINGERPRINT_VERSION == "v2-semantic"
     assert page_template("https://example.com/en-ca/blogs/articles/guide") == "article"
     assert page_template("https://example.com/es/blogs/news") == "blog"
     assert page_type("https://example.com/es/custom/landing") == "other"

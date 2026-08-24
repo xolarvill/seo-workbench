@@ -2,8 +2,6 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-import pytest
-
 from seo_workbench import state
 from seo_workbench import tech_audit as tech_audit_module
 from seo_workbench.cli import main
@@ -68,6 +66,29 @@ def test_issue_register_does_not_verify_absence_from_incomparable_run(tmp_path: 
     sync_issue_register(project_dir, [], [issue], run_id="run-2", verification_allowed=False, now=NOW)
 
     assert list_issue_register(project_dir)["issues"][0]["status"] == "fixed"
+
+
+def test_provisional_verification_keeps_fixed_status_until_complete_run(tmp_path: Path) -> None:
+    project_dir = _project(tmp_path)
+    issue = _issue()
+    sync_issue_register(project_dir, [issue], [], run_id="run-1", verification_allowed=False, now=NOW)
+    update_issue_status(project_dir, "fp-1", "fixed", note="Patched", now=NOW)
+
+    provisional, _ = sync_issue_register(
+        project_dir, [], [issue], run_id="run-2", verification_allowed=False, verification_provisional=True, now=NOW
+    )
+    record = list_issue_register(project_dir)["issues"][0]
+    assert provisional["provisional_verified"] == 1
+    assert record["status"] == "fixed"
+    assert record["verification_status"] == "provisional"
+
+    passed, _ = sync_issue_register(
+        project_dir, [], [issue], run_id="run-3", verification_allowed=True, now=NOW
+    )
+    record = list_issue_register(project_dir)["issues"][0]
+    assert passed["verified"] == 1
+    assert record["status"] == "verified"
+    assert record["verification_status"] == "passed"
 
 
 def test_issue_cli_requires_reason_for_accepted_risk(tmp_path: Path, capsys) -> None:

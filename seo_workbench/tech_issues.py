@@ -89,13 +89,14 @@ def sync_issue_register(
     *,
     run_id: str,
     verification_allowed: bool,
+    verification_provisional: bool = False,
     now: datetime | None = None,
 ) -> tuple[dict[str, Any], Path]:
     path = state.safe_project_path(project_dir, REGISTER_PATH)
     at = _timestamp(now)
     current = {str(issue.get("fingerprint", "")): issue for issue in issues if issue.get("fingerprint")}
     baseline = {str(issue.get("fingerprint", "")) for issue in baseline_issues if issue.get("fingerprint")}
-    created = verified = reopened = failed = 0
+    created = verified = reopened = failed = provisional = 0
     with project_lock(project_dir):
         records = _read(path)
         by_fingerprint = {str(record.get("fingerprint", "")): record for record in records}
@@ -118,17 +119,23 @@ def sync_issue_register(
                     record["verification_status"] = "failed"
                     record["last_verification_run"] = run_id
                     failed += 1
-        if verification_allowed:
+        if verification_allowed or verification_provisional:
             for fingerprint in baseline - set(current):
                 record = by_fingerprint.get(fingerprint)
                 if record is None or record.get("status") == "verified":
                     continue
                 previous = str(record.get("status", ""))
-                record["status"] = "verified"
-                record["verification_status"] = "passed"
-                record["last_verification_run"] = run_id
-                _event(record, "verified_absent", at, run_id, previous_status=previous)
-                verified += 1
+                if verification_allowed:
+                    record["status"] = "verified"
+                    record["verification_status"] = "passed"
+                    record["last_verification_run"] = run_id
+                    _event(record, "verified_absent", at, run_id, previous_status=previous)
+                    verified += 1
+                elif record.get("status") == "fixed":
+                    record["verification_status"] = "provisional"
+                    record["last_verification_run"] = run_id
+                    _event(record, "provisional_verified_absent", at, run_id, previous_status=previous)
+                    provisional += 1
         _write(path, records)
     counts = Counter(str(record.get("status", "")) for record in records)
     return (
@@ -137,10 +144,12 @@ def sync_issue_register(
             "collection_status": "ok",
             "run_id": run_id,
             "verification_allowed": verification_allowed,
+            "verification_provisional": verification_provisional,
             "count": len(records),
             "counts": dict(sorted(counts.items())),
             "created": created,
             "verified": verified,
+            "provisional_verified": provisional,
             "reopened": reopened,
             "verification_failed": failed,
         },

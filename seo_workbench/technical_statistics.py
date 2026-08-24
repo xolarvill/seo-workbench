@@ -48,9 +48,10 @@ def build_technical_issue_effects(
     known_rules = {str(record.get("rule_id") or "") for record in records if record.get("rule_id")}
     for record in records:
         rule, url = str(record.get("rule_id") or ""), str(record.get("url") or "")
-        fixed = _verified_fix_day(record)
-        if not rule or not url or fixed is None or url not in indexed:
+        fix = _verified_fix_day(record)
+        if not rule or not url or fix is None or url not in indexed:
             continue
+        fixed, confidence = fix
         before = [(fixed - timedelta(days=offset)).isoformat() for offset in range(14, 0, -1)]
         after = [(fixed + timedelta(days=offset)).isoformat() for offset in range(1, 15)]
         crosses_regime = any(before[0] < regime <= after[-1] for regime in (regime_dates or set()))
@@ -68,6 +69,7 @@ def build_technical_issue_effects(
                 "previous_clicks_per_day": previous_clicks / 14,
                 "current_clicks_per_day": current_clicks / 14,
                 "clicks_per_day_change": (current_clicks - previous_clicks) / 14,
+                "confidence": confidence,
             }
         )
     rules: dict[str, dict[str, Any]] = {}
@@ -78,7 +80,8 @@ def build_technical_issue_effects(
             rules[rule] = {
                 "status": "insufficient_data",
                 "verified_fixes": len(selected),
-                "reason": "at least six verified fixes with complete 14-day pre/post evidence are required",
+                "provisional_fixes": sum(1 for item in selected if item["confidence"] == "provisional"),
+                "reason": "at least six verified or provisional fixes with complete 14-day pre/post evidence are required",
                 "causal_claim": False,
             }
             continue
@@ -91,6 +94,7 @@ def build_technical_issue_effects(
         rules[rule] = {
             "status": "tested",
             "verified_fixes": len(selected),
+            "provisional_fixes": sum(1 for item in selected if item["confidence"] == "provisional"),
             "design": "verified-fix within-page pre/post association",
             "window_days": 14,
             "clicks_per_day_change": {
@@ -128,25 +132,30 @@ def build_technical_issue_effects(
     return {
         "schema_version": "technical-statistics-v1",
         "status": "ok" if tests else "insufficient_data",
-        "method": "14-day verified-fix pre/post association; sign-flip tests; Benjamini-Hochberg FDR 0.05",
+        "method": "14-day verified/provisional fix pre/post association; sign-flip tests; Benjamini-Hochberg FDR 0.05",
         "tested_rules": len(tests),
         "significant_rules": sum(q_value <= 0.05 for q_value in q_values.values()),
         "rules": rules,
         "pages": dict(pages),
         "causal_claim": False,
-        "interpretation": "Association after verified fixes only; concurrent page and demand changes remain possible.",
+        "interpretation": "Association after verified fixes, plus provisional evidence from partial same-fingerprint audits; concurrent page and demand changes remain possible.",
     }
 
 
-def _verified_fix_day(record: dict[str, Any]) -> date | None:
-    if record.get("status") != "verified" or record.get("verification_status") != "passed":
+def _verified_fix_day(record: dict[str, Any]) -> tuple[date, str] | None:
+    if record.get("status") == "verified" and record.get("verification_status") == "passed":
+        confidence = "verified"
+    elif record.get("status") == "fixed" and record.get("verification_status") == "provisional":
+        confidence = "provisional"
+    else:
         return None
     for event in record.get("history") or []:
         if event.get("event") == "status_changed" and event.get("status") == "fixed":
             try:
-                return datetime.fromisoformat(str(event.get("at") or "").replace("Z", "+00:00")).astimezone(
+                fixed_at = datetime.fromisoformat(str(event.get("at") or "").replace("Z", "+00:00")).astimezone(
                     ZoneInfo("America/Los_Angeles")
                 ).date()
+                return fixed_at, confidence
             except ValueError:
                 return None
     return None

@@ -134,7 +134,7 @@ technical severity × GSC page performance × historical click change × busines
 
 GSC 不可用时仍会生成技术问题，但会标记 `gsc_attributed=false`；这不是因果归因或订单预测。
 
-问题台账保存在 `strategy/technical-issues.jsonl`。只有采集完整、配置指纹与基线一致的后续审计，才会把已不再出现的问题标记为 `verified`；部分抓取和不可比配置不会证明修复。再次出现的已验证问题会重新打开，仍被观察到的 `fixed` 问题会记录复验失败。
+问题台账保存在 `strategy/technical-issues.jsonl`。配置指纹只统计影响规则判定的字段；抓取上限、并发、超时、私有网段等采集参数不影响规则，不参与指纹。采集完整且语义指纹与基线一致的后续审计，会把已不再出现的问题标记为 `verified`；部分抓取但语义指纹一致的后续审计，会把已不再出现的问题标记为 `provisional`（低置信证据，可进入统计，但不构成证明修复）；不可比配置不会产生任何验证。再次出现的已验证问题会重新打开，仍被观察到的 `fixed` 问题会记录复验失败。
 
 ## 定时与飞书
 

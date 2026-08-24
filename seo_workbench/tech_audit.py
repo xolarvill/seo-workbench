@@ -34,6 +34,17 @@ from seo_workbench_tools.network_boundary import inspect_target, sensitive_query
 SCHEMA_VERSION = "1.0"
 COLLECTOR_VERSION = "0.1.0"
 TECH_AUDIT_ROOT = "audits/tech-audit"
+CONFIG_FINGERPRINT_VERSION = "v2-semantic"
+CONFIG_FINGERPRINT_FIELDS = (
+    "include_subdomains",
+    "load_sitemap",
+    "sitemap_urls",
+    "max_sitemaps",
+    "high_depth",
+    "slow_response_ms",
+    "large_html_bytes",
+    "rendered",
+)
 _REMAINING_QUEUE_CACHE: dict[tuple[str, int], tuple[list[dict[str, Any]], bool]] = {}
 TECH_AUDIT_HISTORY_RETENTION = 3
 DEFAULT_CONCURRENCY = 2
@@ -47,6 +58,17 @@ TRACKING_PARAMETERS = {"fbclid", "gclid", "dclid", "msclkid", "_gl", "ref"}
 LOGOUT_RE = re.compile(r"/(?:logout|log-out|signout|sign-out)(?:/|$)", re.I)
 CALENDAR_RE = re.compile(r"/(?:calendar|calendars|events?)/", re.I)
 LANGUAGE_RE = re.compile(r"^(?:x-default|[a-z]{2,3}(?:-[a-z0-9]{2,8})*)$")
+
+
+def _semantic_config_fingerprint(config: CrawlConfig) -> str:
+    """Fingerprint only the fields that change rule evaluation.
+
+    Collection parameters (crawl limits, concurrency, timeouts, private-network
+    access) affect coverage but not which rules fire, so they must not invalidate
+    issue presence comparisons between audits.
+    """
+    payload = {field: getattr(config, field) for field in CONFIG_FINGERPRINT_FIELDS}
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, default=list).encode()).hexdigest()
 
 
 @dataclass(frozen=True)
@@ -1776,6 +1798,7 @@ def _finalize_tech_audit_run(
     status: dict[str, Any],
     baseline_issues: list[dict[str, Any]],
     baseline_config_fingerprint: str = "",
+    baseline_config_fingerprint_version: str = "",
     sitemap_records: list[dict[str, Any]] | None = None,
     sitemap_entries: list[dict[str, str]] | None = None,
     continuation_of: str | None = None,
@@ -1808,13 +1831,19 @@ def _finalize_tech_audit_run(
     rate_limited = sum(page.get("crawl_status") == "rate_limited" for page in pages)
     blocked_by_waf = sum(page.get("crawl_status") == "blocked_by_waf" for page in pages)
     collection_status = "partial" if crawl["errors"] or crawl["stopped_by_limit"] else "ok"
-    config_fingerprint = hashlib.sha256(json.dumps(asdict(config), sort_keys=True, default=list).encode()).hexdigest()
+    config_fingerprint = _semantic_config_fingerprint(config)
+    fingerprint_matches = (
+        bool(baseline_config_fingerprint)
+        and baseline_config_fingerprint == config_fingerprint
+        and baseline_config_fingerprint_version == CONFIG_FINGERPRINT_VERSION
+    )
     issue_register, issue_register_path = sync_issue_register(
         project_dir,
         issues,
         baseline_issues,
         run_id=run_id,
-        verification_allowed=collection_status == "ok" and bool(baseline_config_fingerprint) and baseline_config_fingerprint == config_fingerprint,
+        verification_allowed=collection_status == "ok" and fingerprint_matches,
+        verification_provisional=collection_status != "ok" and fingerprint_matches,
         now=generated_at,
     )
     summary = {
@@ -1872,6 +1901,7 @@ def _finalize_tech_audit_run(
         "run_id": run_id,
         "config": asdict(config),
         "config_fingerprint": config_fingerprint,
+        "config_fingerprint_version": CONFIG_FINGERPRINT_VERSION,
         "summary": summary,
         "new_high_impact": [_issue_summary(issue) for issue in new_high],
         "new_high_impact_actions": new_high_actions,
@@ -1941,6 +1971,7 @@ def run_tech_audit(project_dir: Path, config: CrawlConfig) -> tuple[dict[str, An
             status=status,
             baseline_issues=baseline_issues,
             baseline_config_fingerprint=str(baseline_snapshot.get("config_fingerprint", "")),
+            baseline_config_fingerprint_version=str(baseline_snapshot.get("config_fingerprint_version", "")),
         )
     except Exception as exc:
         status.update({"status": "failed", "finished_at": _now().isoformat(), "error": str(exc)})
@@ -2011,6 +2042,7 @@ def continue_tech_audit(project_dir: Path, config: CrawlConfig | None = None) ->
             status=status,
             baseline_issues=baseline_issues,
             baseline_config_fingerprint=str(snapshot.get("config_fingerprint", "")),
+            baseline_config_fingerprint_version=str(snapshot.get("config_fingerprint_version", "")),
             continuation_of=str(snapshot.get("run_id", "")) or None,
             batch_number=batch_number,
             queue_recovered=queue_recovered,
