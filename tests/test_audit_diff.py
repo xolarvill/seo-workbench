@@ -8,6 +8,7 @@ from seo_workbench.audit_diff import (
     compare_gsc,
     compare_performance,
     compare_raw,
+    compare_tech_audit,
     compare_technology,
     create_diff,
     snapshot_pair,
@@ -396,3 +397,74 @@ def test_audit_parent_symlink_is_rejected_before_snapshot_read(tmp_path: Path) -
         assert "symlink" in str(exc)
     else:
         raise AssertionError("expected symlinked audits directory to fail")
+
+
+def test_tech_audit_diff_tracks_config_fingerprint_version(tmp_path: Path, monkeypatch) -> None:
+    from seo_workbench import audit_diff as audit_diff_module
+
+    monkeypatch.setattr(audit_diff_module, "load_tech_issues", lambda *_args: [])
+    baseline = {
+        "schema_version": "1.0",
+        "collector_version": "0.1.0",
+        "collection_status": "ok",
+        "seed_url": "https://example.com/",
+        "config_fingerprint": "a" * 64,
+        "config_fingerprint_version": "",
+        "summary": {"issues": 1},
+        "artifacts": {},
+    }
+    current = {
+        **baseline,
+        "config_fingerprint": "b" * 64,
+        "config_fingerprint_version": "v2-semantic",
+    }
+    _, warnings, comparable = compare_tech_audit(
+        tmp_path, tmp_path / "a.json", tmp_path / "b.json", baseline, current
+    )
+    assert comparable is False
+    assert any("fingerprint version" in warning for warning in warnings)
+
+    current["config_fingerprint"] = "a" * 64
+    _, warnings, comparable = compare_tech_audit(
+        tmp_path, tmp_path / "a.json", tmp_path / "b.json", baseline, current
+    )
+    assert comparable is False
+    assert any("fingerprint version" in warning for warning in warnings)
+
+    baseline["config_fingerprint_version"] = "v2-semantic"
+    _, warnings, comparable = compare_tech_audit(
+        tmp_path, tmp_path / "a.json", tmp_path / "b.json", baseline, current
+    )
+    assert comparable is True
+    assert warnings == []
+
+
+def test_compare_kind_reports_comparability_tier(tmp_path: Path) -> None:
+    from seo_workbench.audit_diff import compare_kind
+
+    project_dir = tmp_path / "projects/store"
+    state.init_state("shopify", "Store", "https://example.com", project_dir=project_dir)
+    raw_dir = project_dir / "audits/raw"
+    write_snapshot(raw_dir / "evidence-old.json", raw_snapshot("2026-07-15T00:00:00Z", "Old", 200, 1, 0))
+    write_snapshot(raw_dir / "evidence-new.json", raw_snapshot("2026-07-16T00:00:00Z", "New", 200, 0, 0))
+
+    strict = compare_kind(project_dir, "raw")
+    assert strict["comparability"] == "strict"
+    assert strict["comparable"] is True
+
+    none_tier = compare_kind(project_dir, "gsc")
+    assert none_tier["status"] == "no_data"
+    assert none_tier["comparability"] == "none"
+    assert none_tier["comparability_notes"] == ["no gsc snapshots found"]
+
+
+def test_create_diff_reports_comparability_summary(tmp_path: Path) -> None:
+    project_dir = tmp_path / "projects/store"
+    state.init_state("shopify", "Store", "https://example.com", project_dir=project_dir)
+    raw_dir = project_dir / "audits/raw"
+    write_snapshot(raw_dir / "evidence-old.json", raw_snapshot("2026-07-15T00:00:00Z", "Old", 200, 1, 0))
+    write_snapshot(raw_dir / "evidence-new.json", raw_snapshot("2026-07-16T00:00:00Z", "New", 200, 0, 0))
+
+    report, _ = create_diff(project_dir, kind="all")
+    assert report["comparability"] == "relaxed"
+    assert report["comparability_summary"] == {"strict": 1, "relaxed": 0, "none": 5}

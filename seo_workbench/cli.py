@@ -585,8 +585,15 @@ def cmd_audit_diff(args: argparse.Namespace) -> int:
                 "path": str(path),
                 "collection_status": report["collection_status"],
                 "summary": report["summary"],
+                "comparability": report.get("comparability"),
+                "comparability_summary": report.get("comparability_summary"),
                 "comparisons": {
-                    kind: {"status": item["status"], "comparable": item["comparable"]}
+                    kind: {
+                        "status": item["status"],
+                        "comparable": item["comparable"],
+                        "comparability": item.get("comparability"),
+                        "comparability_notes": item.get("comparability_notes", []),
+                    }
                     for kind, item in report["comparisons"].items()
                 },
             }

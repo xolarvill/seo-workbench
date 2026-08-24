@@ -700,7 +700,10 @@ def compare_tech_audit(
     if baseline.get("collection_status") == "failed" or current.get("collection_status") == "failed":
         comparable = False
         warnings.append("technical audit snapshot collection failed")
-    if baseline.get("config_fingerprint") != current.get("config_fingerprint"):
+    if baseline.get("config_fingerprint_version") != current.get("config_fingerprint_version"):
+        comparable = False
+        warnings.append("technical audit config fingerprint version differs")
+    elif baseline.get("config_fingerprint") != current.get("config_fingerprint"):
         comparable = False
         warnings.append("technical audit crawl configuration differs")
     if baseline.get("summary", {}).get("stopped_by_limit") or current.get("summary", {}).get("stopped_by_limit"):
@@ -736,6 +739,15 @@ COMPARATORS: dict[str, Callable[[dict[str, Any], dict[str, Any]], tuple[list[dic
 }
 
 
+def _comparability_tier(comparison: dict[str, Any]) -> str:
+    """strict: regression claims are allowed; relaxed: diff computed but caveats remain; none: no diff."""
+    if comparison.get("comparable"):
+        return "strict"
+    if comparison.get("status") != "ok":
+        return "none"
+    return "relaxed"
+
+
 def _validate_snapshot(kind: str, path: Path, snapshot: dict[str, Any]) -> None:
     if kind in {"raw", "technology"} and not isinstance(snapshot.get("pages"), list):
         raise ValueError(f"{kind} snapshot is missing pages: {path}")
@@ -764,14 +776,26 @@ def compare_kind(
         "baseline_path": str(baseline_path) if baseline_path else "",
         "current_path": str(current_path) if current_path else "",
         "comparable": False,
+        "comparability": "none",
+        "comparability_notes": [],
         "warnings": [],
         "changes": [],
         "summary": {"changes": 0, "regressions": 0, "improvements": 0},
     }
     if current_path is None:
-        return {**base, "status": "no_data", "warnings": [f"no {kind} snapshots found"]}
+        return {
+            **base,
+            "status": "no_data",
+            "warnings": [f"no {kind} snapshots found"],
+            "comparability_notes": [f"no {kind} snapshots found"],
+        }
     if baseline_path is None:
-        return {**base, "status": "no_baseline", "warnings": [f"only one {kind} snapshot found"]}
+        return {
+            **base,
+            "status": "no_baseline",
+            "warnings": [f"only one {kind} snapshot found"],
+            "comparability_notes": [f"only one {kind} snapshot found"],
+        }
     try:
         baseline = _load(baseline_path)
         current = _load(current_path)
@@ -783,7 +807,7 @@ def compare_kind(
             changes, warnings, comparable = COMPARATORS[kind](baseline, current)
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         return {**base, "status": "failed", "warnings": [str(exc)]}
-    return {
+    result = {
         **base,
         "status": "ok",
         "baseline_generated_at": baseline.get("generated_at", ""),
@@ -793,6 +817,9 @@ def compare_kind(
         "changes": changes,
         "summary": _summary(changes),
     }
+    result["comparability"] = _comparability_tier(result)
+    result["comparability_notes"] = list(warnings)
+    return result
 
 
 def create_diff(
@@ -825,6 +852,19 @@ def create_diff(
         "regressions": sum(item["summary"]["regressions"] for item in comparisons.values()),
         "improvements": sum(item["summary"]["improvements"] for item in comparisons.values()),
     }
+    tiers = [comparison.get("comparability", "none") for comparison in comparisons.values()]
+    comparability_summary = {
+        "strict": sum(tier == "strict" for tier in tiers),
+        "relaxed": sum(tier == "relaxed" for tier in tiers),
+        "none": sum(tier == "none" for tier in tiers),
+    }
+    overall_comparability = (
+        "strict"
+        if tiers and all(tier == "strict" for tier in tiers)
+        else "none"
+        if not any(tier in {"strict", "relaxed"} for tier in tiers)
+        else "relaxed"
+    )
     generated_at = datetime.now(timezone.utc)
     output_dir = state.safe_project_path(project_dir, "audits/diffs")
     output_path = output_dir / f"audit-diff-{generated_at.strftime('%Y%m%dT%H%M%S%fZ')}.json"
@@ -839,6 +879,8 @@ def create_diff(
             "url": _nested(project_state, "project.url", ""),
         },
         "requested_kind": kind,
+        "comparability": overall_comparability,
+        "comparability_summary": comparability_summary,
         "comparisons": comparisons,
         "summary": aggregate,
         "errors": [
