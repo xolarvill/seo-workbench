@@ -34,8 +34,6 @@ A local-first all-in-one SEO workspace. Use it from an AI coding agent and manag
 
 SEO Workbench is agent-neutral. Codex, Claude Code, or another coding agent can use the same `./seo` commands, project files, and local skills. The CLI remains the source of truth when the UI is closed.
 
-The Hexcal content workflow remains available as an optional adapter. Workbench project files stay authoritative; Feishu imports never overwrite existing local decisions, and remote Base, table, field, recipient, and chat IDs stay in ignored `.runtime/profiles.json` configuration.
-
 ## Quick start
 
 ```bash
@@ -88,24 +86,6 @@ Each project stores decision records under `projects/<id>/reports/` with the nam
 
 `./seo reports list` indexes the archive (weekly checkbox/carry-over/follow-up projections plus category-grouped sub-reports; `--q`, `--category`, and `--year` narrow the sub-report index) and `./seo reports new` scaffolds the next ISO week from the template, carrying unfinished work over into the new `速览` by default. The **Reports** tab in the browser workbench surfaces the same archive: **Weekly** leads with a progress view (follow-up due dates grouped into overdue/this-week/later, plus tasks carried across two or more weeks) and a searchable, filterable sub-report index, while **Notify** covers content reports, index inspection, and Feishu notifications.
 
-## Workbench interface
-
-The browser interface includes project switching, evidence status, audit actions, workflow progress, local Shopify and Google credential management, file browsing, and a Markdown editor with source, split, and preview modes. Opening a report or document from any workbench surface raises it as a floating overlay — click the backdrop or press Escape to close it and keep working in the list behind it. The overlay starts in a compact preview size tuned for quick scanning; use the `A−` / `A+` controls in its toolbar to adjust the preview and editor font size (12–20px, remembered across sessions).
-
-**Keywords** joins `strategy/keyword-pool.jsonl`, the latest GSC queries, keyword deep dives, the Content queue, and the Pages portfolio into one operating view. Query is read-only observed search language; Keyword holds the durable strategy decision; Cluster groups related keywords and observed queries; Target URL assigns page ownership. GSC-only queries remain candidates until an operator first records a decision or ownership field. Opportunity Pool keeps exact-query metrics separate from cluster aggregates; Topic Map rolls member queries up by cluster and flags planned target, Content, and exact-query ownership conflicts; Research opens an existing deep dive or copies a request based on `skills/keyword-deep-dive/SKILL.md` without creating an empty document. Batch edits are limited to 1,000 filtered keywords and use the keyword-pool file revision: validation is all-or-nothing, and concurrent changes return a conflict instead of being overwritten.
-
-**Pages** opens on the current `Now` actions, with separate views for all observed pages and query ownership conflicts. It projects existing portfolio, content, technical issue, and change state instead of creating another task store. Query links return to Keywords; keyword target URLs and Content items link forward to their owning workspaces, completing the discovery → mapping → research → production → live → measured loop.
-
-Keywords and Pages can record local decisions and update existing ledgers. Publishing, redirects, recrawls, indexing submissions, and site changes remain in their domain workspaces with their existing confirmation steps. Keyword performance is read from Statistics/Portfolio rather than copied into a second store. Missing evidence is shown as not observed, never as a zero metric.
-
-Open **Connections** to configure Shopify Admin API, CrUX, and GSC without exposing secret values to project files or audit output. The **Optional providers** tab stores project-scoped DataForSEO credentials and verifies them with the free `appendix/user_data` endpoint. Credential changes are local-only and persist below ignored `.runtime/` paths with private permissions.
-
-DataForSEO integration uses its REST API v3 directly, with no SDK dependency. Opportunity Pool shows provider Volume, CPC, paid-search Competition, Intent and 12-month trend separately from GSC query performance; Score remains the Workbench strategic priority score. A confirmed single-keyword action calls Keyword Overview plus a depth-10 Live SERP, records the returned cost and sanitized evidence under `audits/keywords/dataforseo/`, and never copies provider metrics into `keyword-pool.jsonl`. Every paid refresh requires an explicit browser confirmation.
-
-![SEO Workbench Markdown editor](docs/assets/workbench-editor.jpg)
-
-The editor checks file revisions before saving. If an agent changes the same document, the UI preserves your local edit and asks you to compare or reload instead of overwriting either version.
-
 ## Common commands
 
 ```bash
@@ -133,9 +113,6 @@ The editor checks file revisions before saving. If an agent changes the same doc
 
 # Compare recent compatible snapshots
 ./seo --project my-site audit-diff --json
-
-# Optional Hexcal seed import; Workbench decisions remain authoritative
-./seo --project hexcal content import-feishu --profile hexcal-seo --json
 
 # Workbench-led Blog production
 ./seo --project my-site content cluster-brief --json
@@ -209,7 +186,6 @@ Automatic installation of missing system runtimes currently requires macOS and H
 - [SEO tutorial index](docs/README.md)
 - [SEO iteration loop](docs/SEO迭代闭环.md)
 - [BLOG production tutorial](docs/BLOG生产线操作教程.md)
-- [Hexcal BLOG migration and production contract](docs/hexcal-blog-migration.md)
 - [Google integrations](docs/google-integrations.md)
 - [Shopify integrations](docs/shopify-integrations.md)
 - [Standalone workbench architecture](docs/independent-workbench.md)
