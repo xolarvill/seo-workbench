@@ -5,6 +5,8 @@ __pycache__/
 .uv-cache/
 .uv-python/
 .runtime/
+.ruff_cache/
+.pytest_cache/
 node_modules/
 ui/dist/
 extension/dist/
