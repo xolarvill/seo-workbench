@@ -860,6 +860,27 @@ def test_reports_api_lists_archive_and_serves_weekly_files(tmp_path: Path) -> No
     assert "周报" in opened.json()["file"]["content"]
 
 
+def test_reports_presentation_status_and_action_are_exposed(tmp_path: Path, monkeypatch) -> None:
+    client, _ = ui_client(tmp_path)
+    captured: list[dict[str, object]] = []
+
+    def fake_start(self, project_id: str, action: str) -> dict:
+        captured.append({"project_id": project_id, "action": action})
+        return {"id": "job-presentation", "project_id": project_id, "action": action, "status": "queued"}
+
+    monkeypatch.setattr(ui_module.JobManager, "start", fake_start)
+    with client:
+        status = client.get("/api/v1/projects/store/reports/presentation")
+        started = client.post("/api/v1/projects/store/actions", json={"action": "presentation-weekly"})
+
+    assert status.status_code == 200
+    assert status.json()["status"] == "blocked"
+    assert status.json()["checks"]
+    assert started.status_code == 202
+    assert captured == [{"project_id": "store", "action": "presentation-weekly"}]
+    assert ACTION_COMMANDS["presentation-weekly"] == ("reports", "presentation", "generate", "--json")
+
+
 def test_reports_new_action_runs_scaffold_command(tmp_path: Path, monkeypatch) -> None:
     client, _ = ui_client(tmp_path)
     captured: list[dict[str, object]] = []

@@ -21,7 +21,7 @@ from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunsplit
 from urllib.request import Request as UrlRequest, urlopen
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Response, StreamingResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response, StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field, SecretStr
 from watchfiles import Change, awatch
 
@@ -47,6 +47,7 @@ from seo_workbench.keyword_workspace import (
 from seo_workbench.keywords import normalize_keyword
 from seo_workbench.measurement_regimes import list_regimes
 from seo_workbench.page_workspace import PageWorkspaceQuery, page_workspace_detail, query_page_workspace
+from seo_workbench.presentation import presentation_due, presentation_status
 from seo_workbench.report_archive import list_report_archive
 from seo_workbench.seo_changes import get_change, list_changes, record_change, update_change_status
 from seo_workbench.seo_outcomes import evaluate_change
@@ -507,6 +508,7 @@ ACTION_COMMANDS: dict[str, tuple[str, ...]] = {
     "audit-diff": ("audit-diff", "--json"),
     "pages-refresh": ("pages", "refresh", "--json"),
     "statistics-collect": ("statistics", "collect", "--json"),
+    "presentation-weekly": ("reports", "presentation", "generate", "--json"),
 }
 ITEM_CONTENT_ACTIONS = {
     "brief",
@@ -568,6 +570,7 @@ class JobManager:
         self._running_projects: set[str] = set()
         self._processes: dict[str, asyncio.subprocess.Process] = {}
         self._scheduler_task: asyncio.Task[None] | None = None
+        self._presentation_attempts: set[tuple[str, int, int]] = set()
 
     def list(self, project_id: str) -> list[dict[str, Any]]:
         return sorted(
@@ -681,6 +684,14 @@ class JobManager:
                 try:
                     if schedule_due(load_schedule(project_dir)):
                         self.start_command(project_id, "tech-audit:scheduled", ("tech-audit", "run", "--scheduled", "--include-subdomains", "--json"))
+                        continue
+                    local_now = datetime.now().astimezone()
+                    iso = local_now.date().isocalendar()
+                    key = (project_id, iso.year, iso.week)
+                    if key not in self._presentation_attempts and presentation_due(project_dir, now=local_now):
+                        if presentation_status(project_dir, now=local_now).get("ready"):
+                            self._presentation_attempts.add(key)
+                            self.start_command(project_id, "presentation:scheduled", ("reports", "presentation", "generate", "--json"))
                 except (OSError, RuntimeError, ValueError):
                     continue
 
@@ -1800,6 +1811,8 @@ def _content_command(project_dir: Path, request: ContentActionRequest) -> tuple[
         command += ["report", "--period", request.period, "--json"]
     elif action == "reports-new":
         return ("reports", "new", "--json")
+    elif action == "presentation-weekly":
+        return ("reports", "presentation", "generate", "--json")
     elif action == "notify-report":
         path = _content_relative_path(project_dir, request.report_path, field="report_path")
         title = request.title or path.stem
@@ -2997,6 +3010,23 @@ def create_app(
     def report_archive(project_id: str, q: str = "", category: str = "", year: int | None = None, month: int | None = None) -> dict[str, Any]:
         project_dir = _project(project_id, projects_root)
         return {"ok": True, **list_report_archive(project_dir, query=q, category=category, year=year, month=month)}
+
+    @app.get("/api/v1/projects/{project_id}/reports/presentation")
+    def report_presentation(project_id: str) -> dict[str, Any]:
+        project_dir = _project(project_id, projects_root)
+        return {"ok": True, **presentation_status(project_dir)}
+
+    @app.get("/api/v1/projects/{project_id}/reports/presentation/pdf")
+    def report_presentation_pdf(project_id: str) -> FileResponse:
+        project_dir = _project(project_id, projects_root)
+        artifact = presentation_status(project_dir).get("artifact") or {}
+        relative = str(artifact.get("path") or "")
+        if not relative.endswith(".pdf"):
+            raise HTTPException(status_code=404, detail="Presentation PDF not found")
+        path = state.safe_project_path(project_dir, relative)
+        if not path.is_file() or path.is_symlink():
+            raise HTTPException(status_code=404, detail="Presentation PDF not found")
+        return FileResponse(path, media_type="application/pdf", filename=path.name)
 
     @app.get("/api/v1/projects/{project_id}/files/{relative_path:path}")
     def read_file(project_id: str, relative_path: str) -> dict[str, Any]:
