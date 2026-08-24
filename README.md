@@ -84,7 +84,7 @@ WebView/cookieless previews (for example the Codex built-in browser) can use `./
 
 Each project stores decision records under `projects/<id>/reports/` with the name `YYYYMMDD_<category>_<topic>.md`. Weekly work uses one `YYYY_week_WW_work_done.md` file and the four-section template in `templates/weekly_work_done.md`; update the same weekly file instead of creating duplicates.
 
-`./seo reports list` indexes the archive (weekly checkbox/carry-over/follow-up projections plus category-grouped sub-reports; `--q`, `--category`, and `--year` narrow the sub-report index) and `./seo reports new` scaffolds the next ISO week from the template, carrying unfinished work over into the new `速览` by default. The **Reports** tab in the browser workbench surfaces the same archive: **Weekly** leads with a progress view (follow-up due dates grouped into overdue/this-week/later, plus tasks carried across two or more weeks) and a searchable, filterable sub-report index, while **Notify** covers content reports, index inspection, and Feishu notifications.
+`./seo reports list` indexes the archive (weekly checkbox/carry-over/follow-up projections plus category-grouped sub-reports; `--q`, `--category`, and `--year` narrow the sub-report index) and `./seo reports new` scaffolds the next ISO week from the template, carrying unfinished work over into the new `速览` by default. `./seo reports presentation status --json` checks the Friday deck gate and `reports presentation generate --json` writes a four-page PDF under `reports/presentations/`; it requires fresh statistics, a recent finalized GSC end date, 28 days of GSC/business history, and a portfolio snapshot. Partial or incomparable evidence stays labelled in the deck. When the local UI is open, its scheduler attempts the current week's presentation after Friday 16:00 local time. The **Reports** tab in the browser workbench surfaces the same archive: **Weekly** leads with a progress view (follow-up due dates grouped into overdue/this-week/later, plus tasks carried across two or more weeks) and a searchable, filterable sub-report index; **Presentation** is the team-facing visual PDF surface; **Notify** covers content reports, index inspection, and Feishu notifications.
 
 ## Common commands
 
@@ -131,6 +131,8 @@ Each project stores decision records under `projects/<id>/reports/` with the nam
 # Reporting archive
 ./seo --project my-site reports list --json
 ./seo --project my-site reports new --json
+./seo --project my-site reports presentation status --json
+./seo --project my-site reports presentation generate --json
 
 # Record a shipped SEO change, then evaluate it after the review window
 ./seo --project my-site changes add --url https://example.com/page --type content \
