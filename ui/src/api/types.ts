@@ -192,6 +192,39 @@ export type ReportArchive = {
   progress: ReportProgress;
 };
 
+export type PresentationCheck = {
+  code: string;
+  label: string;
+  passed: boolean;
+  required: boolean;
+  detail: string;
+};
+
+export type PresentationStatus = {
+  ok?: boolean;
+  schema_version: string;
+  status: "ready" | "ready_with_warnings" | "blocked";
+  ready: boolean;
+  report_date: string;
+  target_week: { year: number; week: number };
+  max_statistics_age_hours: number;
+  statistics: {
+    status: string;
+    completed_at?: string;
+    age_hours?: number | null;
+    common_finalized_end_date?: string | null;
+  };
+  checks: PresentationCheck[];
+  warnings: string[];
+  artifact: {
+    path: string;
+    manifest_path?: string;
+    size: number;
+    generated_at?: string;
+    week?: { year: number; week: number } | null;
+  } | null;
+};
+
 export type ContentQueueItem = {
   id: string;
   status: string;

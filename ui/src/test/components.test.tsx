@@ -2,8 +2,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import { useState } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { createSeoChange, evaluateSeoChange, fetchFiles, fetchMarkdown, fetchPageDetail, fetchPageView, fetchReportArchive, fetchSeoChanges, fetchTechAudit, fetchTechAuditDetail, fetchTechAuditView, fetchTutorial, fetchTutorials, updateContentStatus, updateSeoChangeStatus, updateTechAuditSchedule, updateTechnicalIssueStatus } from "../api/client";
-import type { FileSummary, Job, PageDetailResponse, PageViewResponse, ReportArchive, SeoChangesResponse, TechAuditData, TechAuditDetailResponse, TechAuditViewResponse, TutorialDocument, TutorialSummary, Workspace } from "../api/types";
+import { createSeoChange, evaluateSeoChange, fetchFiles, fetchMarkdown, fetchPageDetail, fetchPageView, fetchPresentationStatus, fetchReportArchive, fetchSeoChanges, fetchTechAudit, fetchTechAuditDetail, fetchTechAuditView, fetchTutorial, fetchTutorials, updateContentStatus, updateSeoChangeStatus, updateTechAuditSchedule, updateTechnicalIssueStatus } from "../api/client";
+import type { FileSummary, Job, PageDetailResponse, PageViewResponse, PresentationStatus, ReportArchive, SeoChangesResponse, TechAuditData, TechAuditDetailResponse, TechAuditViewResponse, TutorialDocument, TutorialSummary, Workspace } from "../api/types";
 import { AppShell } from "../components/AppShell";
 import { Drawer } from "../components/Drawer";
 import { Pagination, SearchField, pageLabel } from "../components/WorkbenchControls";
@@ -27,6 +27,7 @@ vi.mock("../api/client", () => ({
   fetchMarkdown: vi.fn(),
   fetchPageDetail: vi.fn(),
   fetchPageView: vi.fn(),
+  fetchPresentationStatus: vi.fn(),
   fetchReportArchive: vi.fn(),
   fetchSeoChanges: vi.fn(),
   fetchTechAudit: vi.fn(),
@@ -180,6 +181,19 @@ const reportArchive: ReportArchive = {
   },
 };
 
+const presentationStatus: PresentationStatus = {
+  schema_version: "seo-presentation-v1",
+  status: "ready_with_warnings",
+  ready: true,
+  report_date: "2026-08-28",
+  target_week: { year: 2026, week: 35 },
+  max_statistics_age_hours: 72,
+  statistics: { status: "partial", completed_at: "2026-08-28T06:00:00Z", age_hours: 2, common_finalized_end_date: "2026-08-26" },
+  checks: [{ code: "statistics_fresh", label: "Statistics freshness", passed: true, required: true, detail: "completed 2h ago" }],
+  warnings: ["business measurement regime changed inside the comparison range"],
+  artifact: { path: "reports/presentations/2026_week_35.pdf", size: 48000, generated_at: "2026-08-28T08:00:00Z", week: { year: 2026, week: 35 } },
+};
+
 const seoChanges: SeoChangesResponse = {
   schema_version: "seo-change-list-v1",
   collection_status: "ok",
@@ -266,6 +280,7 @@ pageDetail.internal_link_candidates = { status: "ok", reason: "Manual implementa
 beforeEach(() => {
   vi.mocked(fetchFiles).mockResolvedValue(contentFiles);
   vi.mocked(fetchReportArchive).mockResolvedValue(reportArchive);
+  vi.mocked(fetchPresentationStatus).mockResolvedValue(presentationStatus);
   vi.mocked(fetchSeoChanges).mockResolvedValue(seoChanges);
   vi.mocked(fetchMarkdown).mockResolvedValue({ path: "reports/2026_week_34_work_done.md", content: "# Week 34\n\n## 速览\n\n- [x] 完成", revision: "r1", modified_at: "2026-08-18T00:00:00Z" });
   vi.mocked(fetchPageView).mockImplementation(async (_projectId, params) => ({ ...pageView, dataset: params.dataset, columns: params.dataset === "actions" ? pageView.columns : [{ id: params.dataset === "pages" ? "title" : "query", label: params.dataset === "pages" ? "Page" : "Query", default: true }], rows: params.dataset === "actions" ? pageView.rows : [] }));
@@ -664,6 +679,16 @@ describe("workbench frontend", () => {
     fireEvent.change(screen.getByRole("combobox", { name: "Filter SEO changes by type" }), { target: { value: "content" } });
     expect(screen.queryByText("Improve the product title")).toBeNull();
     expect(screen.getByText("Expand the guide")).toBeTruthy();
+  });
+
+  it("renders presentation readiness and starts PDF generation", async () => {
+    const run = vi.fn().mockResolvedValue(undefined);
+    render(<ReportsPage projectId="shop" jobs={[]} refreshKey={0} section="presentation" onOpenFile={vi.fn()} onRunContentAction={vi.fn()} onRunPresentation={run} />);
+    expect(await screen.findByRole("heading", { name: "Presentation" })).toBeTruthy();
+    expect(screen.getByText("Friday afternoon output")).toBeTruthy();
+    expect(screen.getByText("business measurement regime changed inside the comparison range")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Generate PDF" }));
+    await waitFor(() => expect(run).toHaveBeenCalledTimes(1));
   });
 
   it("renders reports weekly with the work archive and scaffolds the next week", async () => {

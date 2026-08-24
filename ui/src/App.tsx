@@ -42,7 +42,7 @@ function auditSectionFromRoute(route: HashRoute): AuditSection {
 }
 
 function reportSectionFromRoute(route: HashRoute): ReportSection {
-  return route.parts[1] === "notify" ? "notify" : route.parts[1] === "seo-changes" ? "seo-changes" : "weekly";
+  return route.parts[1] === "notify" ? "notify" : route.parts[1] === "presentation" ? "presentation" : route.parts[1] === "seo-changes" ? "seo-changes" : "weekly";
 }
 
 function contentSectionFromRoute(route: HashRoute): ContentSection {
@@ -257,7 +257,7 @@ export function App() {
               initialItemId={routeParams.get("item")}
             />
           ) : null}
-          {activeView === "reports" ? <ReportsPage projectId={selectedProject} jobs={jobs} refreshKey={refreshKey} section={activeReportSection} onOpenFile={openFile} onRunContentAction={runContentAction} /> : null}
+          {activeView === "reports" ? <ReportsPage projectId={selectedProject} jobs={jobs} refreshKey={refreshKey} section={activeReportSection} onOpenFile={openFile} onRunContentAction={runContentAction} onRunPresentation={() => runAuditAction("presentation-weekly")} /> : null}
           {activeView === "audits" ? (
             <TechnicalAuditPage
               projectId={selectedProject}

@@ -1,4 +1,4 @@
-import type { BacklinkViewResponse, ContentJobAction, ContentQueueSummary, ContentQueueItem, DataForSeoIntegration, FileSummary, Ga4Property, GoogleIntegration, GscProperty, Job, KeywordDataset, KeywordHandoff, KeywordPatch, KeywordViewResponse, MarkdownFile, PageDataset, PageDetailResponse, PageViewResponse, ProjectSummary, ReportArchive, ReportArchiveParams, SeoChangeCreate, SeoChangesResponse, ShopifyIntegration, StatisticsResponse, TechAuditData, TechAuditDataset, TechAuditDetailResponse, TechAuditSchedule, TechAuditViewResponse, TutorialDocument, TutorialSummary, Workspace } from "./types";
+import type { BacklinkViewResponse, ContentJobAction, ContentQueueSummary, ContentQueueItem, DataForSeoIntegration, FileSummary, Ga4Property, GoogleIntegration, GscProperty, Job, KeywordDataset, KeywordHandoff, KeywordPatch, KeywordViewResponse, MarkdownFile, PageDataset, PageDetailResponse, PageViewResponse, PresentationStatus, ProjectSummary, ReportArchive, ReportArchiveParams, SeoChangeCreate, SeoChangesResponse, ShopifyIntegration, StatisticsResponse, TechAuditData, TechAuditDataset, TechAuditDetailResponse, TechAuditSchedule, TechAuditViewResponse, TutorialDocument, TutorialSummary, Workspace } from "./types";
 
 
 export class ApiError extends Error {
@@ -260,6 +260,20 @@ export async function fetchFiles(projectId: string): Promise<FileSummary[]> {
 export async function fetchReportArchive(projectId: string, params: ReportArchiveParams = {}): Promise<ReportArchive> {
   const query = queryString(params);
   return request<ReportArchive>(`/api/v1/projects/${encodeURIComponent(projectId)}/reports${query ? `?${query}` : ""}`);
+}
+
+export async function fetchPresentationStatus(projectId: string): Promise<PresentationStatus> {
+  return request<PresentationStatus>(`/api/v1/projects/${encodeURIComponent(projectId)}/reports/presentation`);
+}
+
+export async function downloadPresentationPdf(projectId: string): Promise<Blob> {
+  const token = window.sessionStorage.getItem("seo_workbench_token");
+  const response = await fetch(`/api/v1/projects/${encodeURIComponent(projectId)}/reports/presentation/pdf`, {
+    credentials: "same-origin",
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  if (!response.ok) throw new Error(`Presentation PDF download failed (${response.status}).`);
+  return response.blob();
 }
 
 export async function fetchMarkdown(projectId: string, path: string): Promise<MarkdownFile> {

@@ -25,7 +25,7 @@ import styles from "./AppShell.module.css";
 export type ViewName = "overview" | "owners" | "keywords" | "pages" | "link-building" | "statistics" | "workflow" | "content" | "reports" | "audits" | "files" | "integrations" | "tutorials";
 export type AuditSection = "overview" | "automation" | "url-inventory" | "crawl-comparison" | "redirects" | "sitemaps" | "logs";
 export type ContentSection = "brief" | "produce";
-export type ReportSection = "weekly" | "seo-changes" | "notify";
+export type ReportSection = "weekly" | "seo-changes" | "presentation" | "notify";
 export type ConnectionSection = "core" | "optional";
 
 type AppShellProps = {
@@ -69,6 +69,7 @@ const auditSections: Array<{ id: AuditSection; label: string }> = [
 const reportSections: Array<{ id: ReportSection; label: string }> = [
   { id: "weekly", label: "Weekly" },
   { id: "seo-changes", label: "SEO changes" },
+  { id: "presentation", label: "Presentation" },
   { id: "notify", label: "Notify" },
 ];
 

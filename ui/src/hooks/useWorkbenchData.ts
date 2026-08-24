@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type Dispatch, type SetStateAction } from "react";
 
-import { fetchFiles, fetchProjects, fetchReportArchive, fetchSeoChanges, fetchTechAudit, fetchWorkspace } from "../api/client";
-import type { FileSummary, ProjectSummary, ReportArchive, ReportArchiveParams, SeoChangesResponse, TechAuditData, WorkbenchEvent, Workspace } from "../api/types";
+import { fetchFiles, fetchPresentationStatus, fetchProjects, fetchReportArchive, fetchSeoChanges, fetchTechAudit, fetchWorkspace } from "../api/client";
+import type { FileSummary, PresentationStatus, ProjectSummary, ReportArchive, ReportArchiveParams, SeoChangesResponse, TechAuditData, WorkbenchEvent, Workspace } from "../api/types";
 
 export function useDebouncedValue<T>(value: T, delay = 250): T {
   const [debounced, setDebounced] = useState(value);
@@ -103,6 +103,24 @@ export function useReportArchive(projectId: string | null, refreshKey: number, p
   useEffect(() => { requestId.current += 1; setArchive(null); setError(null); }, [projectId]);
   useEffect(refresh, [refresh, refreshKey]);
   return { archive, error, refresh };
+}
+
+export function usePresentationStatus(projectId: string | null, refreshKey: number) {
+  const [status, setStatus] = useState<PresentationStatus | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const requestId = useRef(0);
+
+  const refresh = useCallback(() => {
+    if (!projectId) return;
+    const request = ++requestId.current;
+    fetchPresentationStatus(projectId)
+      .then((value) => { if (request === requestId.current) { setStatus(value); setError(null); } })
+      .catch((reason: Error) => { if (request === requestId.current) setError(reason.message); });
+  }, [projectId]);
+
+  useEffect(() => { requestId.current += 1; setStatus(null); setError(null); }, [projectId]);
+  useEffect(refresh, [refresh, refreshKey]);
+  return { status, error, refresh };
 }
 
 export function useSeoChanges(projectId: string | null, refreshKey: number) {
