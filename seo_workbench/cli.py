@@ -62,6 +62,11 @@ from seo_workbench.hexcal_blog_import import import_hexcal_blog
 from seo_workbench.keywords import collect_keywords
 from seo_workbench.measurement_regimes import SOURCES as MEASUREMENT_SOURCES, list_regimes, record_regime
 from seo_workbench.performance import collect_from_state as collect_performance_from_state
+from seo_workbench.presentation import (
+    DEFAULT_MAX_STATISTICS_AGE_HOURS,
+    generate_weekly_presentation,
+    presentation_status,
+)
 from seo_workbench.report_archive import list_report_archive, scaffold_weekly_report
 from seo_workbench.seo_changes import CHANGE_STATUSES, CHANGE_TYPES, list_changes, record_change, update_change_status
 from seo_workbench.seo_outcomes import evaluate_change, evaluate_change_with_fresh_gsc
@@ -1264,6 +1269,33 @@ def cmd_reports_new(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_reports_presentation(args: argparse.Namespace) -> int:
+    if args.reports_presentation_command == "status":
+        payload = presentation_status(
+            args.project_dir,
+            year=args.year,
+            week=args.week,
+            max_statistics_age_hours=args.max_statistics_age_hours,
+        )
+        if args.json_output:
+            print_json(payload)
+            return 0
+        print(payload["status"])
+        return 0
+
+    result, _path = generate_weekly_presentation(
+        args.project_dir,
+        year=args.year,
+        week=args.week,
+        max_statistics_age_hours=args.max_statistics_age_hours,
+    )
+    if args.json_output:
+        print_json({"ok": True, **result})
+        return 0
+    print(result["path"])
+    return 0
+
+
 def cmd_keywords_collect(args: argparse.Namespace) -> int:
     result = collect_keywords(
         args.project_dir,
@@ -1895,6 +1927,16 @@ def build_parser() -> argparse.ArgumentParser:
     reports_new.add_argument("--force", action="store_true")
     reports_new.add_argument("--json", action="store_true", dest="json_output")
     reports_new.set_defaults(func=cmd_reports_new)
+
+    presentation = reports_sub.add_parser("presentation")
+    presentation_sub = presentation.add_subparsers(dest="reports_presentation_command", required=True)
+    for command in ("status", "generate"):
+        presentation_command = presentation_sub.add_parser(command)
+        presentation_command.add_argument("--year", type=int)
+        presentation_command.add_argument("--week", type=int)
+        presentation_command.add_argument("--max-statistics-age-hours", type=int, default=DEFAULT_MAX_STATISTICS_AGE_HOURS)
+        presentation_command.add_argument("--json", action="store_true", dest="json_output")
+        presentation_command.set_defaults(func=cmd_reports_presentation)
 
     keywords = sub.add_parser("keywords")
     keywords_sub = keywords.add_subparsers(dest="keywords_command", required=True)
