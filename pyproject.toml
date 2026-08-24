@@ -5,6 +5,7 @@ description = "Agent-neutral SEO workflow and audit tools."
 requires-python = ">=3.11,<3.12"
 dependencies = [
     "filelock>=3.18.0,<4",
+    "matplotlib>=3.11.1",
 ]
 
 [project.scripts]
