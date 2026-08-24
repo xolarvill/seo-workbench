@@ -713,13 +713,15 @@ version = "0.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "filelock" },
-    { name = "matplotlib" },
 ]
 
 [package.optional-dependencies]
 google = [
     { name = "google-auth" },
     { name = "google-auth-oauthlib" },
+]
+presentation = [
+    { name = "matplotlib" },
 ]
 rendered = [
     { name = "playwright" },
@@ -746,13 +748,13 @@ requires-dist = [
     { name = "filelock", specifier = ">=3.18.0,<4" },
     { name = "google-auth", marker = "extra == 'google'", specifier = ">=2.40.0,<3" },
     { name = "google-auth-oauthlib", marker = "extra == 'google'", specifier = ">=1.2.2,<2" },
-    { name = "matplotlib", specifier = ">=3.11.1" },
+    { name = "matplotlib", marker = "extra == 'presentation'", specifier = ">=3.8,<4" },
     { name = "playwright", marker = "extra == 'rendered'", specifier = ">=1.53.0" },
     { name = "uvicorn", marker = "extra == 'ui'", specifier = ">=0.35.0,<1" },
     { name = "wappalyzer", marker = "extra == 'technology'", specifier = "==2.0.2" },
     { name = "watchfiles", marker = "extra == 'ui'", specifier = ">=1.1.0,<2" },
 ]
-provides-extras = ["rendered", "technology", "google", "ui"]
+provides-extras = ["presentation", "rendered", "technology", "google", "ui"]
 
 [package.metadata.requires-dev]
 dev = [
