@@ -105,6 +105,7 @@ def test_evaluate_change_reports_winning_metrics_and_query_ownership(tmp_path: P
     assert report["causal_claim"] is False
     assert report["metrics"]["delta"]["clicks"]["absolute"] == 20
     assert report["expected_metric_signals"] == {"clicks": "improving", "ctr": "improving"}
+    assert report["metric_verdicts"]["clicks"] == "winning"
     assert report["query_ownership"][0]["multiple_page_signal"] is True
     assert report["statistical_evidence"]["pre_post"]["click_change"]["direction"] == "increase"
     assert path.stat().st_mode & 0o777 == 0o600
@@ -198,6 +199,24 @@ def test_evaluate_change_treats_unobserved_page_as_insufficient_data(tmp_path: P
 
     assert report["classification"] == "insufficient_data"
     assert report["expected_metric_signals"] == {"clicks": "insufficient_data", "ctr": "insufficient_data"}
+    assert report["metric_verdicts"] == {"clicks": "insufficient_data", "ctr": "insufficient_data"}
+
+
+def test_evaluate_change_keeps_winning_metric_when_other_metric_lacks_evidence(tmp_path: Path) -> None:
+    project_dir, change_id = _project(tmp_path)
+    source = _gsc(tmp_path / "gsc.json")
+    payload = json.loads(source.read_text())
+    for window in ("previous", "current"):
+        row = payload["windows"][window]["page"]["rows"][0]
+        row["impressions"] = 50
+        row["ctr"] = row["clicks"] / 50
+    source.write_text(json.dumps(payload))
+
+    report, _ = evaluate_change(project_dir, change_id, gsc_path=source, now=NOW)
+
+    assert report["metric_verdicts"]["clicks"] == "winning"
+    assert report["metric_verdicts"]["ctr"] == "insufficient_data"
+    assert report["classification"] == "winning"
 
 
 def test_changes_evaluate_cli_writes_json_report(tmp_path: Path, capsys) -> None:

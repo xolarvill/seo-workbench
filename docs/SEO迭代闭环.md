@@ -66,7 +66,7 @@ current,2026-08-02,2026-08-29,https://example.com/page,140,7,900
 ./seo --project <id> changes status <change_id> reviewed --note "reviewed evidence" --json
 ```
 
-`--refresh-gsc` 只读采集不超过 25 个变更 URL 的页面和 query-page 数据；更大变更集需使用显式的全属性 GSC 产物。前窗口结束于变更前一天，后窗口开始于变更后一天并结束于计划复查日。评价只在窗口可比且所有变更 URL 都有观测时给出 `winning`、`no_change` 或 `regressing`；未观测到的页面和缺失业务证据返回 `insufficient_data`，不会补成 0。结果是描述性前后证据，库存、价格、促销、需求和其他同期变更仍可能参与结果。
+`--refresh-gsc` 只读采集不超过 25 个变更 URL 的页面和 query-page 数据；更大变更集需使用显式的全属性 GSC 产物。前窗口结束于变更前一天，后窗口开始于变更后一天并结束于计划复查日。评价按期望指标独立给出 `winning`、`no_change` 或 `regressing`；某个指标证据不足（页面未观测、展示量不足、统计方向不确定）时该指标单独返回 `insufficient_data`，不再一票否决其他指标。窗口不可比或全部期望指标都无观测时，整体才返回 `insufficient_data`，不会补成 0。结果是描述性前后证据，库存、价格、促销、需求和其他同期变更仍可能参与结果。
 
 Pages 中的单 URL 复盘通过现有后台任务队列执行，不占用 HTTP 请求。多 URL 变更使用 CLI 和显式 GSC 产物复盘。
 

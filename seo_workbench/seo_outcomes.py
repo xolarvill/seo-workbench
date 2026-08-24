@@ -22,6 +22,8 @@ from seo_workbench_tools.files import atomic_write_text
 SAFE_ID = re.compile(r"^[A-Za-z0-9._-]+$")
 GSC_METRICS = {"clicks", "impressions", "ctr", "position"}
 SUPPORTED_METRICS = GSC_METRICS | set(BUSINESS_METRICS)
+_EFFECT_FIELDS = {"clicks": "click_change", "impressions": "impression_change", "ctr": "ctr_change"}
+_SIGNAL_VERDICTS = {"improving": "winning", "regressing": "regressing", "flat": "no_change"}
 SIGNAL_RULES = {
     "clicks": {"direction": "higher", "minimum_absolute_delta": 3.0, "minimum_relative_delta": 0.10},
     "impressions": {"direction": "higher", "minimum_absolute_delta": 10.0, "minimum_relative_delta": 0.10},
@@ -139,19 +141,9 @@ def evaluate_change(
         if metric in SUPPORTED_METRICS and metric not in missing
     }
     unsupported = [metric for metric in expected if metric not in SUPPORTED_METRICS]
-    classification = _classification(window_check, signals, unsupported, missing)
     effect = _pre_post_effect(previous, current, changed_urls, change_id)
-    statistical_fields = {
-        "clicks": "click_change",
-        "impressions": "impression_change",
-        "ctr": "ctr_change",
-    }
-    if any(
-        effect.get("status") != "ok" or (effect.get(field) or {}).get("direction") == "uncertain"
-        for metric, field in statistical_fields.items()
-        if metric in expected
-    ):
-        classification = "insufficient_data"
+    verdicts = _metric_verdicts(signals, effect, expected)
+    classification = _overall_classification(window_check, verdicts, unsupported)
     matched_control = _matched_control_effect(project_dir, change, previous, current, changed_urls)
     queries = _query_ownership(current["query_page"].get("rows", []), changed_urls)
     generated_at = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
@@ -162,11 +154,12 @@ def evaluate_change(
         "change": change,
         "classification": classification,
         "causal_claim": False,
-        "interpretation": "Statistically bounded pre/post evidence; matched controls are observational when available. Concurrent demand, SERP, campaign, stock, price, and site changes may contribute.",
+        "interpretation": "Statistically bounded per-metric pre/post evidence; metrics without sufficient evidence are reported as insufficient_data instead of vetoing the outcome. Matched controls are observational when available. Concurrent demand, SERP, campaign, stock, price, and site changes may contribute.",
         "comparability": window_check,
         "measurement_regimes": regime_breaks,
         "metrics": {"previous": previous_metrics, "current": current_metrics, "delta": deltas},
         "expected_metric_signals": signals,
+        "metric_verdicts": verdicts,
         "unsupported_expected_metrics": unsupported,
         "missing_expected_metrics": missing,
         "signal_rules": SIGNAL_RULES,
@@ -315,12 +308,36 @@ def _signal(
     return "improving" if improving else "regressing"
 
 
-def _classification(window_check: dict[str, Any], signals: dict[str, str], unsupported: list[str], missing: list[str]) -> str:
-    if not window_check["comparable"] or unsupported or missing or not signals or "insufficient_data" in signals.values():
+def _metric_verdicts(signals: dict[str, str], effect: dict[str, Any], expected: list[str]) -> dict[str, str]:
+    """Per-expected-metric verdict; a metric without sufficient evidence is insufficient_data on its own."""
+    verdicts: dict[str, str] = {}
+    for metric in expected:
+        if metric not in SUPPORTED_METRICS:
+            continue
+        signal = signals.get(metric, "insufficient_data")
+        effect_field = _EFFECT_FIELDS.get(metric)
+        if signal == "insufficient_data":
+            verdicts[metric] = "insufficient_data"
+        elif effect_field and (effect.get("status") != "ok" or (effect.get(effect_field) or {}).get("direction") == "uncertain"):
+            verdicts[metric] = "insufficient_data"
+        else:
+            verdicts[metric] = _SIGNAL_VERDICTS.get(signal, "insufficient_data")
+    return verdicts
+
+
+def _overall_classification(
+    window_check: dict[str, Any],
+    verdicts: dict[str, str],
+    unsupported: list[str],
+) -> str:
+    if not window_check["comparable"] or unsupported:
         return "insufficient_data"
-    if "regressing" in signals.values():
+    sufficient = [verdict for verdict in verdicts.values() if verdict in {"winning", "regressing", "no_change"}]
+    if not sufficient:
+        return "insufficient_data"
+    if "regressing" in sufficient:
         return "regressing"
-    if "improving" in signals.values():
+    if "winning" in sufficient:
         return "winning"
     return "no_change"
 
