@@ -1,7 +1,7 @@
 .shell {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
+  grid-template-columns: 232px minmax(0, 1fr);
   background: var(--canvas);
 }
 
@@ -11,303 +11,144 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 28px 14px 18px;
-  color: rgba(255, 255, 255, 0.86);
-  background: var(--graphite);
-  box-shadow: inset -1px 0 rgba(255, 255, 255, 0.05);
+  padding: 14px 12px 12px;
+  color: var(--ink);
+  background: var(--surface);
+  border-right: 1px solid var(--separator);
+  overflow-y: auto;
 }
 
 .wordmark {
-  padding: 0 8px 28px;
-  font-size: 19px;
-  line-height: 1.02;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 30px;
+  margin: 0 8px 16px;
+  color: var(--ink);
+  font-size: 15px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: -0.01em;
 }
+
+.wordmark img { width: 24px; height: 24px; }
 
 .projectPicker {
   position: relative;
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr) 16px;
+  grid-template-columns: 38px minmax(0, 1fr) 16px;
   align-items: center;
-  min-height: 64px;
+  min-height: 52px;
   gap: 10px;
-  padding: 9px 10px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: var(--radius-6);
-  background: rgba(255, 255, 255, 0.02);
+  margin-bottom: 18px;
+  padding: 6px 8px;
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-card);
+  background: var(--canvas);
 }
 
-.projectPicker:focus-within {
-  box-shadow: 0 0 0 2px var(--emerald);
-}
+.projectPicker:focus-within { box-shadow: 0 0 0 2px var(--primary-wash), 0 0 0 3px var(--primary); }
+.projectPicker select { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: pointer; }
+.projectMonogram { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 8px; color: #fff; background: var(--graphite); font-family: var(--font-mono); font-size: 13px; }
+.projectText { min-width: 0; display: grid; gap: 3px; color: var(--ink); font-size: 13px; font-weight: 700; }
+.projectText small { overflow: hidden; color: var(--muted); font-size: 11px; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; }
 
-.projectPicker select {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  opacity: 0;
+.navigation,
+.utilityNavigation { display: grid; gap: 3px; }
+.utilityNavigation { margin-top: 18px; }
+.navGroupLabel { margin: 0 8px 7px; color: var(--muted); font: 600 11px/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.technicalNavigation { display: grid; gap: 2px; }
+.technicalNavigation > .navItem,
+.technicalNavigation > .activeNav { border-radius: var(--radius-4) var(--radius-4) 4px 4px; }
+.technicalNavigation > .navItem svg:last-child,
+.technicalNavigation > .activeNav svg:last-child { margin-left: auto; }
+.technicalSubnav { display: grid; gap: 2px; padding: 2px 0 7px 27px; }
+.technicalSubitem,
+.activeTechnicalSubitem {
+  min-height: 34px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px 0 14px;
+  border: 0;
+  border-radius: var(--radius-4);
+  color: var(--ink-muted);
+  background: transparent;
+  font: 500 13px/1.3 var(--font-ui);
+  text-align: left;
   cursor: pointer;
 }
-
-.projectMonogram {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.42);
-  border-radius: var(--radius-4);
-  font-family: var(--font-mono);
-  font-size: 15px;
-}
-
-.projectText {
-  min-width: 0;
-  display: grid;
-  gap: 3px;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.projectText small {
-  overflow: hidden;
-  color: rgba(255, 255, 255, 0.52);
-  font-size: 11px;
-  font-weight: 400;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.navigation {
-  display: grid;
-  gap: 3px;
-  margin-top: 20px;
-}
+.activeTechnicalSubitem { color: var(--primary-dark); background: var(--primary-wash); font-weight: 650; }
 
 .navItem,
 .activeNav {
   position: relative;
-  min-height: 44px;
+  min-height: 40px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 12px;
+  gap: 10px;
+  padding: 0 10px 0 14px;
   border: 0;
   border-radius: var(--radius-4);
-  color: rgba(255, 255, 255, 0.68);
+  color: var(--ink-muted);
   background: transparent;
-  font: 550 14px/1.2 var(--font-ui);
+  font: 550 13px/1.35 var(--font-ui);
   cursor: pointer;
   transition: transform 120ms var(--ease-out), background-color 120ms var(--ease-out), color 120ms var(--ease-out);
 }
+.activeNav { color: var(--ink); background: var(--primary-wash); font-weight: 650; }
+.activeNav::before { content: ""; position: absolute; inset-inline-start: 9px; inset-block-start: 50%; width: 4px; height: 4px; border-radius: 50%; background: var(--primary); transform: translateY(-50%); }
 
-.activeNav {
-  color: rgba(255, 255, 255, 0.96);
-  background: rgba(255, 255, 255, 0.1);
-}
+.helpNavigation { margin-top: auto; padding: 12px 4px 0; border-top: 1px solid var(--separator); }
+.helpNav,
+.activeHelpNav { width: 100%; min-height: 40px; display: flex; align-items: center; gap: 10px; padding: 0 8px; border: 0; border-radius: var(--radius-4); color: var(--muted); background: transparent; font: 550 13px/1 var(--font-ui); cursor: pointer; transition: transform 120ms var(--ease-out), background-color 120ms var(--ease-out), color 120ms var(--ease-out); }
+.activeHelpNav { color: var(--ink); background: var(--primary-wash); }
+.helpGlyph { width: 20px; height: 20px; display: grid; place-items: center; border: 1px solid currentColor; border-radius: 50%; font: 600 11px/1 var(--font-mono); }
 
-.activeNav::before {
-  content: "";
-  position: absolute;
-  inset-block: 8px;
-  inset-inline-start: -14px;
-  width: 3px;
-  border-radius: 0 2px 2px 0;
-  background: var(--emerald);
-}
+.workspace { min-width: 0; display: grid; grid-template-rows: 64px minmax(0, 1fr); min-height: 100vh; background: var(--canvas); }
+.commandBar { position: sticky; inset-block-start: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 0 32px; border-bottom: 1px solid var(--separator); background: rgba(255, 255, 255, 0.96); }
+.commandProject { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.commandIdentity { min-width: 0; display: grid; gap: 2px; padding-right: 16px; border-right: 1px solid var(--separator); }
+.commandIdentity strong { color: var(--ink); font-size: 16px; line-height: 1.05; letter-spacing: -0.01em; }
+.commandIdentity small { overflow: hidden; color: var(--muted); font-size: 11px; line-height: 1.1; text-overflow: ellipsis; white-space: nowrap; }
+.commandProject span { padding-left: 16px; color: var(--muted); font-size: 12px; }
+.commandProject .commandIdentity { padding-left: 0; border-left: 0; }
+.commandProject .commandIdentity small { padding-left: 0; border-left: 0; }
+.commandProject .breadcrumb { color: var(--ink-muted); }
+.commandProject b { padding-left: 16px; border-left: 1px solid var(--separator); color: var(--primary); font: 600 11px/1 var(--font-mono); letter-spacing: .02em; }
+.main { min-width: 0; min-height: calc(100vh - 64px); }
+.mobileHeader,
+.mobileNav,
+.mobileProject { display: none; }
 
 .navItem:active,
 .activeNav:active,
 .helpNav:active,
 .activeHelpNav:active,
-.primaryAction:active,
-.mobileNav button:active {
-  transform: scale(0.96);
-}
-
-.helpNavigation {
-  margin-top: auto;
-  padding: 14px 4px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.helpNav,
-.activeHelpNav {
-  width: 100%;
-  min-height: 38px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 8px;
-  border: 0;
-  border-radius: var(--radius-4);
-  color: rgba(255, 255, 255, 0.48);
-  background: transparent;
-  font: 500 12px/1 var(--font-ui);
-  cursor: pointer;
-  transition: transform 120ms var(--ease-out), background-color 120ms var(--ease-out), color 120ms var(--ease-out);
-}
-
-.activeHelpNav {
-  color: rgba(255, 255, 255, 0.86);
-  background: rgba(255, 255, 255, 0.07);
-}
-
-.helpGlyph {
-  width: 20px;
-  height: 20px;
-  display: grid;
-  place-items: center;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  font: 600 11px/1 var(--font-mono);
-}
-
-.connection {
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 8px 0;
-  color: rgba(255, 255, 255, 0.58);
-  font-size: 11px;
-}
-
-.connectedDot,
-.disconnectedDot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--emerald-bright);
-  box-shadow: 0 0 0 3px rgba(19, 138, 104, 0.16);
-}
-
-.disconnectedDot { background: var(--amber); }
-
-.workspace {
-  min-width: 0;
-  display: grid;
-  grid-template-rows: 72px minmax(0, 1fr);
-}
-
-.commandBar {
-  position: sticky;
-  inset-block-start: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 0 28px;
-  border-bottom: 1px solid var(--separator);
-  background: rgba(255, 255, 255, 0.97);
-}
-
-.commandProject {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  min-width: 0;
-}
-
-.commandProject strong { font-size: 22px; letter-spacing: -0.012em; }
-.commandProject span { padding-left: 20px; border-left: 1px solid var(--separator); color: var(--muted); font-size: 13px; }
-.commandProject b { padding-left: 20px; border-left: 1px solid var(--separator); color: var(--emerald); font: 600 12px/1 var(--font-mono); }
-
-.primaryAction {
-  min-height: 40px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 18px;
-  border: 0;
-  border-radius: var(--radius-6);
-  color: white;
-  background: var(--emerald);
-  font: 650 13px/1 var(--font-ui);
-  cursor: pointer;
-  transition: transform 120ms var(--ease-out), background-color 120ms var(--ease-out);
-}
-
-.main { min-width: 0; }
-.mobileHeader,
-.mobileNav,
-.mobileProject { display: none; }
+.mobileNav button:active { transform: scale(0.96); }
 
 @media (hover: hover) {
-  .navItem:hover { color: white; background: rgba(255, 255, 255, 0.05); }
-  .helpNav:hover { color: rgba(255, 255, 255, 0.78); background: rgba(255, 255, 255, 0.04); }
-  .primaryAction:hover { background: var(--emerald-dark); }
+  .navItem:hover { color: var(--ink); background: var(--surface-soft); }
+  .helpNav:hover { color: var(--ink); background: var(--surface-soft); }
 }
 
 @media (max-width: 760px) {
-  .shell { display: block; padding-bottom: calc(68px + env(safe-area-inset-bottom)); }
+  .shell { display: block; padding: 0 0 calc(68px + env(safe-area-inset-bottom)); background: var(--canvas); }
   .sidebar { display: none; }
-  .workspace { display: block; }
-  .mobileHeader {
-    position: sticky;
-    inset-block-start: 0;
-    z-index: 30;
-    min-height: 58px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 18px;
-    color: white;
-    background: var(--graphite);
-  }
-  .mobileWordmark { font-size: 16px; font-weight: 700; letter-spacing: 0.035em; }
+  .workspace { display: block; min-height: auto; }
+  .mobileHeader { position: sticky; inset-block-start: 0; z-index: 30; min-height: 58px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; color: var(--ink); border-bottom: 1px solid var(--separator); background: var(--surface); }
+  .mobileWordmark { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
   .mobileMore { position: relative; }
   .mobileMore summary { min-width: 44px; min-height: 44px; display: grid; place-items: center; list-style: none; cursor: pointer; }
   .mobileMore summary::-webkit-details-marker { display: none; }
-  .mobileMore > div {
-    position: absolute;
-    inset-block-start: 46px;
-    inset-inline-end: 0;
-    width: 150px;
-    padding: 6px;
-    border-radius: var(--radius-6);
-    background: white;
-    box-shadow: var(--shadow-menu);
-  }
-  .mobileMore button { width: 100%; min-height: 42px; border: 0; border-radius: var(--radius-4); background: transparent; text-align: left; font: 500 14px var(--font-ui); }
-  .mobileMore button[aria-current="page"] { color: var(--emerald); background: var(--emerald-wash); }
-  .commandBar {
-    position: static;
-    min-height: 78px;
-    padding: 0 18px;
-    background: white;
-  }
+  .mobileMore > div { position: absolute; inset-block-start: 46px; inset-inline-end: 0; width: 160px; display: grid; gap: 2px; padding: 6px; border: 1px solid var(--separator); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-menu); }
+  .mobileMore button { width: 100%; min-height: 42px; border: 0; border-radius: var(--radius-4); color: var(--ink-muted); background: transparent; text-align: left; font: 500 14px var(--font-ui); }
+  .mobileMore button[aria-current="page"] { color: var(--primary-dark); background: var(--primary-wash); }
+  .commandBar { position: static; min-height: 78px; padding: 0 18px; background: var(--surface); }
   .commandProject { display: none; }
   .mobileProject { min-width: 0; display: grid; gap: 3px; }
-  .mobileProject strong { font-size: 19px; }
+  .mobileProject strong { color: var(--ink); font-size: 18px; }
   .mobileProject span { overflow: hidden; color: var(--muted); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
-  .primaryAction { padding-inline: 14px; }
-  .mobileNav {
-    position: fixed;
-    z-index: 40;
-    inset-inline: 0;
-    inset-block-end: 0;
-    min-height: 68px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    padding-bottom: env(safe-area-inset-bottom);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    background: var(--graphite);
-  }
-  .mobileNav button {
-    position: relative;
-    min-height: 64px;
-    display: grid;
-    place-items: center;
-    align-content: center;
-    gap: 4px;
-    border: 0;
-    color: rgba(255, 255, 255, 0.55);
-    background: transparent;
-    font: 500 10px/1 var(--font-ui);
-    transition: transform 120ms var(--ease-out), color 120ms var(--ease-out);
-  }
-  .mobileNav .mobileActive { color: white; }
-  .mobileActive::before { content: ""; position: absolute; inset-inline: 24%; inset-block-start: 0; height: 3px; background: var(--emerald-bright); }
+  .mobileNav { position: fixed; z-index: 40; inset-inline: 0; inset-block-end: 0; min-height: 68px; display: grid; grid-template-columns: repeat(4, 1fr); padding-bottom: env(safe-area-inset-bottom); border-top: 1px solid var(--separator); background: var(--surface); }
+  .mobileNav button { position: relative; min-height: 64px; display: grid; place-items: center; align-content: center; gap: 4px; border: 0; color: var(--muted); background: transparent; font: 500 11px/1.2 var(--font-ui); transition: transform 120ms var(--ease-out), color 120ms var(--ease-out); }
+  .mobileNav .mobileActive { color: var(--ink); }
+  .mobileActive::before { content: ""; position: absolute; inset-inline: 24%; inset-block-start: 0; height: 3px; background: var(--primary); }
 }

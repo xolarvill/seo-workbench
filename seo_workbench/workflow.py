@@ -36,7 +36,13 @@ def context_for_step(phase: str, step_id: str, project_dir: Path) -> list[str]:
     if phase == "STRATEGY":
         return [*common, str(project_dir / "context/brand-voice.md"), str(project_dir / "context/target-keywords.md")]
     if phase == "CONTENT_PRODUCTION":
-        return [*common, str(project_dir / "strategy/cluster-plan.md"), str(project_dir / "strategy/briefs")]
+        return [
+            *common,
+            str(project_dir / "strategy/keyword-pool.jsonl"),
+            str(project_dir / "strategy/cluster-plan.md"),
+            str(project_dir / "strategy/briefs"),
+            str(project_dir / "content/blog-pipeline.jsonl"),
+        ]
     if phase == "QUALITY_REVIEW":
         return [*common, str(project_dir / "content/drafts")]
     if phase == "TECHNICAL_AUDIT":

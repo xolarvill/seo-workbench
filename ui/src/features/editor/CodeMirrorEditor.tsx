@@ -4,9 +4,9 @@ import { EditorView, keymap } from "@codemirror/view";
 import { basicSetup } from "codemirror";
 import { useEffect, useRef } from "react";
 
-type CodeMirrorEditorProps = { value: string; onChange: (value: string) => void; onSave: () => void };
+type CodeMirrorEditorProps = { value: string; onChange: (value: string) => void; onSave: () => void; fontSize?: number };
 
-export function CodeMirrorEditor({ value, onChange, onSave }: CodeMirrorEditorProps) {
+export function CodeMirrorEditor({ value, onChange, onSave, fontSize = 14 }: CodeMirrorEditorProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);
   const changeRef = useRef(onChange);
@@ -29,10 +29,10 @@ export function CodeMirrorEditor({ value, onChange, onSave }: CodeMirrorEditorPr
             if (update.docChanged) changeRef.current(update.state.doc.toString());
           }),
           EditorView.theme({
-            "&": { height: "100%", backgroundColor: "#fffefa", fontSize: "14px" },
+            "&": { height: "100%", backgroundColor: "#ffffff", color: "#0b3558" },
             ".cm-content": { padding: "24px", fontFamily: '"Azeret Mono", ui-monospace, monospace', lineHeight: "1.7" },
-            ".cm-gutters": { backgroundColor: "#f4f2ed", color: "#8b918b", borderRight: "1px solid #deddd6" },
-            ".cm-activeLine, .cm-activeLineGutter": { backgroundColor: "#edf5f1" },
+            ".cm-gutters": { backgroundColor: "#f8f9fb", color: "#a6bbd1", borderRight: "1px solid #d4e0ed" },
+            ".cm-activeLine, .cm-activeLineGutter": { backgroundColor: "#e6f0ff" },
             ".cm-focused": { outline: "none" },
           }),
         ],
@@ -43,10 +43,14 @@ export function CodeMirrorEditor({ value, onChange, onSave }: CodeMirrorEditorPr
   }, []);
 
   useEffect(() => {
+    viewRef.current?.requestMeasure();
+  }, [fontSize]);
+
+  useEffect(() => {
     const view = viewRef.current;
     if (!view || view.state.doc.toString() === value) return;
     view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: value } });
   }, [value]);
 
-  return <div ref={containerRef} style={{ height: "100%", minHeight: 0 }} />;
+  return <div ref={containerRef} style={{ height: "100%", minHeight: 0, fontSize: `${fontSize}px` }} />;
 }

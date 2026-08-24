@@ -1,0 +1,63 @@
+.page { display: grid; min-width: 0; gap: 18px; padding: 24px; }
+.header { display: flex; align-items: start; justify-content: space-between; gap: 20px; }
+.header > div > span,
+.viewerHeader > div > span { color: var(--primary); font: 600 11px/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.header h1 { margin: 6px 0 4px; color: var(--ink); font-size: 30px; line-height: 1.15; letter-spacing: -.03em; }
+.header p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.summaryGrid,
+.contextGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+.contextGrid { grid-template-columns: minmax(0, 1.4fr) minmax(260px, 1fr); }
+.card { min-width: 0; border: 1px solid var(--separator); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-link); }
+.cardHeader { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 12px 14px 0; }
+.cardHeader h2 { margin: 0; color: var(--ink); font-size: 14px; }
+.cardHeader > span { color: var(--muted); font: 600 10px/1.2 var(--font-mono); text-transform: uppercase; }
+.cardHeader > span:global(.statusPill) { font: 650 10px/1.2 var(--font-mono); text-transform: capitalize; }
+.cardBody { display: grid; gap: 8px; padding: 10px 14px 14px; }
+.metric { color: var(--ink); font-size: 24px; font-variant-numeric: tabular-nums; letter-spacing: -.02em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.meta,
+.note,
+.empty { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.comparisonNumbers { display: flex; flex-wrap: wrap; gap: 14px; color: var(--muted); font: 11px var(--font-mono); }
+.comparisonNumbers strong { display: block; color: var(--ink); font-size: 20px; }
+.anchorList { display: grid; gap: 6px; }
+.anchorList > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding-bottom: 5px; border-bottom: 1px solid var(--separator); color: var(--ink-muted); font-size: 12px; }
+.anchorList > div:last-child { border-bottom: 0; }
+.anchorList span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.anchorList strong { color: var(--ink); font: 600 11px var(--font-mono); }
+.viewer { min-width: 0; overflow: visible; border: 1px solid var(--separator); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-link); }
+.viewerHeader { display: flex; align-items: end; justify-content: space-between; gap: 16px; padding: 15px 20px 12px; border-bottom: 1px solid var(--separator); }
+.viewerHeader h2 { margin: 5px 0 0; color: var(--ink); font-size: 18px; }
+.resultCount { color: var(--muted); font: 11px var(--font-mono); font-variant-numeric: tabular-nums; }
+.toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; padding: 12px 20px; border-bottom: 1px solid var(--separator); background: var(--canvas); }
+.toolbar > label:not([data-workbench-search]) { display: flex; align-items: center; gap: 7px; min-height: 34px; padding: 0 9px; border: 1px solid var(--separator); border-radius: var(--radius-6); color: var(--muted); background: var(--surface); }
+.toolbar label span { font: 11px/1.2 var(--font-mono); text-transform: uppercase; }
+.toolbar select { min-width: 0; border: 0; outline: 0; color: var(--ink); background: transparent; font-size: 12px; }
+.toolbar .check { gap: 6px; cursor: pointer; }
+.toolbar .check input { accent-color: var(--primary); }
+.directionButton,
+.clearButton { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1px solid var(--separator-strong); border-radius: var(--radius-6); color: var(--ink-muted); background: var(--surface); font-size: 12px; font-weight: 650; cursor: pointer; }
+.clearButton { border-color: transparent; color: var(--primary-dark); background: transparent; }
+.directionButton:hover,
+.clearButton:hover { border-color: var(--primary); color: var(--ink); background: var(--primary-wash); }
+.error { margin: 0; padding: 10px 20px; border-bottom: 1px solid var(--separator); color: var(--danger); font-size: 12px; }
+.tableScroll { overflow-x: auto; }
+.tableScroll table { width: max-content; min-width: 100%; border-collapse: collapse; color: var(--ink); font-size: 12px; }
+.tableScroll th,
+.tableScroll td { max-width: 360px; padding: 11px 12px; overflow: hidden; border-bottom: 1px solid var(--separator); text-align: left; text-overflow: ellipsis; white-space: nowrap; }
+.tableScroll th { color: var(--muted); font: 600 11px/1.2 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; }
+.tableScroll td a { display: block; overflow: hidden; color: var(--primary-dark); font-family: var(--font-mono); text-overflow: ellipsis; white-space: nowrap; }
+.tableScroll td.urlColumn { max-width: 390px; }
+.notObserved { color: var(--muted); font-style: italic; }
+.empty { display: grid; place-items: center; gap: 8px; min-height: 180px; padding: 24px; text-align: center; }
+.empty strong { color: var(--ink); font-size: 13px; }
+.loadingGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+
+@media (max-width: 700px) {
+  .page { padding: 16px 14px 92px; }
+  .header { display: grid; }
+  .contextGrid { grid-template-columns: 1fr; }
+  .viewerHeader,
+  .toolbar { padding-inline: 14px; }
+  .viewerHeader { align-items: start; }
+  .toolbar > label:not([data-workbench-search]) { flex: 1 1 auto; }
+}

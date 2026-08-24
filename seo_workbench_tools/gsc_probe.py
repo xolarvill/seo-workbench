@@ -8,10 +8,11 @@ from pathlib import Path
 from typing import Any, Callable
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlsplit
-from urllib.request import Request, urlopen
+from urllib.request import Request
 from zoneinfo import ZoneInfo
 
 from seo_workbench_tools.files import atomic_write_text
+from seo_workbench_tools.http_transport import read_url
 from seo_workbench_tools.network_boundary import validate_url
 
 
@@ -24,6 +25,7 @@ PROFILE_PATTERN = re.compile(r"^[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}$")
 API_BASE = "https://www.googleapis.com/webmasters/v3"
 INSPECTION_ENDPOINT = "https://searchconsole.googleapis.com/v1/urlInspection/index:inspect"
 RequestCallable = Callable[[str, str, dict[str, Any] | None, Any, float], dict[str, Any]]
+CHANGE_PERFORMANCE_MAX_URLS = 25
 
 
 class GscQuotaExceeded(RuntimeError):
@@ -162,8 +164,7 @@ def api_request(
         data = json.dumps(body).encode("utf-8")
     request = Request(url, data=data, headers=headers, method=method)
     try:
-        with urlopen(request, timeout=timeout) as response:
-            raw = response.read()
+        raw = read_url(request, timeout=timeout)
     except HTTPError as exc:
         if exc.code == 429:
             raise GscQuotaExceeded("Search Console API quota exceeded") from exc
@@ -357,9 +358,12 @@ def collect_performance(
     dimensions = {
         "totals": ([], False),
         "date": (["date"], False),
+        "date_page": (["date", "page"], True),
         "page": (["page"], True),
         "query": (["query"], True),
+        "query_page": (["query", "page"], True),
         "device": (["device"], False),
+        "country": (["country"], False),
     }
     for label, window in windows:
         results[label] = {}
@@ -387,6 +391,110 @@ def collect_performance(
     }
     _artifact(report, output_dir, "search-analytics")
     return report
+
+
+def collect_change_performance(
+    project_dir: Path,
+    output_dir: Path,
+    *,
+    urls: list[str],
+    changed_at: date,
+    review_date: date,
+    timeout: float = 30,
+    requester: RequestCallable = api_request,
+    today: date | None = None,
+) -> dict[str, Any]:
+    if review_date <= changed_at:
+        raise ValueError("review_date must be after changed_at")
+    final_end = (today or datetime.now(ZoneInfo("America/Los_Angeles")).date()) - timedelta(days=3)
+    if review_date > final_end:
+        raise ValueError(f"review_date {review_date.isoformat()} is newer than finalized GSC data through {final_end.isoformat()}")
+    selected = list(dict.fromkeys(validate_url(url) for url in urls))
+    if not selected:
+        raise ValueError("at least one change URL is required")
+    if len(selected) > CHANGE_PERFORMANCE_MAX_URLS:
+        raise ValueError(f"change-scoped GSC refresh supports at most {CHANGE_PERFORMANCE_MAX_URLS} URLs")
+    binding = load_binding(project_dir)
+    credentials = load_credentials(binding["profile"])
+    days = (review_date - changed_at).days
+    previous_end = changed_at - timedelta(days=1)
+    windows = {
+        "previous": {
+            "startDate": (previous_end - timedelta(days=days - 1)).isoformat(),
+            "endDate": previous_end.isoformat(),
+        },
+        "current": {
+            "startDate": (changed_at + timedelta(days=1)).isoformat(),
+            "endDate": review_date.isoformat(),
+        },
+    }
+    results: dict[str, Any] = {}
+    for label, window in windows.items():
+        results[label] = {
+            name: _change_rows(binding["property"], credentials, window, selected, dimensions, timeout, requester)
+            for name, dimensions in (
+                ("page", ["page"]),
+                ("date_page", ["date", "page"]),
+                ("query_page", ["query", "page"]),
+            )
+        }
+    report = {
+        "schema_version": SCHEMA_VERSION,
+        "collector_version": COLLECTOR_VERSION,
+        "generated_at": _now(),
+        "collection_status": "ok",
+        "profile": binding["profile"],
+        "property": binding["property"],
+        "search_type": "web",
+        "data_state": "final",
+        "window_days": days,
+        "compare": True,
+        "scope": "change_urls",
+        "urls": selected,
+        "windows": results,
+        "errors": [],
+        "warnings": [],
+    }
+    _artifact(report, output_dir, "change-outcome-gsc")
+    return report
+
+
+def _change_rows(
+    property_url: str,
+    credentials: Any,
+    window: dict[str, str],
+    urls: list[str],
+    dimensions: list[str],
+    timeout: float,
+    requester: RequestCallable,
+) -> dict[str, Any]:
+    rows = []
+    truncated = False
+    for url in urls:
+        result = _search_rows(
+            property_url,
+            credentials,
+            {
+                **window,
+                "type": "web",
+                "dataState": "final",
+                "dimensions": dimensions,
+                "dimensionFilterGroups": [
+                    {"filters": [{"dimension": "page", "operator": "equals", "expression": url}]}
+                ],
+            },
+            timeout,
+            requester,
+            paginate=True,
+        )
+        rows.extend(result["rows"])
+        truncated = truncated or bool(result["truncated"])
+    return {
+        "request": {**window, "type": "web", "dataState": "final", "dimensions": dimensions},
+        "rows": rows,
+        "row_count": len(rows),
+        "truncated": truncated,
+    }
 
 
 def representative_urls(project_dir: Path, limit: int = 10) -> list[str]:

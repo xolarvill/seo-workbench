@@ -41,6 +41,9 @@ dev = [
 [tool.uv]
 package = true
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
 [tool.hatch.build.targets.wheel]
 packages = ["seo_workbench", "seo_workbench_tools"]
 

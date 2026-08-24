@@ -1,0 +1,23 @@
+.page { max-width: 1120px; margin: 0 auto; padding: 38px 32px 72px; }
+.header { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--separator-strong); color: var(--muted); }
+.header > div { display: grid; gap: 6px; }
+.header span, .kicker { color: var(--primary); font: 600 11px/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.header h1 { margin: 0; color: var(--ink); font: 700 28px/1.15 var(--font-serif); }
+.header p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; padding-top: 16px; }
+.searchField { min-width: 260px; }
+.filterCount { margin-left: auto; color: var(--muted); font: 11px var(--font-mono); }
+.block { padding-top: 26px; }
+.blockHead { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid var(--separator); }
+.blockTitle { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.blockHead h2 { margin: 0; color: var(--ink); font-size: 16px; }
+.blockHead small { color: var(--muted); font-size: 11px; }
+.weekList { display: grid; gap: 10px; padding-top: 14px; }
+.empty, .error { color: var(--muted); font-size: 12px; }
+.error { color: var(--danger); }
+
+@media (max-width: 760px) {
+  .page { padding: 24px 18px 48px; }
+  .header { align-items: start; }
+  .header h1 { font-size: 34px; }
+}

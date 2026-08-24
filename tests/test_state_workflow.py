@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+from seo_workbench.content_pipeline import normalize_status
+from seo_workbench.hexcal_blog_import import HEXCAL_STATUS_MAP
 from seo_workbench import state
 from seo_workbench.cli import main
 from seo_workbench.validation import validate_project
@@ -66,6 +68,41 @@ def test_project_id_and_discovery_keep_stores_isolated(tmp_path: Path) -> None:
     assert projects[0]["name"] == "Store One"
     assert state.state_path(first) != state.state_path(second)
     assert (first / "audits/diffs").is_dir()
+    assert (first / "audits/publish").is_dir()
+    assert (first / "audits/runs").is_dir()
+    assert (first / "content/reports").is_dir()
+
+
+def test_content_production_steps_have_dynamic_contract(tmp_path: Path) -> None:
+    workflow = load_workflow(DEFAULT_WORKFLOW)
+    state_path = state.init_state("shopify", "Shop", "https://example.com", project_dir=tmp_path)
+    data = state.read_json(state_path)
+    steps = data["phases"]["CONTENT_PRODUCTION"]["steps"]
+
+    assert [step["id"] for step in steps] == ["draft-content", "revise-content", "prepare-publish"]
+    contract = next_contract(workflow, "CONTENT_PRODUCTION", steps[0], tmp_path)
+    assert contract["skill"] == "skills/write-content/SKILL.md"
+    assert str(tmp_path / "strategy/keyword-pool.jsonl") in contract["context"]
+    assert str(tmp_path / "content/blog-pipeline.jsonl") in contract["context"]
+    assert contract["output"] == str(tmp_path / "content/drafts/{slug}.md")
+
+
+def test_content_queue_validation_rejects_invalid_status(tmp_path: Path) -> None:
+    state_path = state.init_state("shopify", "Shop", "https://example.com", project_dir=tmp_path)
+    data = state.read_json(state_path)
+    data["contentQueue"] = [{"id": "rec1", "status": "unknown"}]
+    state.write_json(state_path, data)
+
+    result = validate_project(tmp_path, DEFAULT_WORKFLOW)
+
+    assert result["ok"] is False
+    assert any(issue["code"] == "state.content_queue_item" for issue in result["issues"])
+
+
+def test_hexcal_statuses_normalize_to_workbench_queue_statuses() -> None:
+    assert normalize_status("cluster_approved", HEXCAL_STATUS_MAP) == "ready_to_write"
+    assert normalize_status("修改中", HEXCAL_STATUS_MAP) == "revision_requested"
+    assert normalize_status("已收录", HEXCAL_STATUS_MAP) == "indexed"
 
 
 def test_project_id_rejects_path_traversal() -> None:

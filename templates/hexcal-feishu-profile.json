@@ -1,0 +1,117 @@
+{
+  "profiles": {
+    "hexcal-seo": {
+      "lark_cli_profile": "hexcal-seo",
+      "recipients": {
+        "seo_owner": {"kind": "user", "open_id": "ou_replace_with_app_scoped_open_id", "chat_id": "oc_optional_p2p_chat_id"},
+        "seo_review_group": {"kind": "chat", "chat_id": "oc_replace_with_review_chat_id"}
+      },
+      "roles": {
+        "seo_owner": {"recipient": "seo_owner"},
+        "seo_review": {"recipient": "seo_review_group"}
+      },
+      "bases": {
+        "dcdb": {
+          "token": "replace_with_base_token",
+          "tables": {
+            "blog_keywords": {
+              "id": "replace_with_keywords_table_id",
+              "fields": {
+                "keyword": "replace_with_keyword_field_id",
+                "source": "replace_with_source_field_id",
+                "volume_hint": "replace_with_volume_field_id",
+                "ctr_hint": "replace_with_ctr_field_id",
+                "position_hint": "replace_with_position_field_id",
+                "kd_hint": "replace_with_kd_field_id",
+                "cpc_hint": "replace_with_cpc_field_id",
+                "intent": "replace_with_intent_field_id",
+                "seed_keyword": "replace_with_seed_field_id",
+                "competitor_domain": "replace_with_competitor_field_id",
+                "cluster_ref": "replace_with_cluster_ref_field_id",
+                "priority_score": "replace_with_priority_field_id"
+              }
+            },
+            "blog_pipeline": {
+              "id": "replace_with_pipeline_table_id",
+              "fields": {
+                "cluster_name": "replace_with_cluster_name_field_id",
+                "representative_keyword": "replace_with_representative_keyword_field_id",
+                "long_tail_keywords": "replace_with_long_tail_field_id",
+                "member_keywords": "replace_with_member_keywords_field_id",
+                "intent": "replace_with_pipeline_intent_field_id",
+                "business_fit": "replace_with_business_fit_field_id",
+                "difficulty_hint": "replace_with_difficulty_field_id",
+                "traffic_hint": "replace_with_traffic_field_id",
+                "product_anchor": "replace_with_product_anchor_field_id",
+                "cluster_rationale": "replace_with_rationale_field_id",
+                "status": "replace_with_status_field_id",
+                "title": "replace_with_title_field_id",
+                "slug": "replace_with_slug_field_id",
+                "meta_description": "replace_with_meta_field_id",
+                "draft_html": "replace_with_draft_field_id",
+                "scheduled_at": "replace_with_schedule_field_id",
+                "shopify_article_id": "replace_with_article_id_field_id",
+                "live_url": "replace_with_live_url_field_id",
+                "edit_notes": "replace_with_edit_notes_field_id",
+                "review_thread_id": "replace_with_review_thread_field_id",
+                "feature_image_refs": "replace_with_feature_refs_field_id",
+                "inline_image_refs": "replace_with_inline_refs_field_id",
+                "feature_image_hist_refs": "replace_with_feature_history_field_id",
+                "inline_image_hist_refs": "replace_with_inline_history_field_id",
+                "image_notes": "replace_with_image_notes_field_id",
+                "target_keyword": "replace_with_target_keyword_field_id"
+              }
+            },
+            "ugc_current": {
+              "id": "replace_with_current_assets_table_id",
+              "attachment_field": "contents",
+              "fields": {
+                "contents": "replace_with_attachment_field_id",
+                "contents_number": "replace_with_contents_number_field_id",
+                "product": "replace_with_product_field_id",
+                "content_type": "replace_with_content_type_field_id",
+                "rating": "replace_with_rating_field_id",
+                "notes": "replace_with_notes_field_id",
+                "creator": "replace_with_creator_field_id",
+                "times_used": "replace_with_times_used_field_id",
+                "large_file_link": "replace_with_large_file_field_id",
+                "mmx": "replace_with_visual_description_field_id"
+              }
+            },
+            "ugc_historical": {
+              "id": "replace_with_historical_assets_table_id",
+              "attachment_field": "contents",
+              "fields": {
+                "contents": "replace_with_attachment_field_id",
+                "contents_number": "replace_with_contents_number_field_id",
+                "product": "replace_with_product_field_id",
+                "content_type": "replace_with_content_type_field_id",
+                "rating": "replace_with_rating_field_id",
+                "notes": "replace_with_notes_field_id",
+                "creator": "replace_with_creator_field_id",
+                "times_used": "replace_with_times_used_field_id",
+                "large_file_link": "replace_with_large_file_field_id",
+                "mmx": "replace_with_visual_description_field_id"
+              }
+            },
+            "official_v3": {
+              "id": "replace_with_official_assets_table_id",
+              "attachment_field": "contents",
+              "fields": {
+                "contents": "replace_with_attachment_field_id",
+                "contents_number": "replace_with_contents_number_field_id",
+                "product": "replace_with_product_field_id",
+                "content_type": "replace_with_content_type_field_id",
+                "notes": "replace_with_notes_field_id",
+                "creator": "replace_with_creator_field_id",
+                "times_used": "replace_with_times_used_field_id",
+                "large_file_link": "replace_with_large_file_field_id",
+                "mmx": "replace_with_visual_description_field_id"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

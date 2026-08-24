@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from seo_workbench.content_pipeline import validate_queue_item
 from seo_workbench import state
 from seo_workbench.workflow import load_workflow, output_for_step, skill_for_step
 
@@ -83,6 +84,26 @@ def validate_state(data: dict[str, Any], project_dir: Path) -> list[dict[str, st
             continue
         if not runtime_dir.exists():
             issues.append(_issue("warning", "project_dir.missing", f"missing runtime directory: {runtime_dir}"))
+
+    content_queue = data.get("contentQueue", [])
+    if content_queue is None:
+        content_queue = []
+    if not isinstance(content_queue, list):
+        issues.append(_issue("error", "state.content_queue_shape", "state.contentQueue must be a list", "contentQueue"))
+    else:
+        seen_ids: set[str] = set()
+        for index, item in enumerate(content_queue):
+            location = f"contentQueue[{index}]"
+            if not isinstance(item, dict):
+                issues.append(_issue("error", "state.content_queue_item_shape", f"{location} must be an object", location))
+                continue
+            for error in validate_queue_item(item, location):
+                issues.append(_issue("error", "state.content_queue_item", error, location))
+            item_id = item.get("id")
+            if isinstance(item_id, str) and item_id in seen_ids:
+                issues.append(_issue("error", "state.content_queue_duplicate", f"duplicate content queue id: {item_id}", location))
+            if isinstance(item_id, str):
+                seen_ids.add(item_id)
     return issues
 
 

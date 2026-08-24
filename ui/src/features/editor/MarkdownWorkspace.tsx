@@ -1,5 +1,5 @@
-import { ArrowLeft, Columns2, Eye, RefreshCw, Save, TextCursorInput } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { ArrowLeft, Check, Columns2, Eye, Minus, Plus, RefreshCw, Save, TextCursorInput } from "lucide-react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
 
 import { ApiError, fetchMarkdown, saveMarkdown } from "../../api/client";
 import type { MarkdownFile } from "../../api/types";
@@ -10,14 +10,37 @@ import styles from "./MarkdownWorkspace.module.css";
 type EditorMode = "source" | "split" | "preview";
 type Conflict = { disk: MarkdownFile; local: string };
 
-export default function MarkdownWorkspace({ projectId, path, onBack }: { projectId: string; path: string; onBack: () => void }) {
+const FONT_KEY = "seo-workbench:markdown-font-size";
+const FONT_MIN = 12;
+const FONT_MAX = 20;
+
+function storedFontSize(frame: boolean): number {
+  try {
+    const raw = Number(window.localStorage.getItem(FONT_KEY));
+    if (Number.isFinite(raw)) return Math.min(FONT_MAX, Math.max(FONT_MIN, raw));
+  } catch {
+    // localStorage unavailable; fall back to the default for the frame
+  }
+  return frame ? 14 : 17;
+}
+
+export default function MarkdownWorkspace({ projectId, path, onBack, frame = false }: { projectId: string; path: string; onBack: () => void; frame?: boolean }) {
   const [file, setFile] = useState<MarkdownFile | null>(null);
   const [content, setContent] = useState("");
-  const [mode, setMode] = useState<EditorMode>("split");
-  const [status, setStatus] = useState("Loading");
+  const [mode, setMode] = useState<EditorMode>("preview");
+  const [, setStatus] = useState("Loading");
   const [error, setError] = useState<string | null>(null);
   const [conflict, setConflict] = useState<Conflict | null>(null);
+  const [fontSize, setFontSize] = useState(() => storedFontSize(frame));
   const dirty = file ? content !== file.content : false;
+
+  const changeFontSize = (delta: number) => {
+    setFontSize((current) => {
+      const next = Math.min(FONT_MAX, Math.max(FONT_MIN, current + delta));
+      try { window.localStorage.setItem(FONT_KEY, String(next)); } catch { /* ignore */ }
+      return next;
+    });
+  };
 
   const load = useCallback(async () => {
     try {
@@ -44,17 +67,24 @@ export default function MarkdownWorkspace({ projectId, path, onBack }: { project
 
   if (!file) return <div className={styles.loading}>{error || "Loading Markdown"}</div>;
   return (
-    <section className={styles.workspace} aria-label={`Markdown editor for ${path}`}>
+    <section className={frame ? styles.workspaceFrame : styles.workspace} style={{ "--md-font-size": `${fontSize}px` } as CSSProperties} aria-label={`Markdown editor for ${path}`}>
       <header className={styles.toolbar}>
-        <button type="button" className={styles.back} onClick={onBack}><ArrowLeft aria-hidden="true" size={17} /> Files</button>
-        <div className={styles.identity}><strong>{file.path.split("/").at(-1)}</strong><span>{file.path}</span></div>
+        <button type="button" className={styles.back} onClick={onBack}><ArrowLeft aria-hidden="true" size={17} /> {frame ? "Close" : "Files"}</button>
+        <div className={styles.identity}><span>{file.path}</span></div>
         <div className={styles.modeSwitch} aria-label="Editor view">
           <button type="button" aria-label="Source view" aria-pressed={mode === "source"} onClick={() => setMode("source")}><TextCursorInput aria-hidden="true" size={15} /><span>Source</span></button>
           <button type="button" aria-label="Split view" aria-pressed={mode === "split"} onClick={() => setMode("split")}><Columns2 aria-hidden="true" size={15} /><span>Split</span></button>
           <button type="button" aria-label="Preview view" aria-pressed={mode === "preview"} onClick={() => setMode("preview")}><Eye aria-hidden="true" size={15} /><span>Preview</span></button>
         </div>
-        <span className={dirty ? styles.dirty : styles.saved}>{dirty ? "Unsaved" : status}</span>
-        <button type="button" className={styles.save} onClick={() => void save()} disabled={!dirty}><Save aria-hidden="true" size={16} /> Save</button>
+        <div className={styles.fontSwitch} aria-label="Preview size">
+          <button type="button" aria-label="Smaller preview" disabled={fontSize <= FONT_MIN} onClick={() => changeFontSize(-1)}><Minus aria-hidden="true" size={14} /></button>
+          <span>{fontSize}px</span>
+          <button type="button" aria-label="Larger preview" disabled={fontSize >= FONT_MAX} onClick={() => changeFontSize(1)}><Plus aria-hidden="true" size={14} /></button>
+        </div>
+        <button type="button" className={styles.save} onClick={() => void save()} disabled={!dirty} aria-label={dirty ? "Save" : "Saved"}>
+          {dirty ? <Save aria-hidden="true" size={16} /> : <Check aria-hidden="true" size={16} />}
+          {dirty ? "Save" : "Saved"}
+        </button>
       </header>
       {error ? <div className={styles.error} role="alert">{error}</div> : null}
       {conflict ? (
@@ -66,7 +96,7 @@ export default function MarkdownWorkspace({ projectId, path, onBack }: { project
         </div>
       ) : null}
       <div className={`${styles.editorGrid} ${styles[mode]}`}>
-        {mode !== "preview" ? <div className={styles.sourcePane}><CodeMirrorEditor value={content} onChange={setContent} onSave={() => void save()} /></div> : null}
+        {mode !== "preview" ? <div className={styles.sourcePane}><CodeMirrorEditor value={content} onChange={setContent} onSave={() => void save()} fontSize={fontSize} /></div> : null}
         {mode !== "source" ? <MarkdownPreview content={conflict && mode === "split" ? conflict.disk.content : content} /> : null}
       </div>
     </section>

@@ -1,0 +1,71 @@
+.page { max-width: 1120px; margin: 0 auto; padding: 38px 32px 72px; }
+.header { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--separator-strong); color: var(--muted); }
+.header > div { display: grid; gap: 6px; }
+.header span, .kicker { color: var(--primary); font: 600 11px/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.header h1 { margin: 0; color: var(--ink); font: 700 28px/1.15 var(--font-serif); }
+.header p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.primaryAction { min-height: 36px; display: inline-flex; align-items: center; gap: 7px; padding: 0 10px; border: 1px solid var(--separator-strong); border-radius: var(--radius-4); color: var(--ink); background: var(--surface); font-size: 12px; font-weight: 600; cursor: pointer; text-align: left; }
+.running { display: inline-flex; align-items: center; gap: 7px; padding: 8px 10px; color: white; background: var(--graphite); font: 600 11px var(--font-mono); }
+.filters { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; padding-top: 16px; }
+.searchField { min-width: 260px; }
+.selectField { display: grid; gap: 4px; }
+.selectField > span { color: var(--muted); font: 600 10px var(--font-mono); text-transform: uppercase; }
+.selectField select { min-height: 36px; min-width: 130px; box-sizing: border-box; padding: 0 8px; border: 1px solid var(--separator); border-radius: var(--radius-4); outline: 0; color: var(--ink); background: var(--surface); font-size: 12px; }
+.progressGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding-top: 18px; }
+.card { display: grid; gap: 12px; align-content: start; padding: 18px; border: 1px solid var(--separator); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-link); }
+.cardHead { display: grid; gap: 4px; }
+.cardHead h2 { margin: 0; color: var(--ink); font-size: 15px; }
+.cardHead small { color: var(--muted); font-size: 11px; }
+.cardHead > svg { display: none; }
+.followGroups { display: grid; gap: 10px; }
+.followGroup { display: grid; gap: 6px; }
+.followGroup h3 { display: inline-flex; align-items: center; gap: 5px; margin: 0; color: var(--muted); font: 600 11px var(--font-mono); text-transform: uppercase; }
+.followGroup h3.groupOverdue { color: var(--danger); }
+.followGroup h3.groupUpcoming { color: var(--warn); }
+.followList { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.followUpOpen { width: 100%; min-width: 0; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding: 6px 8px; border: 0; border-radius: var(--radius-4); color: var(--ink); background: transparent; cursor: pointer; text-align: left; }
+.followUpOpen time { color: var(--muted); font: 600 11px var(--font-mono); }
+.followUpOpen span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+.followUpOpen small { color: var(--muted); font: 600 10px var(--font-mono); }
+.trackList { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.trackRow { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 8px; border: 1px solid var(--separator); border-radius: var(--radius-4); }
+.trackTask { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; color: var(--ink); }
+.trackSpans { color: var(--danger); font: 600 10px var(--font-mono); }
+.trackWeeks { display: inline-flex; gap: 4px; }
+.trackWeeks button { padding: 2px 6px; border: 1px solid var(--separator-strong); border-radius: var(--radius-4); color: var(--ink); background: var(--surface); font: 600 10px var(--font-mono); cursor: pointer; }
+.block { padding-top: 26px; }
+.blockHead { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding-bottom: 10px; border-bottom: 1px solid var(--separator); }
+.blockTitle { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.blockActions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.blockHead h2 { margin: 0; color: var(--ink); font-size: 16px; }
+.blockHead small { color: var(--muted); font-size: 11px; }
+.weekList { display: grid; gap: 10px; padding-top: 14px; }
+.followUps { display: grid; gap: 6px; margin: 0; padding: 10px 0 0; border-top: 1px solid var(--separator); list-style: none; }
+.followUps li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; font-size: 11px; line-height: 1.45; color: var(--muted); }
+.followUps time { color: var(--ink); font: 600 11px var(--font-mono); }
+.followUps li.due time { color: var(--danger); }
+.followUps li.upcoming time { color: var(--warn); }
+.categoryGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; padding-top: 14px; }
+.category { display: grid; gap: 8px; padding: 14px; border: 1px solid var(--separator); border-radius: var(--radius-card); background: var(--surface); }
+.category h3 { margin: 0; color: var(--primary); font: 600 11px/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.subList { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.subList button { width: 100%; min-height: 32px; display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 8px; align-items: center; padding: 0 8px; border: 0; border-radius: var(--radius-4); color: var(--ink); background: transparent; cursor: pointer; text-align: left; }
+.subList button time { color: var(--muted); font: 600 10px var(--font-mono); }
+.subList button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+.empty { color: var(--muted); font-size: 12px; }
+.error { margin: 16px 0 0; padding: 9px 10px; color: var(--danger); background: var(--danger-wash); font-size: 12px; }
+button:disabled { cursor: not-allowed; opacity: .48; }
+@media (hover: hover) {
+  .primaryAction:hover { background: var(--primary-wash); }
+  .subList button:hover { background: var(--primary-wash); }
+  .followUpOpen:hover { background: var(--primary-wash); }
+  .followUpOpen:hover time { color: var(--primary); }
+  .trackWeeks button:hover { border-color: var(--primary); color: var(--primary); }
+}
+@media (max-width: 760px) {
+  .page { padding: 24px 18px 48px; }
+  .header { align-items: start; }
+  .header h1 { font-size: 34px; }
+  .progressGrid { grid-template-columns: 1fr; }
+  .blockActions { width: 100%; justify-content: flex-end; }
+}

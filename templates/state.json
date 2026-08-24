@@ -28,7 +28,11 @@
     },
     "CONTENT_PRODUCTION": {
       "status": "pending",
-      "steps": []
+      "steps": [
+        {"id": "draft-content", "label": "根据已批准 brief 生成内容草稿", "status": "pending"},
+        {"id": "revise-content", "label": "处理人工 edit notes 并生成修订稿", "status": "pending"},
+        {"id": "prepare-publish", "label": "生成发布前 payload 与 dry-run 记录", "status": "pending"}
+      ]
     },
     "QUALITY_REVIEW": {
       "status": "pending",

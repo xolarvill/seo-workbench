@@ -24,6 +24,9 @@ PROJECT_DIRS = [
     "strategy/keyword-dives",
     "strategy/briefs",
     "content/drafts",
+    "content/assets",
+    "content/reports",
+    "reports",
     "audits/raw",
     "audits/rendered",
     "audits/browser",
@@ -34,7 +37,12 @@ PROJECT_DIRS = [
     "audits/gsc/search-analytics",
     "audits/gsc/inspection",
     "audits/gsc/sitemaps",
+    "audits/tech-audit",
+    "audits/tech-audit/runs",
     "audits/diffs",
+    "audits/content-qc",
+    "audits/publish",
+    "audits/runs",
 ]
 
 

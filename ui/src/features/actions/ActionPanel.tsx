@@ -1,14 +1,16 @@
-import { Activity, Gauge, GitCompareArrows, Globe2, SearchCheck, ServerCog, X } from "lucide-react";
+import { Activity, BarChart3, Gauge, GitCompareArrows, Globe2, SearchCheck, ServerCog, X } from "lucide-react";
 
 import type { Job } from "../../api/types";
 import styles from "./ActionPanel.module.css";
 
 const actions = [
+  { id: "tech-audit", label: "Technical audit", detail: "Crawl the URL inventory and evaluate deterministic SEO rules.", icon: SearchCheck },
   { id: "evidence", label: "Basic evidence", detail: "Fetch raw HTML, redirects, metadata and route samples.", icon: Globe2 },
   { id: "technology", label: "Technology", detail: "Detect runtime technologies and explain SEO architecture impact.", icon: ServerCog },
   { id: "performance", label: "Lighthouse", detail: "Run the reliable multi-run lab performance benchmark.", icon: Gauge },
   { id: "crux", label: "CrUX field data", detail: "Collect current and historical real-user performance.", icon: Activity },
   { id: "gsc", label: "Search Console", detail: "Collect read-only performance, indexing and Sitemap evidence.", icon: SearchCheck },
+  { id: "statistics-collect", label: "Statistical evidence", detail: "Collect comparable GSC, GA4 and Shopify evidence and refresh statistical guidance.", icon: BarChart3 },
   { id: "audit-diff", label: "Audit diff", detail: "Compare the latest compatible evidence snapshots.", icon: GitCompareArrows },
 ];
 

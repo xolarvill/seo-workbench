@@ -1,44 +1,65 @@
 :root {
-  color: #202522;
-  background: #f4f2ed;
-  font-family: "Archivo", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--canvas);
+  font-family: "Archivo", "PingFang SC", "Noto Sans CJK SC", system-ui, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --font-ui: "Archivo", system-ui, sans-serif;
-  --font-serif: "Source Serif 4", Georgia, serif;
+  --font-ui: "Archivo", "PingFang SC", "Noto Sans CJK SC", system-ui, sans-serif;
+  --font-serif: "Source Serif 4", Charter, Georgia, serif;
   --font-mono: "Azeret Mono", ui-monospace, monospace;
-  --graphite: #202522;
-  --ink: #202522;
-  --ink-muted: #505750;
-  --muted: #787f78;
-  --canvas: #f4f2ed;
-  --surface: #fffefa;
-  --separator: #deddd6;
-  --separator-strong: #b9bbb4;
-  --emerald: #08795f;
-  --emerald-dark: #055c49;
-  --emerald-bright: #27b487;
-  --emerald-wash: #e8f4ef;
-  --amber: #ad6900;
-  --amber-wash: #fff4dc;
-  --regression: #a53b34;
-  --regression-wash: #fff0ee;
-  --radius-4: 4px;
+  --graphite: #102a43;
+  --ink: #123b63;
+  --ink-muted: #456785;
+  --muted: #7189a2;
+  --muted-soft: #a7bad0;
+  --canvas: #f5f8fc;
+  --surface: #ffffff;
+  --surface-soft: #edf3fb;
+  --separator: #d9e3f0;
+  --separator-strong: #b7cbe1;
+  /* Brand and state colors. Keep these roles distinct across every page. */
+  --primary: #126bff;
+  --primary-dark: #0955d4;
+  --primary-wash: #eaf2ff;
+  --success: #10b981;
+  --success-dark: #047857;
+  --success-wash: #ecfdf5;
+  --warning: #f59e0b;
+  --warning-dark: #b45309;
+  --warning-wash: #fffbeb;
+  --danger: #ef4444;
+  --danger-dark: #b91c1c;
+  --danger-wash: #fef2f2;
+  --info: #3b92f6;
+  --info-dark: #1d4ed8;
+  --info-wash: #eff6ff;
+  --radius-4: 6px;
   --radius-6: 6px;
-  --shadow-menu: 0 12px 30px rgba(31, 37, 34, 0.18);
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --radius-card: 10px;
+  --shadow-card: 0 8px 24px rgba(18, 59, 99, 0.08);
+  --shadow-link: 0 2px 8px rgba(18, 59, 99, 0.06);
+  --shadow-menu: 0 12px 30px rgba(18, 59, 99, 0.14);
+  --shadow-floating: 0 16px 38px rgba(18, 59, 99, 0.16);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+.statusPill { display: inline-flex; align-items: center; width: fit-content; min-height: 22px; padding: 2px 8px; border: 1px solid transparent; border-radius: 999px; font: 650 10px/1.2 var(--font-mono); letter-spacing: 0; text-transform: capitalize; white-space: nowrap; }
+.statusPill[data-tone="danger"] { border-color: #fecaca; color: var(--danger-dark); background: var(--danger-wash); }
+.statusPill[data-tone="warning"] { border-color: #fde68a; color: var(--warning-dark); background: var(--warning-wash); }
+.statusPill[data-tone="info"] { border-color: #bfdbfe; color: var(--info-dark); background: var(--info-wash); }
+.statusPill[data-tone="success"] { border-color: #a7f3d0; color: var(--success-dark); background: var(--success-wash); }
+.statusPill[data-tone="neutral"] { border-color: var(--separator); color: var(--ink-muted); background: var(--canvas); }
 
 * { box-sizing: border-box; }
 html { min-width: 320px; background: var(--canvas); }
-body { min-width: 320px; min-height: 100vh; margin: 0; }
+body { min-width: 320px; min-height: 100vh; margin: 0; color: var(--ink); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 button, input, select, textarea { font: inherit; }
 button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
-  outline: 2px solid var(--emerald);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
-a { color: var(--emerald); }
-::selection { color: var(--ink); background: #c5e8dc; }
+a { color: var(--primary); }
+::selection { color: var(--ink); background: var(--primary-wash); }
 
 .skip-link {
   position: fixed;
@@ -64,7 +85,7 @@ a { color: var(--emerald); }
 }
 
 .loading-screen span { font: 12px var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
-.error-screen { color: var(--regression); }
+.error-screen { color: var(--danger); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }

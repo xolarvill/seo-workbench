@@ -7,11 +7,12 @@ from pathlib import Path
 from typing import Any, Callable
 
 from seo_workbench import state
+from seo_workbench.tech_audit import load_tech_issues
 
 
 SCHEMA_VERSION = "1.0"
 DIFF_VERSION = "0.1.0"
-AUDIT_KINDS = ("raw", "technology", "performance", "crux", "gsc")
+AUDIT_KINDS = ("raw", "technology", "performance", "crux", "gsc", "tech-audit")
 EXPECTED_CONTRACTS = {
     "raw": {"schema_version": "1.0", "collector_version": "0.6.0"},
     # Technology has two provider-specific detector contracts. Snapshot identity
@@ -20,6 +21,7 @@ EXPECTED_CONTRACTS = {
     "performance": {"schema_version": "1.0", "runner_version": "0.1.0"},
     "crux": {"schema_version": "1.0", "collector_version": "0.1.0"},
     "gsc": {"schema_version": "1.0", "collector_version": "0.1.0"},
+    "tech-audit": {"schema_version": "1.0", "collector_version": "0.1.0"},
 }
 PERFORMANCE_METRICS = (
     "first-contentful-paint",
@@ -72,6 +74,8 @@ def _snapshot_patterns(project_dir: Path, kind: str) -> list[Path]:
         return list(_kind_root(project_dir, kind).glob("crux-*.json"))
     if kind == "gsc":
         return list(_kind_root(project_dir, kind).glob("gsc-*.json"))
+    if kind == "tech-audit":
+        return list(_kind_root(project_dir, kind).glob("tech-audit-*.json"))
     raise ValueError(f"unsupported audit kind: {kind}")
 
 
@@ -200,6 +204,12 @@ def _snapshot_identity(kind: str, snapshot: dict[str, Any]) -> tuple[Any, ...]:
             search.get("data_state"),
             search.get("window_days"),
             search.get("compare"),
+        )
+    if kind == "tech-audit":
+        return (
+            snapshot.get("seed_url"),
+            snapshot.get("schema_version"),
+            snapshot.get("collector_version"),
         )
     raise ValueError(f"unsupported audit kind: {kind}")
 
@@ -679,6 +689,44 @@ def compare_gsc(baseline: dict[str, Any], current: dict[str, Any]) -> tuple[list
     return changes, warnings, comparable
 
 
+def compare_tech_audit(
+    project_dir: Path,
+    baseline_path: Path,
+    current_path: Path,
+    baseline: dict[str, Any],
+    current: dict[str, Any],
+) -> tuple[list[dict[str, Any]], list[str], bool]:
+    comparable, warnings = _contract_comparability("tech-audit", baseline, current)
+    if baseline.get("collection_status") == "failed" or current.get("collection_status") == "failed":
+        comparable = False
+        warnings.append("technical audit snapshot collection failed")
+    if baseline.get("config_fingerprint") != current.get("config_fingerprint"):
+        comparable = False
+        warnings.append("technical audit crawl configuration differs")
+    if baseline.get("summary", {}).get("stopped_by_limit") or current.get("summary", {}).get("stopped_by_limit"):
+        warnings.append("one technical audit snapshot stopped at max_urls")
+    before = {item.get("fingerprint"): item for item in load_tech_issues(project_dir, baseline_path) if item.get("fingerprint")}
+    after = {item.get("fingerprint"): item for item in load_tech_issues(project_dir, current_path) if item.get("fingerprint")}
+    changes: list[dict[str, Any]] = []
+    for fingerprint in sorted(before.keys() | after.keys()):
+        old = before.get(fingerprint)
+        new = after.get(fingerprint)
+        if old is None:
+            changes.append(_change("issue", "presence", False, True, "regression", key=f"{new.get('rule_id')}:{new.get('url')}"))
+        elif new is None:
+            changes.append(_change("issue", "presence", True, False, "improvement", key=f"{old.get('rule_id')}:{old.get('url')}"))
+        elif old.get("priority", {}).get("score") != new.get("priority", {}).get("score"):
+            changes.append(_change("issue", "priority_score", old.get("priority", {}).get("score"), new.get("priority", {}).get("score"), key=f"{new.get('rule_id')}:{new.get('url')}"))
+    old_count = baseline.get("summary", {}).get("issues", len(before))
+    new_count = current.get("summary", {}).get("issues", len(after))
+    if old_count != new_count:
+        changes.append(_change("audit", "issue_count", old_count, new_count, _numeric_classification(old_count, new_count, lower_is_better=True)))
+    if not comparable:
+        for item in changes:
+            item["classification"] = "change"
+    return changes, warnings, comparable
+
+
 COMPARATORS: dict[str, Callable[[dict[str, Any], dict[str, Any]], tuple[list[dict[str, Any]], list[str], bool]]] = {
     "raw": compare_raw,
     "technology": compare_technology,
@@ -700,6 +748,8 @@ def _validate_snapshot(kind: str, path: Path, snapshot: dict[str, Any]) -> None:
         raise ValueError(f"CrUX snapshot has an invalid contract: {path}")
     if kind == "gsc" and not isinstance(snapshot.get("components"), dict):
         raise ValueError(f"GSC snapshot has an invalid contract: {path}")
+    if kind == "tech-audit" and not isinstance(snapshot.get("artifacts"), dict):
+        raise ValueError(f"technical audit snapshot has an invalid contract: {path}")
 
 
 def compare_kind(
@@ -727,7 +777,10 @@ def compare_kind(
         current = _load(current_path)
         _validate_snapshot(kind, baseline_path, baseline)
         _validate_snapshot(kind, current_path, current)
-        changes, warnings, comparable = COMPARATORS[kind](baseline, current)
+        if kind == "tech-audit":
+            changes, warnings, comparable = compare_tech_audit(project_dir, baseline_path, current_path, baseline, current)
+        else:
+            changes, warnings, comparable = COMPARATORS[kind](baseline, current)
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         return {**base, "status": "failed", "warnings": [str(exc)]}
     return {

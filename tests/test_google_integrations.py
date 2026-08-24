@@ -74,8 +74,60 @@ def test_search_analytics_collects_current_previous_and_paginates(tmp_path, monk
     assert report["collection_status"] == "ok"
     assert report["windows"]["current"]["page"]["row_count"] == 25000
     assert any(call["startRow"] == 25000 for call in calls)
+    dimensions = {tuple(call.get("dimensions", [])) for call in calls if call["startRow"] == 0}
+    assert {("date", "page"), ("query", "page"), ("country",)} <= dimensions
+    assert report["windows"]["current"]["query_page"]["request"]["dimensions"] == ["query", "page"]
     assert report["windows"]["current"]["date"]["request"]["endDate"] == "2026-07-14"
     assert (tmp_path / "audits/gsc/search-analytics/latest.json").stat().st_mode & 0o777 == 0o600
+
+
+def test_change_performance_collects_url_scoped_windows_around_change_day(tmp_path, monkeypatch) -> None:
+    project(tmp_path)
+    bind(tmp_path)
+    monkeypatch.setattr(gsc_probe, "load_credentials", lambda profile: Credentials())
+    calls = []
+
+    def requester(method, url, body, credentials, timeout):
+        calls.append(body)
+        return {"rows": []}
+
+    report = gsc_probe.collect_change_performance(
+        tmp_path,
+        tmp_path / "audits/gsc/change-outcomes/change-1",
+        urls=["https://shop.example.com/path/article"],
+        changed_at=date(2026, 8, 1),
+        review_date=date(2026, 8, 29),
+        requester=requester,
+        today=date(2026, 9, 5),
+    )
+
+    assert report["windows"]["previous"]["page"]["request"]["endDate"] == "2026-07-31"
+    assert report["windows"]["current"]["page"]["request"]["startDate"] == "2026-08-02"
+    assert {tuple(call["dimensions"]) for call in calls} == {("page",), ("date", "page"), ("query", "page")}
+    assert all(call["dimensionFilterGroups"][0]["filters"][0]["operator"] == "equals" for call in calls)
+    assert (tmp_path / "audits/gsc/change-outcomes/change-1/latest.json").stat().st_mode & 0o777 == 0o600
+
+    with pytest.raises(ValueError, match="newer than finalized GSC data"):
+        gsc_probe.collect_change_performance(
+            tmp_path,
+            tmp_path / "audits/gsc/change-outcomes/future",
+            urls=["https://shop.example.com/path/article"],
+            changed_at=date(2026, 8, 10),
+            review_date=date(2026, 9, 4),
+            requester=requester,
+            today=date(2026, 9, 5),
+        )
+
+    with pytest.raises(ValueError, match="at most 25 URLs"):
+        gsc_probe.collect_change_performance(
+            tmp_path,
+            tmp_path / "audits/gsc/change-outcomes/too-many",
+            urls=[f"https://shop.example.com/path/{index}" for index in range(26)],
+            changed_at=date(2026, 8, 1),
+            review_date=date(2026, 8, 29),
+            requester=requester,
+            today=date(2026, 9, 5),
+        )
 
 
 def test_inspection_stops_after_quota_error_and_marks_indexed_only(tmp_path, monkeypatch) -> None:

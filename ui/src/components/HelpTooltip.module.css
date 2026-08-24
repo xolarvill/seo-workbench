@@ -1,0 +1,65 @@
+.helpTooltip {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 24px;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--muted);
+  cursor: help;
+  /* Reset inherited button/tab formatting so the bubble never picks up
+     centered text or a heavier font from its trigger context. */
+  text-align: left;
+}
+.helpTooltip > [role="tooltip"] {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 7px);
+  left: 0;
+  display: block;
+  width: max-content;
+  max-width: min(320px, calc(100vw - 32px));
+  padding: 11px 12px;
+  border: 1px solid var(--separator-strong);
+  border-radius: 6px;
+  color: var(--ink);
+  background: var(--surface);
+  box-shadow: 0 12px 28px rgb(0 0 0 / .14);
+  font: 400 12px/1.5 var(--font-ui);
+  letter-spacing: 0;
+  text-align: left;
+  text-transform: none;
+  white-space: normal;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transform: translateY(-3px);
+  transition: opacity 120ms ease-out, transform 120ms ease-out, visibility 120ms ease-out;
+}
+/* Long-form help: lead-in sentence first, supporting points below. */
+.helpTooltip > [role="tooltip"] strong { display: block; margin-bottom: 7px; color: var(--ink); font-weight: 700; }
+.helpTooltip > [role="tooltip"] ul { margin: 0; padding-left: 16px; display: grid; gap: 5px; }
+.helpTooltip > [role="tooltip"] li { margin: 0; padding-left: 2px; color: var(--ink-muted); }
+.helpTooltipRight > [role="tooltip"] { left: auto; right: 0; }
+.helpTooltipCenter > [role="tooltip"] { left: 50%; transform: translate(-50%, -3px); }
+.helpTooltip:hover > [role="tooltip"],
+.helpTooltip:focus-visible > [role="tooltip"] { opacity: 1; visibility: visible; transform: translateY(0); }
+.helpTooltipCenter:hover > [role="tooltip"],
+.helpTooltipCenter:focus-visible > [role="tooltip"] { transform: translate(-50%, 0); }
+.helpTooltip:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 50%; }
+
+@media (max-width: 700px) {
+  .helpTooltip > [role="tooltip"] { left: auto; right: 0; }
+  .helpTooltipCenter > [role="tooltip"] { left: 50%; right: auto; transform: translate(-50%, -3px); }
+  .helpTooltipCenter:hover > [role="tooltip"],
+  .helpTooltipCenter:focus-visible > [role="tooltip"] { transform: translate(-50%, 0); }
+}
+
+/* Compact alignment when the trigger sits inside a tab strip. */
+.tabs .helpTooltip { margin-left: 4px; vertical-align: middle; }
+.tabs .helpTooltip > [role="tooltip"] { left: 0; right: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .helpTooltip > [role="tooltip"] { animation: none; transition: none; }
+}

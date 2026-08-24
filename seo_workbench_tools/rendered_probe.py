@@ -157,6 +157,7 @@ def analyze_page(page: Any) -> dict[str, Any]:
                 html_lang: document.documentElement.lang || '',
                 title: document.title,
                 meta_description: meta('description'),
+                meta_keywords: meta('keywords'),
                 canonical: (document.querySelector('link[rel="canonical"]') || {}).href || '',
                 robots_meta: meta('robots'),
                 viewport_meta: (document.querySelector('meta[name="viewport"]') || {}).content || '',
@@ -165,6 +166,7 @@ def analyze_page(page: Any) -> dict[str, Any]:
                 has_body_text: bodyText.length >= 50,
                 viewport: vp,
                 h1: [...document.querySelectorAll('h1')].map((h) => h.innerText.trim()).filter(Boolean),
+                h2: [...document.querySelectorAll('h2')].map((h) => h.innerText.trim()).filter(Boolean),
                 link_summary: {
                     anchor_count: anchorHrefs.length,
                     internal_count: internal.length,
