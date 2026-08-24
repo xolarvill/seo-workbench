@@ -1,10 +1,18 @@
 # SEO Workbench
 
-A local-first workspace for technical SEO audits, content planning, and repeatable evidence collection. Use it from the CLI, let an AI coding agent operate it, or open the optional browser interface.
+A local-first all-in-one SEO workspace. Use it from an AI coding agent and manage the visual browser interface. Progress your work in weekly paces.
 
-![SEO Workbench overview](docs/assets/workbench-overview.jpg)
+1. Overview 
+![SEO Workbench overview](docs/assets/overview.png)
 
-The screenshot uses a neutral demo project. Each real project keeps its audit evidence, workflow state, performance results, and working documents in one local folder.
+2. Keywords
+![SEO Workbench keywords](docs/assets/keywords.png)
+
+3. Technical audit
+![SEO Workbench detail](docs/assets/details_in_audit.png)
+
+4. Book SEO changes
+![SEO changes](docs/assets/seo_changes.png)
 
 ## What it does
 
@@ -36,9 +44,24 @@ cd seo-workbench
 ./setup.sh
 ```
 
+### Working with an agent
+
+Run your coding agent from the repository root and give it the project ID. A useful first request is:
+
+> Audit the `my-site` project, explain the technical and performance findings, then prepare a content SEO strategy using the local workbench. Give me a report of what should be done in this week.
+
+Agents can discover the current workflow step with:
+
+```bash
+./seo --project my-site status --json
+./seo --project my-site next --json
+```
+
+When the UI is open, new audit files and Markdown documents appear there automatically.
+
 ### Working manually
 
-Create a project and collect its first evidence:
+Manual operation is supported, create a project and collect its first evidence:
 
 ```bash
 ./seo --project my-site init general \
@@ -58,20 +81,6 @@ The interface only listens on `127.0.0.1`. It is optional and uses the same loca
 
 WebView/cookieless previews (for example the Codex built-in browser) can use `./seo ui --allow-cookieless`; the one-time bootstrap token is then also accepted via `Authorization: Bearer` on every local request. The default stays cookie-based.
 
-### Working with an agent
-
-Run your coding agent from the repository root and give it the project ID. A useful first request is:
-
-> Audit the `my-site` project, explain the technical and performance findings, then prepare a content SEO strategy using the local workbench.
-
-Agents can discover the current workflow step with:
-
-```bash
-./seo --project my-site status --json
-./seo --project my-site next --json
-```
-
-When the UI is open, new audit files and Markdown documents appear there automatically.
 
 ## Reporting
 
@@ -96,15 +105,6 @@ DataForSEO integration uses its REST API v3 directly, with no SDK dependency. Op
 ![SEO Workbench Markdown editor](docs/assets/workbench-editor.jpg)
 
 The editor checks file revisions before saving. If an agent changes the same document, the UI preserves your local edit and asks you to compare or reload instead of overwriting either version.
-
-<details>
-<summary>Mobile layout</summary>
-
-<p align="center">
-  <img src="docs/assets/workbench-mobile.jpg" alt="SEO Workbench mobile overview" width="375">
-</p>
-
-</details>
 
 ## Common commands
 
@@ -234,6 +234,8 @@ SEO Workbench preserves and adapts useful ideas and material from:
 - [superseo-skills](https://github.com/inhouseseo/superseo-skills)
 - [wappalyzergo](https://github.com/projectdiscovery/wappalyzergo)
 - [Lighthouse](https://github.com/GoogleChrome/lighthouse)
+- [open-seo](https://github.com/every-app/open-seo)
+- [DataForSEO](https://dataforseo.com/)
 
 See the local skill and third-party attribution files for component-specific terms.
 
