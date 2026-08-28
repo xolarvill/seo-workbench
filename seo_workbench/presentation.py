@@ -195,6 +195,7 @@ def generate_weekly_presentation(
         "readiness": status["status"],
         "statistics": status["statistics"],
         "sources": payload["sources"],
+        "analysis": _manifest_analysis(payload.get("analysis") or {}),
         "pages": 4,
         "privacy": "Aggregate source summaries only; no credentials, customer identifiers, or order identifiers.",
     }
@@ -246,6 +247,8 @@ def _build_payload(
     trend = stats_data.get("search_trend") or {}
     ranking = stats_data.get("ranking_opportunity") or {}
     query = stats_data.get("query_portfolio") or {}
+    analysis = _analysis_summary(stats_data)
+    clicks = analysis["headline"]
     source_paths = {
         "statistics": "audits/statistics/latest.json",
         "portfolio": "audits/content-portfolio/latest.json",
@@ -273,10 +276,11 @@ def _build_payload(
         "week": {"year": year, "week": week},
         "readiness": status,
         "sources": sources,
+        "analysis": analysis,
         "kpis": {
-            "current_clicks": _number(decomp.get("current_observed_clicks")),
-            "previous_clicks": _number(decomp.get("previous_observed_clicks")),
-            "click_change": _number(decomp.get("observed_click_change")),
+            "current_clicks": _number(clicks.get("current")),
+            "previous_clicks": _number(clicks.get("previous")),
+            "click_change": _number(clicks.get("change")),
             "current_ctr": _number((confidence.get("ctr") or {}).get("current", {}).get("estimate")),
             "current_queries": _int((query.get("current") or {}).get("observed_query_count")),
             "ranking_opportunity_impressions": _number(ranking.get("positions_4_20_impressions")),
@@ -309,7 +313,188 @@ def _build_payload(
         "technical": _technical_summary(tech),
         "crux": _crux_summary(crux),
         "performance": {"status": performance.get("collection_status", "not_collected"), "generated_at": performance.get("generated_at", "")},
-        "insights": _insights(stats_data, business, status),
+        "insights": _insights(stats_data, business, status, analysis),
+    }
+
+
+def _analysis_summary(stats: dict[str, Any]) -> dict[str, Any]:
+    decomp = stats.get("click_change_decomposition") or {}
+    observation = stats.get("query_observation")
+    if isinstance(observation, dict) and observation:
+        previous = observation.get("previous") or {}
+        current = observation.get("current") or {}
+        full_previous = _number(previous.get("full_page_clicks"))
+        full_current = _number(current.get("full_page_clicks"))
+        boundary = str(observation.get("attribution_boundary") or "Query-page coverage is incomplete; no cause is inferred.")
+        clicks = {
+            "status": str(observation.get("status") or "not_observed"),
+            "basis": "full_page_rows" if full_previous is not None or full_current is not None else "not_observed",
+            "previous": full_previous,
+            "current": full_current,
+            "change": _number(observation.get("full_click_change")),
+        }
+        query_observation = {
+            "status": str(observation.get("status") or "not_observed"),
+            "basis": "page_rows_vs_query_page_rows",
+            "previous": previous,
+            "current": current,
+            "observed_query_click_change": _number(observation.get("observed_query_click_change")),
+            "unattributed_click_change": _number(observation.get("unattributed_click_change")),
+            "boundary": boundary,
+        }
+    else:
+        clicks = {
+            "status": "legacy",
+            "basis": "not_observed_legacy",
+            "previous": None,
+            "current": None,
+            "change": None,
+        }
+        query_observation = {
+            "status": "legacy",
+            "basis": "page_rows_vs_query_page_rows",
+            "previous": {"full_page_clicks": None, "observed_query_page_clicks": _number(decomp.get("previous_observed_clicks")), "coverage_ratio": None, "unattributed_click_remainder": None},
+            "current": {"full_page_clicks": None, "observed_query_page_clicks": _number(decomp.get("current_observed_clicks")), "coverage_ratio": None, "unattributed_click_remainder": None},
+            "observed_query_click_change": _number(decomp.get("observed_click_change")),
+            "unattributed_click_change": None,
+            "boundary": "Legacy portfolio lacks full-page/query coverage fields; full-page headline is unavailable and query-page data is structural context only.",
+        }
+
+    confidence = stats.get("search_change_confidence") or {}
+    confidence_change = confidence.get("click_change") or {}
+    confidence_summary = {
+        "status": confidence.get("status", "not_observed"),
+        "direction": confidence_change.get("direction"),
+        "ci95": confidence_change.get("ci95"),
+        "evidence_grade": confidence.get("evidence_grade"),
+    }
+    trend = stats.get("search_trend") or {}
+    trend_summary = {
+        "status": trend.get("status", "not_observed"),
+        "direction": trend.get("direction"),
+        "weeks": trend.get("weeks"),
+        "weekly_clicks": [float(value) for value in trend.get("weekly_clicks") or [] if _is_number(value)][-8:],
+        "normalized_slope": _number(trend.get("normalized_slope")),
+        "latest_anomaly": trend.get("latest_anomaly"),
+        "latest_anomaly_score": _number(trend.get("latest_anomaly_score")),
+    }
+    date_page_previous = _number(confidence_change.get("previous"))
+    date_page_current = _number(confidence_change.get("current"))
+    date_page_change = _number(confidence_change.get("observed"))
+    if confidence_summary["status"] == "ok" and None not in (date_page_previous, date_page_current, date_page_change):
+        clicks.update(
+            basis="full_date_page_history",
+            status="ok",
+            previous=date_page_previous,
+            current=date_page_current,
+            change=date_page_change,
+        )
+    headline = {
+        "basis": clicks["basis"],
+        "status": clicks["status"],
+        "previous": clicks["previous"],
+        "current": clicks["current"],
+        "change": clicks["change"],
+    }
+    driver_items = [
+        {key: item.get(key) for key in ("query", "url", "click_change")}
+        for item in (decomp.get("top_drivers") or [])[:5]
+        if isinstance(item, dict)
+    ]
+    return {
+        "headline": headline,
+        "headline_basis": headline["basis"],
+        "verdict": {
+            "search_change_direction": confidence_summary["direction"],
+            "search_change_status": confidence_summary["status"],
+            "evidence_grade": confidence_summary["evidence_grade"],
+            "trend_direction": trend_summary["direction"],
+            "click_basis": headline["basis"],
+        },
+        "clicks": clicks,
+        "query_observation": query_observation,
+        "search_confidence": confidence_summary,
+        "trend": trend_summary,
+        "query_drivers": {
+            "basis": "observed query-page subset",
+            "coverage": {
+                "previous": query_observation["previous"].get("coverage_ratio"),
+                "current": query_observation["current"].get("coverage_ratio"),
+            },
+            "items": driver_items,
+            "boundary": query_observation["boundary"],
+        },
+    }
+
+
+def _manifest_analysis(analysis: dict[str, Any]) -> dict[str, Any]:
+    clicks = analysis.get("clicks") or {}
+    headline = analysis.get("headline") or clicks
+    query_observation = analysis.get("query_observation") or clicks.get("query_observation") or {}
+    observed = {
+        "previous": (query_observation.get("previous") or {}).get("observed_query_page_clicks"),
+        "current": (query_observation.get("current") or {}).get("observed_query_page_clicks"),
+        "change": query_observation.get("observed_query_click_change"),
+    }
+    coverage = {
+        "previous": (query_observation.get("previous") or {}).get("coverage_ratio"),
+        "current": (query_observation.get("current") or {}).get("coverage_ratio"),
+    }
+    remainder = {
+        "previous": (query_observation.get("previous") or {}).get("unattributed_click_remainder"),
+        "current": (query_observation.get("current") or {}).get("unattributed_click_remainder"),
+        "change": query_observation.get("unattributed_click_change"),
+    }
+    confidence = analysis.get("search_confidence") or {}
+    trend = analysis.get("trend") or {}
+    drivers = analysis.get("query_drivers") or {}
+    driver_items = [item for item in drivers.get("items") or [] if isinstance(item, dict)]
+    return {
+        "headline": {
+            "basis": headline.get("basis"),
+            "status": headline.get("status"),
+            "previous": headline.get("previous"),
+            "current": headline.get("current"),
+            "change": headline.get("change"),
+        },
+        "headline_basis": headline.get("basis"),
+        "verdict": analysis.get("verdict") or {},
+        "clicks": {
+            "status": clicks.get("status"),
+            "basis": clicks.get("basis"),
+            "previous": clicks.get("previous"),
+            "current": clicks.get("current"),
+            "change": clicks.get("change"),
+            "observed_query_page": observed,
+            "coverage": coverage,
+            "unattributed_remainder": remainder,
+            "boundary": clicks.get("boundary"),
+        },
+        "query_observation": {
+            "status": query_observation.get("status"),
+            "basis": query_observation.get("basis"),
+            "previous": query_observation.get("previous") or {},
+            "current": query_observation.get("current") or {},
+            "observed_query_click_change": query_observation.get("observed_query_click_change"),
+            "unattributed_click_change": query_observation.get("unattributed_click_change"),
+            "boundary": query_observation.get("boundary"),
+        },
+        "search_confidence": confidence,
+        "trend": {
+            key: trend.get(key)
+            for key in ("status", "direction", "weeks", "normalized_slope", "latest_anomaly", "latest_anomaly_score")
+        },
+        "query_drivers": {
+            "basis": drivers.get("basis"),
+            "coverage": coverage,
+            "count": len(driver_items),
+            "urls": [
+                {"url": item.get("url"), "click_change": item.get("click_change")}
+                for item in driver_items
+                if item.get("url")
+            ],
+            "boundary": drivers.get("boundary"),
+        },
     }
 
 
@@ -347,11 +532,19 @@ def _render_cover(plt: Any, pdf: Any, payload: dict[str, Any], colors: dict[str,
     fig.text(.06, .78, name, fontsize=28, weight="bold", color=colors["navy"])
     fig.text(.06, .735, f"Week {payload['week']['week']:02d} - {period['start']} -> {period['end']}", fontsize=13, color=colors["muted"])
     kpis = payload["kpis"]
+    analysis = payload.get("analysis") or {}
+    click_analysis = analysis.get("clicks") or {}
     delta = kpis["click_change"]
     delta_label = "No data" if delta is None else f"{delta:+,.0f}"
     delta_color = colors["green"] if isinstance(delta, (int, float)) and delta > 0 else colors["red"] if isinstance(delta, (int, float)) and delta < 0 else colors["muted"]
     _card(fig, .06, .53, .2, .14, "28d organic clicks", _num_label(kpis["current_clicks"]), f"vs { _num_label(kpis['previous_clicks']) } previous window", colors["blue"], colors)
-    _card(fig, .28, .53, .2, .14, "Observed change", delta_label, "descriptive, not causal", delta_color, colors)
+    if click_analysis.get("basis") == "full_date_page_history":
+        change_label, change_detail = "Date-page change", "full date x page history; descriptive"
+    elif click_analysis.get("basis") == "full_page_rows":
+        change_label, change_detail = "Full-page change", "page rows fallback; descriptive"
+    else:
+        change_label, change_detail = "Observed-query change", "query-page subset; not a headline"
+    _card(fig, .28, .53, .2, .14, change_label, delta_label, change_detail, delta_color, colors)
     _card(fig, .50, .53, .2, .14, "Current CTR", _pct_label(kpis["current_ctr"]), f"{_num_label(kpis['current_queries'])} observed queries", colors["green"], colors)
     _card(fig, .72, .53, .22, .14, "Opportunity band", _num_label(kpis["ranking_opportunity_impressions"]), "impressions in positions 4-20", colors["amber"], colors)
     _section_text(fig, .06, .43, "What moved", [_display(item, has_cjk) for item in payload["insights"][:4]], colors)
@@ -366,6 +559,7 @@ def _render_cover(plt: Any, pdf: Any, payload: dict[str, Any], colors: dict[str,
 
 def _render_search(plt: Any, pdf: Any, payload: dict[str, Any], colors: dict[str, str], has_cjk: bool) -> None:
     fig = _page(plt, payload, colors, "Search visibility", "SEARCH PERFORMANCE", 2, has_cjk)
+    click_analysis = (payload.get("analysis") or {}).get("query_observation") or {}
     values = payload["kpis"]["weekly_clicks"][-8:]
     ax = fig.add_axes((.06, .47, .56, .32), facecolor=colors["surface"])
     ax.set_title("8-week click trend", loc="left", color=colors["ink"], fontsize=13, pad=12, weight="bold")
@@ -384,11 +578,13 @@ def _render_search(plt: Any, pdf: Any, payload: dict[str, Any], colors: dict[str
     _card(fig, .67, .61, .27, .15, "Current clicks", _num_label(payload["kpis"]["current_clicks"]), "28-day finalized window", colors["blue"], colors)
     _card(fig, .67, .43, .27, .15, "Current CTR", _pct_label(payload["kpis"]["current_ctr"]), "GSC confidence estimate", colors["green"], colors)
     _card(fig, .06, .24, .27, .14, "Ranking pool", _num_label(payload["kpis"]["ranking_opportunity_impressions"]), "positions 4-20 impressions", colors["amber"], colors)
-    _card(fig, .36, .24, .27, .14, "Observed queries", _num_label(payload["kpis"]["current_queries"]), "query rows in current window", colors["blue"], colors)
+    coverage = (click_analysis.get("current") or {}).get("coverage_ratio")
+    coverage_detail = f"page-vs-query coverage: {_pct_label(coverage)}" if _is_number(coverage) else "page-vs-query coverage unavailable"
+    _card(fig, .36, .24, .27, .14, "Observed queries", _num_label(payload["kpis"]["current_queries"]), coverage_detail, colors["blue"], colors)
     drivers = []
     for item in payload["kpis"]["top_drivers"][:4]:
         drivers.append(f"{_display(item.get('query') or 'query', has_cjk)}: {_num_label(item.get('click_change'))} clicks")
-    _section_text(fig, .67, .28, "Largest click drivers", drivers or ["No driver rows observed"], colors, size=10)
+    _section_text(fig, .67, .28, "Observed-query drivers", drivers or ["No driver rows observed"], colors, size=10)
     _footer(fig, payload, colors, 2, has_cjk)
     pdf.savefig(fig)
     plt.close(fig)
@@ -592,13 +788,26 @@ def _weekly_activities(content: str) -> list[str]:
     return activities[:6]
 
 
-def _insights(stats: dict[str, Any], business: dict[str, Any], readiness: dict[str, Any]) -> list[str]:
+def _insights(
+    stats: dict[str, Any],
+    business: dict[str, Any],
+    readiness: dict[str, Any],
+    analysis: dict[str, Any] | None = None,
+) -> list[str]:
     insights: list[str] = []
-    decomp = stats.get("click_change_decomposition") or {}
-    delta = decomp.get("observed_click_change")
+    analysis = analysis or _analysis_summary(stats)
+    clicks = analysis.get("clicks") or {}
+    query_observation = analysis.get("query_observation") or {}
+    delta = clicks.get("change")
     if _is_number(delta):
         direction = "up" if float(delta) > 0 else "down" if float(delta) < 0 else "flat"
-        insights.append(f"Comparable 28-day organic clicks were {direction} by {abs(float(delta)):,.0f}; this is descriptive, not causal.")
+        label = "date-page-history organic clicks" if clicks.get("basis") == "full_date_page_history" else "full-page organic clicks" if clicks.get("basis") == "full_page_rows" else "observed query-page clicks"
+        insights.append(f"Comparable 28-day {label} were {direction} by {abs(float(delta)):,.0f}; this is descriptive, not causal.")
+    elif clicks.get("status") in {"incomparable", "partial"}:
+        insights.append("Full-page click change is not fully comparable; keep the query-page subset as structural context only.")
+    coverage = (query_observation.get("current") or {}).get("coverage_ratio")
+    if _is_number(coverage) and clicks.get("basis") in {"full_date_page_history", "full_page_rows"}:
+        insights.append(f"Observed query-page rows cover {_pct_label(coverage)} of current page-row clicks; this coverage is separate from the date-page headline.")
     ranking = stats.get("ranking_opportunity") or {}
     if _is_number(ranking.get("positions_4_20_impressions")):
         insights.append(f"The 4-20 ranking band carried {_number_label(ranking['positions_4_20_impressions'])} impressions of near-page-one opportunity.")

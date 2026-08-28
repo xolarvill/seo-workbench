@@ -62,6 +62,10 @@ def analyze_content_portfolio(
         current = _page_window(gsc, "current")
         previous_queries = ((gsc.get("windows") or {}).get("previous") or {}).get("query_page")
         current_queries = ((gsc.get("windows") or {}).get("current") or {}).get("query_page")
+        previous_query_observed = isinstance(previous_queries, dict) and isinstance(previous_queries.get("rows"), list)
+        current_query_observed = isinstance(current_queries, dict) and isinstance(current_queries.get("rows"), list)
+        previous_page_observed = isinstance(previous.get("rows"), list)
+        current_page_observed = isinstance(current.get("rows"), list)
         if not isinstance(current_queries, dict) or not isinstance(current_queries.get("rows"), list):
             raise ValueError("GSC Search Analytics artifact has no query-page evidence; collect GSC again")
         if not isinstance(previous_queries, dict) or not isinstance(previous_queries.get("rows"), list):
@@ -71,6 +75,8 @@ def analyze_content_portfolio(
         comparability = _comparability(previous, current)
     else:
         previous, current, previous_queries, current_queries = {}, {}, {"rows": []}, {"rows": []}
+        previous_query_observed = current_query_observed = False
+        previous_page_observed = current_page_observed = False
         comparability = {"comparable": False, "issues": ["GSC Search Analytics evidence is not complete"]}
 
     regime_breaks = {"gsc": [], "business": []}
@@ -111,6 +117,17 @@ def analyze_content_portfolio(
         urls.update(_business_urls(business_report, project_url))
     queries, conflicts = _query_evidence(current_queries["rows"], urls, project_url)
     search_statistics = build_search_statistics(previous_queries["rows"], current_queries["rows"], project_url)
+    search_statistics["portfolio"]["query_observation"] = _query_observation_summary(
+        _sum_page_clicks(previous_metrics) if previous_page_observed else None,
+        _sum_page_clicks(current_metrics) if current_page_observed else None,
+        _observed_query_clicks(search_statistics["portfolio"].get("click_change_decomposition") or {}, "previous") if previous_query_observed else None,
+        _observed_query_clicks(search_statistics["portfolio"].get("click_change_decomposition") or {}, "current") if current_query_observed else None,
+        comparable=comparability["comparable"],
+        previous_page_observed=previous_page_observed,
+        current_page_observed=current_page_observed,
+        previous_query_observed=previous_query_observed,
+        current_query_observed=current_query_observed,
+    )
     longitudinal = (
         build_longitudinal_statistics(
             load_daily_history(project_dir, "gsc"),
@@ -156,6 +173,18 @@ def analyze_content_portfolio(
             **dict((search_statistics.get("pages") or {}).get(url) or {}),
             **dict((longitudinal.get("pages") or {}).get(url) or {}),
         }
+        query_decomposition = (search_statistics.get("pages") or {}).get(url, {}).get("click_change_decomposition") or {}
+        page_statistics["query_observation"] = _query_observation_summary(
+            _number_or_none((previous_metrics.get(url) or {}).get("clicks")),
+            _number_or_none((current_metrics.get(url) or {}).get("clicks")),
+            _observed_query_clicks(query_decomposition, "previous") if previous_query_observed else None,
+            _observed_query_clicks(query_decomposition, "current") if current_query_observed else None,
+            comparable=comparability["comparable"],
+            previous_page_observed=previous_page_observed and url in previous_metrics,
+            current_page_observed=current_page_observed and url in current_metrics,
+            previous_query_observed=previous_query_observed,
+            current_query_observed=current_query_observed,
+        )
         decision, recommendation, signals = _decision(
             item,
             before,
@@ -393,6 +422,65 @@ def _gsc_metrics_by_url(rows: list[Any], project_url: str) -> dict[str, dict[str
             "position": round(position, 4),
         }
     return result
+
+
+def _sum_page_clicks(metrics: dict[str, dict[str, float]]) -> float:
+    return round(sum(float(values.get("clicks") or 0) for values in metrics.values()), 6)
+
+
+def _number_or_none(value: Any) -> float | None:
+    return float(value) if isinstance(value, (int, float)) and not isinstance(value, bool) else None
+
+
+def _observed_query_clicks(statistics: dict[str, Any], window: str) -> float | None:
+    return _number_or_none(statistics.get(f"{window}_observed_clicks"))
+
+
+def _query_observation_summary(
+    previous_full_clicks: float | None,
+    current_full_clicks: float | None,
+    previous_query_clicks: float | None,
+    current_query_clicks: float | None,
+    *,
+    comparable: bool,
+    previous_page_observed: bool,
+    current_page_observed: bool,
+    previous_query_observed: bool,
+    current_query_observed: bool,
+) -> dict[str, Any]:
+    def window(full_clicks: float | None, query_clicks: float | None) -> dict[str, float | None]:
+        coverage = query_clicks / full_clicks if full_clicks not in (None, 0) and query_clicks is not None else None
+        remainder = full_clicks - query_clicks if full_clicks is not None and query_clicks is not None else None
+        return {
+            "full_page_clicks": round(full_clicks, 6) if full_clicks is not None else None,
+            "observed_query_page_clicks": round(query_clicks, 6) if query_clicks is not None else None,
+            "coverage_ratio": round(coverage, 6) if coverage is not None else None,
+            "unattributed_click_remainder": round(remainder, 6) if remainder is not None else None,
+        }
+
+    previous = window(previous_full_clicks, previous_query_clicks)
+    current = window(current_full_clicks, current_query_clicks)
+
+    def change(key: str) -> float | None:
+        before, after = previous.get(key), current.get(key)
+        return round(float(after) - float(before), 6) if comparable and before is not None and after is not None else None
+
+    observed = previous_page_observed and previous_query_observed and current_page_observed and current_query_observed
+    any_observed = previous_page_observed or current_page_observed or previous_query_observed or current_query_observed
+    status = "incomparable" if not comparable else "ok" if observed else "partial" if any_observed else "not_observed"
+    return {
+        "status": status,
+        "basis": "complete GSC page rows compared with observed query-page rows",
+        "attribution_boundary": (
+            "Query-page clicks are an observed subset; the remainder is unattributed in this artifact, "
+            "and its cause is not inferred."
+        ),
+        "previous": previous,
+        "current": current,
+        "full_click_change": change("full_page_clicks"),
+        "observed_query_click_change": change("observed_query_page_clicks"),
+        "unattributed_click_change": change("unattributed_click_remainder"),
+    }
 
 
 def _business_metrics(report: dict[str, Any], urls: set[str]) -> dict[str, dict[str, dict[str, float]]]:

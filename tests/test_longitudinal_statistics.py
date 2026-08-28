@@ -39,6 +39,8 @@ def test_longitudinal_statistics_produce_confidence_trend_and_cross_source_diagn
 
     page = report["pages"][URL]
     assert page["search_change_confidence"]["evidence_grade"] == "strong"
+    assert page["search_change_confidence"]["click_change"]["previous"] == 56
+    assert page["search_change_confidence"]["click_change"]["current"] == 224
     assert page["search_change_confidence"]["click_change"]["direction"] == "increase"
     assert page["search_trend"]["direction"] == "up"
     assert page["organic_engagement"]["current"]["engagement_rate"]["estimate"] == 0.6

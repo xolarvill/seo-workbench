@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from seo_workbench import state
-from seo_workbench.presentation import generate_weekly_presentation, presentation_due, presentation_status
+from seo_workbench.presentation import _analysis_summary, generate_weekly_presentation, presentation_due, presentation_status
 
 
 def _write_json(project_dir: Path, relative: str, payload: dict) -> None:
@@ -77,3 +77,99 @@ def test_generate_weekly_presentation_writes_pdf_and_manifest(tmp_path: Path) ->
     manifest = json.loads(state.safe_project_path(project_dir, result["manifest_path"]).read_text(encoding="utf-8"))
     assert manifest["pages"] == 4
     assert manifest["period"] == {"start": "2026-08-24", "end": "2026-08-28"}
+
+
+def test_presentation_uses_full_page_analysis_and_persists_query_boundary(tmp_path: Path) -> None:
+    pytest.importorskip("matplotlib")
+    project_dir, now = _ready_project(tmp_path)
+    portfolio_path = state.safe_project_path(project_dir, "audits/content-portfolio/latest.json")
+    portfolio = json.loads(portfolio_path.read_text(encoding="utf-8"))
+    portfolio["statistics"].update(
+        {
+            "click_change_decomposition": {
+                "previous_observed_clicks": 60,
+                "current_observed_clicks": 70,
+                "observed_click_change": 10,
+                "top_drivers": [{"query": "desk query", "url": "https://example.com/products/desk", "click_change": 10}],
+            },
+            "query_observation": {
+                "status": "ok",
+                "basis": "complete GSC page rows compared with observed query-page rows",
+                "previous": {
+                    "full_page_clicks": 100,
+                    "observed_query_page_clicks": 60,
+                    "coverage_ratio": 0.6,
+                    "unattributed_click_remainder": 40,
+                },
+                "current": {
+                    "full_page_clicks": 80,
+                    "observed_query_page_clicks": 70,
+                    "coverage_ratio": 0.875,
+                    "unattributed_click_remainder": 10,
+                },
+                "full_click_change": -20,
+                "observed_query_click_change": 10,
+                "unattributed_click_change": -30,
+                "attribution_boundary": "Query-page clicks are an observed subset; the remainder is unattributed and its cause is not inferred.",
+            },
+            "search_change_confidence": {
+                "status": "ok",
+                "evidence_grade": "strong",
+                "click_change": {"previous": 90, "current": 78, "observed": -12, "direction": "decrease", "ci95": [-25, -15]},
+            },
+            "search_trend": {
+                "status": "ok",
+                "direction": "down",
+                "weeks": 8,
+                "weekly_clicks": [160, 155, 150, 145, 140, 135, 130, 120],
+                "normalized_slope": -0.04,
+                "latest_anomaly": True,
+                "latest_anomaly_score": -3.4,
+            },
+        }
+    )
+    portfolio_path.write_text(json.dumps(portfolio), encoding="utf-8")
+
+    result, _ = generate_weekly_presentation(project_dir, now=now)
+    manifest = json.loads(state.safe_project_path(project_dir, result["manifest_path"]).read_text(encoding="utf-8"))
+    analysis = manifest["analysis"]
+
+    assert analysis["headline"] == {
+        "basis": "full_date_page_history",
+        "status": "ok",
+        "previous": 90.0,
+        "current": 78.0,
+        "change": -12.0,
+    }
+    assert analysis["headline_basis"] == "full_date_page_history"
+    assert analysis["query_observation"]["previous"]["full_page_clicks"] == 100
+    assert analysis["query_observation"]["current"]["full_page_clicks"] == 80
+    assert analysis["query_observation"]["observed_query_click_change"] == 10.0
+    assert analysis["query_observation"]["current"]["coverage_ratio"] == 0.875
+    assert analysis["search_confidence"] == {
+        "status": "ok",
+        "direction": "decrease",
+        "ci95": [-25, -15],
+        "evidence_grade": "strong",
+    }
+    assert analysis["trend"]["latest_anomaly"] is True
+    assert analysis["query_drivers"]["basis"] == "observed query-page subset"
+    assert analysis["query_drivers"]["urls"] == [{"url": "https://example.com/products/desk", "click_change": 10}]
+
+
+def test_presentation_fallback_uses_page_rows_when_date_history_is_unavailable() -> None:
+    analysis = _analysis_summary(
+        {
+            "query_observation": {
+                "status": "partial",
+                "previous": {"full_page_clicks": 100, "observed_query_page_clicks": 60, "coverage_ratio": 0.6},
+                "current": {"full_page_clicks": 80, "observed_query_page_clicks": 70, "coverage_ratio": 0.875},
+                "full_click_change": -20,
+                "observed_query_click_change": 10,
+            },
+            "search_change_confidence": {"status": "insufficient_data"},
+        }
+    )
+
+    assert analysis["headline"] == {"basis": "full_page_rows", "status": "partial", "previous": 100.0, "current": 80.0, "change": -20.0}
+    assert analysis["query_observation"]["current"]["coverage_ratio"] == 0.875

@@ -120,6 +120,47 @@ def test_content_portfolio_returns_actionable_non_mutating_decisions(tmp_path: P
     assert path.stat().st_mode & 0o777 == 0o600
 
 
+def test_content_portfolio_separates_full_page_delta_from_query_subset(tmp_path: Path) -> None:
+    project_dir = _project(tmp_path / "project")
+    gsc_path = _gsc(tmp_path / "gsc.json")
+    report = json.loads(gsc_path.read_text())
+    report["windows"]["previous"]["page"]["rows"] = [
+        {"keys": [DECAY], "clicks": 100, "impressions": 1000, "ctr": 0.1, "position": 5}
+    ]
+    report["windows"]["current"]["page"]["rows"] = [
+        {"keys": [DECAY], "clicks": 50, "impressions": 800, "ctr": 0.0625, "position": 5}
+    ]
+    report["windows"]["previous"]["query_page"] = {
+        "rows": [{"keys": ["decay query", DECAY], "clicks": 20, "impressions": 500, "position": 5}]
+    }
+    report["windows"]["current"]["query_page"] = {
+        "rows": [{"keys": ["decay query", DECAY], "clicks": 40, "impressions": 500, "position": 5}]
+    }
+    gsc_path.write_text(json.dumps(report))
+
+    portfolio, _ = analyze_content_portfolio(
+        project_dir,
+        gsc_path=gsc_path,
+        now=datetime(2026, 9, 1, tzinfo=timezone.utc),
+    )
+
+    observation = portfolio["statistics"]["query_observation"]
+    page_observation = next(item for item in portfolio["items"] if item["url"] == DECAY)["statistics"]["query_observation"]
+    assert observation["previous"] == {
+        "full_page_clicks": 100.0,
+        "observed_query_page_clicks": 20.0,
+        "coverage_ratio": 0.2,
+        "unattributed_click_remainder": 80.0,
+    }
+    assert observation["current"]["full_page_clicks"] == 50.0
+    assert observation["current"]["coverage_ratio"] == 0.8
+    assert observation["full_click_change"] == -50.0
+    assert observation["observed_query_click_change"] == 20.0
+    assert observation["unattributed_click_change"] == -70.0
+    assert page_observation["full_click_change"] == -50.0
+    assert "cause is not inferred" in observation["attribution_boundary"]
+
+
 def test_content_portfolio_rejects_truncated_gsc_statistics(tmp_path: Path) -> None:
     project_dir = _project(tmp_path / "project")
     gsc_path = _gsc(tmp_path / "gsc.json")

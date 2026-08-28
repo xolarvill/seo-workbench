@@ -135,6 +135,8 @@ def _search_confidence(
         "covered_days": {"previous": len(before_dates), "current": len(after_dates)},
         "method": f"deterministic moving-block bootstrap; {BLOCK_DAYS}-day blocks; {BOOTSTRAP_SAMPLES} samples",
         "click_change": {
+            "previous": round(previous_clicks, 4),
+            "current": round(current_clicks, 4),
             "observed": round(current_clicks - previous_clicks, 4),
             "ci95": [round(lower, 4), round(upper, 4)],
             "probability_increase": round(sum(draw > 0 for draw in draws) / len(draws), 4),

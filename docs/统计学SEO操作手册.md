@@ -72,7 +72,7 @@
 
 | 要添加的指标 | 统计学原理 | 为什么添加、意义是什么 | 添加到哪 | 具体展示形式 | 是否需要新增数据 |
 |---|---|---|---|---|---|
-| 点击变化拆解 | 恒等分解：在前后 query-page 联集上，将 `clicks = impressions × CTR` 对称拆为展示量效应和 CTR 效应 | 区分“可观测展示获取变了”与“同等展示下的点击表现变了”；排名、需求、SERP 和 query mix 只是可能原因，不伪装成已被独立识别 | Portfolio 全站与 Page 详情 | 前后可观测点击、exposure effect、CTR effect；两分量与点击变化和必须仅有舍入差 | 否；使用现有 GSC query-page 前后窗 |
+| 点击变化拆解 | 周报 headline 优先使用同一 date-page history 的点击变化；page rows 与 query-page 联集仅做 `clicks = impressions × CTR` 对称拆解 | 区分日期页历史的总览、完整 page rows 汇总与可观测查询子集的结构驱动；coverage 和未归属 remainder 必须保留，不推断匿名/隐藏查询的原因 | Portfolio 全站与 Page 详情 | date-page headline、完整 page clicks、observed query-page clicks、两窗口 coverage、full/observed/remainder change；exposure effect、CTR effect 仅属于 query-page 子集 | 否；使用现有 GSC date-page、page 与 query-page 前后窗 |
 | 查询组合集中度 | Top-N share、Herfindahl-Hirschman Index、有效查询数 | 判断流量是否过度依赖少数查询，指导防守、扩词和内容组合治理 | Overview、Portfolio、Page 详情 | Top 1/3/10 share、HHI、effective query count | 否；使用 GSC query-page |
 | 排名带迁移 | 将平均位置分桶，并比较相同 query-page 单元的带间迁移 | 找到 4–10、11–20 等最可能通过补内容和内链突破的曝光，而不是对所有低排名一视同仁 | Portfolio 与 Page 详情 | 各排名带 impressions；主要迁移路径 | 否 |
 | 查询所有权集中度 | URL 份额和 HHI | 区分真正的多页面承接、品牌/语言变体与潜在 cannibalization；只触发人工合并审查 | Query conflicts、Page 详情 | owner URL、share、HHI、总 impressions | 否 |
