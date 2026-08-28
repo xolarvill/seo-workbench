@@ -359,6 +359,7 @@ def collect_performance(
         "totals": ([], False),
         "date": (["date"], False),
         "date_page": (["date", "page"], True),
+        "date_page_device": (["date", "page", "device"], True),
         "page": (["page"], True),
         "query": (["query"], True),
         "query_page": (["query", "page"], True),
@@ -435,6 +436,7 @@ def collect_change_performance(
             for name, dimensions in (
                 ("page", ["page"]),
                 ("date_page", ["date", "page"]),
+                ("date_page_device", ["date", "page", "device"]),
                 ("query_page", ["query", "page"]),
             )
         }

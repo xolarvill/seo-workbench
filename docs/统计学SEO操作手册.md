@@ -10,7 +10,7 @@
 | GA4 | 独立 `analytics.readonly` profile；绑定正确 property；有 landing page、date 维度 | 已有只读采集和项目绑定 | 确认站点时区与 Shopify 一致；key event 定义变化时登记；不能把 key events 写成购买 |
 | Shopify | 规范 `*.myshopify.com` 域名；至少 `read_orders`；店铺时区和币种可读 | 已有项目级只读连接和产品级聚合 | 保持 app 安装和 scope；商品 handle 变化、币种或时区变化时登记；收入只作全渠道商业背景 |
 | 日期可比性 | GSC、GA4、Shopify 使用完全相同的两个 28 天窗口 | `statistics collect` 自动以 finalized GSC 截止日为共同截止日 | 不再分别运行后直接人工拼接；临时导入必须自己保证窗口完全一致 |
-| 日级历史 | 至少覆盖本次前后窗口；每个日期明确记录“已请求”，即使某页无行 | 私有 JSONL、覆盖清单、120 天保留、重复运行覆盖同日同 URL | 每日或至少每周稳定运行一次，避免历史过期；备份时保留 `audits/statistics/history/` |
+| 日级历史 | 至少覆盖本次前后窗口；每个日期明确记录“已请求”，即使某页无行 | 私有 JSONL、GSC page 与 page-device sidecar、覆盖清单、120 天保留、重复运行覆盖同日同 URL（或同日同 URL 同 device） | 每日或至少每周稳定运行一次，避免历史过期；备份时保留 `audits/statistics/history/` |
 | 口径台账 | 埋点、同意模式、property、币种、时区、模板等会改变数据含义的日期可追溯 | 已有 `measurement-regimes.jsonl` 与比较闸门 | 操作者必须在变更发生时登记；未知断点会让统计区间看起来精确但含义错误 |
 | 变更与验证台账 | SEO 上线动作有 URL、时间、假设、指标；技术修复有 fingerprint 和 verified 日期 | 已有 changes ledger 和 technical issue ledger | 不能只在聊天或报告中记动作；否则系统只能描述趋势，不能做 change-scoped 复盘 |
 | 人工决策边界 | 合并、重定向、发布、接受风险仍需人工确认 | 已有 Pages / Content / Audit 工作区边界 | 每周审阅统计建议及其数据状态；不得把 `insufficient_data` 当作无效果 |

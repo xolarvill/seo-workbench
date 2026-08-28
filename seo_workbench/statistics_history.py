@@ -14,6 +14,11 @@ from seo_workbench_tools.files import atomic_write_text
 
 HISTORY_DAYS = 120
 GSC_METRICS = ("clicks", "impressions", "ctr", "position")
+HISTORY_FILES = {
+    "gsc": "gsc-page-daily.jsonl",
+    "gsc_page_device": "gsc-page-device-daily.jsonl",
+    "business": "business-page-daily.jsonl",
+}
 BUSINESS_METRICS = (
     "organic_sessions",
     "engaged_sessions",
@@ -48,23 +53,28 @@ def ingest_daily_history(
     artifacts = {name: _read_artifact(path) for name, path in sources.items()}
     incoming = {
         "gsc": _gsc_rows(artifacts["gsc"], project_url),
+        "gsc_page_device": _gsc_page_device_rows(artifacts["gsc"], project_url),
         "business": _business_rows(artifacts["business"], project_url),
     }
     incoming_coverage = {
         "gsc": _coverage_dates(artifacts["gsc"], nested="date_page"),
+        "gsc_page_device": _coverage_dates(artifacts["gsc"], nested="date_page_device", optional=True),
         "business": _coverage_dates(artifacts["business"]),
     }
     paths = {
-        name: state.safe_project_path(project_dir, f"audits/statistics/history/{name}-page-daily.jsonl")
-        for name in sources
+        name: state.safe_project_path(project_dir, f"audits/statistics/history/{filename}")
+        for name, filename in HISTORY_FILES.items()
     }
     results: dict[str, Any] = {}
     with project_lock(project_dir):
         for name, rows in incoming.items():
-            combined = {(row["date"], row["url"]): row for row in _read_history(paths[name])}
-            combined.update({(row["date"], row["url"]): row for row in rows})
+            combined = {
+                _history_key(name, row): row
+                for row in _read_history(paths[name])
+            }
+            combined.update({_history_key(name, row): row for row in rows})
             if combined:
-                newest = max(date.fromisoformat(day) for day, _url in combined)
+                newest = max(date.fromisoformat(key[0]) for key in combined)
                 cutoff = newest - timedelta(days=retain_days - 1)
                 combined = {key: row for key, row in combined.items() if date.fromisoformat(key[0]) >= cutoff}
             selected = [combined[key] for key in sorted(combined)]
@@ -96,20 +106,23 @@ def ingest_daily_history(
         "collection_status": "ok",
         "retention_days": retain_days,
         "sources": results,
-        "privacy": "Aggregated date-by-page metrics only; no user, event, customer, or order identifiers are stored.",
+        "privacy": (
+            "Aggregated date-by-page and date-by-page-device metrics only; "
+            "no user, event, customer, or order identifiers are stored."
+        ),
     }
 
 
 def load_daily_history(project_dir: Path, source: str) -> list[dict[str, Any]]:
-    if source not in {"gsc", "business"}:
-        raise ValueError("statistics history source must be gsc or business")
-    return _read_history(state.safe_project_path(project_dir, f"audits/statistics/history/{source}-page-daily.jsonl"))
+    if source not in HISTORY_FILES:
+        raise ValueError("statistics history source must be gsc, gsc_page_device, or business")
+    return _read_history(state.safe_project_path(project_dir, f"audits/statistics/history/{HISTORY_FILES[source]}"))
 
 
 def load_history_coverage(project_dir: Path) -> dict[str, list[str]]:
     path = state.safe_project_path(project_dir, "audits/statistics/history/coverage.json")
     if not path.exists():
-        return {"gsc": [], "business": []}
+        return {"gsc": [], "gsc_page_device": [], "business": []}
     if path.is_symlink():
         raise ValueError(f"statistics coverage cannot be a symlink: {path}")
     try:
@@ -119,7 +132,7 @@ def load_history_coverage(project_dir: Path) -> dict[str, list[str]]:
     sources = payload.get("sources") if isinstance(payload, dict) else {}
     return {
         name: [str(day) for day in (sources or {}).get(name, [])]
-        for name in ("gsc", "business")
+        for name in ("gsc", "gsc_page_device", "business")
     }
 
 
@@ -153,6 +166,38 @@ def _gsc_rows(report: dict[str, Any], project_url: str) -> list[dict[str, Any]]:
     return [rows[key] for key in sorted(rows)]
 
 
+def _gsc_page_device_rows(report: dict[str, Any], project_url: str) -> list[dict[str, Any]]:
+    rows: dict[tuple[str, str, str], dict[str, Any]] = {}
+    for window in (report.get("windows") or {}).values():
+        evidence = (window or {}).get("date_page_device") or {}
+        if not evidence:
+            continue
+        if evidence.get("truncated"):
+            raise ValueError("GSC date-page-device evidence is truncated; refusing partial statistics history")
+        for source in evidence.get("rows") or []:
+            keys = source.get("keys") or []
+            if len(keys) < 3:
+                continue
+            day = _day(keys[0])
+            url = _url(keys[1], project_url)
+            provider_device = "" if keys[2] is None else str(keys[2])
+            record = {
+                "date": day,
+                "url": url,
+                "device": provider_device,
+                "device_canonical": canonical_device(provider_device),
+            }
+            record.update(
+                {
+                    metric: _number(source[metric], metric)
+                    for metric in GSC_METRICS
+                    if metric in source and source[metric] is not None
+                }
+            )
+            rows[(day, url, provider_device)] = record
+    return [rows[key] for key in sorted(rows)]
+
+
 def _business_rows(report: dict[str, Any], project_url: str) -> list[dict[str, Any]]:
     rows: dict[tuple[str, str], dict[str, Any]] = {}
     for window in (report.get("windows") or {}).values():
@@ -170,10 +215,13 @@ def _business_rows(report: dict[str, Any], project_url: str) -> list[dict[str, A
     return [rows[key] for key in sorted(rows)]
 
 
-def _coverage_dates(report: dict[str, Any], *, nested: str = "") -> set[str]:
+def _coverage_dates(report: dict[str, Any], *, nested: str = "", optional: bool = False) -> set[str]:
     covered: set[str] = set()
     for window in (report.get("windows") or {}).values():
         evidence = ((window or {}).get(nested) or {}) if nested else (window or {})
+        if not evidence:
+            if optional:
+                continue
         request = evidence.get("request") or {}
         try:
             start = date.fromisoformat(str(request.get("startDate") or ""))
@@ -183,9 +231,18 @@ def _coverage_dates(report: dict[str, Any], *, nested: str = "") -> set[str]:
         if start > end:
             raise ValueError("statistics daily evidence start date cannot be after end date")
         covered.update((start + timedelta(days=offset)).isoformat() for offset in range((end - start).days + 1))
-    if not covered:
+    if not covered and not optional:
         raise ValueError("statistics daily evidence has no covered dates")
     return covered
+
+
+def canonical_device(value: Any) -> str:
+    normalized = str(value or "").strip().casefold()
+    if normalized in {"mobile", "desktop", "tablet"}:
+        return normalized
+    if normalized in {"", "unknown"}:
+        return "unknown"
+    return "other"
 
 
 def _read_history(path: Path) -> list[dict[str, Any]]:
@@ -205,6 +262,12 @@ def _read_history(path: Path) -> list[dict[str, Any]]:
             raise ValueError(f"invalid statistics history line {line_number}: expected an object")
         rows.append(row)
     return rows
+
+
+def _history_key(source: str, row: dict[str, Any]) -> tuple[str, ...]:
+    if source == "gsc_page_device":
+        return str(row.get("date") or ""), str(row.get("url") or ""), str(row.get("device") or "")
+    return str(row.get("date") or ""), str(row.get("url") or "")
 
 
 def _write_history(path: Path, rows: list[dict[str, Any]]) -> None:

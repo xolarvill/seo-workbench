@@ -75,8 +75,9 @@ def test_search_analytics_collects_current_previous_and_paginates(tmp_path, monk
     assert report["windows"]["current"]["page"]["row_count"] == 25000
     assert any(call["startRow"] == 25000 for call in calls)
     dimensions = {tuple(call.get("dimensions", [])) for call in calls if call["startRow"] == 0}
-    assert {("date", "page"), ("query", "page"), ("country",)} <= dimensions
+    assert {("date", "page"), ("date", "page", "device"), ("query", "page"), ("country",)} <= dimensions
     assert report["windows"]["current"]["query_page"]["request"]["dimensions"] == ["query", "page"]
+    assert report["windows"]["current"]["date_page_device"]["request"]["dimensions"] == ["date", "page", "device"]
     assert report["windows"]["current"]["date"]["request"]["endDate"] == "2026-07-14"
     assert (tmp_path / "audits/gsc/search-analytics/latest.json").stat().st_mode & 0o777 == 0o600
 
@@ -103,7 +104,12 @@ def test_change_performance_collects_url_scoped_windows_around_change_day(tmp_pa
 
     assert report["windows"]["previous"]["page"]["request"]["endDate"] == "2026-07-31"
     assert report["windows"]["current"]["page"]["request"]["startDate"] == "2026-08-02"
-    assert {tuple(call["dimensions"]) for call in calls} == {("page",), ("date", "page"), ("query", "page")}
+    assert {tuple(call["dimensions"]) for call in calls} == {
+        ("page",),
+        ("date", "page"),
+        ("date", "page", "device"),
+        ("query", "page"),
+    }
     assert all(call["dimensionFilterGroups"][0]["filters"][0]["operator"] == "equals" for call in calls)
     assert (tmp_path / "audits/gsc/change-outcomes/change-1/latest.json").stat().st_mode & 0o777 == 0o600
 
