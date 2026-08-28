@@ -205,16 +205,23 @@ def collect_dataforseo_backlinks(
     requests: list[dict[str, Any]] = []
     total_count = 0
     offset = 0
+    search_after_token = ""
+    seen_search_after_tokens: set[str] = set()
+    use_search_after = max_links % 1_000 == 0
     while len(provider_items) < max_links:
+        remaining = max_links - len(provider_items)
         task: dict[str, Any] = {
             "target": target,
             "mode": "one_per_domain",
             "backlinks_status_type": "live",
             "include_subdomains": True,
             "exclude_internal_backlinks": True,
-            "limit": min(1_000, max_links - len(provider_items)),
-            "offset": offset,
+            "limit": min(1_000, remaining),
         }
+        if search_after_token:
+            task["search_after_token"] = search_after_token
+        else:
+            task["offset"] = offset
         task_result, result = _provider_result(requester(project_dir, endpoint, task, timeout))
         batch = [item for item in result.get("items") or [] if isinstance(item, dict)]
         total_count = max(total_count, len(provider_items) + len(batch), _provider_total(result))
@@ -222,6 +229,11 @@ def collect_dataforseo_backlinks(
         requests.append({"task_id": task_result.get("id", ""), "cost_usd": float(task_result.get("cost") or 0)})
         if not batch or len(provider_items) >= total_count:
             break
+        next_search_after_token = str(result.get("search_after_token") or "").strip()
+        if use_search_after and next_search_after_token and next_search_after_token not in seen_search_after_tokens:
+            seen_search_after_tokens.add(next_search_after_token)
+            search_after_token = next_search_after_token
+            continue
         offset += len(batch)
 
     observed = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)

@@ -193,6 +193,39 @@ def test_dataforseo_backlink_collection_requires_confirmation_and_marks_truncati
     assert partial["provider"]["truncated"] is True
 
 
+def test_dataforseo_backlink_collection_uses_search_after_token_for_full_pages(tmp_path: Path) -> None:
+    project_dir = _project(tmp_path / "project")
+    calls: list[dict] = []
+    provider_links = [
+        {"url_from": LINK_A["source_url"], "url_to": LINK_A["target_url"], "anchor": "Guide A", "dofollow": True},
+        {"url_from": LINK_B["source_url"], "url_to": LINK_B["target_url"], "anchor": "Guide B", "dofollow": False},
+    ]
+
+    def requester(_project_dir: Path, _endpoint: str, task: dict, _timeout: float) -> dict:
+        calls.append(task)
+        item = provider_links[len(calls) - 1]
+        result = {"total_count": 2, "items": [item]}
+        if len(calls) == 1:
+            result["search_after_token"] = "next-page"
+        return {
+            "status_code": 20000,
+            "tasks": [{"id": f"task-{len(calls)}", "status_code": 20000, "cost": 0.01, "result": [result]}],
+        }
+
+    report, _ = collect_dataforseo_backlinks(
+        project_dir,
+        confirm_paid=True,
+        max_links=2_000,
+        requester=requester,
+        now=datetime(2026, 8, 20, tzinfo=timezone.utc),
+    )
+
+    assert "offset" in calls[0]
+    assert calls[1]["search_after_token"] == "next-page"
+    assert "offset" not in calls[1]
+    assert report["complete_snapshot"] is True
+
+
 def test_dataforseo_gap_writes_provider_evidence_and_exact_target_mapping(tmp_path: Path) -> None:
     project_dir = _project(tmp_path / "project")
     portfolio = project_dir / "audits/content-portfolio/latest.json"
