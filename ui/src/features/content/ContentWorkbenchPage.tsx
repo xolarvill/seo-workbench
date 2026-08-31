@@ -170,8 +170,8 @@ export function ContentWorkbenchPage({ projectId, section, workspace, jobs, refr
 
   return (
     <section className={styles.page} aria-labelledby="content-heading">
+      <h1 id="content-heading" className="srOnly">{briefMode ? "Brief workbench" : "Produce workbench"}</h1>
       <header className={styles.header}>
-        <div><span>{briefMode ? "Research handoff" : "Blog production"}</span><h1 id="content-heading">{briefMode ? "Brief workbench" : "Produce workbench"}</h1></div>
         <div className={styles.summary}>
           <strong>{queue.length}</strong><span>{briefMode ? "candidates" : "items"}</span>
           <strong>{briefMode ? contentFiles.filter((file) => file.path.startsWith("strategy/briefs/") || file.path.startsWith("content/briefs/")).length : workspace.content?.due_for_indexing?.count || 0}</strong><span>{briefMode ? "briefs" : "inspection due"}</span>

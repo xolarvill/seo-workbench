@@ -36,9 +36,7 @@ export function FilesPage({ projectId, root, refreshKey, onOpenFile }: FilesPage
 
   return (
     <section className={styles.page} aria-labelledby="files-heading">
-      <header className={styles.header}>
-        <div><span>Local Markdown</span><h1 id="files-heading">{root ? `${root} workspace` : "Project files"}</h1></div>
-      </header>
+      <h1 id="files-heading" className="srOnly">{root ? `${root} workspace` : "Project files"}</h1>
       <div className={styles.filters} aria-label="File filters">
         <SearchField className={styles.searchField} label="Search files" value={query} onChange={setQuery} placeholder="Search files by name or path..." />
         <label className={styles.selectField}><span>Folder</span><select aria-label="Filter by folder" value={folder} onChange={(event) => setFolder(event.target.value)}><option value="">All</option>{folderOptions.map((option) => <option key={option} value={option}>{option}</option>)}</select></label>

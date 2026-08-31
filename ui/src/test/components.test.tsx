@@ -421,7 +421,7 @@ describe("workbench frontend", () => {
   it("makes the overview purpose clear", () => {
     render(<OverviewPage workspace={workspace} updatedPaths={{}} onNavigateWorkflow={vi.fn()} onNavigatePages={vi.fn()} onOpenFile={vi.fn()} />);
     expect(screen.getByRole("heading", { name: "Project health" })).toBeTruthy();
-    expect(screen.getByText(/focused view of performance/)).toBeTruthy();
+    expect(screen.queryByText(/focused view of performance/)).toBeNull();
     expect(screen.getByText("Watch closely", { selector: ".statusPill" })).toBeTruthy();
     expect(screen.getAllByText("Performance").length).toBeGreaterThan(0);
     expect(screen.getAllByRole("group").length).toBeGreaterThan(0);
@@ -674,7 +674,7 @@ describe("workbench frontend", () => {
     render(<ReportsPage projectId="shop" jobs={[]} refreshKey={0} section="seo-changes" onOpenFile={vi.fn()} onRunContentAction={vi.fn()} />);
     expect(await screen.findByRole("heading", { name: "SEO changes" })).toBeTruthy();
     expect(screen.getByText("Improve the product title")).toBeTruthy();
-    expect(screen.getByText(/Content production work stays in the Content workspace/)).toBeTruthy();
+    expect(screen.getByLabelText("Help: SEO change scope")).toBeTruthy();
     expect(screen.getAllByText("shipped", { selector: ".statusPill" })).toHaveLength(1);
     fireEvent.change(screen.getByRole("combobox", { name: "Filter SEO changes by type" }), { target: { value: "content" } });
     expect(screen.queryByText("Improve the product title")).toBeNull();
@@ -685,7 +685,7 @@ describe("workbench frontend", () => {
     const run = vi.fn().mockResolvedValue(undefined);
     render(<ReportsPage projectId="shop" jobs={[]} refreshKey={0} section="presentation" onOpenFile={vi.fn()} onRunContentAction={vi.fn()} onRunPresentation={run} />);
     expect(await screen.findByRole("heading", { name: "Presentation" })).toBeTruthy();
-    expect(screen.getByText("Friday afternoon output")).toBeTruthy();
+    expect(screen.queryByText("Friday afternoon output")).toBeNull();
     expect(screen.getByText("business measurement regime changed inside the comparison range")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Generate PDF" }));
     await waitFor(() => expect(run).toHaveBeenCalledTimes(1));

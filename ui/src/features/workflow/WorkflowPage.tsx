@@ -163,14 +163,9 @@ export function WorkflowPage({ workspace, onStepAction, onOpenActions, onOpenKey
 
   return (
     <section className={styles.page} aria-labelledby="workflow-heading">
+      <h1 id="workflow-heading" className="srOnly">SEO workflow</h1>
       <header className={styles.header}>
-        <div className={styles.headerCopy}>
-          <span>Recommended path</span>
-          <h1 id="workflow-heading">SEO workflow</h1>
-          <p>Follow the work from project foundations to measurement. Plan explains the handoff; each workspace owns the actual operation.</p>
-        </div>
         <div className={styles.headerAside}>
-          <p>The guide is linear for orientation, not a second task list.</p>
           {onOpenActions ? <button className={styles.runActions} type="button" onClick={onOpenActions}><Play aria-hidden="true" size={14} fill="currentColor" />Run audit evidence</button> : null}
         </div>
       </header>

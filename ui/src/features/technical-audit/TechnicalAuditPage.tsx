@@ -93,8 +93,8 @@ export function TechnicalAuditPage({ projectId, jobs, refreshKey, onRunFull, onC
 
   return (
     <section className={styles.page} aria-labelledby="technical-audit-heading">
+      <h1 id="technical-audit-heading" className="srOnly">Technical audit</h1>
       <header className={styles.header}>
-        <div><span>Deterministic crawl inventory</span><h1 id="technical-audit-heading">Technical audit</h1><p>HTTP evidence, URL issues, GSC context and repeatable re-crawls.</p></div>
         <div className={styles.headerActions}>
           <div className={styles.actionWithHelp}><button className={styles.secondaryButton} type="button" onClick={refresh} disabled={loading}><RefreshCw aria-hidden="true" size={15} />Refresh</button><HelpTooltip label="Refresh technical audit view">Reloads the latest local audit evidence into this view. It does not start a new crawl.</HelpTooltip></div>
           {continuationAvailable ? <button className={styles.secondaryButton} type="button" onClick={() => run(onContinue!)} disabled={crawlRunning}><Play aria-hidden="true" size={15} fill="currentColor" />Continue crawl ({data?.summary.queued_remaining ?? 0})</button> : null}

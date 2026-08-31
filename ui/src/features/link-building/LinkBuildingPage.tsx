@@ -77,8 +77,8 @@ export function LinkBuildingPage({ projectId, refreshKey }: Props) {
 
   return (
     <section className={styles.page} aria-labelledby="link-building-heading" aria-busy={loading}>
+      <h1 id="link-building-heading" className="srOnly">Link building</h1>
       <header className={styles.header}>
-        <div><span>External link evidence</span><h1 id="link-building-heading">Link building</h1><p>Manage provider-scoped backlink evidence, link changes and safe reclaim candidates.</p></div>
         <HelpTooltip label="Backlink evidence" align="right">Read-only view of the latest local backlink snapshot. Import or recheck evidence with the existing backlinks CLI workflow.</HelpTooltip>
       </header>
 

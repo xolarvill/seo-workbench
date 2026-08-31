@@ -37,9 +37,7 @@ export function OwnersPage({ projectId, refreshKey, onOpenFile }: Props) {
 
   return (
     <section className={styles.page} aria-labelledby="owners-heading">
-      <header className={styles.header}>
-        <div><span>Query-page ownership</span><h1 id="owners-heading">Owners</h1><p>Review established owner cards before creating or consolidating pages and content.</p></div>
-      </header>
+      <h1 id="owners-heading" className="srOnly">Owners</h1>
 
       <div className={styles.filters} aria-label="Owner filters">
         <SearchField className={styles.searchField} label="Search owner cards" placeholder="Search owner cards..." value={query} onChange={setQuery} />

@@ -405,11 +405,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
   return (
     <section className={styles.page} aria-label="SEO integrations">
       <header className={styles.pageHeader}>
-        <div>
-          <span>LOCAL TRUST LEDGER</span>
-          <h1>SEO integrations</h1>
-          <p>Configure Shopify and Google evidence sources without exposing secret values to project files, logs, or API responses.</p>
-        </div>
+        <h1 className="srOnly">SEO integrations</h1>
         <div className={styles.securityMark}>
           <LockKeyhole aria-hidden="true" size={18} />
           <span><strong>Local only</strong><small>Private files use mode 0600</small></span>

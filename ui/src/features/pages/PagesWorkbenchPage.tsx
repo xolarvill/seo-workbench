@@ -409,8 +409,8 @@ export function PagesWorkbenchPage({ projectId, refreshKey, refreshing, initialG
 
   return (
     <section className={styles.page} aria-labelledby="pages-heading">
+      <h1 id="pages-heading" className="srOnly">Pages</h1>
       <header className={styles.header}>
-        <div><span>Page operations</span><h1 id="pages-heading">Pages</h1><p>Move from evidence to the next safe SEO action.</p></div>
         <div className={styles.headerActions}>
           <button className={styles.refreshButton} type="button" disabled={refreshBusy} onClick={() => void runRefresh()}><RefreshCw size={16} className={refreshBusy ? styles.spinning : undefined} />{refreshBusy ? "Refreshing" : "Refresh analysis"}</button>
           <HelpTooltip label="Refresh analysis" align="right">Rebuilds this Pages view from local evidence — no crawl, no GSC collection.</HelpTooltip>

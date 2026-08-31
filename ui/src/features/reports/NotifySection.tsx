@@ -45,10 +45,7 @@ export function NotifySection({ projectId, jobs, refreshKey, onOpenFile, onRunCo
 
   return (
     <section className={styles.page} aria-labelledby="notify-heading">
-      <header className={styles.header}>
-        <div><span>Send to Feishu</span><h1 id="notify-heading">Notifications</h1><p>Generate content reports, inspect indexing, and notify the configured Feishu reviewer.</p></div>
-        <Send aria-hidden="true" size={28} strokeWidth={1.5} />
-      </header>
+      <h1 id="notify-heading" className="srOnly">Notifications</h1>
 
       <div className={styles.grid}>
         <section className={styles.card}>

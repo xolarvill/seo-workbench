@@ -1,4 +1,4 @@
-import { CheckCircle2, Download, FileChartColumn, Loader2, Presentation, RefreshCw, XCircle } from "lucide-react";
+import { CheckCircle2, Download, FileChartColumn, Loader2, RefreshCw, XCircle } from "lucide-react";
 import { useState } from "react";
 
 import { downloadPresentationPdf } from "../../api/client";
@@ -59,21 +59,13 @@ export function PresentationSection({ projectId, jobs, refreshKey, onRunPresenta
 
   return (
     <section className={styles.page} aria-labelledby="presentation-heading">
-      <header className={styles.header}>
-        <div><span>For team review</span><h1 id="presentation-heading">Presentation</h1><p>Generate a visual weekly SEO briefing for the whole team. It reads existing evidence and work records; it does not replace the internal Weekly archive.</p></div>
-        <Presentation aria-hidden="true" size={28} strokeWidth={1.5} />
-      </header>
+      <h1 id="presentation-heading" className="srOnly">Presentation</h1>
 
       {loadError ? <p className={styles.error} role="alert">{loadError}</p> : null}
       {actionError ? <p className={styles.error} role="alert">{actionError}</p> : null}
       {!status ? <p className={styles.empty}>Checking evidence freshness…</p> : (
         <>
           <section className={styles.heroCard}>
-            <div className={styles.heroCopy}>
-              <span className={styles.kicker}>Friday afternoon output</span>
-              <h2>SEO weekly briefing · W{String(status.target_week.week).padStart(2, "0")}</h2>
-              <p>Default gate: statistics completed within {status.max_statistics_age_hours} hours, finalized GSC data no more than three days behind, and at least 28 days of GSC and business history.</p>
-            </div>
             <div className={styles.heroActions}>
               <StatusPill value={status.status} context="evidence" />
               <button type="button" className={styles.primaryAction} disabled={!status.ready || running} onClick={() => void generate()}>

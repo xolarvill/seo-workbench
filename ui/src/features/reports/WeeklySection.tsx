@@ -124,9 +124,7 @@ export function WeeklySection({ projectId, jobs, refreshKey, onOpenFile, onRunCo
 
   return (
     <section className={styles.page} aria-labelledby="weekly-heading">
-      <header className={styles.header}>
-        <div><span>Weekly work archive</span><h1 id="weekly-heading">Weekly</h1><p>Plan and archive SEO work week by week under <code>reports/</code>, track follow-ups and carried-over work, and search decision records.</p></div>
-      </header>
+      <h1 id="weekly-heading" className="srOnly">Weekly</h1>
 
       {actionError ? <p className={styles.error} role="alert">{actionError}</p> : null}
       {loadError ? <p className={styles.error} role="alert">{loadError}</p> : null}

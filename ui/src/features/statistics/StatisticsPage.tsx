@@ -138,8 +138,8 @@ export function StatisticsPage({ projectId, refreshKey, refreshing, onRefresh, o
 
   return (
     <section className={styles.page} aria-labelledby="statistics-heading" aria-busy={loading}>
+      <h1 id="statistics-heading" className="srOnly">Statistics</h1>
       <header className={styles.header}>
-        <div><span>Statistical evidence</span><h1 id="statistics-heading">Statistics</h1><p>Comparable GSC, GA4 and Shopify windows with private daily history behind every interval and trend.</p></div>
         <div className={styles.headerActions}>
           <button className={styles.refreshButton} type="button" disabled={refreshing} onClick={onRefresh}><RefreshCw size={16} className={refreshing ? styles.spinning : undefined} />{refreshing ? "Collecting" : "Run statistics collection"}</button>
           <HelpTooltip label="Run statistics collection" align="right"><><strong>Runs the full evidence pipeline.</strong><ul><li>GSC → GA4 → Shopify → business → history → portfolio.</li><li>Any gate failure (e.g. missing finalized GSC windows) fails the whole run — read the job output for the failing step.</li></ul></></HelpTooltip>

@@ -17,7 +17,7 @@
   min-height: 72px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 24px;
   padding: 14px 22px;
   border-bottom: 1px solid var(--separator);

@@ -139,11 +139,7 @@ export function OverviewPage({ workspace, updatedPaths, onNavigateWorkflow, onNa
     <div className={styles.overviewLayout}>
       <section className={styles.detailPane} aria-label="Overview details">
         <header className={styles.detailHeader}>
-          <div className={styles.detailHeaderIntro}>
-            <span>SEO WORKBENCH</span>
-            <h2>Project health</h2>
-            <p>A focused view of performance, outcomes, workflow, and technical evidence.</p>
-          </div>
+          <h2 className="srOnly">Project health</h2>
           <div className={styles.detailHeaderStatus}>
             <span>Evidence snapshot</span>
             <StatusPill value={healthLabel(performance.score)} tone={healthStatusTone(performance.score)} />

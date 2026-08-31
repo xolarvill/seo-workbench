@@ -88,9 +88,7 @@ export function SeoChangesSection({ projectId, refreshKey }: { projectId: string
 
   return (
     <section className={styles.page} aria-labelledby="seo-changes-heading">
-      <header className={styles.header}>
-        <div><span>Change ledger</span><h1 id="seo-changes-heading">SEO changes</h1><p>Review the SEO changes recorded from Pages in one chronological view. Content production work stays in the Content workspace.<HelpTooltip label="SEO change scope">This view reads strategy/seo-changes.jsonl. It is a read-only ledger; it does not publish, redirect, or change content.</HelpTooltip></p></div>
-      </header>
+      <h1 id="seo-changes-heading" className="srOnly">SEO changes</h1>
       {error ? <p className={styles.error} role="alert">{error}</p> : null}
       {!data ? <p className={styles.empty}>Loading SEO changes…</p> : (
         <>
@@ -103,6 +101,7 @@ export function SeoChangesSection({ projectId, refreshKey }: { projectId: string
             <SearchField label="Search SEO changes" placeholder="Search hypothesis, URL, or ID…" value={query} onChange={setQuery} />
             <label><span>Status</span><select aria-label="Filter SEO changes by status" value={status} onChange={(event) => setStatus(event.target.value as SeoChangeRecord["status"] | "")} >{statuses.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>
             <label><span>Type</span><select aria-label="Filter SEO changes by type" value={changeType} onChange={(event) => setChangeType(event.target.value as SeoChangeRecord["change_type"] | "")} >{changeTypes.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></label>
+            <HelpTooltip label="SEO change scope">This view reads strategy/seo-changes.jsonl. It is a read-only ledger; it does not publish, redirect, or change content.</HelpTooltip>
             <small className={styles.resultCount}>{filtered.length} of {data.count}</small>
           </div>
           {filtered.length ? <div className={styles.timeline} aria-label="SEO changes timeline">{filtered.map((change) => <ChangeCard key={change.id} change={change} />)}</div> : <p className={styles.empty}>No SEO changes match the current filters.</p>}
