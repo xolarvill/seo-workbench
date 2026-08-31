@@ -26,6 +26,7 @@ projects/*/
 !projects/default/**
 projects/default/.DS_Store
 projects/**/.runtime/
+output/
 
 # Google field/search evidence is local and can contain private business data.
 projects/default/audits/crux/*
