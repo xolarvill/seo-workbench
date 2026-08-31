@@ -6,7 +6,7 @@ import pytest
 
 from seo_workbench import state
 from seo_workbench.cli import main
-from seo_workbench.content_portfolio import analyze_content_portfolio
+from seo_workbench.content_portfolio import _query_evidence, analyze_content_portfolio
 from seo_workbench.measurement_regimes import record_regime
 
 
@@ -118,6 +118,46 @@ def test_content_portfolio_returns_actionable_non_mutating_decisions(tmp_path: P
     assert report["statistics"]["click_change_decomposition"]["reconciled"] is True
     assert report["items"][1]["multiple_page_queries"][0]["ownership"]["primary_owner_share"] == 0.666667
     assert path.stat().st_mode & 0o777 == 0o600
+
+
+def test_query_conflicts_resolve_candidates_without_dropping_raw_query_evidence() -> None:
+    product = "https://example.com/products/desk-mat"
+    product_variant_a = f"{product}?variant=111"
+    product_variant_b = f"{product}?variant=222"
+    collection_product = "https://example.com/collections/featured/products/desk-mat"
+    guide = "https://example.com/pages/desk-mat-guide"
+    rows = [
+        {"keys": ["desk mat", product_variant_a], "impressions": 60},
+        {"keys": ["desk mat", collection_product], "impressions": 70},
+        {"keys": ["desk mat", guide], "impressions": 80},
+        {"keys": ["variant only", product_variant_a], "impressions": 60},
+        {"keys": ["variant only", product_variant_b], "impressions": 60},
+        {"keys": ["site:example.com desk mat", product_variant_a], "impressions": 60},
+        {"keys": ["site:example.com desk mat", guide], "impressions": 60},
+        {"keys": [" Example ", product_variant_a], "impressions": 60},
+        {"keys": ["example", guide], "impressions": 60},
+    ]
+    technical = {
+        product: {"final_url": product, "canonical": product},
+        collection_product: {"final_url": collection_product, "canonical": product},
+    }
+
+    top_queries, conflicts = _query_evidence(
+        rows,
+        {product, product_variant_a, product_variant_b, collection_product, guide},
+        "https://example.com",
+        technical=technical,
+        technical_complete=True,
+        project_name="Example",
+    )
+
+    assert {item["query"] for item in top_queries[product_variant_a]} == {"desk mat", "variant only", "site:example.com desk mat", "Example"}
+    signals = conflicts[product]
+    assert [signal["query"] for signal in signals] == ["desk mat"]
+    assert signals[0]["owner_count"] == 2
+    assert signals[0]["owners"][0]["url"] == product
+    assert signals[0]["owners"][0]["observed_urls"] == [collection_product, product_variant_a]
+    assert product_variant_a not in conflicts or all(signal["query"] != "variant only" for signal in conflicts[product_variant_a])
 
 
 def test_content_portfolio_separates_full_page_delta_from_query_subset(tmp_path: Path) -> None:

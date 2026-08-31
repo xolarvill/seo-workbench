@@ -85,6 +85,8 @@
 | 单次 SEO 变更结果 | 变更日前后 block bootstrap；CTR 用 Wilson 差异；完整历史时可加匹配未变更页面的描述性 DiD | 检查预设指标方向是否有统计支持；防止仅凭前后两点宣称成功 | Change outcome、Pages Review | winning/no_change/regressing/insufficient_data；区间、方向概率、matched controls；`causal=false` | 需要既有 change ledger；匹配对照还需要足够未变更同类页面历史 |
 | 技术规则修复关联 | 同一 verified rule 至少 6 个修复；14 日前后 block bootstrap；sign-flip 检验；规则间 BH-FDR | 回答某类已验证修复是否通常伴随搜索改善，帮助安排下一批技术债；不宣称因果 | Overview technical effects、Page 详情 | rule、样本数、平均变化、区间、p/q、association 标识 | 需要既有技术 issue verification 历史和完整 GSC 日历史 |
 
+冲突提升按候选身份而非参数化 PDP URL 计数：完整技术审计可用时，优先使用同站实际 `final_url`；未改变候选时再使用同站 canonical。商品 URL 忽略参数。`site:` 查询和项目名称完全匹配的查询仍保留在原始 query-page/top-query 证据中，但不会提升为冲突；所有冲突只要求人工审查，不会自动写入 canonical 或 redirect。
+
 ## 解释纪律
 
 - `not_observed` 不是 0；`insufficient_data` 不是无效果；`partial` 不是完整成功。

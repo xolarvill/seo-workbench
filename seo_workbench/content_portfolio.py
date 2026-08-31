@@ -115,7 +115,14 @@ def analyze_content_portfolio(
     urls = set(content) | set(technical) | set(previous_metrics) | set(current_metrics)
     if business_comparable:
         urls.update(_business_urls(business_report, project_url))
-    queries, conflicts = _query_evidence(current_queries["rows"], urls, project_url)
+    queries, conflicts = _query_evidence(
+        current_queries["rows"],
+        urls,
+        project_url,
+        technical=technical,
+        technical_complete=technical_snapshot.get("collection_status") == "ok",
+        project_name=str((project.get("project") or {}).get("name") or ""),
+    )
     search_statistics = build_search_statistics(previous_queries["rows"], current_queries["rows"], project_url)
     search_statistics["portfolio"]["query_observation"] = _query_observation_summary(
         _sum_page_clicks(previous_metrics) if previous_page_observed else None,
@@ -529,7 +536,13 @@ def _deltas(previous: dict[str, float], current: dict[str, float]) -> dict[str, 
 
 
 def _query_evidence(
-    rows: list[Any], target_urls: set[str], project_url: str
+    rows: list[Any],
+    target_urls: set[str],
+    project_url: str,
+    *,
+    technical: dict[str, dict[str, Any]],
+    technical_complete: bool,
+    project_name: str,
 ) -> tuple[dict[str, list[dict[str, Any]]], dict[str, list[dict[str, Any]]]]:
     queries: dict[str, dict[str, dict[str, float | str]]] = {}
     for row in rows:
@@ -548,6 +561,10 @@ def _query_evidence(
             owner["position_total"] = float(owner["position_total"]) + float(row.get("position") or 0) * impressions
     by_url: dict[str, list[dict[str, Any]]] = {}
     conflicts: dict[str, list[dict[str, Any]]] = {}
+    target_identities = {
+        url: _conflict_candidate_identity(url, project_url, technical, technical_complete)
+        for url in target_urls
+    }
     for owners_by_url in queries.values():
         owners = list(owners_by_url.values())
         for owner in owners:
@@ -561,28 +578,88 @@ def _query_evidence(
             }
             if owner["url"] in target_urls:
                 by_url.setdefault(str(owner["url"]), []).append(evidence)
-        total = sum(float(owner["impressions"]) for owner in owners)
-        if len(owners) < 2 or total < RULES["multiple_page_query"]["minimum_total_impressions"]:
+        query = str(owners[0]["query"])
+        if _exclude_query_from_conflicts(query, project_name):
             continue
-        ranked = sorted(owners, key=lambda owner: (-float(owner["impressions"]), str(owner["url"])))
+        candidates: dict[str, dict[str, Any]] = {}
+        for owner in owners:
+            identity = _conflict_candidate_identity(str(owner["url"]), project_url, technical, technical_complete)
+            candidate = candidates.setdefault(
+                identity,
+                {"url": identity, "impressions": 0.0, "clicks": 0.0, "position_total": 0.0, "observed_urls": set()},
+            )
+            impressions = float(owner["impressions"])
+            candidate["impressions"] = float(candidate["impressions"]) + impressions
+            candidate["clicks"] = float(candidate["clicks"]) + float(owner["clicks"])
+            candidate["position_total"] = float(candidate["position_total"]) + float(owner["position_total"])
+            candidate["observed_urls"].add(str(owner["url"]))
+        candidate_owners = list(candidates.values())
+        total = sum(float(owner["impressions"]) for owner in candidate_owners)
+        if len(candidate_owners) < 2 or total < RULES["multiple_page_query"]["minimum_total_impressions"]:
+            continue
+        ranked = sorted(candidate_owners, key=lambda owner: (-float(owner["impressions"]), str(owner["url"])))
         signal = {
-            "query": str(ranked[0]["query"]),
-            "owner_count": len(owners),
+            "query": query,
+            "owner_count": len(candidate_owners),
             "total_impressions": round(total, 4),
-            "ownership": ownership_metrics(owners),
+            "ownership": ownership_metrics(candidate_owners),
             "owners": [
-                {"url": owner["url"], "impressions": round(float(owner["impressions"]), 4)}
+                {
+                    "url": owner["url"],
+                    "impressions": round(float(owner["impressions"]), 4),
+                    "observed_urls": sorted(owner["observed_urls"]),
+                }
                 for owner in ranked[:10]
             ],
         }
-        for owner in owners:
-            if owner["url"] in target_urls:
-                conflicts.setdefault(str(owner["url"]), []).append(signal)
+        for url, identity in target_identities.items():
+            if identity in candidates:
+                conflicts.setdefault(url, []).append(signal)
     for evidence in by_url.values():
         evidence.sort(key=lambda item: (-float(item["impressions"]), str(item["query"])))
     for signals in conflicts.values():
         signals.sort(key=lambda signal: (-signal["total_impressions"], signal["query"]))
     return by_url, conflicts
+
+
+def _conflict_candidate_identity(
+    url: str,
+    project_url: str,
+    technical: dict[str, dict[str, Any]],
+    technical_complete: bool,
+) -> str:
+    identity = _parameterless_product_url(url)
+    if not technical_complete:
+        return identity
+    page = technical.get(identity) or technical.get(url)
+    if not page:
+        return identity
+    final_url = _same_site_url(page.get("final_url"), project_url)
+    if final_url and final_url != identity:
+        return _parameterless_product_url(final_url)
+    canonical = _same_site_url(page.get("canonical"), project_url)
+    if canonical:
+        return _parameterless_product_url(canonical)
+    return _parameterless_product_url(final_url) if final_url else identity
+
+
+def _parameterless_product_url(url: str) -> str:
+    normalized = normalize_url(url)
+    if page_type(normalized) != "product":
+        return normalized
+    parsed = urlsplit(normalized)
+    return normalize_url(parsed._replace(query="").geturl())
+
+
+def _same_site_url(value: Any, project_url: str) -> str:
+    url = normalize_url(str(value or ""))
+    return url if url and link_scope(url, project_url)[1] in {"same_host", "subdomain"} else ""
+
+
+def _exclude_query_from_conflicts(query: str, project_name: str) -> bool:
+    normalized_query = " ".join(query.split()).casefold()
+    normalized_project_name = " ".join(project_name.split()).casefold()
+    return normalized_query.startswith("site:") or bool(normalized_project_name and normalized_query == normalized_project_name)
 
 
 def _decision(
