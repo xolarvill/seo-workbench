@@ -733,15 +733,38 @@ def cmd_tech_audit_schedule(args: argparse.Namespace) -> int:
     return 0
 
 
+def _running_tech_audit_status(project_dir: Path) -> tuple[dict, Path] | None:
+    runs: list[Path] = []
+    for relative_root in ("audits/tech-audit/runs", "audits/tech-audit/recrawls"):
+        root = state.safe_project_path(project_dir, relative_root)
+        if root.is_dir():
+            runs.extend(root.glob("*/run.json"))
+    for path in sorted(runs, key=lambda item: (item.stat().st_mtime, item.parent.name), reverse=True):
+        try:
+            status = state.read_json(path)
+        except (OSError, ValueError, json.JSONDecodeError):
+            continue
+        if isinstance(status, dict) and status.get("status") == "running":
+            return status, path
+    return None
+
+
 def cmd_tech_audit_status(args: argparse.Namespace) -> int:
     latest = state.safe_project_path(args.project_dir, "audits/tech-audit/latest.json")
     payload = {"ok": True, "status": "no_data", "schedule": load_schedule(args.project_dir)}
     if latest.is_file():
         payload.update({"status": "ready", "snapshot": state.read_json(latest), "path": str(latest)})
+    if running := _running_tech_audit_status(args.project_dir):
+        run, run_path = running
+        payload.update({"status": "running", "run": run, "run_path": str(run_path)})
     if args.json_output:
         print_json(payload)
     else:
-        print(payload["status"])
+        if payload["status"] == "running":
+            run = payload["run"]
+            print(f"running: {run.get('phase', 'starting')} · {run.get('processed_urls', 0)} processed · {run.get('discovered_urls', 0)} discovered · {run.get('error_count', 0)} errors")
+        else:
+            print(payload["status"])
     return 0
 
 

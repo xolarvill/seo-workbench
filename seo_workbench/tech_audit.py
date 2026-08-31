@@ -1929,7 +1929,7 @@ def run_tech_audit(project_dir: Path, config: CrawlConfig) -> tuple[dict[str, An
     run_root = state.safe_project_path(project_dir, f"{TECH_AUDIT_ROOT}/runs/{run_id}")
     run_root.mkdir(parents=True, exist_ok=True)
     status_path = run_root / "run.json"
-    status = {"schema_version": SCHEMA_VERSION, "run_id": run_id, "kind": "tech-audit", "status": "running", "started_at": generated_at.isoformat(), "config": asdict(config)}
+    status = {"schema_version": SCHEMA_VERSION, "run_id": run_id, "kind": "tech-audit", "status": "running", "started_at": generated_at.isoformat(), "config": asdict(config), "phase": "robots", "processed_urls": 0, "discovered_urls": 0, "queued_remaining": 0, "error_count": 0}
     atomic_write_text(status_path, json.dumps(status, ensure_ascii=False, indent=2) + "\n")
     baseline_path = audit_root / "latest.json"
     baseline_snapshot = state.read_json(baseline_path) if baseline_path.is_file() else {}
@@ -1973,8 +1973,8 @@ def run_tech_audit(project_dir: Path, config: CrawlConfig) -> tuple[dict[str, An
             baseline_config_fingerprint=str(baseline_snapshot.get("config_fingerprint", "")),
             baseline_config_fingerprint_version=str(baseline_snapshot.get("config_fingerprint_version", "")),
         )
-    except Exception as exc:
-        status.update({"status": "failed", "finished_at": _now().isoformat(), "error": str(exc)})
+    except (Exception, KeyboardInterrupt) as exc:
+        status.update({"status": "failed", "finished_at": _now().isoformat(), "error": str(exc) or "interrupted"})
         atomic_write_text(status_path, json.dumps(status, ensure_ascii=False, indent=2) + "\n")
         raise
 
@@ -2004,7 +2004,7 @@ def continue_tech_audit(project_dir: Path, config: CrawlConfig | None = None) ->
     run_root = state.safe_project_path(project_dir, f"{TECH_AUDIT_ROOT}/runs/{run_id}")
     run_root.mkdir(parents=True, exist_ok=True)
     status_path = run_root / "run.json"
-    status = {"schema_version": SCHEMA_VERSION, "run_id": run_id, "kind": "tech-audit", "status": "running", "started_at": generated_at.isoformat(), "config": asdict(config), "continuation_of": snapshot.get("run_id"), "queue_recovered": queue_recovered}
+    status = {"schema_version": SCHEMA_VERSION, "run_id": run_id, "kind": "tech-audit", "status": "running", "started_at": generated_at.isoformat(), "config": asdict(config), "continuation_of": snapshot.get("run_id"), "queue_recovered": queue_recovered, "phase": "robots", "processed_urls": 0, "discovered_urls": 0, "queued_remaining": 0, "error_count": 0}
     atomic_write_text(status_path, json.dumps(status, ensure_ascii=False, indent=2) + "\n")
     baseline_issues = load_tech_issues(project_dir, latest_path)
     try:
@@ -2047,8 +2047,8 @@ def continue_tech_audit(project_dir: Path, config: CrawlConfig | None = None) ->
             batch_number=batch_number,
             queue_recovered=queue_recovered,
         )
-    except Exception as exc:
-        status.update({"status": "failed", "finished_at": _now().isoformat(), "error": str(exc)})
+    except (Exception, KeyboardInterrupt) as exc:
+        status.update({"status": "failed", "finished_at": _now().isoformat(), "error": str(exc) or "interrupted"})
         atomic_write_text(status_path, json.dumps(status, ensure_ascii=False, indent=2) + "\n")
         raise
 
@@ -2080,7 +2080,7 @@ def recrawl_urls(project_dir: Path, urls: Iterable[str], config: CrawlConfig | N
     run_root = state.safe_project_path(project_dir, f"{TECH_AUDIT_ROOT}/recrawls/{run_id}")
     run_root.mkdir(parents=True, exist_ok=True)
     status_path = run_root / "run.json"
-    status = {"schema_version": SCHEMA_VERSION, "run_id": run_id, "kind": "tech-audit-recrawl", "status": "running", "started_at": generated_at.isoformat(), "target_urls": selected, "config": asdict(crawl_config)}
+    status = {"schema_version": SCHEMA_VERSION, "run_id": run_id, "kind": "tech-audit-recrawl", "status": "running", "started_at": generated_at.isoformat(), "target_urls": selected, "config": asdict(crawl_config), "phase": "robots", "processed_urls": 0, "discovered_urls": 0, "queued_remaining": 0, "error_count": 0}
     atomic_write_text(status_path, json.dumps(status, ensure_ascii=False, indent=2) + "\n")
     try:
         crawl = asyncio.run(_crawl(seed_url, crawl_config, run_root, start_urls=selected, status_path=status_path, run_status=status, crawler_access=crawler_access))
@@ -2133,8 +2133,8 @@ def recrawl_urls(project_dir: Path, urls: Iterable[str], config: CrawlConfig | N
         status.update({"status": collection_status, "finished_at": _now().isoformat(), "summary": summary, "snapshot_path": _relative_path(project_dir, snapshot_path)})
         atomic_write_text(status_path, json.dumps(status, ensure_ascii=False, indent=2) + "\n")
         return {**report, "snapshot_path": str(snapshot_path)}, snapshot_path
-    except Exception as exc:
-        status.update({"status": "failed", "finished_at": _now().isoformat(), "error": str(exc)})
+    except (Exception, KeyboardInterrupt) as exc:
+        status.update({"status": "failed", "finished_at": _now().isoformat(), "error": str(exc) or "interrupted"})
         atomic_write_text(status_path, json.dumps(status, ensure_ascii=False, indent=2) + "\n")
         raise
 

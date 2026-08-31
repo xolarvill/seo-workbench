@@ -99,6 +99,24 @@ def test_crawl_deduplicates_candidates_and_persists_remaining_queue(tmp_path: Pa
     assert [item["url"] for item in known_result["remaining_queue"]] == ["https://example.com/b"]
 
 
+def test_tech_audit_status_reports_running_progress(tmp_path: Path, capsys) -> None:
+    project = tmp_path / "project"
+    state.init_state("general", "Test", "https://example.com", project_dir=project)
+    latest = project / "audits/tech-audit/latest.json"
+    latest.parent.mkdir(parents=True, exist_ok=True)
+    latest.write_text(json.dumps({"run_id": "complete", "collection_status": "ok"}), encoding="utf-8")
+    run_path = project / "audits/tech-audit/runs/live/run.json"
+    run_path.parent.mkdir(parents=True)
+    run_path.write_text(json.dumps({"run_id": "live", "status": "running", "phase": "crawl", "processed_urls": 24, "discovered_urls": 80, "queued_remaining": 56, "error_count": 1}), encoding="utf-8")
+
+    assert main(["--project-dir", str(project), "tech-audit", "status", "--json"]) == 0
+    report = json.loads(capsys.readouterr().out)
+
+    assert report["status"] == "running"
+    assert report["run_path"] == str(run_path)
+    assert report["run"]["processed_urls"] == 24
+
+
 def test_continue_crawl_merges_previous_pages_and_consumes_queue(tmp_path: Path, monkeypatch) -> None:
     project = tmp_path / "project"
     state.init_state("general", "Test", "http://127.0.0.1:8765", project_dir=project)
