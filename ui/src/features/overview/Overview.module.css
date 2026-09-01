@@ -1,5 +1,5 @@
 .overviewLayout {
-  height: calc(100vh - 56px);
+  height: calc(100vh - 64px);
   min-height: 620px;
   overflow: hidden;
   border-top: 1px solid var(--separator);
@@ -14,12 +14,12 @@
 }
 
 .detailHeader {
-  min-height: 72px;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 24px;
-  padding: 14px 22px;
+  padding: 10px 22px;
   border-bottom: 1px solid var(--separator);
   background: var(--surface);
 }
@@ -140,8 +140,10 @@
   border: 1px solid var(--separator);
   border-radius: var(--radius-card);
   background: var(--surface);
-  box-shadow: var(--shadow-link);
+  transition: border-color 120ms var(--ease-out), box-shadow 120ms var(--ease-out);
 }
+
+.detailGroup[open] { border-color: var(--separator-strong); box-shadow: var(--shadow-link); }
 
 .detailGroupHeader { min-height: 54px; display: grid; grid-template-columns: 30px minmax(0, 1fr) 24px; align-items: center; gap: 10px; padding: 8px 19px 8px 14px; color: var(--ink); cursor: pointer; list-style: none; }
 .detailGroupHeader::-webkit-details-marker { display: none; }
@@ -297,7 +299,7 @@
   gap: 12px;
   padding: 8px 10px;
   border: 1px solid var(--separator-strong);
-  border-radius: 7px;
+  border-radius: var(--radius-6);
   color: var(--ink);
   background: var(--surface);
   text-align: left;
@@ -570,6 +572,8 @@
 }
 
 @media (hover: hover) {
+  .detailGroup:hover { border-color: var(--separator-strong); }
+
   .nextAction:hover,
   .fileRow:hover {
     background: var(--surface-soft);

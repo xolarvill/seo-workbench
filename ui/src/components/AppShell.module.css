@@ -44,6 +44,7 @@
   border: 1px solid var(--separator);
   border-radius: var(--radius-card);
   background: var(--canvas);
+  transition: border-color 120ms var(--ease-out), box-shadow 120ms var(--ease-out);
 }
 
 .projectPicker:focus-within { box-shadow: 0 0 0 2px var(--primary-wash), 0 0 0 3px var(--primary); }
@@ -95,7 +96,7 @@
   transition: transform 120ms var(--ease-out), background-color 120ms var(--ease-out), color 120ms var(--ease-out);
 }
 .activeNav { color: var(--ink); background: var(--primary-wash); font-weight: 650; }
-.activeNav::before { content: ""; position: absolute; inset-inline-start: 9px; inset-block-start: 50%; width: 4px; height: 4px; border-radius: 50%; background: var(--primary); transform: translateY(-50%); }
+.activeNav::before { content: ""; position: absolute; inset-inline-start: 9px; inset-block-start: 50%; width: 3px; height: 3px; border-radius: 50%; background: var(--primary); transform: translateY(-50%); }
 
 .helpNavigation { margin-top: auto; padding: 12px 4px 0; border-top: 1px solid var(--separator); }
 .helpNav,
@@ -126,6 +127,7 @@
 .mobileNav button:active { transform: scale(0.96); }
 
 @media (hover: hover) {
+  .projectPicker:hover { border-color: var(--separator-strong); box-shadow: var(--shadow-link); }
   .navItem:hover { color: var(--ink); background: var(--surface-soft); }
   .helpNav:hover { color: var(--ink); background: var(--surface-soft); }
 }
