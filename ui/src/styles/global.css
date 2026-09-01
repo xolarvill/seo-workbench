@@ -7,20 +7,20 @@
   --font-ui: "Archivo", "PingFang SC", "Noto Sans CJK SC", system-ui, sans-serif;
   --font-serif: "Source Serif 4", Charter, Georgia, serif;
   --font-mono: "Azeret Mono", ui-monospace, monospace;
-  --graphite: #102a43;
-  --ink: #123b63;
-  --ink-muted: #456785;
-  --muted: #7189a2;
-  --muted-soft: #a7bad0;
-  --canvas: #f5f8fc;
+  --graphite: #101828;
+  --ink: #1d2939;
+  --ink-muted: #475467;
+  --muted: #667085;
+  --muted-soft: #98a2b3;
+  --canvas: #f8fafc;
   --surface: #ffffff;
-  --surface-soft: #edf3fb;
-  --separator: #d9e3f0;
-  --separator-strong: #b7cbe1;
-  /* Brand and state colors. Keep these roles distinct across every page. */
-  --primary: #126bff;
-  --primary-dark: #0955d4;
-  --primary-wash: #eaf2ff;
+  --surface-soft: #f2f4f7;
+  --separator: #eaecf0;
+  --separator-strong: #d0d5dd;
+  /* Blue is reserved for primary actions, current selection, and keyboard focus. */
+  --primary: #245fce;
+  --primary-dark: #1d4fa8;
+  --primary-wash: #f2f6ff;
   --success: #10b981;
   --success-dark: #047857;
   --success-wash: #ecfdf5;
@@ -36,14 +36,14 @@
   --radius-4: 4px;
   --radius-6: 6px;
   --radius-card: 8px;
-  --shadow-card: 0 1px 2px rgba(18, 59, 99, 0.05), 0 8px 18px rgba(18, 59, 99, 0.06);
-  --shadow-link: 0 1px 2px rgba(18, 59, 99, 0.06);
-  --shadow-menu: 0 14px 32px rgba(18, 59, 99, 0.14);
-  --shadow-floating: 0 18px 44px rgba(18, 59, 99, 0.16);
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.05), 0 8px 18px rgba(16, 24, 40, 0.06);
+  --shadow-link: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-menu: 0 14px 32px rgba(16, 24, 40, 0.14);
+  --shadow-floating: 0 18px 44px rgba(16, 24, 40, 0.16);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.statusPill { display: inline-flex; align-items: center; width: fit-content; min-height: 22px; padding: 2px 8px; border: 1px solid transparent; border-radius: 999px; font: 650 10px/1.2 var(--font-mono); letter-spacing: 0; text-transform: capitalize; white-space: nowrap; }
+.statusPill { display: inline-flex; align-items: center; width: fit-content; min-height: 22px; padding: 2px 8px; border: 1px solid transparent; border-radius: 999px; font: 600 10px/1.2 var(--font-mono); letter-spacing: 0; text-transform: capitalize; white-space: nowrap; }
 .statusPill[data-tone="danger"] { border-color: #fecaca; color: var(--danger-dark); background: var(--danger-wash); }
 .statusPill[data-tone="warning"] { border-color: #fde68a; color: var(--warning-dark); background: var(--warning-wash); }
 .statusPill[data-tone="info"] { border-color: #bfdbfe; color: var(--info-dark); background: var(--info-wash); }
@@ -58,7 +58,8 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
-a { color: var(--primary); }
+a { color: var(--ink); text-decoration-color: var(--separator-strong); text-underline-offset: 2px; }
+a:hover { color: var(--primary-dark); text-decoration-color: currentColor; }
 ::selection { color: var(--ink); background: var(--primary-wash); }
 
 .skip-link {
