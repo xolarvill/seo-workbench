@@ -16,46 +16,46 @@ A local-first all-in-one SEO workspace. Use it from an AI coding agent and manag
 
 ## What it does
 
-| Area | Included capabilities |
-| --- | --- |
-| Site evidence | Raw HTML, redirects, metadata, robots.txt, Sitemaps, representative routes, and rendered browser checks |
-| Technology stack | Wappalyzer-style detection with architecture and SEO impact analysis |
-| Performance | Repeatable multi-run Lighthouse audits plus CrUX field data and 40-week history |
-| Google Search integration | Read-only Search Analytics by query, page, query-page, device, and country; URL Inspection; and Sitemap status |
-| Shopify integration | Read-only product net revenue/orders plus a GA4 Organic Search commerce funnel with separate all-channel tracking coverage |
-| Technical crawl | URL inventory, deterministic rules, GSC page metrics, priority queue, issue ownership/status/reverification, scheduled CLI runs, and Feishu notification adapter |
-| Change tracking | Comparable evidence diffs plus a URL-level SEO change ledger and non-causal outcome review |
-| Page operations | A same-site page inventory, transparent opportunities, query ownership conflicts, and projected Now/Review/Watch actions |
-| Keyword Planning | Discover to map, map to research, research to produce |
-| Content operations | Content production state plus optional page-level aggregate sessions, conversions, and revenue evidence |
-| Off-page evidence | Provider-neutral backlink imports plus optional paid DataForSEO snapshots/gap evidence, conservative new/lost comparison, anchor counts, and 404 target reclaim candidates |
-| Project management | One local folder per site, with private runtime data excluded from Git |
-| Weekly-based Workflow Orchestration | Advancing SEO work by a week as a unit |
-
-SEO Workbench is agent-neutral. Codex, Claude Code, or another coding agent can use the same `./seo` commands, project files, and local skills. The CLI remains the source of truth when the UI is closed.
+- **Site & Tech Evidence**
+    - HTML, metadata, robots.txt, sitemaps, routes, rendered checks
+      - [Technical Audit Issue Catalog](#technical-audit-issue-catalog)
+    - Wappalyzer-style stack detection with architecture & SEO analysis
+- **Performance & GSC Integration**
+    - Multi-run Lighthouse, CrUX field data, 40-week history
+    - Read-only analytics, URL inspection, sitemap status
+- **E-commerce (Shopify)**
+    - Revenue/orders, GA4 organic funnel, all-channel tracking
+- **Crawl & Change Tracking**
+    - Inventory, rules, issue tracking, CLI runs, Feishu alerts
+    - Evidence diffs, SEO change ledger, outcome review
+- **Page & Content Operations**
+    - Page inventory, query conflicts, action projections
+    - Production state, page-level sessions/conversions/revenue
+- **Keyword Planning**
+    - Discover → map → research → produce workflow
+- **Off-page Evidence**
+    - Backlinks, DataForSEO snapshots, gap analysis, 404 reclaims
+- **Project & Workflow Management**
+    - Local site folders, Git-excluded runtime data
+    - Weekly-based SEO work advancement
 
 ## Quick start
 
 ```bash
 git clone https://github.com/xolarvill/seo-workbench.git
 cd seo-workbench
-./setup.sh
+./setup.sh # set up all the environment requirements
+./seo ui # open the visual managing interface
 ```
 
 ### Working with an agent
 
-Run your coding agent from the repository root and give it the project ID. A useful first request is:
+Run your coding agent from the repository root. SEO Workbench is agent-neutral. Codex, Claude Code, or another coding agent can use the same `./seo` commands, project files, and local skills. The CLI remains the source of truth when the UI is closed.
 
+ A useful first request is:
 > Audit the `my-site` project, explain the technical and performance findings, then prepare a content SEO strategy using the local workbench. Give me a report of what should be done in this week.
 
-Agents can discover the current workflow step with:
-
-```bash
-./seo --project my-site status --json
-./seo --project my-site next --json
-```
-
-When the UI is open, new audit files and Markdown documents appear there automatically.
+Agents can discover the current workflow step, use the skills stored in local workbench. When the UI is open, new audit files and Markdown documents appear there automatically.
 
 ### Working manually
 
@@ -77,15 +77,22 @@ Open the workbench:
 
 The interface listens only on the local machine and uses the same project files as the CLI. Open the printed `http://localhost:<port>` address in any browser; no browser-specific session is required.
 
+## Workflow
 
-## Reporting
+- Weekly Cadence: One file per week (YYYY_week_WW_work_done.md), updated in place; unfinished tasks auto-carry into the next week’s overview.
+- Task Archive: Ad-hoc decisions stored as YYYYMMDD_<category>_<topic>.md, searchable by category, year, or keyword.
 
-Each project stores decision records under `projects/<id>/reports/` with the name `YYYYMMDD_<category>_<topic>.md`. Weekly work uses one `YYYY_week_WW_work_done.md` file and the four-section template in `templates/weekly_work_done.md`; update the same weekly file instead of creating duplicates.
 
-`./seo reports list` indexes the archive (weekly checkbox/carry-over/follow-up projections plus category-grouped sub-reports; `--q`, `--category`, and `--year` narrow the sub-report index) and `./seo reports new` scaffolds the next ISO week from the template, carrying unfinished work over into the new `速览` by default. `./seo reports presentation status --json` checks the Friday deck gate and `reports presentation generate --json` writes a four-page PDF under `reports/presentations/`; it requires fresh statistics, a recent finalized GSC end date, 28 days of GSC/business history, and a portfolio snapshot. Partial or incomparable evidence stays labelled in the deck. When the local UI is open, its scheduler attempts the current week's presentation after Friday 16:00 local time. The **Reports** tab in the browser workbench surfaces the same archive: **Weekly** leads with a progress view (follow-up due dates grouped into overdue/this-week/later, plus tasks carried across two or more weeks) and a searchable, filterable sub-report index; **Presentation** is the team-facing visual PDF surface; **Notify** covers content reports, index inspection, and Feishu notifications.
+## Documentation
+
+A long listed documentation for user.
+
+### Technical audit issue
+
+Click below to open dropdown for details
 
 <details>
-<summary>Technical audit issue catalog</summary>
+<summary id="technical-audit-issue-catalog">Technical audit issue catalog</summary>
 
 This is the rule catalog the technical audit can detect. It is not a claim that every issue currently exists in a project; use `./seo --project <id> tech-audit issues list --json` for the latest project findings.
 
@@ -150,7 +157,8 @@ This is the rule catalog the technical audit can detect. It is not a claim that 
 
 </details>
 
-## Common commands
+
+### Common commands
 
 ```bash
 # Projects and workflow
@@ -221,14 +229,23 @@ This is the rule catalog the technical audit can detect. It is not a claim that 
 
 Use `./seo --help` and `./seo <command> --help` for the full command reference.
 
+### Operation Manual Documentation
 
-## Optional Google integrations
+- [SEO tutorial index](docs/README.md)
+- [SEO iteration loop](docs/SEO迭代闭环.md)
+- [BLOG production tutorial](docs/BLOG生产线操作教程.md)
+- [Google integrations](docs/google-integrations.md)
+- [Shopify integrations](docs/shopify-integrations.md)
+- [Standalone workbench architecture](docs/independent-workbench.md)
+- [Preserved SEO capability families](docs/capability-preservation.md)
+
+### Optional Google integrations
 
 CrUX requires a Google API key. GSC supports desktop OAuth and service accounts, requests read-only access, and never submits Sitemaps. Ordinary Blog URLs rely on Sitemap discovery and GSC monitoring; `content index-submit` is retained only as a fail-safe compatibility command and rejects Blog submissions because Google's Indexing API is limited to `JobPosting` and `BroadcastEvent` pages.
 
 See [Google integrations](docs/google-integrations.md) for setup, authentication, evidence scopes, and status meanings.
 
-## Optional Shopify integration
+### Optional Shopify integration
 
 Shopify projects can store one project-scoped Admin API access token. The Workbench verifies the canonical `.myshopify.com` domain and granted access scopes before saving, never returns the token, and warns when the connected app has write scopes.
 
@@ -247,25 +264,12 @@ Automatic installation of missing system runtimes currently requires macOS and H
 - Node.js 24
 - Chrome or Chromium
 
-## Documentation
 
-- [SEO tutorial index](docs/README.md)
-- [SEO iteration loop](docs/SEO迭代闭环.md)
-- [BLOG production tutorial](docs/BLOG生产线操作教程.md)
-- [Google integrations](docs/google-integrations.md)
-- [Shopify integrations](docs/shopify-integrations.md)
-- [Standalone workbench architecture](docs/independent-workbench.md)
-- [Preserved SEO capability families](docs/capability-preservation.md)
 
 ## Current boundaries
 
-- The local UI can keep a project-scoped technical-audit scheduler alive while it is open; cron/launchd can call the same `tech-audit run --scheduled --json` command when the UI is closed. There is no hosted scheduler.
-- One project represents one site. Use separate project folders for separate sites or stores.
-- Lighthouse lab data, CrUX field data, and GSC search data remain separate evidence sources.
-- Business signals accept aggregate page-window rows. GA4 and Shopify projects can collect read-only landing-page and product-revenue evidence locally; CSV/JSON import remains available for CRM and other sources.
-- Backlink evidence preserves provider provenance. DataForSEO commands are metered, require `--confirm-paid`, and never turn capped collections into confirmed loss. Gap targets require an exact existing keyword-to-page mapping; Workbench does not calculate authority/toxicity scores, automate outreach, or generate disavow files.
-- GSC OAuth requires the user to approve the first browser authorization.
-- Local probes reject private network targets by default, but they are not a complete sandbox for malicious websites.
+- Some data outside of user-provide-ability scope needs paid service such as DataForSEO.
+- Takes a certain period of time to gather data for long term operation.
 
 ## Credits and References
 
