@@ -860,6 +860,28 @@ def test_reports_api_lists_archive_and_serves_weekly_files(tmp_path: Path) -> No
     assert "周报" in opened.json()["file"]["content"]
 
 
+def test_reports_api_updates_project_scoped_stars(tmp_path: Path) -> None:
+    client, project_dir = ui_client(tmp_path)
+    report = project_dir / "reports/2026_week_34_work_done.md"
+    report.write_text("# Week 34\n", encoding="utf-8")
+
+    with client:
+        starred = client.put(
+            "/api/v1/projects/store/reports/star",
+            json={"path": "reports/2026_week_34_work_done.md", "starred": True},
+        )
+        archive = client.get("/api/v1/projects/store/reports")
+        rejected = client.put(
+            "/api/v1/projects/store/reports/star",
+            json={"path": "state.json", "starred": True},
+        )
+
+    assert starred.status_code == 200
+    assert starred.json()["star"] == {"path": "reports/2026_week_34_work_done.md", "starred": True}
+    assert archive.json()["weekly"][0]["starred"] is True
+    assert rejected.status_code == 400
+
+
 def test_reports_presentation_status_and_action_are_exposed(tmp_path: Path, monkeypatch) -> None:
     client, _ = ui_client(tmp_path)
     captured: list[dict[str, object]] = []

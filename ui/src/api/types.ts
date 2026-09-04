@@ -147,6 +147,7 @@ export type WeeklyReportSummary = {
   carry_over: number;
   inherited_from: number[];
   follow_ups: Array<{ date: string; text: string }>;
+  starred: boolean;
 };
 
 export type SubReportSummary = {
@@ -156,6 +157,7 @@ export type SubReportSummary = {
   topic: string;
   modified_at: string;
   size: number;
+  starred: boolean;
 };
 
 export type ReportFollowUp = {

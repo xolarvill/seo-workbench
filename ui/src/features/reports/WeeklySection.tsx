@@ -1,6 +1,7 @@
-import { AlertTriangle, CalendarClock, CalendarDays, FileText, FolderPlus, Loader2 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { AlertTriangle, CalendarClock, CalendarDays, FileText, FolderPlus, Loader2, Star } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
+import { updateReportStar } from "../../api/client";
 import type { CarriedOverTrack, ContentJobAction, Job, ReportFollowUp, WeeklyReportSummary } from "../../api/types";
 import { ArtifactCard } from "../../components/ArtifactCard";
 import { SearchField } from "../../components/WorkbenchControls";
@@ -25,10 +26,15 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 const MONTH_OPTIONS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-function WeekCard({ week, onOpenFile }: { week: WeeklyReportSummary; onOpenFile: (path: string) => void }) {
+function ReportStarButton({ path, starred, onToggle }: { path: string; starred: boolean; onToggle: (path: string, starred: boolean, previous: boolean) => Promise<void> }) {
+  const label = starred ? `Unstar ${path}` : `Star ${path}`;
+  return <button type="button" className={styles.starButton} aria-label={label} aria-pressed={starred} title={label} onClick={() => void onToggle(path, !starred, starred)}><Star aria-hidden="true" size={16} fill={starred ? "currentColor" : "none"} /></button>;
+}
+
+function WeekCard({ onOpenFile, onToggleStar, starred, week }: { week: WeeklyReportSummary; onOpenFile: (path: string) => void; onToggleStar: (path: string, starred: boolean, previous: boolean) => Promise<void>; starred: boolean }) {
   const inherited = week.inherited_from.length ? `承接 ${week.inherited_from.length} 项自 Week ${week.inherited_from.map(String).join("/")}` : "";
   return (
-    <ArtifactCard label={`Open ${week.name}`} onOpen={() => onOpenFile(week.path)} badge={<><CalendarDays aria-hidden="true" size={14} />W{String(week.week).padStart(2, "0")}</>} title={`${week.year} Week ${String(week.week).padStart(2, "0")}`} meta={`${week.start} → ${week.end}`} stats={<>{week.total ? <span>速览 {week.checked}/{week.total}</span> : null}{week.carry_over ? <span>遗留 {week.carry_over}</span> : null}{inherited ? <span className={styles.inheritedTag}>{inherited}</span> : null}</>}>
+    <ArtifactCard actions={<ReportStarButton path={week.path} starred={starred} onToggle={onToggleStar} />} label={`Open ${week.name}`} onOpen={() => onOpenFile(week.path)} badge={<><CalendarDays aria-hidden="true" size={14} />W{String(week.week).padStart(2, "0")}</>} title={`${week.year} Week ${String(week.week).padStart(2, "0")}`} meta={`${week.start} → ${week.end}`} stats={<>{week.total ? <span>速览 {week.checked}/{week.total}</span> : null}{week.carry_over ? <span>遗留 {week.carry_over}</span> : null}{inherited ? <span className={styles.inheritedTag}>{inherited}</span> : null}</>}>
       {week.follow_ups.length ? (
         <ul className={styles.followUps}>
           {week.follow_ups.map((follow) => (
@@ -75,6 +81,9 @@ export function WeeklySection({ projectId, jobs, refreshKey, onOpenFile, onRunCo
   const [category, setCategory] = useState("");
   const [year, setYear] = useState("");
   const [month, setMonth] = useState("");
+  const [starredOnly, setStarredOnly] = useState(false);
+  const [starOverrides, setStarOverrides] = useState<Record<string, boolean>>({});
+  const [starError, setStarError] = useState<string | null>(null);
   const debouncedQuery = useDebouncedValue(query, 250);
   const params = useMemo(() => ({
     q: debouncedQuery || undefined,
@@ -86,6 +95,24 @@ export function WeeklySection({ projectId, jobs, refreshKey, onOpenFile, onRunCo
   const [actionError, setActionError] = useState<string | null>(null);
   const running = jobs.some((job) => job.status === "running" || job.status === "queued");
 
+  useEffect(() => {
+    setStarOverrides({});
+    setStarError(null);
+  }, [projectId]);
+
+  const isStarred = (path: string, fallback: boolean) => Object.prototype.hasOwnProperty.call(starOverrides, path) ? starOverrides[path] : fallback;
+
+  const toggleStar = async (path: string, next: boolean, previous: boolean) => {
+    setStarError(null);
+    setStarOverrides((current) => ({ ...current, [path]: next }));
+    try {
+      await updateReportStar(projectId, path, next);
+    } catch (reason) {
+      setStarOverrides((current) => ({ ...current, [path]: previous }));
+      setStarError(reason instanceof Error ? reason.message : String(reason));
+    }
+  };
+
   const scaffold = async () => {
     setActionError(null);
     try {
@@ -95,7 +122,13 @@ export function WeeklySection({ projectId, jobs, refreshKey, onOpenFile, onRunCo
     }
   };
 
-  const categories = Object.entries(archive?.categories || {}).sort(([left], [right]) => {
+  const visibleWeekly = (archive?.weekly || []).filter((week) => !starredOnly || isStarred(week.path, week.starred));
+  const visibleSubReports = (archive?.sub_reports || []).filter((report) => !starredOnly || isStarred(report.path, report.starred));
+  const categoryReports = visibleSubReports.reduce<Record<string, typeof visibleSubReports>>((result, report) => {
+    (result[report.category] ||= []).push(report);
+    return result;
+  }, {});
+  const categories = Object.entries(categoryReports).sort(([left], [right]) => {
     const leftIndex = CATEGORY_ORDER.indexOf(left);
     const rightIndex = CATEGORY_ORDER.indexOf(right);
     const leftRank = leftIndex === -1 ? CATEGORY_ORDER.length : leftIndex;
@@ -119,8 +152,9 @@ export function WeeklySection({ projectId, jobs, refreshKey, onOpenFile, onRunCo
     };
   }, [archive]);
 
-  const filtering = Boolean(params.q || params.category || params.year || params.month);
-  const subReportCount = archive?.sub_reports.length || 0;
+  const starredCount = (archive?.weekly || []).filter((week) => isStarred(week.path, week.starred)).length + (archive?.sub_reports || []).filter((report) => isStarred(report.path, report.starred)).length;
+  const filtering = Boolean(params.q || params.category || params.year || params.month || starredOnly);
+  const subReportCount = visibleSubReports.length;
 
   return (
     <section className={styles.page} aria-labelledby="weekly-heading">
@@ -128,6 +162,7 @@ export function WeeklySection({ projectId, jobs, refreshKey, onOpenFile, onRunCo
 
       {actionError ? <p className={styles.error} role="alert">{actionError}</p> : null}
       {loadError ? <p className={styles.error} role="alert">{loadError}</p> : null}
+      {starError ? <p className={styles.error} role="alert">{starError}</p> : null}
 
       {!archive ? null : (
         <>
@@ -151,6 +186,7 @@ export function WeeklySection({ projectId, jobs, refreshKey, onOpenFile, onRunCo
                 {MONTH_OPTIONS.map((label, index) => <option key={label} value={String(index + 1)}>{label}</option>)}
               </select>
             </label>
+            <button type="button" className={`${styles.starFilter} ${starredOnly ? styles.starFilterActive : ""}`} aria-label={starredOnly ? "Show all reports" : "Show starred reports"} aria-pressed={starredOnly} onClick={() => setStarredOnly((value) => !value)}><Star aria-hidden="true" size={15} fill={starredOnly ? "currentColor" : "none"} /><span>Starred</span><small>{starredCount}</small></button>
           </div>
 
           <div className={styles.progressGrid}>
@@ -201,8 +237,8 @@ export function WeeklySection({ projectId, jobs, refreshKey, onOpenFile, onRunCo
               </div>
             </div>
             <div className={styles.weekList}>
-              {archive.weekly.map((week) => <WeekCard key={week.path} week={week} onOpenFile={onOpenFile} />)}
-              {archive.weekly.length === 0 ? <span className={styles.empty}>No weekly reports yet — scaffold one to get started.</span> : null}
+              {visibleWeekly.map((week) => <WeekCard key={week.path} week={week} starred={isStarred(week.path, week.starred)} onToggleStar={toggleStar} onOpenFile={onOpenFile} />)}
+              {visibleWeekly.length === 0 ? <span className={styles.empty}>{starredOnly ? "No starred weekly reports." : "No weekly reports yet — scaffold one to get started."}</span> : null}
             </div>
           </div>
 
@@ -215,10 +251,10 @@ export function WeeklySection({ projectId, jobs, refreshKey, onOpenFile, onRunCo
                     <h3>{CATEGORY_LABELS[key] || key} <small>{reports.length}</small></h3>
                     <ul className={styles.subList}>
                       {reports.map((report) => (
-                        <li key={report.path}>
-                          <button type="button" onClick={() => onOpenFile(report.path)} aria-label={`Open ${report.path}`}>
+                        <li key={report.path} className={styles.subItem}>
+                          <button type="button" className={styles.subOpen} onClick={() => onOpenFile(report.path)} aria-label={`Open ${report.path}`}>
                             <FileText aria-hidden="true" size={14} /><time>{report.date.slice(0, 4)}-{report.date.slice(4, 6)}-{report.date.slice(6, 8)}</time><span>{report.topic}</span>
-                          </button>
+                          </button><ReportStarButton path={report.path} starred={isStarred(report.path, report.starred)} onToggle={toggleStar} />
                         </li>
                       ))}
                     </ul>

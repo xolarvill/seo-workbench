@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import { useState } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { createSeoChange, evaluateSeoChange, fetchFiles, fetchMarkdown, fetchPageDetail, fetchPageView, fetchPresentationStatus, fetchReportArchive, fetchSeoChanges, fetchTechAudit, fetchTechAuditDetail, fetchTechAuditView, fetchTutorial, fetchTutorials, updateContentStatus, updateSeoChangeStatus, updateTechAuditSchedule, updateTechnicalIssueStatus } from "../api/client";
+import { createSeoChange, evaluateSeoChange, fetchFiles, fetchMarkdown, fetchPageDetail, fetchPageView, fetchPresentationStatus, fetchReportArchive, fetchSeoChanges, fetchTechAudit, fetchTechAuditDetail, fetchTechAuditView, fetchTutorial, fetchTutorials, updateContentStatus, updateReportStar, updateSeoChangeStatus, updateTechAuditSchedule, updateTechnicalIssueStatus } from "../api/client";
 import type { FileSummary, Job, PageDetailResponse, PageViewResponse, PresentationStatus, ReportArchive, SeoChangesResponse, TechAuditData, TechAuditDetailResponse, TechAuditViewResponse, TutorialDocument, TutorialSummary, Workspace } from "../api/types";
 import { AppShell } from "../components/AppShell";
 import { Drawer } from "../components/Drawer";
@@ -36,6 +36,7 @@ vi.mock("../api/client", () => ({
   fetchTutorial: vi.fn(),
   fetchTutorials: vi.fn(),
   updateContentStatus: vi.fn(),
+  updateReportStar: vi.fn(),
   updateSeoChangeStatus: vi.fn(),
   updateTechAuditSchedule: vi.fn(),
   updateTechnicalIssueStatus: vi.fn(),
@@ -158,13 +159,14 @@ const reportArchive: ReportArchive = {
       carry_over: 1,
       inherited_from: [33],
       follow_ups: [{ date: "2026-09-11", text: "Cable Hub 变更效果评估" }],
+      starred: false,
     },
   ],
   sub_reports: [
-    { path: "reports/20260817_tech_theme-fix-handoff.md", date: "20260817", category: "tech", topic: "theme-fix-handoff", modified_at: "2026-08-17T00:00:00Z", size: 800 },
+    { path: "reports/20260817_tech_theme-fix-handoff.md", date: "20260817", category: "tech", topic: "theme-fix-handoff", modified_at: "2026-08-17T00:00:00Z", size: 800, starred: false },
   ],
   categories: {
-    tech: [{ path: "reports/20260817_tech_theme-fix-handoff.md", date: "20260817", category: "tech", topic: "theme-fix-handoff", modified_at: "2026-08-17T00:00:00Z", size: 800 }],
+    tech: [{ path: "reports/20260817_tech_theme-fix-handoff.md", date: "20260817", category: "tech", topic: "theme-fix-handoff", modified_at: "2026-08-17T00:00:00Z", size: 800, starred: false }],
   },
   latest_week: { year: 2026, week: 34 },
   filters: { query: "", category: "", year: null, month: null },
@@ -288,6 +290,7 @@ beforeEach(() => {
   vi.mocked(createSeoChange).mockResolvedValue({ ok: true });
   vi.mocked(evaluateSeoChange).mockResolvedValue({ report: { classification: "winning" } });
   vi.mocked(updateContentStatus).mockResolvedValue({ item: { id: "content-1", status: "indexed" }, queue: contentWorkspace.content });
+  vi.mocked(updateReportStar).mockResolvedValue({ path: "reports/2026_week_34_work_done.md", starred: true });
   vi.mocked(updateSeoChangeStatus).mockResolvedValue({ ok: true });
   vi.mocked(updateTechnicalIssueStatus).mockResolvedValue({ ok: true });
   vi.mocked(fetchTutorials).mockResolvedValue(tutorialSummaries);
@@ -703,6 +706,18 @@ describe("workbench frontend", () => {
     expect(screen.getByRole("heading", { name: "Decision & outcome records" })).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: /New weekly report/ }));
     await waitFor(() => expect(run).toHaveBeenCalledWith({ action: "reports-new" }));
+  });
+
+  it("stars a report and filters the archive to starred records", async () => {
+    render(<ReportsPage projectId="shop" jobs={[]} refreshKey={0} section="weekly" onOpenFile={vi.fn()} onRunContentAction={vi.fn()} />);
+    const star = await screen.findByRole("button", { name: "Star reports/2026_week_34_work_done.md" });
+    fireEvent.click(star);
+    await waitFor(() => expect(updateReportStar).toHaveBeenCalledWith("shop", "reports/2026_week_34_work_done.md", true));
+    expect(star.getAttribute("aria-pressed")).toBe("true");
+
+    fireEvent.click(screen.getByRole("button", { name: "Show starred reports" }));
+    expect(screen.getByText("2026 Week 34")).toBeTruthy();
+    expect(screen.queryByText("theme-fix-handoff")).toBeNull();
   });
 
   it("renders weekly progress groups and carried-over tracks", async () => {

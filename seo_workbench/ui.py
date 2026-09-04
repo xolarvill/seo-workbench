@@ -48,7 +48,7 @@ from seo_workbench.keywords import normalize_keyword
 from seo_workbench.measurement_regimes import list_regimes
 from seo_workbench.page_workspace import PageWorkspaceQuery, page_workspace_detail, query_page_workspace
 from seo_workbench.presentation import presentation_due, presentation_status
-from seo_workbench.report_archive import list_report_archive
+from seo_workbench.report_archive import list_report_archive, set_report_star
 from seo_workbench.seo_changes import get_change, list_changes, record_change, update_change_status
 from seo_workbench.seo_outcomes import evaluate_change
 from seo_workbench.shopify_crawler import (
@@ -197,6 +197,13 @@ TUTORIALS: tuple[dict[str, str], ...] = (
 class FileUpdate(BaseModel):
     content: str = Field(max_length=MAX_MARKDOWN_BYTES)
     base_revision: str | None = None
+
+
+class ReportStarUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    path: str = Field(min_length=1, max_length=512)
+    starred: bool
 
 
 class ActionRequest(BaseModel):
@@ -3010,6 +3017,16 @@ def create_app(
     def report_archive(project_id: str, q: str = "", category: str = "", year: int | None = None, month: int | None = None) -> dict[str, Any]:
         project_dir = _project(project_id, projects_root)
         return {"ok": True, **list_report_archive(project_dir, query=q, category=category, year=year, month=month)}
+
+    @app.put("/api/v1/projects/{project_id}/reports/star")
+    def update_report_star(project_id: str, update: ReportStarUpdate) -> dict[str, Any]:
+        project_dir = _project(project_id, projects_root)
+        try:
+            star = set_report_star(project_dir, update.path, update.starred)
+        except (OSError, ValueError) as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
+        hub.publish({"type": "report.star.updated", "project_id": project_id, "path": star["path"], "at": _timestamp()})
+        return {"ok": True, "star": star}
 
     @app.get("/api/v1/projects/{project_id}/reports/presentation")
     def report_presentation(project_id: str) -> dict[str, Any]:

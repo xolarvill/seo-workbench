@@ -262,6 +262,14 @@ export async function fetchReportArchive(projectId: string, params: ReportArchiv
   return request<ReportArchive>(`/api/v1/projects/${encodeURIComponent(projectId)}/reports${query ? `?${query}` : ""}`);
 }
 
+export async function updateReportStar(projectId: string, path: string, starred: boolean): Promise<{ path: string; starred: boolean }> {
+  const payload = await request<{ star: { path: string; starred: boolean } }>(
+    `/api/v1/projects/${encodeURIComponent(projectId)}/reports/star`,
+    { method: "PUT", body: JSON.stringify({ path, starred }) },
+  );
+  return payload.star;
+}
+
 export async function fetchPresentationStatus(projectId: string): Promise<PresentationStatus> {
   return request<PresentationStatus>(`/api/v1/projects/${encodeURIComponent(projectId)}/reports/presentation`);
 }

@@ -4,7 +4,7 @@ from pathlib import Path
 
 from seo_workbench import state
 from seo_workbench.cli import main
-from seo_workbench.report_archive import list_report_archive, scaffold_weekly_report
+from seo_workbench.report_archive import list_report_archive, scaffold_weekly_report, set_report_star
 
 
 def _write(project_dir: Path, relative: str, content: str) -> None:
@@ -170,6 +170,26 @@ def test_list_filters_subreports(tmp_path: Path) -> None:
     combined = list_report_archive(project_dir, query="dead", category="ops", year=2026, month=7)
     assert [report["topic"] for report in combined["sub_reports"]] == ["dead-links-triage"]
     assert combined["filters"] == {"query": "dead", "category": "ops", "year": 2026, "month": 7}
+
+
+def test_report_stars_persist_and_return_on_archive_items(tmp_path: Path) -> None:
+    project_dir = tmp_path / "project"
+    state.init_state("shopify", "Store", "https://example.com", project_dir=project_dir)
+    _write(project_dir, "reports/2026_week_34_work_done.md", WEEK_34)
+    _write(project_dir, "reports/20260817_tech_theme-fix-handoff.md", "# Handoff\n")
+
+    assert list_report_archive(project_dir)["weekly"][0]["starred"] is False
+    assert set_report_star(project_dir, "reports/2026_week_34_work_done.md", True) == {
+        "path": "reports/2026_week_34_work_done.md",
+        "starred": True,
+    }
+    payload = list_report_archive(project_dir)
+    assert payload["weekly"][0]["starred"] is True
+    assert payload["sub_reports"][0]["starred"] is False
+    assert state.load_state(project_dir)["reportStars"] == {"reports/2026_week_34_work_done.md": True}
+
+    set_report_star(project_dir, "reports/2026_week_34_work_done.md", False)
+    assert "reportStars" not in state.load_state(project_dir)
 
 
 def test_list_builds_progress_with_states_and_carry_tracks(tmp_path: Path) -> None:

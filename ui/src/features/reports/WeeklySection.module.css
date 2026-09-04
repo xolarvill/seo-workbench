@@ -11,6 +11,13 @@
 .selectField { display: grid; gap: 4px; }
 .selectField > span { color: var(--muted); font: 600 10px var(--font-mono); text-transform: uppercase; }
 .selectField select { min-height: 36px; min-width: 130px; box-sizing: border-box; padding: 0 8px; border: 1px solid var(--separator); border-radius: var(--radius-4); outline: 0; color: var(--ink); background: var(--surface); font-size: 12px; }
+.starFilter { min-height: 36px; display: inline-flex; align-items: center; gap: 7px; padding: 0 10px; border: 1px solid var(--separator); border-radius: var(--radius-4); color: var(--muted); background: var(--surface); font-size: 12px; cursor: pointer; }
+.starFilter small { min-width: 18px; padding: 2px 5px; border-radius: 999px; color: var(--muted); background: var(--canvas); font: 600 10px var(--font-mono); text-align: center; }
+.starFilterActive { border-color: #f6c453; color: var(--warning-dark); background: var(--warning-wash); }
+.starFilterActive small { color: var(--warning-dark); background: #fff1c2; }
+.starButton { width: 32px; height: 32px; display: grid; place-items: center; flex: none; padding: 0; border: 0; border-radius: 50%; color: var(--muted-soft); background: transparent; cursor: pointer; transition: color 120ms var(--ease-out), background-color 120ms var(--ease-out), transform 120ms var(--ease-out); }
+.starButton[aria-pressed="true"] { color: var(--warning-dark); background: var(--warning-wash); }
+.starButton:active, .starFilter:active { transform: scale(.96); }
 .progressGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding-top: 18px; }
 .card { display: grid; gap: 12px; align-content: start; padding: 18px; border: 1px solid var(--separator); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-link); }
 .cardHead { display: grid; gap: 4px; }
@@ -49,15 +56,18 @@
 .category { display: grid; gap: 8px; padding: 14px; border: 1px solid var(--separator); border-radius: var(--radius-card); background: var(--surface); }
 .category h3 { margin: 0; color: var(--primary); font: 600 11px/1.2 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
 .subList { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
-.subList button { width: 100%; min-height: 32px; display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 8px; align-items: center; padding: 0 8px; border: 0; border-radius: var(--radius-4); color: var(--ink); background: transparent; cursor: pointer; text-align: left; }
-.subList button time { color: var(--muted); font: 600 10px var(--font-mono); }
-.subList button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+.subItem { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px; align-items: center; }
+.subOpen { width: 100%; min-width: 0; min-height: 32px; display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 8px; align-items: center; padding: 0 8px; border: 0; border-radius: var(--radius-4); color: var(--ink); background: transparent; cursor: pointer; text-align: left; }
+.subOpen time { color: var(--muted); font: 600 10px var(--font-mono); }
+.subOpen span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
 .empty { color: var(--muted); font-size: 12px; }
 .error { margin: 16px 0 0; padding: 9px 10px; color: var(--danger); background: var(--danger-wash); font-size: 12px; }
 button:disabled { cursor: not-allowed; opacity: .48; }
 @media (hover: hover) {
   .primaryAction:hover { background: var(--primary-wash); }
-  .subList button:hover { background: var(--primary-wash); }
+  .subOpen:hover { background: var(--primary-wash); }
+  .starFilter:hover { border-color: #f6c453; color: var(--warning-dark); }
+  .starButton:hover { color: var(--warning-dark); background: var(--warning-wash); }
   .followUpOpen:hover { background: var(--primary-wash); }
   .followUpOpen:hover time { color: var(--primary); }
   .trackWeeks button:hover { border-color: var(--primary); color: var(--primary); }

@@ -44,6 +44,7 @@ def list_report_archive(
     category, year, and month.
     """
     reports_dir = state.safe_project_path(project_dir, "reports")
+    starred_paths = _load_report_stars(project_dir)
     weekly: list[dict[str, Any]] = []
     sub_reports: list[dict[str, Any]] = []
     if reports_dir.is_dir() and not reports_dir.is_symlink():
@@ -52,11 +53,26 @@ def list_report_archive(
                 continue
             match = WEEKLY_PATTERN.match(path.name)
             if match:
-                weekly.append(_weekly_summary(path, int(match.group("year")), int(match.group("week"))))
+                weekly.append(
+                    _weekly_summary(
+                        path,
+                        int(match.group("year")),
+                        int(match.group("week")),
+                        starred=path.relative_to(project_dir).as_posix() in starred_paths,
+                    )
+                )
                 continue
             match = SUBREPORT_PATTERN.match(path.name)
             if match:
-                sub_reports.append(_subreport_summary(path, match.group("date"), match.group("category"), match.group("topic")))
+                sub_reports.append(
+                    _subreport_summary(
+                        path,
+                        match.group("date"),
+                        match.group("category"),
+                        match.group("topic"),
+                        starred=path.relative_to(project_dir).as_posix() in starred_paths,
+                    )
+                )
     weekly.sort(key=lambda item: (item["year"], item["week"]), reverse=True)
     sub_reports.sort(key=lambda item: item["date"], reverse=True)
     sub_reports = _filter_sub_reports(sub_reports, query=query, category=category, year=year, month=month)
@@ -72,6 +88,29 @@ def list_report_archive(
         "filters": {"query": query or "", "category": category or "", "year": year, "month": month},
         "progress": _build_progress(weekly),
     }
+
+
+def set_report_star(project_dir: Path, relative_path: str, starred: bool) -> dict[str, Any]:
+    """Persist a star for an existing project report file."""
+    path = _report_path(project_dir, relative_path)
+    canonical = path.relative_to(project_dir).as_posix()
+
+    def mutation(data: dict[str, Any]) -> dict[str, Any]:
+        stars = data.get("reportStars")
+        if not isinstance(stars, dict):
+            stars = {}
+        if starred:
+            stars[canonical] = True
+            data["reportStars"] = stars
+        else:
+            stars.pop(canonical, None)
+            if stars:
+                data["reportStars"] = stars
+            else:
+                data.pop("reportStars", None)
+        return {"path": canonical, "starred": starred}
+
+    return state.mutate_state(project_dir, mutation)
 
 
 def scaffold_weekly_report(
@@ -123,7 +162,7 @@ def scaffold_weekly_report(
     }
 
 
-def _weekly_summary(path: Path, year: int, week: int) -> dict[str, Any]:
+def _weekly_summary(path: Path, year: int, week: int, *, starred: bool = False) -> dict[str, Any]:
     text = _read_text(path)
     stat = path.stat()
     checked = 0
@@ -169,10 +208,11 @@ def _weekly_summary(path: Path, year: int, week: int) -> dict[str, Any]:
         "carry_over": carry_over,
         "inherited_from": sorted(set(inherited)),
         "follow_ups": follow_ups,
+        "starred": starred,
     }
 
 
-def _subreport_summary(path: Path, report_date: str, category: str, topic: str) -> dict[str, Any]:
+def _subreport_summary(path: Path, report_date: str, category: str, topic: str, *, starred: bool = False) -> dict[str, Any]:
     stat = path.stat()
     return {
         "path": f"reports/{path.name}",
@@ -181,7 +221,30 @@ def _subreport_summary(path: Path, report_date: str, category: str, topic: str) 
         "topic": topic,
         "modified_at": datetime.fromtimestamp(stat.st_mtime, timezone.utc).isoformat(),
         "size": stat.st_size,
+        "starred": starred,
     }
+
+
+def _load_report_stars(project_dir: Path) -> set[str]:
+    try:
+        data = state.load_state(project_dir)
+    except (OSError, ValueError, json.JSONDecodeError):
+        return set()
+    stars = data.get("reportStars")
+    if not isinstance(stars, dict):
+        return set()
+    return {path for path, value in stars.items() if isinstance(path, str) and value is True}
+
+
+def _report_path(project_dir: Path, relative_path: str) -> Path:
+    relative = Path(relative_path)
+    allowed = relative.parts[:1] == ("reports",) or relative.parts[:2] == ("content", "reports")
+    if relative.is_absolute() or not allowed or relative.suffix.lower() not in {".md", ".markdown"} or any(part.startswith(".") for part in relative.parts):
+        raise ValueError("report path must be a visible Markdown file under reports/ or content/reports/")
+    path = state.safe_project_path(project_dir, relative)
+    if not path.is_file() or path.is_symlink():
+        raise ValueError(f"report file not found: {relative.as_posix()}")
+    return path
 
 
 def _filter_sub_reports(

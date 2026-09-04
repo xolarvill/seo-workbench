@@ -176,6 +176,7 @@ export const WORKBENCH_EVENT_TYPES = [
   "job.finished",
   "job.started",
   "job.updated",
+  "report.star.updated",
   "seo-change.created",
   "seo-change.evaluated",
   "seo-change.updated",
