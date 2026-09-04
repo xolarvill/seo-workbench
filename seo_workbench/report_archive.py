@@ -236,6 +236,15 @@ def _load_report_stars(project_dir: Path) -> set[str]:
     return {path for path, value in stars.items() if isinstance(path, str) and value is True}
 
 
+def report_starred(project_dir: Path, relative_path: str) -> bool | None:
+    try:
+        path = _report_path(project_dir, relative_path)
+    except (OSError, ValueError):
+        return None
+    canonical = path.relative_to(project_dir).as_posix()
+    return canonical in _load_report_stars(project_dir)
+
+
 def _report_path(project_dir: Path, relative_path: str) -> Path:
     relative = Path(relative_path)
     allowed = relative.parts[:1] == ("reports",) or relative.parts[:2] == ("content", "reports")

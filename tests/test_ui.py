@@ -789,6 +789,7 @@ def test_reports_api_updates_project_scoped_stars(tmp_path: Path) -> None:
             json={"path": "reports/2026_week_34_work_done.md", "starred": True},
         )
         archive = client.get("/api/v1/projects/store/reports")
+        detail = client.get("/api/v1/projects/store/files/reports/2026_week_34_work_done.md")
         rejected = client.put(
             "/api/v1/projects/store/reports/star",
             json={"path": "state.json", "starred": True},
@@ -797,6 +798,7 @@ def test_reports_api_updates_project_scoped_stars(tmp_path: Path) -> None:
     assert starred.status_code == 200
     assert starred.json()["star"] == {"path": "reports/2026_week_34_work_done.md", "starred": True}
     assert archive.json()["weekly"][0]["starred"] is True
+    assert detail.json()["file"]["starred"] is True
     assert rejected.status_code == 400
 
 

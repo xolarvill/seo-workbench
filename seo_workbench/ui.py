@@ -48,7 +48,7 @@ from seo_workbench.keywords import normalize_keyword
 from seo_workbench.measurement_regimes import list_regimes
 from seo_workbench.page_workspace import PageWorkspaceQuery, page_workspace_detail, query_page_workspace
 from seo_workbench.presentation import presentation_due, presentation_status
-from seo_workbench.report_archive import list_report_archive, set_report_star
+from seo_workbench.report_archive import list_report_archive, report_starred, set_report_star
 from seo_workbench.seo_changes import get_change, list_changes, record_change, update_change_status
 from seo_workbench.seo_outcomes import evaluate_change
 from seo_workbench.shopify_crawler import (
@@ -3006,6 +3006,7 @@ def create_app(
                 "content": content.decode("utf-8"),
                 "revision": _revision(content),
                 "modified_at": datetime.fromtimestamp(path.stat().st_mtime, timezone.utc).isoformat(),
+                "starred": report_starred(project_dir, relative_path),
             },
         }
 

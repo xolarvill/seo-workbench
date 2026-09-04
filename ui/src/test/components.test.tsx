@@ -284,13 +284,13 @@ beforeEach(() => {
   vi.mocked(fetchReportArchive).mockResolvedValue(reportArchive);
   vi.mocked(fetchPresentationStatus).mockResolvedValue(presentationStatus);
   vi.mocked(fetchSeoChanges).mockResolvedValue(seoChanges);
-  vi.mocked(fetchMarkdown).mockResolvedValue({ path: "reports/2026_week_34_work_done.md", content: "# Week 34\n\n## 速览\n\n- [x] 完成", revision: "r1", modified_at: "2026-08-18T00:00:00Z" });
+  vi.mocked(fetchMarkdown).mockResolvedValue({ path: "reports/2026_week_34_work_done.md", content: "# Week 34\n\n## 速览\n\n- [x] 完成", revision: "r1", modified_at: "2026-08-18T00:00:00Z", starred: false });
   vi.mocked(fetchPageView).mockImplementation(async (_projectId, params) => ({ ...pageView, dataset: params.dataset, columns: params.dataset === "actions" ? pageView.columns : [{ id: params.dataset === "pages" ? "title" : "query", label: params.dataset === "pages" ? "Page" : "Query", default: true }], rows: params.dataset === "actions" ? pageView.rows : [] }));
   vi.mocked(fetchPageDetail).mockResolvedValue(pageDetail);
   vi.mocked(createSeoChange).mockResolvedValue({ ok: true });
   vi.mocked(evaluateSeoChange).mockResolvedValue({ report: { classification: "winning" } });
   vi.mocked(updateContentStatus).mockResolvedValue({ item: { id: "content-1", status: "indexed" }, queue: contentWorkspace.content });
-  vi.mocked(updateReportStar).mockResolvedValue({ path: "reports/2026_week_34_work_done.md", starred: true });
+  vi.mocked(updateReportStar).mockImplementation(async (_projectId, path, starred) => ({ path, starred }));
   vi.mocked(updateSeoChangeStatus).mockResolvedValue({ ok: true });
   vi.mocked(updateTechnicalIssueStatus).mockResolvedValue({ ok: true });
   vi.mocked(fetchTutorials).mockResolvedValue(tutorialSummaries);
@@ -775,6 +775,19 @@ describe("workbench frontend", () => {
     expect(screen.getByRole("button", { name: "Split view" }).getAttribute("aria-pressed")).toBe("true");
     fireEvent.click(screen.getByRole("button", { name: "Source view" }));
     expect(screen.getByRole("button", { name: "Source view" }).getAttribute("aria-pressed")).toBe("true");
+  });
+
+  it("stars and unstars a report from the markdown overlay toolbar", async () => {
+    render(<MarkdownOverlay projectId="shop" path="reports/2026_week_34_work_done.md" onClose={vi.fn()} />);
+    const star = await screen.findByRole("button", { name: "Star report" });
+    expect(star.getAttribute("aria-pressed")).toBe("false");
+    fireEvent.click(star);
+    await waitFor(() => expect(updateReportStar).toHaveBeenCalledWith("shop", "reports/2026_week_34_work_done.md", true));
+    const unstar = await screen.findByRole("button", { name: "Remove report star" });
+    expect(unstar.getAttribute("aria-pressed")).toBe("true");
+    fireEvent.click(unstar);
+    await waitFor(() => expect(updateReportStar).toHaveBeenCalledWith("shop", "reports/2026_week_34_work_done.md", false));
+    expect((await screen.findByRole("button", { name: "Star report" })).getAttribute("aria-pressed")).toBe("false");
   });
 
   it("starts the overlay editor compact and adjusts the preview size", async () => {

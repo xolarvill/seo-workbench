@@ -1,7 +1,7 @@
-import { ArrowLeft, Check, Columns2, Eye, Minus, Plus, RefreshCw, Save, TextCursorInput } from "lucide-react";
+import { ArrowLeft, Check, Columns2, Eye, Minus, Plus, RefreshCw, Save, Star, TextCursorInput } from "lucide-react";
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
 
-import { ApiError, fetchMarkdown, saveMarkdown } from "../../api/client";
+import { ApiError, fetchMarkdown, saveMarkdown, updateReportStar } from "../../api/client";
 import type { MarkdownFile } from "../../api/types";
 import { CodeMirrorEditor } from "./CodeMirrorEditor";
 import { MarkdownPreview } from "./MarkdownPreview";
@@ -65,12 +65,29 @@ export default function MarkdownWorkspace({ projectId, path, onBack, frame = fal
     }
   }, [content, file, path, projectId]);
 
+  const toggleStar = useCallback(async () => {
+    if (!file || typeof file.starred !== "boolean") return;
+    const previous = file.starred;
+    setError(null);
+    setFile((current) => current ? { ...current, starred: !previous } : current);
+    try {
+      const updated = await updateReportStar(projectId, path, !previous);
+      setFile((current) => current ? { ...current, starred: updated.starred } : current);
+    } catch (reason) {
+      setFile((current) => current ? { ...current, starred: previous } : current);
+      setError(reason instanceof Error ? reason.message : "Unable to update report star");
+    }
+  }, [file, path, projectId]);
+
   if (!file) return <div className={styles.loading}>{error || "Loading Markdown"}</div>;
   return (
     <section className={frame ? styles.workspaceFrame : styles.workspace} style={{ "--md-font-size": `${fontSize}px` } as CSSProperties} aria-label={`Markdown editor for ${path}`}>
       <header className={styles.toolbar}>
         <button type="button" className={styles.back} onClick={onBack}><ArrowLeft aria-hidden="true" size={17} /> {frame ? "Close" : "Files"}</button>
-        <div className={styles.identity}><span>{file.path}</span></div>
+        <div className={styles.identity}>
+          <span>{file.path}</span>
+          {typeof file.starred === "boolean" ? <button type="button" className={styles.reportStar} aria-label={file.starred ? "Remove report star" : "Star report"} aria-pressed={file.starred} title={file.starred ? "Remove report star" : "Star report"} onClick={() => void toggleStar()}><Star aria-hidden="true" size={17} fill={file.starred ? "currentColor" : "none"} /></button> : null}
+        </div>
         <div className={styles.modeSwitch} aria-label="Editor view">
           <button type="button" aria-label="Source view" aria-pressed={mode === "source"} onClick={() => setMode("source")}><TextCursorInput aria-hidden="true" size={15} /><span>Source</span></button>
           <button type="button" aria-label="Split view" aria-pressed={mode === "split"} onClick={() => setMode("split")}><Columns2 aria-hidden="true" size={15} /><span>Split</span></button>

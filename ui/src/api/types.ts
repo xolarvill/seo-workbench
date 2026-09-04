@@ -541,6 +541,7 @@ export type MarkdownFile = {
   content: string;
   revision: string;
   modified_at: string;
+  starred: boolean | null;
 };
 
 export type TutorialSummary = {

@@ -3,8 +3,11 @@
 .toolbar { min-height: 58px; display: grid; grid-template-columns: auto minmax(160px, 1fr) auto auto auto; align-items: center; gap: 14px; padding: 8px 18px; border-bottom: 1px solid var(--separator); }
 .toolbar button { cursor: pointer; }
 .back, .modeSwitch button { min-height: 34px; display: inline-flex; align-items: center; gap: 6px; border: 0; color: var(--muted); background: transparent; font-size: 12px; }
-.identity { min-width: 0; display: grid; gap: 2px; }
-.identity span { overflow: hidden; color: var(--muted); font: 11px var(--font-mono); text-overflow: ellipsis; white-space: nowrap; }
+.identity { min-width: 0; display: flex; align-items: center; gap: 8px; }
+.identity > span { min-width: 0; flex: 1; overflow: hidden; color: var(--muted); font: 11px var(--font-mono); text-overflow: ellipsis; white-space: nowrap; }
+.reportStar { width: 34px; height: 34px; display: grid; place-items: center; flex: none; padding: 0; border: 0; border-radius: 50%; color: var(--muted); background: transparent; cursor: pointer; transition: color 120ms var(--ease-out), background-color 120ms var(--ease-out), transform 120ms var(--ease-out); }
+.reportStar[aria-pressed="true"] { color: var(--warning-dark); background: var(--warning-wash); }
+.reportStar:active { transform: scale(.94); }
 .modeSwitch { display: flex; padding: 3px; border: 1px solid var(--separator); border-radius: var(--radius-6); }
 .modeSwitch button { min-width: 0; flex: 1 1 0; justify-content: center; padding: 0 9px; border-radius: var(--radius-4); }
 .modeSwitch button[aria-pressed="true"] { color: var(--ink); background: var(--primary-wash); }
@@ -36,6 +39,7 @@
 .loading { min-height: calc(100vh - 72px); display: grid; place-items: center; color: var(--muted); }
 @media (hover: hover) {
   .fontSwitch button:hover:not(:disabled) { color: var(--ink); background: var(--primary-wash); }
+  .reportStar:hover { color: var(--warning-dark); background: var(--warning-wash); }
 }
 @media (max-width: 850px) {
   .workspace, .workspaceFrame { height: auto; min-height: calc(100vh - 136px); }
