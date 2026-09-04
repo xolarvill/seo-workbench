@@ -86,6 +86,72 @@ Each project stores decision records under `projects/<id>/reports/` with the nam
 
 `./seo reports list` indexes the archive (weekly checkbox/carry-over/follow-up projections plus category-grouped sub-reports; `--q`, `--category`, and `--year` narrow the sub-report index) and `./seo reports new` scaffolds the next ISO week from the template, carrying unfinished work over into the new `速览` by default. `./seo reports presentation status --json` checks the Friday deck gate and `reports presentation generate --json` writes a four-page PDF under `reports/presentations/`; it requires fresh statistics, a recent finalized GSC end date, 28 days of GSC/business history, and a portfolio snapshot. Partial or incomparable evidence stays labelled in the deck. When the local UI is open, its scheduler attempts the current week's presentation after Friday 16:00 local time. The **Reports** tab in the browser workbench surfaces the same archive: **Weekly** leads with a progress view (follow-up due dates grouped into overdue/this-week/later, plus tasks carried across two or more weeks) and a searchable, filterable sub-report index; **Presentation** is the team-facing visual PDF surface; **Notify** covers content reports, index inspection, and Feishu notifications.
 
+<details>
+<summary>Technical audit issue catalog</summary>
+
+This is the rule catalog the technical audit can detect. It is not a claim that every issue currently exists in a project; use `./seo --project <id> tech-audit issues list --json` for the latest project findings.
+
+**HTTP and redirects**
+
+- `HTTP_4XX` — Internal URL returns 4xx
+- `HTTP_5XX` — Internal URL returns 5xx
+- `REDIRECT_CHAIN` — Redirect chain
+- `REDIRECT_LOOP` — Redirect loop
+
+**Links**
+
+- `BROKEN_INTERNAL_LINK` — Broken internal link
+- `ORPHAN_CANDIDATE` — Orphan candidate
+- `NO_INTERNAL_INLINKS` — No internal inlinks
+
+**Metadata**
+
+- `MISSING_TITLE` — Missing title
+- `DUPLICATE_TITLE` — Duplicate title
+- `MISSING_META_DESCRIPTION` — Missing meta description
+- `DUPLICATE_META_DESCRIPTION` — Duplicate meta description
+
+**Content**
+
+- `MISSING_H1` — Missing H1
+- `MULTIPLE_H1` — Multiple H1 headings
+- `DUPLICATE_CONTENT_HASH` — Duplicate content
+
+**Indexability**
+
+- `MISSING_CANONICAL` — Missing canonical
+- `CANONICAL_TO_NON_200` — Canonical points to non-200
+- `CANONICAL_CONFLICT` — Conflicting canonical
+- `CROSS_DOMAIN_CANONICAL` — Cross-domain canonical
+- `ACCIDENTAL_NOINDEX` — Accidental noindex
+- `BLOCKED_BY_ROBOTS` — Blocked by robots.txt
+
+**Sitemaps**
+
+- `SITEMAP_NON_200` — Sitemap returns non-200
+- `SITEMAP_NOINDEX` — Sitemap URL is noindex
+- `CRAWLED_NOT_IN_SITEMAP` — Crawled URL missing from sitemap
+- `SITEMAP_NOT_CRAWLED` — Sitemap URL not crawled
+
+**Internationalization**
+
+- `HREFLANG_INVALID_CODE` — Invalid hreflang code
+- `HREFLANG_MISSING_RETURN_LINK` — Missing hreflang return link
+- `HREFLANG_TO_NON_200` — Hreflang points to non-200
+
+**Architecture**
+
+- `HIGH_CRAWL_DEPTH` — High crawl depth
+- `HTTP_HTTPS_MIX` — HTTP/HTTPS mix
+- `WWW_NON_WWW_MIX` — WWW/non-WWW mix
+
+**Performance**
+
+- `SLOW_RESPONSE` — Slow response
+- `LARGE_HTML` — Large HTML response
+
+</details>
+
 ## Common commands
 
 ```bash
