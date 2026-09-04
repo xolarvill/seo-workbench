@@ -572,6 +572,16 @@ describe("workbench frontend", () => {
     expect(screen.getByRole("link", { name: "Source" }).getAttribute("rel")).toBe("noreferrer");
   });
 
+  it("maps project-local Markdown images to the media endpoint", () => {
+    const { container } = render(<MarkdownPreview content={'![Chart](assets/chart.png)\n\n![Remote](https://cdn.example.com/chart.png)'} projectId="shop" documentPath="reports/weekly.md" />);
+    const images = Array.from(container.querySelectorAll("img"));
+    expect(images).toHaveLength(2);
+    expect(images[0].getAttribute("src")).toBe("/api/v1/projects/shop/media?source=assets%2Fchart.png&document=reports%2Fweekly.md");
+    expect(images[0].getAttribute("alt")).toBe("Chart");
+    expect(images[0].getAttribute("loading")).toBe("lazy");
+    expect(images[1].getAttribute("src")).toBe("https://cdn.example.com/chart.png");
+  });
+
   it("reads local tutorials and follows links between them", async () => {
     render(<TutorialsPage />);
     expect(await screen.findByRole("heading", { name: "Foundations" })).toBeTruthy();

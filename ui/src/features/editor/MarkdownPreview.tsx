@@ -5,10 +5,18 @@ import styles from "./MarkdownWorkspace.module.css";
 
 type MarkdownPreviewProps = {
   content: string;
+  documentPath?: string;
   onLocalLink?: (href: string) => boolean;
+  projectId?: string;
 };
 
-export function MarkdownPreview({ content, onLocalLink }: MarkdownPreviewProps) {
+function imageSource(src: string | undefined, projectId: string | undefined, documentPath: string | undefined) {
+  if (!src || !projectId || !documentPath || /^(?:https?:|data:|blob:|\/\/)/i.test(src)) return src;
+  const params = new URLSearchParams({ source: src, document: documentPath });
+  return `/api/v1/projects/${encodeURIComponent(projectId)}/media?${params.toString()}`;
+}
+
+export function MarkdownPreview({ content, documentPath, onLocalLink, projectId }: MarkdownPreviewProps) {
   return (
     <article className={styles.preview}>
       <ReactMarkdown
@@ -29,6 +37,7 @@ export function MarkdownPreview({ content, onLocalLink }: MarkdownPreviewProps) 
               </a>
             );
           },
+          img: ({ src, alt, title }) => <img src={imageSource(src, projectId, documentPath)} alt={alt || ""} title={title} loading="lazy" decoding="async" />,
         }}
       >{content}</ReactMarkdown>
     </article>

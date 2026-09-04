@@ -114,7 +114,7 @@ export default function MarkdownWorkspace({ projectId, path, onBack, frame = fal
       ) : null}
       <div className={`${styles.editorGrid} ${styles[mode]}`}>
         {mode !== "preview" ? <div className={styles.sourcePane}><CodeMirrorEditor value={content} onChange={setContent} onSave={() => void save()} fontSize={fontSize} /></div> : null}
-        {mode !== "source" ? <MarkdownPreview content={conflict && mode === "split" ? conflict.disk.content : content} /> : null}
+        {mode !== "source" ? <MarkdownPreview content={conflict && mode === "split" ? conflict.disk.content : content} documentPath={path} projectId={projectId} /> : null}
       </div>
     </section>
   );

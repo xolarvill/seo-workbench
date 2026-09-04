@@ -34,6 +34,7 @@
 .preview pre { overflow: auto; padding: 16px; border-left: 3px solid var(--primary); background: var(--graphite); color: #f8f9fb; }
 .preview pre code { padding: 0; background: transparent; }
 .preview blockquote { margin-left: 0; padding-left: 18px; border-left: 2px solid var(--primary); color: var(--ink-muted); }
+.preview img { display: block; max-width: 100%; height: auto; margin: 1.5em auto; border: 1px solid var(--separator); border-radius: var(--radius-6); }
 .preview table { width: 100%; border-collapse: collapse; font: 13px/1.5 var(--font-ui); }
 .preview th, .preview td { padding: 9px; border-bottom: 1px solid var(--separator); text-align: left; }
 .loading { min-height: calc(100vh - 72px); display: grid; place-items: center; color: var(--muted); }

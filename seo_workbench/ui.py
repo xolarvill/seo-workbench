@@ -17,7 +17,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Annotated, Any, AsyncIterator, Literal
 from urllib.error import HTTPError, URLError
-from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunsplit
+from urllib.parse import parse_qsl, unquote, urlencode, urlparse, urlsplit, urlunsplit
 from urllib.request import Request as UrlRequest, urlopen
 
 from fastapi import FastAPI, HTTPException, Request
@@ -88,6 +88,15 @@ DEFAULT_TUTORIALS_DIR = state.ROOT / "docs"
 LOCAL_HOSTS = {"127.0.0.1", "localhost", "testserver"}
 MARKDOWN_ROOTS = {"context", "strategy", "content", "audits", "reports"}
 MARKDOWN_SUFFIXES = {".md", ".markdown"}
+MARKDOWN_IMAGE_MEDIA_TYPES = {
+    ".avif": "image/avif",
+    ".gif": "image/gif",
+    ".jpeg": "image/jpeg",
+    ".jpg": "image/jpeg",
+    ".png": "image/png",
+    ".webp": "image/webp",
+}
+MAX_MARKDOWN_IMAGE_BYTES = 20 * 1024 * 1024
 MAX_MARKDOWN_BYTES = 2 * 1024 * 1024
 MAX_TUTORIAL_BYTES = 2 * 1024 * 1024
 WATCHED_SUFFIXES = {".json", ".md", ".markdown", ".html", ".png", ".webp"}
@@ -1310,6 +1319,39 @@ def _markdown_path(project_dir: Path, relative_path: str) -> Path:
         return state.safe_project_path(project_dir, relative)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+def _markdown_image_path(project_dir: Path, document_path: str, source: str) -> Path:
+    document = _markdown_path(project_dir, document_path)
+    parsed = urlsplit(source)
+    if parsed.scheme or parsed.netloc:
+        raise HTTPException(status_code=400, detail="Markdown images must use a project-local path")
+    image_source = unquote(parsed.path)
+    if not image_source:
+        raise HTTPException(status_code=400, detail="Markdown image path is empty")
+
+    project_root = project_dir.resolve(strict=False)
+    source_path = Path(image_source)
+    candidate = source_path.resolve(strict=False) if source_path.is_absolute() else (document.parent / source_path).resolve(strict=False)
+    if source_path.is_absolute() and not candidate.is_relative_to(project_root):
+        candidate = (project_dir / image_source.lstrip("/")).resolve(strict=False)
+    try:
+        relative = candidate.relative_to(project_root)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail="Markdown image path is outside the project") from exc
+    if any(part.startswith(".") for part in relative.parts):
+        raise HTTPException(status_code=400, detail="hidden project images are not accessible")
+    if candidate.suffix.lower() not in MARKDOWN_IMAGE_MEDIA_TYPES:
+        raise HTTPException(status_code=400, detail="unsupported Markdown image type")
+    try:
+        path = state.safe_project_path(project_dir, relative)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    if not path.is_file() or path.is_symlink():
+        raise HTTPException(status_code=404, detail="Markdown image not found")
+    if path.stat().st_size > MAX_MARKDOWN_IMAGE_BYTES:
+        raise HTTPException(status_code=413, detail="Markdown image is too large for the editor")
+    return path
 
 
 def _markdown_files(project_dir: Path) -> list[dict[str, Any]]:
@@ -3009,6 +3051,12 @@ def create_app(
                 "starred": report_starred(project_dir, relative_path),
             },
         }
+
+    @app.get("/api/v1/projects/{project_id}/media")
+    def markdown_media(project_id: str, source: str, document: str) -> FileResponse:
+        project_dir = _project(project_id, projects_root)
+        path = _markdown_image_path(project_dir, document, source)
+        return FileResponse(path, media_type=MARKDOWN_IMAGE_MEDIA_TYPES[path.suffix.lower()], filename=path.name)
 
     @app.put("/api/v1/projects/{project_id}/files/{relative_path:path}")
     def write_file(project_id: str, relative_path: str, update: FileUpdate) -> dict[str, Any]:

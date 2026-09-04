@@ -747,6 +747,27 @@ def test_markdown_api_rejects_runtime_non_markdown_and_traversal_paths(tmp_path:
         assert client.get("/api/v1/projects/store/files/%2E%2E/secret.md").status_code in {400, 404}
 
 
+def test_markdown_api_serves_project_local_images(tmp_path: Path) -> None:
+    client, project_dir = ui_client(tmp_path)
+    report = project_dir / "reports/weekly.md"
+    asset = project_dir / "reports/assets/chart.png"
+    asset.parent.mkdir(parents=True)
+    asset.write_bytes(b"\x89PNG\r\n\x1a\nchart")
+    report.write_text("![Chart](assets/chart.png)\n", encoding="utf-8")
+
+    with client:
+        relative = client.get("/api/v1/projects/store/media", params={"source": "assets/chart.png", "document": "reports/weekly.md"})
+        absolute = client.get("/api/v1/projects/store/media", params={"source": str(asset), "document": "reports/weekly.md"})
+        outside = client.get("/api/v1/projects/store/media", params={"source": "../../state.json", "document": "reports/weekly.md"})
+
+    assert relative.status_code == 200
+    assert relative.headers["content-type"] == "image/png"
+    assert relative.content == asset.read_bytes()
+    assert absolute.status_code == 200
+    assert absolute.content == asset.read_bytes()
+    assert outside.status_code == 400
+
+
 def test_reports_api_lists_archive_and_serves_weekly_files(tmp_path: Path) -> None:
     client, project_dir = ui_client(tmp_path)
     reports = project_dir / "reports"
