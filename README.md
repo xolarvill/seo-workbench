@@ -75,9 +75,7 @@ Open the workbench:
 ./seo --project my-site ui
 ```
 
-The interface only listens on `127.0.0.1`. It is optional and uses the same local project files as the CLI.
-
-WebView/cookieless previews (for example the Codex built-in browser) can use `./seo ui --allow-cookieless`; the one-time bootstrap token is then also accepted via `Authorization: Bearer` on every local request. The default stays cookie-based.
+The interface listens only on the local machine and uses the same project files as the CLI. Open the printed `http://localhost:<port>` address in any browser; no browser-specific session is required.
 
 
 ## Reporting

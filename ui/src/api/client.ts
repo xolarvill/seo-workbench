@@ -14,10 +14,9 @@ export class ApiError extends Error {
 }
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
-  const token = window.sessionStorage.getItem("seo_workbench_token");
   const response = await fetch(path, {
     credentials: "same-origin",
-    headers: { "Content-Type": "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}), ...options?.headers },
+    headers: { "Content-Type": "application/json", ...options?.headers },
     ...options,
   });
   const raw = await response.text();
@@ -275,10 +274,8 @@ export async function fetchPresentationStatus(projectId: string): Promise<Presen
 }
 
 export async function downloadPresentationPdf(projectId: string): Promise<Blob> {
-  const token = window.sessionStorage.getItem("seo_workbench_token");
   const response = await fetch(`/api/v1/projects/${encodeURIComponent(projectId)}/reports/presentation/pdf`, {
     credentials: "same-origin",
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
   if (!response.ok) throw new Error(`Presentation PDF download failed (${response.status}).`);
   return response.blob();

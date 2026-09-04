@@ -12,7 +12,7 @@ from seo_workbench import state, ui as ui_module
 from seo_workbench.locks import lock_path, project_lock
 from seo_workbench.seo_changes import list_changes, record_change
 from seo_workbench.tech_issues import list_issue_register, sync_issue_register
-from seo_workbench.ui import ACTION_COMMANDS, COOKIE_NAME, BrowserCapture, EventHub, _safe_job_output, create_app
+from seo_workbench.ui import ACTION_COMMANDS, BrowserCapture, EventHub, _safe_job_output, create_app
 from seo_workbench.tech_audit import set_schedule
 from seo_workbench_tools import gsc_probe
 
@@ -26,7 +26,6 @@ def ui_client(tmp_path: Path) -> tuple[TestClient, Path]:
     tutorials_dir.mkdir()
     (tutorials_dir / "SEO基础知识与证据模型.md").write_text("# SEO Foundations\n\nLocal tutorial.\n", encoding="utf-8")
     app = create_app(
-        token="test-token",
         projects_root=projects_root,
         runtime_dir=tmp_path / ".runtime/ui",
         frontend_dir=None,
@@ -34,7 +33,6 @@ def ui_client(tmp_path: Path) -> tuple[TestClient, Path]:
         watch_files=False,
     )
     client = TestClient(app)
-    client.cookies.set(COOKIE_NAME, "test-token")
     return client, project_dir
 
 
@@ -135,102 +133,25 @@ def test_browser_capture_schema_matches_server_contract() -> None:
     assert set(schema["properties"]) == set(BrowserCapture.model_fields)
 
 
-def test_ui_requires_local_session_but_health_is_public(tmp_path: Path) -> None:
-    projects_root = tmp_path / "projects"
-    app = create_app(
-        token="secret",
-        projects_root=projects_root,
-        runtime_dir=tmp_path / ".runtime/ui",
-        frontend_dir=None,
-        watch_files=False,
-    )
-    with TestClient(app) as client:
-        assert client.get("/api/v1/health").status_code == 200
-        assert client.get("/api/v1/projects").status_code == 401
-        boot = client.get("/?token=secret", follow_redirects=False)
-        assert boot.status_code == 303
-        assert COOKIE_NAME in boot.cookies
-
-
-def test_ui_cookieless_mode_accepts_token_without_cookie(tmp_path: Path) -> None:
+def test_ui_is_public_on_localhost_and_rejects_non_local_hosts(tmp_path: Path) -> None:
     projects_root = tmp_path / "projects"
     state.init_state("shopify", "Store", "https://example.com", project_dir=projects_root / "store")
     app = create_app(
-        token="secret",
         projects_root=projects_root,
         runtime_dir=tmp_path / ".runtime/ui",
         frontend_dir=None,
         watch_files=False,
-        allow_cookieless=True,
     )
     with TestClient(app) as client:
         assert client.get("/api/v1/health").status_code == 200
-        bearer = client.get("/api/v1/projects", headers={"Authorization": "Bearer secret"})
-        assert bearer.status_code == 200
-        query = client.get("/api/v1/projects?token=secret")
-        assert query.status_code == 200
-        assert client.get("/api/v1/projects").status_code == 401
-        assert client.get("/api/v1/projects", headers={"Authorization": "Bearer wrong"}).status_code == 401
-
-
-def test_ui_cookieless_mode_keeps_token_url_and_sets_cookie(tmp_path: Path) -> None:
-    projects_root = tmp_path / "projects"
-    app = create_app(
-        token="secret",
-        projects_root=projects_root,
-        runtime_dir=tmp_path / ".runtime/ui",
-        frontend_dir=None,
-        watch_files=False,
-        allow_cookieless=True,
-    )
-    with TestClient(app) as client:
-        boot = client.get("/?token=secret", follow_redirects=False)
+        assert client.get("/api/v1/projects").status_code == 200
+        assert client.get("/api/v1/projects?token=ignored", headers={"Authorization": "Bearer ignored"}).status_code == 200
+        boot = client.get("/?token=ignored", follow_redirects=False)
         assert boot.status_code == 200
-        assert COOKIE_NAME in boot.cookies
-
-
-def test_ui_default_mode_rejects_bearer_and_query_tokens(tmp_path: Path) -> None:
-    projects_root = tmp_path / "projects"
-    state.init_state("shopify", "Store", "https://example.com", project_dir=projects_root / "store")
-    app = create_app(
-        token="secret",
-        projects_root=projects_root,
-        runtime_dir=tmp_path / ".runtime/ui",
-        frontend_dir=None,
-        watch_files=False,
-    )
-    with TestClient(app) as client:
-        assert client.get("/api/v1/projects", headers={"Authorization": "Bearer secret"}).status_code == 401
-        assert client.get("/api/v1/projects?token=secret").status_code == 401
-
-
-def test_ui_accepts_nucleus_identity_headers_without_local_cookie(tmp_path: Path) -> None:
-    projects_root = tmp_path / "projects"
-    state.init_state("shopify", "Store", "https://example.com", project_dir=projects_root / "store")
-    app = create_app(
-        token="secret",
-        projects_root=projects_root,
-        runtime_dir=tmp_path / ".runtime/ui",
-        frontend_dir=None,
-        watch_files=False,
-    )
-    nucleus_headers = {"host": "seo.nucleus.localhost:8080", "x-nucleus-user-id": "user-1"}
-    with TestClient(app) as client:
-        assert client.get("/health", headers={"host": "seo.nucleus.localhost:8080"}).status_code == 200
-        assert client.get("/api/v1/projects", headers={"host": "seo.nucleus.localhost:8080"}).status_code == 401
-        assert client.get("/api/v1/projects", headers=nucleus_headers).status_code == 200
-        rejected = client.post(
-            "/api/v1/projects/store/workflow",
-            headers={**nucleus_headers, "origin": "http://evil.example"},
-            json={"action": "unknown"},
-        )
-        assert rejected.status_code == 403
-        passed = client.post(
-            "/api/v1/projects/store/workflow",
-            headers={**nucleus_headers, "origin": "http://seo.nucleus.localhost:8080"},
-            json={"action": "unknown"},
-        )
-        assert passed.status_code == 400
+        assert "location" not in boot.headers
+        assert "set-cookie" not in boot.headers
+        assert client.get("/api/v1/projects", headers={"host": "remote.example"}).status_code == 403
+        assert client.get("/api/v1/projects", headers={"host": "evil.example"}).status_code == 403
 
 
 def test_extension_pairing_persists_redacted_browser_capture(tmp_path: Path) -> None:
@@ -387,17 +308,16 @@ def test_ui_bootstrap_preserves_project_and_serves_built_frontend(tmp_path: Path
     frontend.mkdir()
     (frontend / "index.html").write_text("<main>Built workbench</main>", encoding="utf-8")
     app = create_app(
-        token="secret",
         projects_root=tmp_path / "projects",
         runtime_dir=tmp_path / ".runtime/ui",
         frontend_dir=frontend,
         watch_files=False,
     )
     with TestClient(app) as client:
-        boot = client.get("/?token=secret&project=store", follow_redirects=False)
-        assert boot.headers["location"] == "/?project=store"
-        client.cookies.set(COOKIE_NAME, "secret")
-        assert "Built workbench" in client.get("/").text
+        boot = client.get("/?project=store", follow_redirects=False)
+        assert boot.status_code == 200
+        assert "set-cookie" not in boot.headers
+        assert "Built workbench" in boot.text
 
 
 def test_ui_lists_projects_workspace_and_real_evidence(tmp_path: Path) -> None:
@@ -569,9 +489,8 @@ def test_google_integration_api_manages_gsc_profile_and_binding(tmp_path: Path, 
 def test_google_credential_management_is_local_only(tmp_path: Path) -> None:
     client, _ = ui_client(tmp_path)
     headers = {
-        "host": "seo.nucleus.localhost:8080",
-        "origin": "http://seo.nucleus.localhost:8080",
-        "x-nucleus-user-id": "operator-1",
+        "host": "remote.example",
+        "origin": "http://remote.example",
     }
     with client:
         response = client.get("/api/v1/projects/store/integrations/google", headers=headers)
@@ -672,9 +591,8 @@ def test_shopify_crawler_access_is_stored_write_only_and_scoped_to_project_host(
 def test_shopify_credential_management_is_local_only(tmp_path: Path) -> None:
     client, _ = ui_client(tmp_path)
     headers = {
-        "host": "seo.nucleus.localhost:8080",
-        "origin": "http://seo.nucleus.localhost:8080",
-        "x-nucleus-user-id": "operator-1",
+        "host": "remote.example",
+        "origin": "http://remote.example",
     }
     with client:
         response = client.get("/api/v1/projects/store/integrations/shopify", headers=headers)

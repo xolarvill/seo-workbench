@@ -11,11 +11,6 @@ import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import "./styles/global.css";
 
-const bootToken = new URLSearchParams(window.location.search).get("token");
-if (bootToken) {
-  window.sessionStorage.setItem("seo_workbench_token", bootToken);
-}
-
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <App />

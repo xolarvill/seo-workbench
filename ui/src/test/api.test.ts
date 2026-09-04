@@ -16,8 +16,7 @@ describe("workbench API client", () => {
     await expect(fetchProjects()).rejects.toThrow("Accepted issues require a decision note.");
   });
 
-  it("attaches the cookieless bootstrap token as a Bearer header", async () => {
-    window.sessionStorage.setItem("seo_workbench_token", "boot-token");
+  it("uses the local API without a browser session token", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
       status: 200,
@@ -28,7 +27,7 @@ describe("workbench API client", () => {
     await fetchProjects();
 
     expect(fetchMock).toHaveBeenCalledWith("/api/v1/projects", expect.objectContaining({
-      headers: expect.objectContaining({ Authorization: "Bearer boot-token" }),
+      headers: { "Content-Type": "application/json" },
     }));
   });
 

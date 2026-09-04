@@ -21,7 +21,7 @@ from urllib.parse import parse_qsl, urlencode, urlparse, urlsplit, urlunsplit
 from urllib.request import Request as UrlRequest, urlopen
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response, StreamingResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response, StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field, SecretStr
 from watchfiles import Change, awatch
 
@@ -81,14 +81,11 @@ from seo_workbench_tools.network_boundary import sensitive_query_key
 
 UI_PROTOCOL_VERSION = "1"
 EXTENSION_PROTOCOL_VERSION = "1"
-COOKIE_NAME = "seo_workbench_session"
 DEFAULT_PORT = 8765
 DEFAULT_RUNTIME_DIR = state.ROOT / ".runtime" / "ui"
 DEFAULT_FRONTEND_DIR = state.ROOT / "ui" / "dist"
 DEFAULT_TUTORIALS_DIR = state.ROOT / "docs"
 LOCAL_HOSTS = {"127.0.0.1", "localhost", "testserver"}
-DEFAULT_NUCLEUS_HOSTS = {"seo.nucleus.localhost"}
-NUCLEUS_HOSTS_ENV = "SEO_WORKBENCH_NUCLEUS_HOSTS"
 MARKDOWN_ROOTS = {"context", "strategy", "content", "audits", "reports"}
 MARKDOWN_SUFFIXES = {".md", ".markdown"}
 MAX_MARKDOWN_BYTES = 2 * 1024 * 1024
@@ -709,20 +706,6 @@ def _timestamp() -> str:
 
 def _revision(content: bytes) -> str:
     return hashlib.sha256(content).hexdigest()
-
-
-def _configured_nucleus_hosts() -> set[str]:
-    raw = os.environ.get(NUCLEUS_HOSTS_ENV)
-    if raw is None:
-        return set(DEFAULT_NUCLEUS_HOSTS)
-    return {item.strip().lower() for item in raw.split(",") if item.strip()}
-
-
-def _trusted_origin_host(origin: str | None, nucleus_hosts: set[str]) -> bool:
-    if not origin:
-        return True
-    hostname = (urlparse(origin).hostname or "").lower()
-    return hostname in LOCAL_HOSTS or hostname in nucleus_hosts
 
 
 def _extension_origin(request: Request) -> str | None:
@@ -1886,15 +1869,12 @@ async def _watch_projects(projects_root: Path, hub: EventHub, stop_event: asynci
 
 def create_app(
     *,
-    token: str | None = None,
     projects_root: Path = state.PROJECTS_ROOT,
     runtime_dir: Path = DEFAULT_RUNTIME_DIR,
     frontend_dir: Path | None = DEFAULT_FRONTEND_DIR,
     tutorials_dir: Path = DEFAULT_TUTORIALS_DIR,
     watch_files: bool = True,
-    allow_cookieless: bool = False,
 ) -> FastAPI:
-    session_token = token or secrets.token_urlsafe(32)
     hub = EventHub()
     jobs = JobManager(hub, projects_root)
     stop_event = asyncio.Event()
@@ -1921,12 +1901,9 @@ def create_app(
                     pass
 
     app = FastAPI(title="SEO Workbench UI", version=UI_PROTOCOL_VERSION, lifespan=lifespan)
-    app.state.session_token = session_token
     app.state.event_hub = hub
     app.state.job_manager = jobs
-    app.state.nucleus_hosts = _configured_nucleus_hosts()
     app.state.extension_pairings = pairings
-    app.state.allow_cookieless = allow_cookieless
 
     async def launch_codex() -> dict[str, Any]:
         nonlocal last_codex_launch
@@ -1961,13 +1938,10 @@ def create_app(
         return {"ok": True}
 
     @app.middleware("http")
-    async def local_session(request: Request, call_next):
+    async def local_access(request: Request, call_next):
         hostname = (request.url.hostname or "").lower()
-        nucleus_hosts = app.state.nucleus_hosts
         local_request = hostname in LOCAL_HOSTS
-        nucleus_request = hostname in nucleus_hosts
-        nucleus_user_id = request.headers.get("x-nucleus-user-id", "").strip()
-        if not local_request and not nucleus_request:
+        if not local_request:
             return JSONResponse({"detail": "SEO Workbench UI only accepts local requests"}, status_code=403)
         path = request.url.path
         origin = _extension_origin(request)
@@ -2026,35 +2000,6 @@ def create_app(
                     return extension_response(JSONResponse({"detail": "extension authorization required"}, status_code=401))
                 request.state.extension_client = client
             return extension_response(await call_next(request))
-        if nucleus_request and nucleus_user_id:
-            if request.method not in {"GET", "HEAD", "OPTIONS"} and not _trusted_origin_host(
-                request.headers.get("origin"),
-                nucleus_hosts,
-            ):
-                return JSONResponse({"detail": "cross-origin mutations are blocked"}, status_code=403)
-            return await call_next(request)
-        if not local_request:
-            return JSONResponse({"detail": "Nucleus identity header required"}, status_code=401)
-        supplied = request.query_params.get("token")
-        authorization = request.headers.get("authorization", "")
-        if authorization.startswith("Bearer "):
-            supplied = supplied or authorization[len("Bearer "):].strip()
-        if request.method == "GET" and request.url.path == "/" and supplied == session_token:
-            remaining = [(key, value) for key, value in request.query_params.multi_items() if key != "token"]
-            target = f"/?{urlencode(remaining)}" if remaining else "/"
-            if app.state.allow_cookieless:
-                response = await call_next(request)
-                response.set_cookie(COOKIE_NAME, session_token, httponly=True, samesite="strict", secure=False)
-                return response
-            response = RedirectResponse(target, status_code=303)
-            response.set_cookie(COOKIE_NAME, session_token, httponly=True, samesite="strict", secure=False)
-            return response
-        if request.cookies.get(COOKIE_NAME) != session_token and not (
-            app.state.allow_cookieless and supplied == session_token
-        ):
-            if request.url.path.startswith("/api/"):
-                return JSONResponse({"detail": "local UI session required"}, status_code=401)
-            return HTMLResponse("Open this workbench with ./seo ui.", status_code=401)
         if request.method not in {"GET", "HEAD", "OPTIONS"}:
             origin = request.headers.get("origin")
             if origin and not _same_origin(request, origin):
@@ -3166,44 +3111,36 @@ def create_app(
     return app
 
 
-def _write_session(runtime_dir: Path, port: int, token_path: Path) -> Path:
+def _write_session(runtime_dir: Path, port: int) -> Path:
     _secure_runtime_dir(runtime_dir)
     session_path = runtime_dir / "session.json"
     payload = {
         "protocol_version": UI_PROTOCOL_VERSION,
         "pid": os.getpid(),
-        "base_url": f"http://127.0.0.1:{port}",
-        "token_path": str(token_path),
+        "base_url": f"http://localhost:{port}",
         "started_at": _timestamp(),
     }
     atomic_write_text(session_path, json.dumps(payload, indent=2) + "\n", mode=0o600)
     return session_path
 
 
-def run_ui(*, port: int = DEFAULT_PORT, open_browser: bool = True, initial_project: str | None = None, allow_cookieless: bool = False) -> int:
+def run_ui(*, port: int = DEFAULT_PORT, open_browser: bool = True, initial_project: str | None = None) -> int:
     if not 1 <= port <= 65535:
         raise ValueError("UI port must be between 1 and 65535")
     import uvicorn
 
     _secure_runtime_dir(DEFAULT_RUNTIME_DIR)
-    token = secrets.token_urlsafe(32)
-    token_path = DEFAULT_RUNTIME_DIR / "token"
-    atomic_write_text(token_path, token + "\n", mode=0o600)
-    session_path = _write_session(DEFAULT_RUNTIME_DIR, port, token_path)
-    app = create_app(token=token, allow_cookieless=allow_cookieless)
-    url = f"http://127.0.0.1:{port}/?token={token}"
+    session_path = _write_session(DEFAULT_RUNTIME_DIR, port)
+    app = create_app()
+    url = f"http://localhost:{port}"
     if initial_project:
-        url += f"&project={initial_project}"
-    print(f"SEO Workbench UI: http://127.0.0.1:{port}")
-    if allow_cookieless:
-        print("SEO Workbench UI: cookieless session mode enabled (token accepted on every local request; for WebView/cookieless browsers such as Codex)")
+        url += f"/?project={initial_project}"
+    print(f"SEO Workbench UI: {url}")
     if open_browser:
         timer = threading.Timer(0.8, webbrowser.open, args=(url,))
         timer.daemon = True
         timer.start()
     try:
-        # Access logs are disabled because the one-time bootstrap token is carried
-        # in the initial local URL before middleware replaces it with a cookie.
         uvicorn.run(app, host="127.0.0.1", port=port, log_level="info", access_log=False)
     finally:
         try:
@@ -3212,5 +3149,4 @@ def run_ui(*, port: int = DEFAULT_PORT, open_browser: bool = True, initial_proje
             current = {}
         if current.get("pid") == os.getpid():
             session_path.unlink(missing_ok=True)
-            token_path.unlink(missing_ok=True)
     return 0

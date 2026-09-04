@@ -209,12 +209,10 @@ def cmd_ui(args: argparse.Namespace) -> int:
                 "--extra ui (add --extra rendered --extra technology --extra google as needed)"
             ) from exc
         raise RuntimeError("UI support is not installed; run ./setup.sh") from exc
-    allow_cookieless = args.allow_cookieless or os.environ.get("SEO_WORKBENCH_UI_ALLOW_COOKIELESS") == "1"
     return run_ui(
         port=args.port,
         open_browser=not args.no_open,
         initial_project=args.project,
-        allow_cookieless=allow_cookieless,
     )
 
 
@@ -2090,11 +2088,6 @@ def build_parser() -> argparse.ArgumentParser:
     ui = sub.add_parser("ui")
     ui.add_argument("--port", type=int, default=8765)
     ui.add_argument("--no-open", action="store_true")
-    ui.add_argument(
-        "--allow-cookieless",
-        action="store_true",
-        help="accept the bootstrap token on every request for WebView/cookieless browsers (e.g. Codex preview)",
-    )
     ui.set_defaults(func=cmd_ui)
     return parser
 
