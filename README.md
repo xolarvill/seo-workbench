@@ -160,6 +160,12 @@ This is the rule catalog the technical audit can detect. It is not a claim that 
 
 ### Common commands
 
+Click below to open dropdown for details
+
+<details>
+
+<summary>Commands list</summary>
+
 ```bash
 # Projects and workflow
 ./seo projects --json
@@ -228,6 +234,8 @@ This is the rule catalog the technical audit can detect. It is not a claim that 
 ```
 
 Use `./seo --help` and `./seo <command> --help` for the full command reference.
+
+</details>
 
 ### Operation Manual Documentation
 
