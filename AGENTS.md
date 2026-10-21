@@ -113,6 +113,7 @@ Initialize a project:
 
 - `skills/keyword-deep-dive`
 - `skills/content-brief`
+- `skills/reader-experience-review` — use for reader-facing prose review and before delivering new or revised articles; judge confusion in context and preserve useful caution.
 - `skills/technical-audit`
 
 Load only the referenced files needed for the current step.

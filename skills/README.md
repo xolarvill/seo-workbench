@@ -7,6 +7,7 @@ Current minimum set:
 - `keyword-deep-dive` - SERP and keyword opportunity analysis.
 - `content-brief` - writer-ready SERP-based article brief.
 - `write-content` - full article drafting from a brief or SERP research.
+- `reader-experience-review` - contextual prose review for confusing passages, leaked instructions and AI slop; preserves useful caution and accepts low-impact issues unchanged.
 - `topic-cluster-planning` - hub/spoke content architecture.
 - `page-audit` - page-level SEO/content audit.
 - `eeat-audit` - E-E-A-T review and fast wins.

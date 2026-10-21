@@ -130,6 +130,7 @@ delve, landscape (metaphorical), testament, leverage, utilize, robust, seamless,
 
 1. **"So What?" test**: For each major section — could anyone have written this, for anyone, about anything? If yes, inject specific knowledge.
 2. **Self-check**: Scan for blacklisted words, sections where every paragraph starts with a topic sentence, unnecessary section summaries, participial tack-ons. Fix before delivering.
+3. **Reader comprehension**: Use `../reader-experience-review/SKILL.md` on the actual draft before delivery. Inspect instruction leakage, unexplained rebuttals, transitions and reader actions in context. Preserve correct technical terms, sources and useful caveats; word-list hits alone do not justify rewriting or claims of AI authorship. Accept low-impact wording when a change adds no reader value.
 
 ### Output
 

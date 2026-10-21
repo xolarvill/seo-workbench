@@ -72,6 +72,7 @@ Detect from the existing page + SERP. Load `references/content-types-overview.md
 ### Final checks
 1. "So what?" test per section — could anyone have written this for anyone? If yes, inject specific knowledge.
 2. Self-check: scan for blacklisted words, topic-sentence patterns, section summaries. Fix before delivering.
+3. Use `../reader-experience-review/SKILL.md` to check the revised prose in context. Prioritize actual confusion, internal instruction leakage and broken transitions. Keep factual limitations, correct technical terms and useful source or example labels; do not rewrite merely to clear a word-list hit. Review-only requests belong to that skill and do not require this full SERP/rewrite workflow.
 
 ### Output
 Clean markdown. Title + rewritten article content. Nothing else.
