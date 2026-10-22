@@ -155,6 +155,8 @@ This is the rule catalog the technical audit can detect. It is not a claim that 
 - `SLOW_RESPONSE` — Slow response
 - `LARGE_HTML` — Large HTML response
 
+Browser collectors use the matching Playwright runtime with explicit process cleanup and partial-result gates; see [browser runtime and probe comparability](docs/browser-runtime.md).
+
 Before resuming a broad audit, follow the [bounded crawl reliability pilot](docs/crawl-reliability-pilot.md) and preserve the full-audit pointer and operator ledger.
 
 Issue fingerprints use rule-specific source/target identities. Timings, sizes, content hashes, and duplicate-group members remain observations; they do not create new issue identities. First observations are candidates. Repeated fresh observations in a comparable audit confirm presence; priority alone never implies confirmation.

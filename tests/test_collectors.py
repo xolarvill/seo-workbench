@@ -583,6 +583,8 @@ def test_performance_output_contract_and_latest_pointer(tmp_path, monkeypatch) -
     def fake_run(command, *args, **kwargs):
         return type("Completed", (), {"returncode": 0, "stdout": json.dumps(summary), "stderr": ""})()
 
+    from seo_workbench_tools import browser_runtime
+    monkeypatch.setattr(browser_runtime, "ROOT", tmp_path)
     monkeypatch.setattr(performance_probe, "preflight_target", lambda *args: {"status_code": 200})
     monkeypatch.setattr(performance_probe, "node_command", lambda: "/node")
     monkeypatch.setattr(performance_probe, "browser_executable", lambda: "/chrome")

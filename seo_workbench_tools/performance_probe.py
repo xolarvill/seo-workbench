@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlsplit
 
-from seo_workbench_tools.browser_runtime import browser_executable
+from seo_workbench_tools.browser_runtime import browser_executable, browser_lease
 from seo_workbench_tools.files import atomic_write_text
 from seo_workbench_tools.network_boundary import guarded_proxy, inspect_target, sensitive_query_key, validate_url
 
@@ -186,7 +186,8 @@ def collect(
             "--max-wait-for-load",
             str(int(timeout * 1000)),
         ]
-        completed = run_runner(command, process_timeout, run_dir / ".chrome.pid")
+        with browser_lease():
+            completed = run_runner(command, process_timeout, run_dir / ".chrome.pid")
     if not completed.stdout.strip():
         detail = completed.stderr.strip() or f"exit code {completed.returncode}"
         raise RuntimeError(f"Lighthouse runner failed: {detail}")

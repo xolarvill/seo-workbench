@@ -34,7 +34,7 @@ Usage: ./setup.sh [--check] [--yes] [--local-browser]
 
   --check          Verify the complete environment without installing anything.
   --yes            Install missing Homebrew prerequisites without prompting.
-  --local-browser  Install Playwright's pinned Chromium instead of reusing system Chrome.
+  --local-browser  Install Playwright's matching project-local Chromium.
 EOF
 }
 

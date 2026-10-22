@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from seo_workbench_tools.browser_runtime import browser_executable
+from seo_workbench_tools.browser_runtime import managed_browser, prepare_browser_environment
 from seo_workbench_tools.files import atomic_output_path, atomic_write_text
 from seo_workbench_tools.runtime_signals import detect_tags, detect_technologies
 from seo_workbench_tools.response_quality import response_quality
@@ -269,32 +269,39 @@ def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> 
     except ImportError as exc:
         raise RuntimeError("playwright is not installed; run `uv sync` first") from exc
 
+    if not urls:
+        raise ValueError("at least one rendered URL is required")
     output_dir.mkdir(parents=True, exist_ok=True)
+    diagnostic_path = output_dir / f"browser-runtime-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')}.json"
     report: dict[str, Any] = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "pages": [],
     }
-    executable_path = browser_executable()
     session = active_session()
     if session and session.next_eligible_at(urls[0]) > time.time():
         raise CrawlDeferred(session.next_eligible_at(urls[0]))
+    prepare_browser_environment()
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True, executable_path=executable_path)
-        try:
+        with managed_browser(p, diagnostic_path) as (browser, runtime):
             for url in urls:
                 page_report = {"url": url, "viewports": {}}
                 for viewport_name, viewport in VIEWPORTS.items():
+                    if not browser.is_connected() or runtime["renderer_crashes"]:
+                        break
                     options = context_options(viewport_name, viewport)
                     if session:
                         options["locale"] = "en-US"
                         if not viewport_name.startswith("mobile_"):
                             options["user_agent"] = session.user_agent
-                    context = browser.new_context(**options)
-                    page = context.new_page()
-                    console_errors: list[str] = []
-                    route_failures = install_crawl_routes(page, session, timeout) if session else []
-                    page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
+                    context = None
+                    route_failures = []
                     try:
+                        context = browser.new_context(**options)
+                        page = context.new_page()
+                        page.on("crash", lambda *_: runtime.update(renderer_crashes=runtime["renderer_crashes"] + 1))
+                        console_errors: list[str] = []
+                        route_failures = install_crawl_routes(page, session, timeout) if session else []
+                        page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
                         navigation = page.goto(url, wait_until="domcontentloaded", timeout=int(timeout * 1000))
                         page.wait_for_timeout(wait_ms)
                         if any(failure.get("main_document") for failure in route_failures):
@@ -335,15 +342,19 @@ def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> 
                     except Exception as exc:
                         page_report["viewports"][viewport_name] = {"error": str(exc), "request_errors": route_failures}
                     finally:
-                        context.close()
+                        if context:
+                            try:
+                                context.close()
+                            except Exception:
+                                runtime["cleanup_warning"] = "context_close_failed"
                 report["pages"].append(page_report)
-                if session and session.next_eligible_at(url) > time.time():
+                if not browser.is_connected() or runtime["renderer_crashes"] or (session and session.next_eligible_at(url) > time.time()):
                     break
-        finally:
-            browser.close()
+    report["browser_runtime"] = runtime
+    report["browser_runtime_path"] = str(diagnostic_path)
     views = [view for page in report["pages"] for view in page["viewports"].values()]
     eligible = sum(not view.get("error") and view.get("comparison_eligible", False) for view in views)
-    report["collection_status"] = "ok" if eligible == len(urls) * len(VIEWPORTS) else "partial" if any(not v.get("error") and v.get("evidence_quality", {}).get("html_eligible") for v in views) else "failed"
+    report["collection_status"] = "ok" if eligible == len(urls) * len(VIEWPORTS) and runtime["status"] == "ok" else "partial" if any(not v.get("error") and v.get("evidence_quality", {}).get("html_eligible") for v in views) else "failed"
     report["runtime_summary"] = summarize_runtime_report(report)
     path = output_dir / f"rendered-{slugify(urls[0])}-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}.json"
     atomic_write_text(path, json.dumps(report, ensure_ascii=False, indent=2) + "\n")
