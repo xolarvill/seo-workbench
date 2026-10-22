@@ -121,3 +121,5 @@ Initialize a project:
 Load only the referenced files needed for the current step.
 
 - Technical issue identity uses explicit per-rule source/target fields; timings, sizes, group members and content hashes remain observations. New findings are candidates until fresh comparable evidence confirms them. Targeted rechecks never verify absence, must preserve concurrent operator decisions, and keep graph/target/sitemap/rendered rules pending without sufficient coverage. Legacy identity migration is preview-only until an explicit apply workflow is reviewed; retain every member decision/history and report missing target evidence rather than guessing.
+
+- Effective internal inlinks require an observed eligible HTML source distinct from the target (including final-URL aliases). Preserve error-template outlinks as observations, but do not use them to expand discovery or prove live incoming broken links. Apply the same rule on initial collection and continuation graph rebuilds; policy changes must invalidate cross-version absence verification.

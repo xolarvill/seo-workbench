@@ -37,7 +37,7 @@ from seo_workbench_tools.crawl_session import CrawlAccessError, CrawlDeferred, C
 SCHEMA_VERSION = "1.0"
 COLLECTOR_VERSION = "0.1.0"
 TECH_AUDIT_ROOT = "audits/tech-audit"
-CONFIG_FINGERPRINT_VERSION = "v4-stable-identity"
+CONFIG_FINGERPRINT_VERSION = "v5-eligible-inlinks"
 CONFIG_FINGERPRINT_FIELDS = (
     "user_agent",
     "include_subdomains",
@@ -801,9 +801,9 @@ async def _crawl_pages(
                 allowed_relation = relation == "same_host" or (relation == "subdomain" and config.include_subdomains)
                 outlink = {"url": normalized, "internal_external": internal_external, "host_relation": relation, "anchor_text": link.get("anchor_text", ""), "rel": link.get("rel", []), "excluded_reason": excluded or ("subdomain_disabled" if not allowed_relation and relation == "subdomain" else "external" if relation == "external" else "")}
                 page["outlinks"].append(outlink)
-                if relation != "external":
+                if relation != "external" and quality["html_eligible"] and normalized != normalize_url(final_url):
                     inlinks.setdefault(normalized, []).append({"source_url": url, "anchor_text": link.get("anchor_text", ""), "rel": " ".join(link.get("rel", []))})
-                if not excluded and allowed_relation and normalized not in enqueued and depth + 1 <= config.max_urls:
+                if quality["html_eligible"] and normalized != normalize_url(final_url) and not excluded and allowed_relation and normalized not in enqueued and depth + 1 <= config.max_urls:
                     enqueued.add(normalized)
                     frontier.append((normalized, depth + 1, "link"))
             pages[url] = page
@@ -819,7 +819,7 @@ async def _crawl_pages(
     if frontier and len(pages) >= config.max_urls:
         stopped_by_limit = True
     for url, page in pages.items():
-        page["inlinks"] = inlinks.get(url, [])
+        page["inlinks"] = _effective_inlinks({**page, "inlinks": inlinks.get(url, [])}, pages)
         page["inlink_count"] = len(page["inlinks"])
         page["outlink_count"] = len(page["outlinks"])
         page["anchor_text"] = sorted({item.get("anchor_text", "") for item in page["outlinks"] if item.get("anchor_text")})
@@ -962,6 +962,17 @@ def _page_quality(page: dict[str, Any]) -> dict[str, Any]:
     )
 
 
+def _effective_inlinks(page: dict[str, Any], pages_by_url: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+    """Incoming graph evidence needs a distinct, successfully parsed source."""
+    target = normalize_url(str(page.get("final_url") or page.get("url", "")))
+    result = []
+    for link in page.get("inlinks", []):
+        source = pages_by_url.get(normalize_url(str(link.get("source_url", ""))))
+        if source and _page_quality(source)["html_eligible"] and normalize_url(str(source.get("final_url") or source.get("url", ""))) != target:
+            result.append(link)
+    return result
+
+
 def _retryable_page(page: dict[str, Any]) -> bool:
     quality = _page_quality(page)
     return bool(page.get("next_eligible_at")) or (quality["status"] == "unavailable" and quality.get("reason") != "blocked_by_robots")
@@ -977,8 +988,9 @@ def evaluate_rules(pages: list[dict[str, Any]], sitemap_records: list[dict[str, 
         blocked = not _page_quality(page)["http_eligible"]
         if not blocked and status is not None and 400 <= int(status) < 500:
             issues.append(_issue("HTTP_4XX", page, {"status_code": status, "inlinks": page.get("inlinks", [])}))
-            if page.get("inlink_count", 0):
-                issues.append(_issue("BROKEN_INTERNAL_LINK", page, {"status_code": status, "source_urls": [item.get("source_url", "") for item in page.get("inlinks", [])]}))
+            valid_inlinks = _effective_inlinks(page, pages_by_url)
+            if valid_inlinks:
+                issues.append(_issue("BROKEN_INTERNAL_LINK", page, {"status_code": status, "source_urls": sorted({item["source_url"] for item in valid_inlinks})}))
         if not blocked and status is not None and 500 <= int(status) < 600:
             issues.append(_issue("HTTP_5XX", page, {"status_code": status, "redirect_chain": page.get("redirect_chain", [])}))
         if len(page.get("redirect_chain", [])) > 2:
@@ -2121,10 +2133,10 @@ def continue_tech_audit(project_dir: Path, config: CrawlConfig | None = None) ->
         inlinks: dict[str, list[dict[str, str]]] = {}
         for source in pages_by_url.values():
             for link in source.get("outlinks", []):
-                if link.get("host_relation") != "external":
+                if _page_quality(source)["html_eligible"] and link.get("host_relation") != "external":
                     inlinks.setdefault(str(link.get("url", "")), []).append({"source_url": source.get("url", ""), "anchor_text": link.get("anchor_text", ""), "rel": " ".join(link.get("rel", []))})
         for page in pages_by_url.values():
-            page["inlinks"] = inlinks.get(page.get("url", ""), [])
+            page["inlinks"] = _effective_inlinks({**page, "inlinks": inlinks.get(page.get("url", ""), [])}, pages_by_url)
             page["inlink_count"] = len(page["inlinks"])
         crawl["discovered_unique"] = len(pages_by_url) + len(crawl.get("remaining_queue", []))
         old_run_dir = state.safe_project_path(project_dir, str(snapshot.get("artifacts", {}).get("run_dir", ""))) if snapshot.get("artifacts", {}).get("run_dir") else None

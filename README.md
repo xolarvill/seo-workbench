@@ -155,6 +155,8 @@ This is the rule catalog the technical audit can detect. It is not a claim that 
 - `SLOW_RESPONSE` — Slow response
 - `LARGE_HTML` — Large HTML response
 
+Before resuming a broad audit, follow the [bounded crawl reliability pilot](docs/crawl-reliability-pilot.md) and preserve the full-audit pointer and operator ledger.
+
 Issue fingerprints use rule-specific source/target identities. Timings, sizes, content hashes, and duplicate-group members remain observations; they do not create new issue identities. First observations are candidates. Repeated fresh observations in a comparable audit confirm presence; priority alone never implies confirmation.
 
 `tech-audit issues confirm` performs a bounded page-local recheck (at most 50 candidates, one document plus one redirect per unique source URL, no retries, plus shared robots overhead). Graph, duplicate-group, target-page, sitemap, and rendered rules need a comparable audit with the required coverage. A failed or non-reproduced check never verifies a fix. The command preserves concurrent operator edits and saves per-run evidence. Subsequent calls skip candidates already confirmed against the same baseline.
