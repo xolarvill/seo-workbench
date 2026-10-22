@@ -772,6 +772,15 @@ def cmd_tech_audit_diff(args: argparse.Namespace) -> int:
 
 
 def cmd_tech_audit_issues(args: argparse.Namespace) -> int:
+    if args.issues_action in {"migration-preview", "confirm"}:
+        if args.issues_action == "migration-preview":
+            from seo_workbench.tech_issues import preview_identity_migration
+            payload = preview_identity_migration(args.project_dir)
+        else:
+            from seo_workbench.tech_confirmation import confirm_candidates
+            payload = confirm_candidates(args.project_dir, limit=args.limit)
+        print_json({"ok": True, **payload})
+        return 0
     if args.issues_action == "status":
         issue = update_issue_status(
             args.project_dir,
@@ -1710,6 +1719,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     tech_issues = tech_audit_sub.add_parser("issues")
     tech_issues_sub = tech_issues.add_subparsers(dest="issues_action", required=True)
+    tech_preview = tech_issues_sub.add_parser("migration-preview")
+    tech_preview.add_argument("--json", action="store_true", dest="json_output")
+    tech_preview.set_defaults(func=cmd_tech_audit_issues)
+    tech_confirm = tech_issues_sub.add_parser("confirm")
+    tech_confirm.add_argument("--limit", type=int, default=50)
+    tech_confirm.add_argument("--json", action="store_true", dest="json_output")
+    tech_confirm.set_defaults(func=cmd_tech_audit_issues)
     tech_issues_list = tech_issues_sub.add_parser("list")
     tech_issues_list.add_argument("--status", choices=("open", "planned", "fixed", "verified", "accepted"))
     tech_issues_list.add_argument("--owner")

@@ -176,7 +176,8 @@ def test_semantic_config_fingerprint_ignores_collection_parameters() -> None:
     assert _semantic_config_fingerprint(base) == _semantic_config_fingerprint(relaxed)
     strict = CrawlConfig(high_depth=5)
     assert _semantic_config_fingerprint(base) != _semantic_config_fingerprint(strict)
-    assert CONFIG_FINGERPRINT_VERSION == "v3-evidence-gates"
+    assert CONFIG_FINGERPRINT_VERSION == "v4-stable-identity"
+    assert _semantic_config_fingerprint(base) != _semantic_config_fingerprint(CrawlConfig(user_agent="Other UA"))
     assert page_template("https://example.com/en-ca/blogs/articles/guide") == "article"
     assert page_template("https://example.com/es/blogs/news") == "blog"
     assert page_type("https://example.com/es/custom/landing") == "other"
@@ -288,15 +289,10 @@ def test_duplicate_group_evidence_is_bounded_without_changing_fingerprints() -> 
     assert len(issues) == 25
     assert issues[0]["evidence"]["url_count"] == 25
     assert len(issues[0]["evidence"]["urls"]) == 10
-    legacy_evidence = {"title": "Shared title", "urls": [page["url"] for page in pages]}
-    expected = hashlib.sha256(
-        json.dumps(
-            {"rule_id": "DUPLICATE_TITLE", "url": pages[0]["url"], "evidence": legacy_evidence},
-            sort_keys=True,
-            ensure_ascii=False,
-        ).encode()
-    ).hexdigest()
-    assert issues[0]["fingerprint"] == expected
+    changed = [{**page, "title": "New shared title", "html_content_hash": "dynamic"} for page in pages[:12]]
+    repeated = [issue for issue in evaluate_rules(changed, [], [], CrawlConfig()) if issue["rule_id"] == "DUPLICATE_TITLE"]
+    assert repeated[0]["fingerprint"] == issues[0]["fingerprint"]
+    assert repeated[0]["observation_hash"] != issues[0]["observation_hash"]
 
 
 def test_technical_view_reuses_projection_until_source_state_changes(tmp_path: Path, monkeypatch) -> None:

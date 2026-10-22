@@ -109,11 +109,14 @@ def sync_issue_register(
                 created += 1
             else:
                 record.update(_latest(issue, run_id))
-                if record.get("status") == "verified":
+                if not any(event.get("event") == "observed" and event.get("run_id") == run_id for event in record.get("history", [])):
+                    record.setdefault("history", []).append({"event": "observed", "at": at, "run_id": run_id, "observation_hash": issue.get("observation_hash"), "confirmation_status": issue.get("confirmation_status", "not_observed")})
+                confirmed = issue.get("confirmation_status") != "candidate"
+                if record.get("status") == "verified" and confirmed:
                     _event(record, "reopened", at, run_id, previous_status="verified")
                     record["status"] = "open"
                     reopened += 1
-                elif record.get("status") == "fixed" and record.get("last_verification_run") != run_id:
+                elif record.get("status") == "fixed" and confirmed and record.get("last_verification_run") != run_id:
                     _event(record, "verification_failed", at, run_id, previous_status="fixed")
                     record["status"] = "open"
                     record["verification_status"] = "failed"
@@ -122,9 +125,13 @@ def sync_issue_register(
         if verification_allowed or verification_provisional:
             for fingerprint in baseline - set(current):
                 record = by_fingerprint.get(fingerprint)
-                if record is None or record.get("status") == "verified":
+                if record is None or record.get("status") in {"verified", "accepted"}:
                     continue
                 previous = str(record.get("status", ""))
+                if record.get("confirmation_status") == "candidate" and previous != "fixed":
+                    record["confirmation_reason"] = "not_reproduced_no_fix_claim"
+                    _event(record, "candidate_not_reproduced", at, run_id, previous_status=previous)
+                    continue
                 if verification_allowed:
                     record["status"] = "verified"
                     record["verification_status"] = "passed"
@@ -173,6 +180,7 @@ def _record(issue: dict[str, Any], run_id: str, at: str) -> dict[str, Any]:
 def _latest(issue: dict[str, Any], run_id: str) -> dict[str, Any]:
     priority = issue.get("priority") if isinstance(issue.get("priority"), dict) else {}
     return {
+        **{key: issue[key] for key in ("identity", "identity_version", "observation_hash", "evidence", "confirmation_status", "confirmation_reason") if key in issue},
         "rule_id": issue.get("rule_id", ""),
         "title": issue.get("title", ""),
         "severity": issue.get("severity", ""),
@@ -215,3 +223,55 @@ def _read(path: Path) -> list[dict[str, Any]]:
 
 def _write(path: Path, records: list[dict[str, Any]]) -> None:
     atomic_write_text(path, "".join(json.dumps(record, ensure_ascii=False) + "\n" for record in records))
+
+
+def preview_identity_migration(project_dir: Path) -> dict[str, Any]:
+    """Read-only mapping; never infer an operator decision or close old issues."""
+    import hashlib
+    from seo_workbench.tech_identity import identity_fingerprint, issue_identity
+    path = state.safe_project_path(project_dir, REGISTER_PATH)
+    # A single immutable snapshot supplies evidence missing from old ledgers.
+    # Index by old fingerprint, never by URL alone (which loses distinct targets).
+    with project_lock(project_dir):
+        records = _read(path)
+        register_bytes = path.read_bytes() if path.exists() else b""
+    observations: dict[str, dict[str, Any]] = {}
+    audit_root = state.safe_project_path(project_dir, "audits/tech-audit")
+    if audit_root.exists():
+        for artifact in sorted(audit_root.glob("runs/*/normalized/issues.jsonl")):
+            try:
+                artifact = state.safe_project_path(project_dir, artifact.relative_to(project_dir))
+            except ValueError:
+                continue
+            for issue in _read(artifact):
+                if issue.get("fingerprint"):
+                    observations[str(issue["fingerprint"])] = issue
+    groups: dict[str, dict[str, Any]] = {}
+    unresolved = []
+    for record in records:
+        old_fp = str(record.get("fingerprint", ""))
+        issue = {**record, **observations.get(old_fp, {})}
+        identity = issue_identity(issue)
+        if identity is None:
+            unresolved.append({"fingerprint": old_fp, "rule_id": record.get("rule_id"), "reason": "missing_identity_evidence"})
+            continue
+        fp = identity_fingerprint(identity)
+        group = groups.setdefault(fp, {"fingerprint": fp, "identity": identity, "members": []})
+        # Keep complete records, including every decision note and event. The
+        # preview makes no choice between conflicting owners/statuses/decisions.
+        group["members"].append(record)
+    for group in groups.values():
+        members = group["members"]
+        decisions = {(r.get("status", ""), r.get("owner", "")) for r in members}
+        group["requires_decision"] = len(decisions) > 1
+        group["legacy_fingerprints"] = [r.get("fingerprint") for r in members]
+    return {
+        "schema_version": "technical-identity-preview-v1", "read_only": True,
+        "register_sha256": hashlib.sha256(register_bytes).hexdigest(),
+        "record_count": len(records), "proposed_identity_count": len(groups),
+        "merge_groups": sum(len(g["members"]) > 1 for g in groups.values()),
+        "decision_conflicts": sum(g["requires_decision"] for g in groups.values()),
+        "unresolved_count": len(unresolved), "unresolved": unresolved,
+        "groups": sorted(groups.values(), key=lambda g: g["fingerprint"]),
+        "applied": False,
+    }

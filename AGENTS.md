@@ -119,3 +119,5 @@ Initialize a project:
 - `skills/technical-audit`
 
 Load only the referenced files needed for the current step.
+
+- Technical issue identity uses explicit per-rule source/target fields; timings, sizes, group members and content hashes remain observations. New findings are candidates until fresh comparable evidence confirms them. Targeted rechecks never verify absence, must preserve concurrent operator decisions, and keep graph/target/sitemap/rendered rules pending without sufficient coverage. Legacy identity migration is preview-only until an explicit apply workflow is reviewed; retain every member decision/history and report missing target evidence rather than guessing.

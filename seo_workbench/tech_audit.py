@@ -27,6 +27,7 @@ from seo_workbench import state
 from seo_workbench.locks import project_lock
 from seo_workbench.shopify_crawler import ShopifyCrawlerAccess, read_crawler_access
 from seo_workbench.tech_issues import load_issue_register, sync_issue_register
+from seo_workbench.tech_identity import IDENTITY_VERSION, identity_fingerprint, issue_identity
 from seo_workbench_tools.files import atomic_write_text
 from seo_workbench_tools.network_boundary import inspect_target, sensitive_query_key
 from seo_workbench_tools.response_quality import response_quality
@@ -36,8 +37,9 @@ from seo_workbench_tools.crawl_session import CrawlAccessError, CrawlDeferred, C
 SCHEMA_VERSION = "1.0"
 COLLECTOR_VERSION = "0.1.0"
 TECH_AUDIT_ROOT = "audits/tech-audit"
-CONFIG_FINGERPRINT_VERSION = "v3-evidence-gates"
+CONFIG_FINGERPRINT_VERSION = "v4-stable-identity"
 CONFIG_FINGERPRINT_FIELDS = (
+    "user_agent",
     "include_subdomains",
     "load_sitemap",
     "sitemap_urls",
@@ -162,6 +164,7 @@ TECH_AUDIT_VIEW_COLUMNS: dict[str, tuple[dict[str, Any], ...]] = {
         {"id": "priority_tier", "label": "Priority", "default": True},
         {"id": "priority", "label": "Score", "default": True},
         {"id": "workflow_status", "label": "Workflow status", "default": True},
+        {"id": "confirmation_status", "label": "Evidence confirmation", "default": True},
         {"id": "owner", "label": "Owner", "default": False},
         {"id": "gsc_clicks", "label": "GSC clicks", "default": True},
         {"id": "gsc_impressions", "label": "GSC impressions", "default": True},
@@ -677,7 +680,9 @@ async def _crawl(seed_url: str, config: CrawlConfig, output_root: Path, **kwargs
     session = CrawlSession(seed_url, access=access, delay=config.request_delay, allow_private=config.allow_private, user_agent=config.user_agent)
     with session.activate():
         try:
-            return await _crawl_pages(seed_url, config, output_root, **kwargs)
+            result = await _crawl_pages(seed_url, config, output_root, **kwargs)
+            result["fresh_urls"] = list(result["pages"])
+            return result
         finally:
             _jsonl_write(output_root / "raw/request-attempts.jsonl", session.attempts)
 
@@ -927,14 +932,13 @@ def _issue(
 ) -> dict[str, Any]:
     definition = RULES[rule_id]
     url = str((page or {}).get("url", ""))
-    fingerprint = hashlib.sha256(
-        json.dumps(
-            {"rule_id": rule_id, "url": url, "evidence": fingerprint_evidence or evidence},
-            sort_keys=True,
-            ensure_ascii=False,
-        ).encode()
-    ).hexdigest()
-    return {"rule_id": rule_id, "title": definition.title, "description": definition.description, "severity": severity or definition.default_severity, "category": definition.category, "page_id": (page or {}).get("page_id", ""), "url": url, "template": page_template(url) if url else "site", "evidence": evidence, "fingerprint": fingerprint, "remediation_guidance": definition.remediation_guidance}
+    identity = issue_identity({"rule_id": rule_id, "url": url, "evidence": evidence})
+    if identity is None:
+        raise ValueError(f"missing identity fields for {rule_id}")
+    fingerprint = identity_fingerprint(identity)
+    observation = fingerprint_evidence if fingerprint_evidence is not None else evidence
+    observation_hash = hashlib.sha256(json.dumps(observation, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+    return {"rule_id": rule_id, "title": definition.title, "description": definition.description, "severity": severity or definition.default_severity, "category": definition.category, "page_id": (page or {}).get("page_id", ""), "url": url, "template": page_template(url) if url else "site", "evidence": evidence, "identity": identity, "identity_version": IDENTITY_VERSION, "observation_hash": observation_hash, "confirmation_status": "candidate", "fingerprint": fingerprint, "remediation_guidance": definition.remediation_guidance}
 
 
 def _group_issues(
@@ -1128,6 +1132,8 @@ def _issue_summary(issue: dict[str, Any]) -> dict[str, Any]:
             "url",
             "priority",
             "remediation_guidance",
+            "confirmation_status",
+            "confirmation_reason",
         )
     }
 
@@ -1564,6 +1570,8 @@ def _issue_view_row(
     performance = _search_performance(page or {})
     historical = priority.get("historical_change") if isinstance(priority.get("historical_change"), dict) else {}
     row = {
+        "confirmation_status": (workflow or {}).get("confirmation_status", issue.get("confirmation_status", "not_observed")),
+        "confirmation_reason": (workflow or {}).get("confirmation_reason", issue.get("confirmation_reason", "")),
         "row_key": issue.get("fingerprint") or f"{issue.get('rule_id', '')}:{issue.get('url', '')}",
         "fingerprint": issue.get("fingerprint", ""),
         "rule_id": issue.get("rule_id", ""),
@@ -1807,10 +1815,13 @@ def _issue_action_groups(issues: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "priority": issue.get("priority", {}),
                 "remediation_guidance": issue.get("remediation_guidance", ""),
                 "count": 0,
+                "candidate_count": 0,
+                "confirmed_count": 0,
                 "urls": [],
             },
         )
         action["count"] += 1
+        action["confirmed_count" if issue.get("confirmation_status") == "confirmed" else "candidate_count"] += 1
         url = str(issue.get("url", ""))
         if url and url not in action["urls"] and len(action["urls"]) < MAX_GROUP_EVIDENCE_URLS:
             action["urls"].append(url)
@@ -1822,9 +1833,10 @@ def _write_issue_queue(project_dir: Path, generated_at: datetime, actions: list[
     lines = ["# Technical SEO Action Queue", "", f"Generated: {generated_at.isoformat()}", "", "Unique fingerprints are grouped by rule and page template; priority combines technical severity, GSC page performance, historical click change, and a URL business heuristic.", ""]
     if not actions:
         lines.append("- none")
+    lines.append("Candidate findings require another comparable observation; priority is unchanged and does not imply confirmation.")
     for action in actions[:50]:
         priority = action.get("priority", {})
-        lines.extend([f"- [{priority.get('tier', 'low')}/{priority.get('score', 0)}] {action.get('rule_id')} · {action.get('template')} ({action.get('count')} issue(s))", f"  - {action.get('title')}: {action.get('remediation_guidance')}"])
+        lines.extend([f"- [{priority.get('tier', 'low')}/{priority.get('score', 0)}] {action.get('rule_id')} · {action.get('template')} ({action.get('count')} issue(s), {action.get('candidate_count', 0)} candidate(s))", f"  - {action.get('title')}: {action.get('remediation_guidance')}"])
         if action.get("urls"):
             lines.append(f"  - Examples: {', '.join(action['urls'][:3])}")
     atomic_write_text(path, "\n".join(lines) + "\n")
@@ -1874,7 +1886,25 @@ def _finalize_tech_audit_run(
         for record in sitemap_records
     )
     coverage_complete = not (crawl["errors"] or crawl["stopped_by_limit"] or unavailable or site_unavailable or crawl.get("remaining_queue") or crawl.get("retry_queue"))
+    config_fingerprint = _semantic_config_fingerprint(config)
+    fingerprint_matches = (
+        bool(baseline_config_fingerprint)
+        and baseline_config_fingerprint == config_fingerprint
+        and baseline_config_fingerprint_version == CONFIG_FINGERPRINT_VERSION
+    )
     issues = prioritize_issues(evaluate_rules(pages, sitemap_records, sitemap_entries, config, coverage_complete=coverage_complete), current_gsc, previous_gsc)
+    previous_identities = {item.get("fingerprint") for item in baseline_issues if item.get("identity_version") == IDENTITY_VERSION and item.get("observed_run") and item.get("observed_run") != run_id}
+    fresh_urls = set(crawl.get("fresh_urls", []))
+    for issue in issues:
+        required_urls = {issue["url"]} if issue["url"] else set()
+        if issue["rule_id"] in {"CANONICAL_TO_NON_200", "HREFLANG_MISSING_RETURN_LINK", "HREFLANG_TO_NON_200"}:
+            required_urls.update(value for key, value in issue["identity"].items() if key in {"declared_canonical", "target_url", "href"})
+        if issue["rule_id"].startswith("DUPLICATE_"):
+            required_urls.update(page["url"] for page in pages)
+        freshly_observed = required_urls <= fresh_urls if required_urls else not continuation_of
+        issue["observed_run"] = run_id if freshly_observed else ""
+        issue["confirmation_status"] = "confirmed" if fingerprint_matches and freshly_observed and issue["fingerprint"] in previous_identities else "candidate"
+        issue["confirmation_reason"] = "repeated_in_comparable_audit" if issue["confirmation_status"] == "confirmed" else "requires_comparable_observation"
     issue_actions = _issue_action_groups(issues)
     previous_fingerprints = {item.get("fingerprint") for item in baseline_issues}
     new_high = [item for item in issues if item.get("fingerprint") not in previous_fingerprints and item.get("priority", {}).get("tier") in {"critical", "high"}]
@@ -1899,12 +1929,6 @@ def _finalize_tech_audit_run(
     rate_limited = sum(page.get("crawl_status") == "rate_limited" for page in pages)
     blocked_by_waf = sum(page.get("crawl_status") == "blocked_by_waf" for page in pages)
     collection_status = "ok" if coverage_complete else "partial"
-    config_fingerprint = _semantic_config_fingerprint(config)
-    fingerprint_matches = (
-        bool(baseline_config_fingerprint)
-        and baseline_config_fingerprint == config_fingerprint
-        and baseline_config_fingerprint_version == CONFIG_FINGERPRINT_VERSION
-    )
     issue_register, issue_register_path = sync_issue_register(
         project_dir,
         issues,

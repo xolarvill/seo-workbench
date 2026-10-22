@@ -155,6 +155,12 @@ This is the rule catalog the technical audit can detect. It is not a claim that 
 - `SLOW_RESPONSE` — Slow response
 - `LARGE_HTML` — Large HTML response
 
+Issue fingerprints use rule-specific source/target identities. Timings, sizes, content hashes, and duplicate-group members remain observations; they do not create new issue identities. First observations are candidates. Repeated fresh observations in a comparable audit confirm presence; priority alone never implies confirmation.
+
+`tech-audit issues confirm` performs a bounded page-local recheck (at most 50 candidates, one document plus one redirect per unique source URL, no retries, plus shared robots overhead). Graph, duplicate-group, target-page, sitemap, and rendered rules need a comparable audit with the required coverage. A failed or non-reproduced check never verifies a fix. The command preserves concurrent operator edits and saves per-run evidence. Subsequent calls skip candidates already confirmed against the same baseline.
+
+`tech-audit issues migration-preview` is read-only: it reports proposed identities, all legacy members and decision histories, conflicts, and missing identity evidence. It does not apply merges, close issues, or infer missing target URLs. Existing ledgers are not automatically migrated; preserve a full backup and review this preview before any later migration. Older config/parser versions and different user agents cannot verify absence under the new identity policy. Accepted decisions remain accepted.
+
 </details>
 
 
@@ -182,6 +188,8 @@ Click below to open dropdown for details
 ./seo --project my-site tech-audit recrawl --url https://example.com/missing --json
 ./seo --project my-site tech-audit diff --json
 ./seo --project my-site tech-audit issues list --status open --json
+./seo --project my-site tech-audit issues confirm --limit 50 --json
+./seo --project my-site tech-audit issues migration-preview --json
 ./seo --project my-site tech-audit issues status <fingerprint> fixed --owner seo --note "deployed" --json
 
 # Google evidence, after configuration
