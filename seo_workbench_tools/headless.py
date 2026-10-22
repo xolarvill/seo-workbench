@@ -8,11 +8,10 @@ COMPARE_FIELDS = ["title", "meta_description", "canonical", "robots_meta"]
 
 def _first_rendered_view(page: dict[str, Any]) -> dict[str, Any]:
     viewports = page.get("viewports", {})
-    for key in ("desktop_1920x1080", "mobile_375x812", "tablet_768x1024"):
-        data = viewports.get(key, {})
-        if data and not data.get("error") and data.get("comparison_eligible", True):
-            return data
-    return next((data for data in viewports.values() if not data.get("error") and data.get("comparison_eligible", True)), {})
+    data = viewports.get("desktop_1920x1080", {})
+    if data and not data.get("error") and data.get("comparison_eligible", True) and data.get("evidence_quality", {}).get("html_eligible", True):
+        return data
+    return {}
 
 
 def _schema_types(page: dict[str, Any]) -> list[str]:
@@ -68,6 +67,18 @@ def _profile_navigation(page: dict[str, Any] | None) -> dict[str, Any]:
 
 
 def compare_page(raw: dict[str, Any], rendered: dict[str, Any] | None) -> dict[str, Any]:
+    from urllib.parse import urlsplit
+    reason = "not_collected" if not rendered else ""
+    if rendered:
+        def route(value):
+            parsed = urlsplit(value)
+            return (parsed.scheme.lower(), parsed.netloc.lower(), parsed.path or "/", parsed.query)
+        if not rendered.get("comparison_eligible", True) or rendered.get("evidence_quality", {}).get("html_eligible") is False:
+            reason = "rendered_evidence_unavailable"
+        elif rendered.get("url") and route(raw.get("final_url") or raw.get("url", "")) != route(rendered["url"]):
+            reason = "different_final_url"
+        if reason:
+            rendered = None
     diffs = []
     raw_schema_types = _schema_types(raw)
     rendered_schema_types = _schema_types(rendered or {})
@@ -106,6 +117,7 @@ def compare_page(raw: dict[str, Any], rendered: dict[str, Any] | None) -> dict[s
         "url": raw.get("url", ""),
         "final_url": raw.get("final_url", ""),
         "rendered_available": bool(rendered),
+        "comparison_status": "comparable" if rendered else reason,
         "diffs": diffs,
         "raw": {
             "title": raw.get("title", ""),

@@ -176,7 +176,7 @@ def test_semantic_config_fingerprint_ignores_collection_parameters() -> None:
     assert _semantic_config_fingerprint(base) == _semantic_config_fingerprint(relaxed)
     strict = CrawlConfig(high_depth=5)
     assert _semantic_config_fingerprint(base) != _semantic_config_fingerprint(strict)
-    assert CONFIG_FINGERPRINT_VERSION == "v5-eligible-inlinks"
+    assert CONFIG_FINGERPRINT_VERSION == "v6-probe-context"
     assert _semantic_config_fingerprint(base) != _semantic_config_fingerprint(CrawlConfig(user_agent="Other UA"))
     assert page_template("https://example.com/en-ca/blogs/articles/guide") == "article"
     assert page_template("https://example.com/es/blogs/news") == "blog"

@@ -37,7 +37,7 @@ from seo_workbench_tools.crawl_session import CrawlAccessError, CrawlDeferred, C
 SCHEMA_VERSION = "1.0"
 COLLECTOR_VERSION = "0.1.0"
 TECH_AUDIT_ROOT = "audits/tech-audit"
-CONFIG_FINGERPRINT_VERSION = "v5-eligible-inlinks"
+CONFIG_FINGERPRINT_VERSION = "v6-probe-context"
 CONFIG_FINGERPRINT_FIELDS = (
     "user_agent",
     "include_subdomains",
@@ -2058,13 +2058,16 @@ def run_tech_audit(project_dir: Path, config: CrawlConfig) -> tuple[dict[str, An
                 for rendered_page in rendered.get("pages", []):
                     view = rendered_page.get("viewports", {}).get("desktop_1920x1080", {})
                     page = next((item for item in pages if item.get("url") == rendered_page.get("url")), None)
-                    if not page or view.get("error"):
+                    from seo_workbench_tools.headless import compare_page
+                    if not page or view.get("error") or not _page_quality(page)["html_eligible"] or not compare_page(page, view)["rendered_available"]:
                         continue
                     page["rendered"] = {"profile": "desktop_1920x1080", "url": view.get("url", ""), "title": view.get("title", ""), "meta_description": view.get("meta_description", ""), "meta_keywords": view.get("meta_keywords", ""), "canonical": view.get("canonical", ""), "meta_robots": view.get("robots_meta", ""), "h1": view.get("h1", []), "h2": view.get("h2", [])}
                     for key in ("title", "meta_description", "meta_keywords", "canonical", "meta_robots", "h1", "h2"):
                         if page.get(key) in ("", [] ) and page["rendered"].get(key) not in ("", []):
                             page[key] = page["rendered"][key]
-                status["rendered"] = {"status": "ok", "pages": len(rendered.get("pages", [])), "path": rendered.get("output_path", "")}
+                if rendered.get("collection_status", "ok") != "ok":
+                    crawl["errors"].append({"scope": "rendered", "error": "rendered collection is incomplete"})
+                status["rendered"] = {"status": rendered.get("collection_status", "ok"), "pages": len(rendered.get("pages", [])), "path": rendered.get("output_path", "")}
             except (ImportError, RuntimeError) as exc:
                 crawl["errors"].append({"scope": "rendered", "error": str(exc)})
                 status["rendered"] = {"status": "not_available", "error": str(exc)}

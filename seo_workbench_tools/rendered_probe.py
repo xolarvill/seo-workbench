@@ -12,6 +12,7 @@ from typing import Any
 from seo_workbench_tools.browser_runtime import browser_executable
 from seo_workbench_tools.files import atomic_output_path, atomic_write_text
 from seo_workbench_tools.runtime_signals import detect_tags, detect_technologies
+from seo_workbench_tools.response_quality import response_quality
 from seo_workbench_tools.crawl_session import CrawlDeferred, active_session
 
 
@@ -326,7 +327,10 @@ def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> 
                         data["screenshots"] = {"full": str(full_path), "fold": str(fold_path)}
                         data["console_errors"] = console_errors[:20]
                         data["request_warnings"] = route_failures
-                        data["comparison_eligible"] = not bool(route_failures)
+                        quality = response_quality(navigation.status if navigation else None, navigation.headers.get("content-type", "") if navigation else "", body=rendered_html.encode("utf-8"), headers=navigation.headers if navigation else {})
+                        data["status"] = navigation.status if navigation else None
+                        data["evidence_quality"] = quality
+                        data["comparison_eligible"] = quality["html_eligible"] and not bool(route_failures)
                         page_report["viewports"][viewport_name] = data
                     except Exception as exc:
                         page_report["viewports"][viewport_name] = {"error": str(exc), "request_errors": route_failures}
@@ -337,6 +341,9 @@ def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> 
                     break
         finally:
             browser.close()
+    views = [view for page in report["pages"] for view in page["viewports"].values()]
+    eligible = sum(not view.get("error") and view.get("comparison_eligible", False) for view in views)
+    report["collection_status"] = "ok" if eligible == len(urls) * len(VIEWPORTS) else "partial" if any(not v.get("error") and v.get("evidence_quality", {}).get("html_eligible") for v in views) else "failed"
     report["runtime_summary"] = summarize_runtime_report(report)
     path = output_dir / f"rendered-{slugify(urls[0])}-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}.json"
     atomic_write_text(path, json.dumps(report, ensure_ascii=False, indent=2) + "\n")

@@ -196,7 +196,7 @@ def discover_page_urls(
         candidates.extend(page.get("link_summary", {}).get("sample_internal", []))
     for page in (rendered or {}).get("pages", []):
         for view in page.get("viewports", {}).values():
-            if not view.get("error"):
+            if not view.get("error") and view.get("comparison_eligible", True):
                 candidates.extend(view.get("link_summary", {}).get("sample_internal", []))
 
     normalized = set()
@@ -335,7 +335,10 @@ def collect(
 
             rendered_report = capture([url, *extra_pages], rendered_output_dir, timeout=max(timeout, 30), wait_ms=2500)
             bundle["rendered"] = rendered_report
-            bundle["source_confidence"]["rendered_dom"] = 0.85
+            rendered_status = rendered_report.get("collection_status", "ok")
+            bundle["source_confidence"]["rendered_dom"] = 0.85 if rendered_status == "ok" else 0.0
+            if rendered_status != "ok":
+                errors.append({"scope": "rendered", "url": url, "error": "rendered collection is incomplete", "collection_status": rendered_status})
         except Exception as exc:
             errors.append({"scope": "rendered", "url": url, "error": str(exc)})
             warnings.append({"scope": "rendered", "message": "rendered evidence unavailable; install the rendered extra and Chromium"})

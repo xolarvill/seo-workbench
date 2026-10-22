@@ -290,4 +290,4 @@ def test_partial_browser_view_cannot_prove_raw_rendered_mismatch():
     partial = {'title': '', 'comparison_eligible': False}
     assert _first_rendered_view({'viewports': {'desktop_1920x1080': partial, 'other': partial}}) == {}
     complete = {'title': 'Observed', 'comparison_eligible': True}
-    assert _first_rendered_view({'viewports': {'desktop_1920x1080': partial, 'mobile_375x812': complete}}) == complete
+    assert _first_rendered_view({'viewports': {'desktop_1920x1080': partial, 'mobile_375x812': complete}}) == {}
