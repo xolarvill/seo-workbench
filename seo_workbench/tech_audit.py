@@ -14,7 +14,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass, replace
 from datetime import datetime, timedelta, timezone
 from email.message import Message
-from email.utils import parsedate_to_datetime
+from http.client import HTTPException
 from functools import lru_cache
 from html.parser import HTMLParser
 from pathlib import Path
@@ -30,6 +30,7 @@ from seo_workbench.tech_issues import load_issue_register, sync_issue_register
 from seo_workbench_tools.files import atomic_write_text
 from seo_workbench_tools.network_boundary import inspect_target, sensitive_query_key
 from seo_workbench_tools.response_quality import response_quality
+from seo_workbench_tools.crawl_session import CrawlAccessError, CrawlDeferred, CrawlSession, active_session, retry_after_seconds
 
 
 SCHEMA_VERSION = "1.0"
@@ -433,18 +434,7 @@ def _headers(message: Message) -> dict[str, str]:
 
 
 def _retry_after_seconds(headers: dict[str, str]) -> float | None:
-    value = headers.get("retry-after", "").strip()
-    if not value:
-        return None
-    if value.isdigit():
-        return float(value)
-    try:
-        retry_at = parsedate_to_datetime(value)
-    except (TypeError, ValueError, OverflowError):
-        return None
-    if retry_at.tzinfo is None:
-        retry_at = retry_at.replace(tzinfo=timezone.utc)
-    return max(0.0, (retry_at - datetime.now(timezone.utc)).total_seconds())
+    return retry_after_seconds(headers)
 
 
 def _classify_response(status: int | None, headers: dict[str, str], body: bytes) -> str:
@@ -467,11 +457,13 @@ def _request_once(url: str, config: CrawlConfig, crawler_access: ShopifyCrawlerA
         "User-Agent": config.user_agent,
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.9",
-        "Cache-Control": "no-cache",
-        "Pragma": "no-cache",
         "Upgrade-Insecure-Requests": "1",
     }
-    if crawler_access:
+    session = active_session()
+    if session:
+        session.before_request(url)
+        headers.update(session.headers_for(url, user_agent=config.user_agent))
+    elif crawler_access:
         headers.update(crawler_access.headers_for(url))
     request = Request(
         url,
@@ -481,14 +473,20 @@ def _request_once(url: str, config: CrawlConfig, crawler_access: ShopifyCrawlerA
         with _OPENER.open(request, timeout=config.timeout) as response:
             body = response.read()
             headers = _headers(response.headers)
+            if session:
+                session.observe_response(url, int(response.status), headers, signed=bool(crawler_access and crawler_access.headers_for(url)))
             elapsed_ms = round((time.perf_counter() - started) * 1000)
             return {"status": int(response.status), "url": response.geturl(), "headers": headers, "body": body, "elapsed_ms": elapsed_ms}
     except HTTPError as exc:
         body = exc.read()
         headers = _headers(exc.headers)
+        if session:
+            session.observe_response(url, int(exc.code), headers, signed=bool(crawler_access and crawler_access.headers_for(url)))
         elapsed_ms = round((time.perf_counter() - started) * 1000)
         return {"status": int(exc.code), "url": exc.geturl(), "headers": headers, "body": body, "elapsed_ms": elapsed_ms}
-    except (OSError, URLError) as exc:
+    except (OSError, URLError, HTTPException) as exc:
+        if session:
+            session.observe_response(url, None, {}, signed="Signature" in headers)
         raise RuntimeError(f"fetch failed: {exc}") from exc
 
 
@@ -501,25 +499,36 @@ async def _fetch(url: str, seed_url: str, config: CrawlConfig, crawler_access: S
         response: dict[str, Any] | None = None
         for retry in range(config.retries + 1):
             attempts += 1
-            if config.request_delay:
+            if config.request_delay and not active_session():
                 await asyncio.sleep(config.request_delay)
             try:
                 response = await asyncio.to_thread(_request_once, chain[-1], config, crawler_access)
+            except CrawlAccessError as exc:
+                return {"requested_url": url, "status": None, "final_url": chain[-1], "redirect_chain": chain, "redirect_loop": False, "attempts": attempts, "errors": [str(exc)], "access_required": True}
+            except CrawlDeferred as exc:
+                return {"requested_url": url, "status": None, "final_url": chain[-1], "redirect_chain": chain, "redirect_loop": False, "attempts": attempts, "errors": [str(exc)], "next_eligible_at": exc.until}
             except RuntimeError as exc:
                 errors.append(str(exc))
                 if retry >= config.retries:
                     return {"requested_url": url, "status": None, "final_url": chain[-1], "redirect_chain": chain, "redirect_loop": False, "attempts": attempts, "errors": errors}
                 await asyncio.sleep(config.backoff * (2**retry))
                 continue
+            if response["status"] == 429 and active_session():
+                response["next_eligible_at"] = active_session().next_eligible_at(chain[-1])
+                break
             if response["status"] not in RETRYABLE_STATUS or retry >= config.retries:
                 break
-            await asyncio.sleep(max(config.backoff * (2**retry), _retry_after_seconds(response["headers"]) or 0.0))
+            wait = max(config.backoff * (2**retry), _retry_after_seconds(response["headers"]) or 0.0)
+            if wait > 5:
+                response["next_eligible_at"] = time.time() + wait
+                break
+            await asyncio.sleep(wait)
         if response is None:
             return {"requested_url": url, "status": None, "final_url": chain[-1], "redirect_chain": chain, "redirect_loop": False, "attempts": attempts, "errors": errors}
         status = int(response["status"])
         location = response["headers"].get("location", "")
         if status not in range(300, 400) or not location:
-            return {"requested_url": url, "final_url": chain[-1], "redirect_chain": chain, "redirect_loop": False, "attempts": attempts, "errors": errors, **response}
+            return {"requested_url": url, "final_url": chain[-1], "redirect_chain": chain, "redirect_loop": False, "attempts": attempts, "errors": [], "recovered_errors": errors, **response}
         next_url = normalize_url(location, chain[-1])
         if not next_url:
             return {"requested_url": url, "final_url": chain[-1], "redirect_chain": chain, "redirect_loop": False, "attempts": attempts, "errors": [*errors, "redirect location is not HTTP(S)"], **response}
@@ -663,7 +672,17 @@ def _page_error_page(url: str, depth: int, source: str, reason: str) -> dict[str
     }
 
 
-async def _crawl(
+async def _crawl(seed_url: str, config: CrawlConfig, output_root: Path, **kwargs: Any) -> dict[str, Any]:
+    access = kwargs.get("crawler_access")
+    session = CrawlSession(seed_url, access=access, delay=config.request_delay, allow_private=config.allow_private, user_agent=config.user_agent)
+    with session.activate():
+        try:
+            return await _crawl_pages(seed_url, config, output_root, **kwargs)
+        finally:
+            _jsonl_write(output_root / "raw/request-attempts.jsonl", session.attempts)
+
+
+async def _crawl_pages(
     seed_url: str,
     config: CrawlConfig,
     output_root: Path,
@@ -672,6 +691,7 @@ async def _crawl(
     status_path: Path | None = None,
     run_status: dict[str, Any] | None = None,
     crawler_access: ShopifyCrawlerAccess | None = None,
+    start_queue: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     def update_progress(**values: Any) -> None:
         if status_path is None or run_status is None:
@@ -691,7 +711,7 @@ async def _crawl(
     sitemap_urls = {entry["url"] for entry in sitemap_entries}
     pages: dict[str, dict[str, Any]] = {}
     inlinks: dict[str, list[dict[str, str]]] = {}
-    initial_frontier = (
+    initial_frontier = [(item["url"], int(item.get("crawl_depth", 0)), str(item.get("crawl_source", "manual"))) for item in start_queue] if start_queue is not None else (
         [(url, 0, "manual") for url in start_urls]
         if start_urls is not None
         else [(seed_url, 0, "seed"), *((entry["url"], 0, "sitemap") for entry in sitemap_entries if entry["url"] != seed_url)]
@@ -762,6 +782,10 @@ async def _crawl(
                 "redirect_chain": result.get("redirect_chain", [url]), "redirect_loop": bool(result.get("redirect_loop")),
                 "redirect_to_external": bool(result.get("redirect_to_external")), "crawl_sources": [source], "crawl_status": crawl_status,
                 "error": "; ".join(result.get("errors", [])), "_raw_body": body, "_raw_headers": headers,
+                "next_eligible_at": result.get("next_eligible_at", 0),
+                "access_required": result.get("access_required", False),
+                "attempts": result.get("attempts", 1),
+                "recovered_errors": result.get("recovered_errors", []),
             }
             for link in parsed["outlinks"]:
                 normalized = normalize_url(link.get("href", ""), final_url)
@@ -783,6 +807,8 @@ async def _crawl(
             if blocked:
                 errors.append({"scope": "page", "url": url, "status": result.get("status"), "kind": crawl_status, "retry_after_seconds": _retry_after_seconds(headers)})
         update_progress(processed_urls=len(pages), discovered_urls=len(enqueued), queued_remaining=len(frontier), error_count=len(errors))
+        if any(page.get("crawl_status") == "rate_limited" or page.get("next_eligible_at") or page.get("access_required") for page in pages.values()):
+            break
         if len(pages) >= config.max_urls and frontier:
             stopped_by_limit = True
     if frontier and len(pages) >= config.max_urls:
@@ -805,9 +831,17 @@ async def _crawl(
     raw_site = {"robots": {"url": robots_url, "status_code": robots_result.get("status"), "final_url": robots_result.get("final_url", robots_url), "headers": robots_result.get("headers", {}), "text": robots_text, "parsed": robots_data}, "sitemaps": sitemap_records}
     atomic_write_text(output_root / "raw/site.json", json.dumps(raw_site, ensure_ascii=False, indent=2) + "\n")
     remaining_queue = [{"url": url, "crawl_depth": depth, "crawl_source": source} for url, depth, source in frontier]
+    retry_queue = [
+        {"url": page["url"], "crawl_depth": page.get("crawl_depth", 0), "crawl_source": "retry",
+         "reason": page.get("crawl_status"), "attempt_count": page.get("attempts", 1),
+         "next_eligible_at": page.get("next_eligible_at") or time.time() + config.backoff}
+        for page in pages.values()
+        if _retryable_page(page)
+    ]
     _jsonl_write(output_root / "normalized/remaining-queue.jsonl", remaining_queue)
+    _jsonl_write(output_root / "normalized/retry-queue.jsonl", retry_queue)
     update_progress(phase="processing", processed_urls=len(pages), discovered_urls=len(enqueued), queued_remaining=len(remaining_queue), error_count=len(errors))
-    return {"pages": pages, "sitemap_records": sitemap_records, "sitemap_entries": sitemap_entries, "sitemap_urls": sitemap_urls, "robots": robots_data, "errors": errors, "stopped_by_limit": stopped_by_limit, "discovered_unique": len(enqueued), "queued_remaining": len(remaining_queue), "remaining_queue": remaining_queue}
+    return {"pages": pages, "sitemap_records": sitemap_records, "sitemap_entries": sitemap_entries, "sitemap_urls": sitemap_urls, "robots": robots_data, "errors": errors, "stopped_by_limit": stopped_by_limit, "discovered_unique": len(enqueued), "queued_remaining": len(remaining_queue), "remaining_queue": remaining_queue, "retry_queue": retry_queue}
 
 
 def _group_values(pages: Iterable[dict[str, Any]], field: str) -> dict[str, list[dict[str, Any]]]:
@@ -922,6 +956,11 @@ def _page_quality(page: dict[str, Any]) -> dict[str, Any]:
     return page.get("evidence_quality") or response_quality(
         page.get("status_code"), page.get("content_type", ""), crawl_status=page.get("crawl_status", ""),
     )
+
+
+def _retryable_page(page: dict[str, Any]) -> bool:
+    quality = _page_quality(page)
+    return bool(page.get("next_eligible_at")) or (quality["status"] == "unavailable" and quality.get("reason") != "blocked_by_robots")
 
 
 def evaluate_rules(pages: list[dict[str, Any]], sitemap_records: list[dict[str, Any]], sitemap_entries: list[dict[str, str]], config: CrawlConfig, *, coverage_complete: bool = True) -> list[dict[str, Any]]:
@@ -1353,13 +1392,19 @@ def load_remaining_crawl_queue(project_dir: Path, snapshot_path: Path | None = N
     if not snapshot_path.is_file():
         return [], False
     snapshot = load_tech_snapshot(project_dir, snapshot_path)
+    retry_ref = snapshot.get("artifacts", {}).get("retry_queue_path", "")
+    retry_queue = _jsonl_read(state.safe_project_path(project_dir, retry_ref)) if retry_ref and state.safe_project_path(project_dir, retry_ref).is_file() else [
+        {"url": page["url"], "crawl_depth": page.get("crawl_depth", 0), "crawl_source": "retry", "next_eligible_at": 0}
+        for page in load_tech_inventory(project_dir, snapshot_path)
+        if _retryable_page(page)
+    ]
     queue_ref = snapshot.get("artifacts", {}).get("remaining_queue_path", "")
     if queue_ref:
         queue_path = state.safe_project_path(project_dir, queue_ref)
         if queue_path.is_file():
-            return _jsonl_read(queue_path), False
+            return list({item["url"]: item for item in [*_jsonl_read(queue_path), *retry_queue]}.values()), False
     if not snapshot.get("summary", {}).get("stopped_by_limit"):
-        return [], False
+        return retry_queue, bool(retry_queue)
     cache_key = (str(snapshot_path.resolve()), snapshot_path.stat().st_mtime_ns)
     if cache_key in _REMAINING_QUEUE_CACHE:
         return _REMAINING_QUEUE_CACHE[cache_key]
@@ -1389,6 +1434,7 @@ def load_remaining_crawl_queue(project_dir: Path, snapshot_path: Path | None = N
                 continue
             if relation == "same_host" or (relation == "subdomain" and include_subdomains):
                 recovered[url] = {"url": url, "crawl_depth": depth, "crawl_source": "recovered-link"}
+    recovered.update({item["url"]: item for item in retry_queue})
     result = (list(recovered.values()), True)
     if len(_REMAINING_QUEUE_CACHE) >= 32:
         _REMAINING_QUEUE_CACHE.pop(next(iter(_REMAINING_QUEUE_CACHE)))
@@ -1827,7 +1873,7 @@ def _finalize_tech_audit_run(
         not _page_quality(record)["http_eligible"] or record.get("status_code") != 200 or record.get("type") not in {"sitemapindex", "urlset"} or record.get("entries_truncated") or record.get("sitemaps_truncated")
         for record in sitemap_records
     )
-    coverage_complete = not (crawl["errors"] or crawl["stopped_by_limit"] or unavailable or site_unavailable or crawl.get("remaining_queue"))
+    coverage_complete = not (crawl["errors"] or crawl["stopped_by_limit"] or unavailable or site_unavailable or crawl.get("remaining_queue") or crawl.get("retry_queue"))
     issues = prioritize_issues(evaluate_rules(pages, sitemap_records, sitemap_entries, config, coverage_complete=coverage_complete), current_gsc, previous_gsc)
     issue_actions = _issue_action_groups(issues)
     previous_fingerprints = {item.get("fingerprint") for item in baseline_issues}
@@ -1844,6 +1890,12 @@ def _finalize_tech_audit_run(
     atomic_write_text(normalized_dir / "gsc-page-metrics.json", json.dumps(gsc_meta, ensure_ascii=False, indent=2) + "\n")
     queue_path = _write_issue_queue(project_dir, generated_at, new_high_actions)
     remaining_queue = crawl.get("remaining_queue", [])
+    retry_by_url = {item["url"]: item for item in crawl.get("retry_queue", [])}
+    for page in pages:
+        if _retryable_page(page):
+            retry_by_url.setdefault(page["url"], {"url": page["url"], "crawl_depth": page.get("crawl_depth", 0), "crawl_source": "retry", "reason": page.get("crawl_status"), "next_eligible_at": page.get("next_eligible_at", 0), "attempt_count": page.get("attempts", 1)})
+    retry_queue = list(retry_by_url.values())
+    _jsonl_write(normalized_dir / "retry-queue.jsonl", retry_queue)
     rate_limited = sum(page.get("crawl_status") == "rate_limited" for page in pages)
     blocked_by_waf = sum(page.get("crawl_status") == "blocked_by_waf" for page in pages)
     collection_status = "ok" if coverage_complete else "partial"
@@ -1866,8 +1918,9 @@ def _finalize_tech_audit_run(
         "pages": len(pages),
         "crawled_pages": len(pages),
         "discovered_unique": int(crawl.get("discovered_unique", len(pages) + len(remaining_queue))),
-        "queued_remaining": len(remaining_queue),
-        "continuation_available": bool(remaining_queue),
+        "queued_remaining": len(remaining_queue) + len(retry_queue),
+        "retry_pending": len(retry_queue),
+        "continuation_available": bool(remaining_queue or retry_queue),
         "queue_recovered": queue_recovered,
         "crawl_batch": batch_number,
         "link_inventory": len(link_inventory),
@@ -1907,6 +1960,7 @@ def _finalize_tech_audit_run(
         "sitemap_entries_path": _relative_path(project_dir, normalized_dir / "sitemap-entries.jsonl"),
         "gsc_metrics_path": _relative_path(project_dir, normalized_dir / "gsc-page-metrics.json"),
         "remaining_queue_path": _relative_path(project_dir, run_root / "normalized/remaining-queue.jsonl"),
+        "retry_queue_path": _relative_path(project_dir, run_root / "normalized/retry-queue.jsonl"),
         "action_queue_path": _relative_path(project_dir, queue_path),
         "issue_register_path": _relative_path(project_dir, issue_register_path),
     }
@@ -1963,7 +2017,8 @@ def run_tech_audit(project_dir: Path, config: CrawlConfig) -> tuple[dict[str, An
             try:
                 from seo_workbench_tools.rendered_probe import capture
 
-                rendered = capture(candidates[: config.render_limit], run_root / "rendered", timeout=config.timeout, wait_ms=config.render_wait_ms)
+                with CrawlSession(seed_url, access=crawler_access, delay=config.request_delay, allow_private=config.allow_private, user_agent=config.user_agent).activate():
+                    rendered = capture(candidates[: config.render_limit], run_root / "rendered", timeout=config.timeout, wait_ms=config.render_wait_ms)
                 for rendered_page in rendered.get("pages", []):
                     view = rendered_page.get("viewports", {}).get("desktop_1920x1080", {})
                     page = next((item for item in pages if item.get("url") == rendered_page.get("url")), None)
@@ -2011,8 +2066,14 @@ def continue_tech_audit(project_dir: Path, config: CrawlConfig | None = None) ->
         values = {field: stored[field] for field in CrawlConfig.__dataclass_fields__ if field in stored}
         values["sitemap_urls"] = tuple(values.get("sitemap_urls", ()))
         config = CrawlConfig(**values)
+    future_queue = [item for item in queue if float(item.get("next_eligible_at", 0)) > time.time()]
+    queue = [item for item in queue if float(item.get("next_eligible_at", 0)) <= time.time()]
+    if not queue:
+        until = min(float(item["next_eligible_at"]) for item in future_queue)
+        raise ValueError(f"crawl is cooling down; next eligible at {datetime.fromtimestamp(until, timezone.utc).isoformat()}")
     old_pages = load_tech_inventory(project_dir, latest_path)
-    known_urls = {normalize_url(str(page.get("url", ""))) for page in old_pages if normalize_url(str(page.get("url", "")))}
+    retry_urls = {normalize_url(str(item.get("url", ""))) for item in queue if item.get("crawl_source") == "retry"}
+    known_urls = {normalize_url(str(page.get("url", ""))) for page in old_pages if _page_quality(page)["status"] != "unavailable" and normalize_url(str(page.get("url", ""))) not in retry_urls}
     queue = [item for item in queue if normalize_url(str(item.get("url", ""))) not in known_urls]
     if not queue:
         raise ValueError("remaining crawl queue contains no new URLs; run a new full crawl to discover more URLs")
@@ -2027,10 +2088,12 @@ def continue_tech_audit(project_dir: Path, config: CrawlConfig | None = None) ->
     atomic_write_text(status_path, json.dumps(status, ensure_ascii=False, indent=2) + "\n")
     baseline_issues = load_tech_issues(project_dir, latest_path)
     try:
-        crawl = asyncio.run(_crawl(seed_url, config, run_root, start_urls=[str(item["url"]) for item in queue], known_urls=known_urls, status_path=status_path, run_status=status, crawler_access=crawler_access))
+        crawl = asyncio.run(_crawl(seed_url, config, run_root, start_urls=[str(item["url"]) for item in queue], start_queue=queue, known_urls=known_urls, status_path=status_path, run_status=status, crawler_access=crawler_access))
         pages_by_url = {normalize_url(str(page.get("url", ""))): page for page in old_pages if normalize_url(str(page.get("url", "")))}
         pages_by_url.update({normalize_url(str(page.get("url", ""))): page for page in crawl["pages"].values() if normalize_url(str(page.get("url", "")))})
         crawl["pages"] = pages_by_url
+        crawl["retry_queue"] = [*future_queue, *crawl.get("retry_queue", [])]
+        _jsonl_write(run_root / "normalized/retry-queue.jsonl", crawl["retry_queue"])
         inlinks: dict[str, list[dict[str, str]]] = {}
         for source in pages_by_url.values():
             for link in source.get("outlinks", []):

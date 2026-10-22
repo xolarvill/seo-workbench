@@ -38,22 +38,31 @@ def collect_from_state(
     url = state.get("project", {}).get("url")
     if not url:
         raise ValueError(f"missing project.url in {state_path}")
-    bundle = collect(
-        url,
-        page_urls_from_state(state),
-        timeout,
-        sample_limit,
-        rendered=rendered,
-        rendered_output_dir=output_dir.parent / "rendered",
-        project_type=state.get("project", {}).get("type", ""),
-        technology=technology,
-        technology_output_dir=output_dir.parent / "technology",
-        performance=performance,
-        performance_output_dir=output_dir.parent / "performance",
-        performance_runs=performance_runs,
-        performance_form_factor=performance_form_factor,
-        crawl_limit=crawl_limit,
-    )
+    from seo_workbench.shopify_crawler import read_crawler_access
+    from seo_workbench_tools.crawl_session import CrawlSession
+    try:
+        access = read_crawler_access(state_path.parent, url)
+    except FileNotFoundError:
+        access = None
+    session = CrawlSession(url, access=access)
+    with session.activate():
+        bundle = collect(
+            url,
+            page_urls_from_state(state),
+            timeout,
+            sample_limit,
+            rendered=rendered,
+            rendered_output_dir=output_dir.parent / "rendered",
+            project_type=state.get("project", {}).get("type", ""),
+            technology=technology,
+            technology_output_dir=output_dir.parent / "technology",
+            performance=performance,
+            performance_output_dir=output_dir.parent / "performance",
+            performance_runs=performance_runs,
+            performance_form_factor=performance_form_factor,
+            crawl_limit=crawl_limit,
+        )
+    bundle["request_context"] = {"user_agent": session.user_agent, "accept_language": "en-US,en;q=0.9", "signed_access_configured": access is not None, "attempts": session.attempts}
     if crux:
         try:
             from seo_workbench_tools.crux_probe import collect as collect_crux

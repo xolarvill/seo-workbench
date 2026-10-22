@@ -33,8 +33,10 @@ class ShopifyCrawlerAccess:
     def headers_for(self, url: str) -> dict[str, str]:
         """Return the signed headers only for the exact Shopify domain scope."""
         hostname = (urlsplit(url).hostname or "").rstrip(".").lower()
-        if hostname != self.domain_host:
+        if hostname != self.domain_host or urlsplit(url).scheme != "https":
             return {}
+        if self.expired:
+            raise ValueError("crawler signature expired")
         return {
             "Signature": self.signature,
             "Signature-Input": self.signature_input,

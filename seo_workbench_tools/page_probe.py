@@ -13,6 +13,7 @@ from urllib.parse import urljoin, urlparse, urlunparse
 from urllib.request import Request, urlopen
 
 from seo_workbench_tools.response_quality import response_quality
+from seo_workbench_tools.crawl_session import active_session
 
 
 USER_AGENT = "SEO-Workbench/0.1 (+https://github.com/seo-workbench)"
@@ -402,6 +403,14 @@ def response_headers(headers: Any) -> dict[str, str]:
 
 
 def fetch(url: str, timeout: float) -> dict[str, Any]:
+    if session := active_session():
+        result = session.fetch(url, timeout)
+        content_type = result["headers"].get("content-type", "")
+        match = re.search(r"charset=([\w.-]+)", content_type, re.I)
+        return {"status": result["status"], "final_url": result["final_url"], "content_type": content_type,
+                "headers": response_headers(result["headers"]), "elapsed_ms": result["elapsed_ms"],
+                "html": result["body"].decode(match.group(1) if match else "utf-8", "replace"),
+                "html_bytes": len(result["body"]), "signed_headers_attached": result["signed_headers_attached"]}
     started = perf_counter()
     request = Request(url, headers={"User-Agent": USER_AGENT})
     try:

@@ -10,9 +10,9 @@ def _first_rendered_view(page: dict[str, Any]) -> dict[str, Any]:
     viewports = page.get("viewports", {})
     for key in ("desktop_1920x1080", "mobile_375x812", "tablet_768x1024"):
         data = viewports.get(key, {})
-        if data and not data.get("error"):
+        if data and not data.get("error") and data.get("comparison_eligible", True):
             return data
-    return next((data for data in viewports.values() if not data.get("error")), {})
+    return next((data for data in viewports.values() if not data.get("error") and data.get("comparison_eligible", True)), {})
 
 
 def _schema_types(page: dict[str, Any]) -> list[str]:

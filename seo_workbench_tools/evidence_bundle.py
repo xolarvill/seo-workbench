@@ -15,6 +15,7 @@ from seo_workbench_tools import page_probe, robots_sitemap_probe
 from seo_workbench_tools.files import atomic_write_text
 from seo_workbench_tools.headless import build_headless_audit
 from seo_workbench_tools.network_boundary import sensitive_query_key
+from seo_workbench_tools.crawl_session import active_session
 
 
 DEFAULT_OUTPUT_DIR = Path("projects/default/audits/raw")
@@ -66,13 +67,21 @@ def hreflang_audit(pages: list[dict[str, Any]], site: dict[str, Any]) -> dict[st
 
 
 def head_headers(url: str, timeout: float) -> dict[str, str]:
+    if session := active_session():
+        try:
+            result = session.fetch(url, timeout, method="HEAD")
+            if result["status"] >= 400:
+                return {"_collection_status": "unavailable"}
+            return page_probe.response_headers(result["headers"])
+        except (RuntimeError, ValueError):
+            return {"_collection_status": "unavailable"}
     try:
         with urlopen(Request(url, method="HEAD", headers={"User-Agent": page_probe.USER_AGENT}), timeout=timeout) as response:
             return page_probe.response_headers(response.headers)
     except HTTPError as exc:
-        return page_probe.response_headers(exc.headers)
+        return {"_collection_status": "unavailable"}
     except URLError:
-        return {}
+        return {"_collection_status": "unavailable"}
 
 
 def resource_cache_audit(pages: list[dict[str, Any]], timeout: float) -> dict[str, Any]:
@@ -93,10 +102,15 @@ def resource_cache_audit(pages: list[dict[str, Any]], timeout: float) -> dict[st
     sampled = [url for urls in by_type.values() for url in urls[:RESOURCE_SAMPLE_PER_TYPE]]
     checked = []
     issues = []
+    errors = []
     no_cache = 0
     immutable = 0
     for url in sampled:
         headers = head_headers(url, timeout)
+        if headers.get("_collection_status") == "unavailable":
+            checked.append({"url": url, "collection_status": "unavailable"})
+            errors.append({"scope": "resource_headers", "url": url, "error": "resource headers could not be collected"})
+            continue
         cache_control = headers.get("cache_control", "")
         checked.append({"url": url, "cache_control": cache_control})
         if not cache_control:
@@ -114,6 +128,7 @@ def resource_cache_audit(pages: list[dict[str, Any]], timeout: float) -> dict[st
         "html_cache_control": html_cache_control,
         "resources": checked,
         "issues": issues,
+        "errors": errors,
     }
 
 
@@ -349,6 +364,7 @@ def collect(
         )
     bundle["hreflang_audit"] = hreflang_audit(pages, site)
     bundle["resource_cache_audit"] = resource_cache_audit(pages, timeout)
+    errors.extend(bundle["resource_cache_audit"].get("errors", []))
     if bundle["resource_cache_audit"].get("issues"):
         warnings.extend({"scope": "resource_cache", "message": issue} for issue in bundle["resource_cache_audit"]["issues"])
 

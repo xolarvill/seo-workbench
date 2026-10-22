@@ -4,6 +4,7 @@ import argparse
 import json
 import re
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -11,6 +12,7 @@ from typing import Any
 from seo_workbench_tools.browser_runtime import browser_executable
 from seo_workbench_tools.files import atomic_output_path, atomic_write_text
 from seo_workbench_tools.runtime_signals import detect_tags, detect_technologies
+from seo_workbench_tools.crawl_session import CrawlDeferred, active_session
 
 
 DEFAULT_OUTPUT_DIR = Path("projects/default/audits/rendered")
@@ -216,6 +218,50 @@ def analyze_page(page: Any) -> dict[str, Any]:
     )
 
 
+def install_crawl_routes(page: Any, session: Any, timeout: float) -> list[dict[str, Any]]:
+    """Sign native Chromium requests, re-evaluating every redirect hop.
+
+    Playwright route header overrides propagate across redirects. CDP Fetch
+    overrides apply only to the current request and pause subsequent hops again.
+    """
+    failures: list[dict[str, Any]] = []
+    cdp = page.context.new_cdp_session(page)
+    signed_requests: dict[str, bool] = {}
+    frame_tree = cdp.send("Page.getFrameTree", {}) or {}
+    main_frame_id = frame_tree.get("frameTree", {}).get("frame", {}).get("id")
+
+    def paused(event):
+        request_id = event["requestId"]
+        request = event["request"]
+        try:
+            headers = {k.lower(): str(v) for k, v in request.get("headers", {}).items() if k.lower() not in {"signature", "signature-input", "signature-agent"}}
+            if event.get("resourceType") == "Document":
+                session.before_request(request["url"])
+            headers.update({k.lower(): v for k, v in session.headers_for(request["url"], user_agent=headers.get("user-agent")).items()})
+            signed_requests[request["url"]] = "signature" in headers
+            cdp.send("Fetch.continueRequest", {"requestId": request_id, "headers": [{"name": k, "value": v} for k, v in headers.items()]})
+        except Exception as exc:
+            signed_requests.pop(request["url"], None)
+            failures.append({"kind": "cooldown" if isinstance(exc, CrawlDeferred) else "transport_error", "error_type": type(exc).__name__, "resource_type": event.get("resourceType"), "main_document": event.get("resourceType") == "Document" and (not event.get("frameId") or event.get("frameId") == main_frame_id)})
+            try:
+                cdp.send("Fetch.failRequest", {"requestId": request_id, "errorReason": "Aborted"})
+            except Exception:
+                pass
+
+    def response_received(response):
+        from urllib.parse import urlsplit
+        if (urlsplit(response.url).hostname or "").lower() == session.host and (response.request.is_navigation_request() or response.status == 429):
+            try:
+                session.observe_response(response.url, response.status, response.headers, signed=signed_requests.get(response.url, False))
+            except Exception as exc:
+                failures.append({"kind": "transport_error", "error_type": type(exc).__name__})
+
+    cdp.on("Fetch.requestPaused", paused)
+    cdp.send("Fetch.enable", {"patterns": [{"urlPattern": "*", "requestStage": "Request"}]})
+    page.on("response", response_received)
+    return failures
+
+
 def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> dict[str, Any]:
     try:
         from playwright.sync_api import sync_playwright
@@ -228,19 +274,32 @@ def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> 
         "pages": [],
     }
     executable_path = browser_executable()
+    session = active_session()
+    if session and session.next_eligible_at(urls[0]) > time.time():
+        raise CrawlDeferred(session.next_eligible_at(urls[0]))
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True, executable_path=executable_path)
         try:
             for url in urls:
                 page_report = {"url": url, "viewports": {}}
                 for viewport_name, viewport in VIEWPORTS.items():
-                    context = browser.new_context(**context_options(viewport_name, viewport))
+                    options = context_options(viewport_name, viewport)
+                    if session:
+                        options["locale"] = "en-US"
+                        if not viewport_name.startswith("mobile_"):
+                            options["user_agent"] = session.user_agent
+                    context = browser.new_context(**options)
                     page = context.new_page()
                     console_errors: list[str] = []
+                    route_failures = install_crawl_routes(page, session, timeout) if session else []
                     page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
                     try:
-                        page.goto(url, wait_until="domcontentloaded", timeout=int(timeout * 1000))
+                        navigation = page.goto(url, wait_until="domcontentloaded", timeout=int(timeout * 1000))
                         page.wait_for_timeout(wait_ms)
+                        if any(failure.get("main_document") for failure in route_failures):
+                            raise RuntimeError("browser requests could not be collected: " + route_failures[0]["kind"])
+                        if session and session.next_eligible_at(url) > time.time():
+                            raise CrawlDeferred(session.next_eligible_at(url))
                         prefix = f"{slugify(url)}-{viewport_name}"
                         full_path = output_dir / f"{prefix}-full.png"
                         fold_path = output_dir / f"{prefix}-fold.png"
@@ -266,12 +325,16 @@ def capture(urls: list[str], output_dir: Path, timeout: float, wait_ms: int) -> 
                         }
                         data["screenshots"] = {"full": str(full_path), "fold": str(fold_path)}
                         data["console_errors"] = console_errors[:20]
+                        data["request_warnings"] = route_failures
+                        data["comparison_eligible"] = not bool(route_failures)
                         page_report["viewports"][viewport_name] = data
                     except Exception as exc:
-                        page_report["viewports"][viewport_name] = {"error": str(exc)}
+                        page_report["viewports"][viewport_name] = {"error": str(exc), "request_errors": route_failures}
                     finally:
                         context.close()
                 report["pages"].append(page_report)
+                if session and session.next_eligible_at(url) > time.time():
+                    break
         finally:
             browser.close()
     report["runtime_summary"] = summarize_runtime_report(report)
