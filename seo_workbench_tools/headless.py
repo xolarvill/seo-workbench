@@ -142,6 +142,15 @@ def build_headless_audit(bundle: dict[str, Any], rendered: dict[str, Any] | None
         if raw.get("error"):
             warnings.append(f"{raw.get('url', '')}: raw fetch failed: {raw.get('error')}")
             continue
+        if raw.get("evidence_quality", {}).get("status") == "unavailable" or raw.get("status") in {None, 429}:
+            warnings.append(f"{raw.get('url', '')}: raw evidence unavailable; content comparison skipped")
+            continue
+        if raw.get("status") != 200:
+            critical.append(f"{raw.get('url', '')}: raw response status is {raw.get('status')}")
+            continue
+        if raw.get("evidence_quality", {}).get("html_eligible") is False:
+            info.append(f"{raw.get('url', '')}: response is not usable HTML; content comparison skipped")
+            continue
         rendered_page = rendered_pages.get(raw.get("url", "")) or rendered_pages.get(raw.get("final_url", ""))
         comparison = compare_page(raw, rendered_page)
         record = rendered_records.get(raw.get("url", "")) or rendered_records.get(raw.get("final_url", ""))
@@ -149,8 +158,6 @@ def build_headless_audit(bundle: dict[str, Any], rendered: dict[str, Any] | None
         pages.append(comparison)
 
         url = raw.get("url", "")
-        if raw.get("status") != 200:
-            critical.append(f"{url}: raw response status is {raw.get('status')}")
         for field in ("title", "meta_description", "canonical"):
             if not raw.get(field):
                 critical.append(f"{url}: raw HTML missing {field}")

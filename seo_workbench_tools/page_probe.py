@@ -12,10 +12,13 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urljoin, urlparse, urlunparse
 from urllib.request import Request, urlopen
 
+from seo_workbench_tools.response_quality import response_quality
+
 
 USER_AGENT = "SEO-Workbench/0.1 (+https://github.com/seo-workbench)"
 PLACEHOLDER_ALTS = {"alt", "title", "icon", "image", "photo", "picture", "img"}
 HEADER_KEYS = {
+    "cf-mitigated": "cf-mitigated",
     "cache-control": "cache_control",
     "strict-transport-security": "hsts",
     "x-frame-options": "x_frame_options",
@@ -50,6 +53,7 @@ class SeoParser(HTMLParser):
     _tag_stack: list[str] = field(default_factory=list)
     _capture_script: bool = False
     _script_parts: list[str] = field(default_factory=list)
+    _heading_parts: dict[str, list[str]] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         HTMLParser.__init__(self)
@@ -59,6 +63,8 @@ class SeoParser(HTMLParser):
         attr = {k.lower(): v or "" for k, v in attrs}
         if tag not in {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}:
             self._tag_stack.append(tag)
+        if tag in self.headings:
+            self._heading_parts[tag] = []
 
         if tag == "meta":
             key = attr.get("name") or attr.get("property")
@@ -101,8 +107,13 @@ class SeoParser(HTMLParser):
             self.json_ld_raw.append("".join(self._script_parts).strip())
             self._capture_script = False
             self._script_parts = []
-        if self._tag_stack:
-            self._tag_stack.pop()
+        if tag in self._heading_parts:
+            heading = " ".join(self._heading_parts.pop(tag)).strip()
+            if heading:
+                self.headings[tag].append(heading)
+        if tag in self._tag_stack:
+            index = len(self._tag_stack) - 1 - self._tag_stack[::-1].index(tag)
+            del self._tag_stack[index:]
 
     def handle_data(self, data: str) -> None:
         text = " ".join(data.split())
@@ -111,12 +122,15 @@ class SeoParser(HTMLParser):
         current = self._tag_stack[-1] if self._tag_stack else ""
         if self._capture_script:
             self._script_parts.append(data)
-        elif current == "title":
+        elif current == "title" and "svg" not in self._tag_stack:
             self.title_parts.append(text)
-        elif current in self.headings:
-            self.headings[current].append(text)
         elif current not in {"script", "style", "noscript"}:
             self.text_parts.append(text)
+            if "svg" not in self._tag_stack:
+                for tag in reversed(self._tag_stack):
+                    if tag in self._heading_parts:
+                        self._heading_parts[tag].append(text)
+                        break
 
 
 def _schema_type(value: Any) -> Any:
@@ -419,8 +433,10 @@ def fetch(url: str, timeout: float) -> dict[str, Any]:
 
 def probe(url: str, timeout: float = 15) -> dict[str, Any]:
     fetched = fetch(url, timeout)
-    parsed = parse_html(fetched.pop("html"), fetched["final_url"], fetched["html_bytes"])
+    html = fetched.pop("html")
     headers = fetched.get("headers", {})
+    quality = response_quality(fetched.get("status"), fetched.get("content_type", ""), body=html.encode("utf-8"), headers=headers)
+    parsed = parse_html(html if quality["html_eligible"] else "", fetched["final_url"], fetched["html_bytes"])
     return {
         "url": url,
         **fetched,
@@ -431,6 +447,7 @@ def probe(url: str, timeout: float = 15) -> dict[str, Any]:
             "redirected": fetched["final_url"] != url,
         },
         "security_headers_audit": security_headers_audit(headers),
+        "evidence_quality": quality,
         **parsed,
     }
 

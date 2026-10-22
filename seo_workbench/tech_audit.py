@@ -29,12 +29,13 @@ from seo_workbench.shopify_crawler import ShopifyCrawlerAccess, read_crawler_acc
 from seo_workbench.tech_issues import load_issue_register, sync_issue_register
 from seo_workbench_tools.files import atomic_write_text
 from seo_workbench_tools.network_boundary import inspect_target, sensitive_query_key
+from seo_workbench_tools.response_quality import response_quality
 
 
 SCHEMA_VERSION = "1.0"
 COLLECTOR_VERSION = "0.1.0"
 TECH_AUDIT_ROOT = "audits/tech-audit"
-CONFIG_FINGERPRINT_VERSION = "v2-semantic"
+CONFIG_FINGERPRINT_VERSION = "v3-evidence-gates"
 CONFIG_FINGERPRINT_FIELDS = (
     "include_subdomains",
     "load_sitemap",
@@ -451,16 +452,8 @@ def _classify_response(status: int | None, headers: dict[str, str], body: bytes)
         return "fetch_error"
     if status == 429:
         return "rate_limited"
-    if status in {403, 503}:
-        sample = body[:16_384].decode("utf-8", "replace").casefold()
-        server = headers.get("server", "").casefold()
-        if (
-            "cf-mitigated" in headers
-            or any(key.startswith("cf-") for key in headers)
-            or server in {"cloudflare", "cloudfront", "akamai"}
-            or any(marker in sample for marker in ("local_rate_limited", "challenge-platform", "bot detected", "access denied"))
-        ):
-            return "blocked_by_waf"
+    if response_quality(status, headers=headers, body=body)["reason"] == "blocked_by_waf":
+        return "blocked_by_waf"
     if 200 <= status < 400:
         return "ok"
     if 400 <= status < 600:
@@ -620,19 +613,21 @@ async def _fetch_sitemaps(
         if sitemap_url in seen:
             continue
         seen.add(sitemap_url)
+        status = None
         try:
             result = await _fetch(sitemap_url, seed_url, config, crawler_access)
             status = result.get("status")
             body = result.get("body", b"")
             text = body.decode(_charset(result.get("headers", {}).get("content-type", "")), "replace")
-            sitemap_type, parsed_entries = _xml_entries(text) if status == 200 else ("unknown", [])
+            crawl_status = _classify_response(status, result.get("headers", {}), body)
+            sitemap_type, parsed_entries = _xml_entries(text) if status == 200 and crawl_status == "ok" else ("unknown", [])
             raw_path = ""
             if body:
                 sitemap_file = output_root / "raw" / "sitemaps" / f"{hashlib.sha1(sitemap_url.encode()).hexdigest()[:16]}.xml"
                 sitemap_file.parent.mkdir(parents=True, exist_ok=True)
                 sitemap_file.write_bytes(body)
                 raw_path = sitemap_file.relative_to(output_root).as_posix()
-            sitemap_records.append({"url": sitemap_url, "final_url": result.get("final_url", sitemap_url), "status_code": status, "type": sitemap_type, "entry_count": len(parsed_entries), "raw_path": raw_path, "error": result.get("errors", [])})
+            sitemap_records.append({"url": sitemap_url, "final_url": result.get("final_url", sitemap_url), "status_code": status, "crawl_status": crawl_status, "type": sitemap_type, "entry_count": len(parsed_entries), "raw_path": raw_path, "error": result.get("errors", [])})
             if sitemap_type == "sitemapindex":
                 queue.extend(normalize_url(item["loc"], sitemap_url) for item in parsed_entries if normalize_url(item["loc"], sitemap_url))
             elif sitemap_type == "urlset":
@@ -640,11 +635,16 @@ async def _fetch_sitemaps(
                     target = normalize_url(item["loc"], sitemap_url)
                     relation = link_scope(target, seed_url)[1] if target else "external"
                     allowed = relation == "same_host" or (relation == "subdomain" and config.include_subdomains)
-                    if target and allowed and target not in entry_urls and len(entries) < config.max_urls:
-                        entries.append({"url": target, "sitemap_url": sitemap_url})
-                        entry_urls.add(target)
+                    if target and allowed and target not in entry_urls:
+                        if len(entries) < config.max_urls:
+                            entries.append({"url": target, "sitemap_url": sitemap_url})
+                            entry_urls.add(target)
+                        else:
+                            sitemap_records[-1]["entries_truncated"] = True
         except (ET.ParseError, RuntimeError) as exc:
-            sitemap_records.append({"url": sitemap_url, "status_code": None, "type": "unknown", "entry_count": 0, "error": [str(exc)]})
+            sitemap_records.append({"url": sitemap_url, "status_code": status, "crawl_status": "parse_error" if status == 200 else "fetch_error", "type": "unknown", "entry_count": 0, "error": [str(exc)]})
+    if sitemap_records and any(url not in seen for url in queue):
+        sitemap_records[-1]["sitemaps_truncated"] = True
     return sitemap_records, entries
 
 
@@ -684,6 +684,7 @@ async def _crawl(
     robots_body = robots_result.get("body", b"")
     robots_text = robots_body.decode(_charset(robots_result.get("headers", {}).get("content-type", "")), "replace")
     robots_parser, robots_data = _parse_robots(robots_text, config.user_agent)
+    robots_data["collection_status"] = "ok" if robots_result.get("status") in {200, 404} and _classify_response(robots_result.get("status"), robots_result.get("headers", {}), robots_body) not in BLOCKED_CRAWL_STATUSES else "unavailable"
     update_progress(phase="sitemap", sitemap_count=0, sitemap_entries=0, processed_urls=0, discovered_urls=0, error_count=0)
     sitemap_records, sitemap_entries = await _fetch_sitemaps(seed_url, robots_data, config, output_root, crawler_access)
     update_progress(phase="crawl", sitemap_count=len(sitemap_records), sitemap_entries=len(sitemap_entries), discovered_urls=0, queued_remaining=0)
@@ -735,6 +736,7 @@ async def _crawl(
             content_type = headers.get("content-type", "")
             crawl_status = _classify_response(result.get("status"), headers, body)
             blocked = crawl_status in BLOCKED_CRAWL_STATUSES
+            quality = response_quality(result.get("status"), content_type, body=body, headers=headers, crawl_status=crawl_status)
             html = body.decode(_charset(content_type), "replace")
             parsed = (
                 {"title": "", "meta_description": "", "meta_keywords": "", "h1": [], "h2": [], "canonical": "", "canonical_values": [], "hreflang": [], "meta_robots": "", "outlinks": []}
@@ -750,6 +752,7 @@ async def _crawl(
                 "page_id": _page_id(url), "url": url, "final_url": final_url,
                 "scope": link_scope(url, seed_url)[0], "host_relation": link_scope(url, seed_url)[1],
                 "status_code": result.get("status"), "content_type": content_type,
+                "evidence_quality": quality,
                 "response_time_ms": result.get("elapsed_ms"), "response_size": len(body), "crawl_depth": depth,
                 "inlinks": [], "inlink_count": 0, "outlinks": [], "outlink_count": 0, "anchor_text": [], "rel": [],
                 **{key: parsed[key] for key in ("title", "meta_description", "meta_keywords", "h1", "h2", "canonical", "canonical_values", "hreflang")},
@@ -915,14 +918,20 @@ def _group_issues(
     ]
 
 
-def evaluate_rules(pages: list[dict[str, Any]], sitemap_records: list[dict[str, Any]], sitemap_entries: list[dict[str, str]], config: CrawlConfig) -> list[dict[str, Any]]:
+def _page_quality(page: dict[str, Any]) -> dict[str, Any]:
+    return page.get("evidence_quality") or response_quality(
+        page.get("status_code"), page.get("content_type", ""), crawl_status=page.get("crawl_status", ""),
+    )
+
+
+def evaluate_rules(pages: list[dict[str, Any]], sitemap_records: list[dict[str, Any]], sitemap_entries: list[dict[str, str]], config: CrawlConfig, *, coverage_complete: bool = True) -> list[dict[str, Any]]:
     issues: list[dict[str, Any]] = []
     pages_by_url = {page.get("url", ""): page for page in pages}
     sitemap_urls = {entry.get("url", "") for entry in sitemap_entries}
-    html_pages = [page for page in pages if page.get("crawl_status") not in BLOCKED_CRAWL_STATUSES and (page.get("content_type", "").lower().startswith(("text/html", "application/xhtml")) or page.get("title") or page.get("h1") or page.get("html_content_hash"))]
+    html_pages = [page for page in pages if _page_quality(page)["html_eligible"]]
     for page in pages:
         status = page.get("status_code")
-        blocked = page.get("crawl_status") in BLOCKED_CRAWL_STATUSES
+        blocked = not _page_quality(page)["http_eligible"]
         if not blocked and status is not None and 400 <= int(status) < 500:
             issues.append(_issue("HTTP_4XX", page, {"status_code": status, "inlinks": page.get("inlinks", [])}))
             if page.get("inlink_count", 0):
@@ -936,6 +945,8 @@ def evaluate_rules(pages: list[dict[str, Any]], sitemap_records: list[dict[str, 
         if page.get("error") == "blocked by robots.txt":
             issues.append(_issue("BLOCKED_BY_ROBOTS", page, {"reason": page.get("error", "")}))
     for page in html_pages:
+        if page.get("indexability", {}).get("indexable") is False and (page.get("inlink_count", 0) or page.get("url") in sitemap_urls):
+            issues.append(_issue("ACCIDENTAL_NOINDEX", page, {"directives": page.get("indexability", {}).get("directives", []), "inlinks": page.get("inlinks", []), "in_sitemap": page.get("url") in sitemap_urls}))
         if page.get("indexability", {}).get("indexable") is not True:
             continue
         for rule_id, field in (("MISSING_TITLE", "title"), ("MISSING_META_DESCRIPTION", "meta_description"), ("MISSING_H1", "h1"), ("MISSING_CANONICAL", "canonical")):
@@ -952,17 +963,15 @@ def evaluate_rules(pages: list[dict[str, Any]], sitemap_records: list[dict[str, 
             if relation == "external":
                 issues.append(_issue("CROSS_DOMAIN_CANONICAL", page, {"canonical": canonical, "host_relation": relation}))
             target = _known_page(pages_by_url, canonical)
-            if target and target.get("crawl_status") not in BLOCKED_CRAWL_STATUSES and target.get("status_code") != 200:
+            if target and _page_quality(target)["http_eligible"] and target.get("status_code") != 200:
                 issues.append(_issue("CANONICAL_TO_NON_200", page, {"declared_canonical": canonical, "canonical_status_code": target.get("status_code")}))
-            if target and target.get("canonical") and normalize_url(target.get("canonical", ""), target.get("final_url", "")) != canonical:
+            if target and _page_quality(target)["html_eligible"] and target.get("canonical") and normalize_url(target.get("canonical", ""), target.get("final_url", "")) != canonical:
                 issues.append(_issue("CANONICAL_CONFLICT", page, {"canonical_values": canonical_values, "target_canonical": target.get("canonical", "")}))
-        if not page.get("indexability", {}).get("indexable", True) and (page.get("inlink_count", 0) or page.get("url") in sitemap_urls):
-            issues.append(_issue("ACCIDENTAL_NOINDEX", page, {"directives": page.get("indexability", {}).get("directives", []), "inlinks": page.get("inlinks", []), "in_sitemap": page.get("url") in sitemap_urls}))
         if page.get("crawl_depth", 0) > config.high_depth:
             issues.append(_issue("HIGH_CRAWL_DEPTH", page, {"crawl_depth": page.get("crawl_depth", 0), "threshold": config.high_depth}))
-        if page.get("url") != pages[0].get("url") and page.get("inlink_count", 0) == 0:
+        if coverage_complete and page.get("url") != pages[0].get("url") and page.get("inlink_count", 0) == 0:
             issues.append(_issue("NO_INTERNAL_INLINKS", page, {"inlink_count": 0}))
-        if page.get("url") in sitemap_urls and page.get("inlink_count", 0) == 0:
+        if coverage_complete and page.get("url") in sitemap_urls and page.get("inlink_count", 0) == 0:
             issues.append(_issue("ORPHAN_CANDIDATE", page, {"url": page.get("url", ""), "inlink_count": 0, "in_sitemap": True}))
         if isinstance(page.get("response_time_ms"), int) and page["response_time_ms"] > config.slow_response_ms:
             issues.append(_issue("SLOW_RESPONSE", page, {"response_time_ms": page["response_time_ms"], "threshold_ms": config.slow_response_ms}))
@@ -974,9 +983,9 @@ def evaluate_rules(pages: list[dict[str, Any]], sitemap_records: list[dict[str, 
                 issues.append(_issue("HREFLANG_INVALID_CODE", page, {"hreflang": code, "href": alternate.get("href", "")}))
             target_url = normalize_url(alternate.get("href", ""), page.get("final_url", ""))
             target = _known_page(pages_by_url, target_url)
-            if target and target.get("crawl_status") not in BLOCKED_CRAWL_STATUSES and target.get("status_code") != 200:
+            if target and _page_quality(target)["http_eligible"] and target.get("status_code") != 200:
                 issues.append(_issue("HREFLANG_TO_NON_200", page, {"href": target_url, "status_code": target.get("status_code")}))
-            if target:
+            if target and _page_quality(target)["html_eligible"]:
                 returns = {normalize_url(item.get("href", ""), target.get("final_url", "")) for item in target.get("hreflang", [])}
                 if page.get("url") not in returns and page.get("final_url") not in returns:
                     issues.append(_issue("HREFLANG_MISSING_RETURN_LINK", page, {"source_url": page.get("url", ""), "target_url": target_url}))
@@ -997,15 +1006,15 @@ def evaluate_rules(pages: list[dict[str, Any]], sitemap_records: list[dict[str, 
         if len(value) and len(grouped) > 1:
             issues.extend(_group_issues("DUPLICATE_CONTENT_HASH", "content_hash", value, grouped))
     for sitemap in sitemap_records:
-        if sitemap.get("status_code") != 200:
+        if _page_quality(sitemap)["http_eligible"] and sitemap.get("status_code") != 200:
             issues.append(_issue("SITEMAP_NON_200", None, {"sitemap_url": sitemap.get("url", ""), "status_code": sitemap.get("status_code")}))
     for entry in sitemap_entries:
         page = _known_page(pages_by_url, entry.get("url", ""))
-        if not page:
+        if not page and coverage_complete:
             issues.append(_issue("SITEMAP_NOT_CRAWLED", None, {"url": entry.get("url", ""), "reason": "not in crawl inventory"}))
-        elif page.get("indexability", {}).get("indexable") is False:
+        elif page and _page_quality(page)["html_eligible"] and page.get("indexability", {}).get("indexable") is False:
             issues.append(_issue("SITEMAP_NOINDEX", page, {"url": page.get("url", ""), "directives": page.get("indexability", {}).get("directives", [])}))
-    if sitemap_entries:
+    if sitemap_entries and coverage_complete:
         for page in html_pages:
             if page.get("status_code") == 200 and page.get("url") not in sitemap_urls:
                 issues.append(_issue("CRAWLED_NOT_IN_SITEMAP", page, {"url": page.get("url", ""), "status_code": page.get("status_code")}))
@@ -1809,10 +1818,17 @@ def _finalize_tech_audit_run(
     sitemap_entries = sitemap_entries if sitemap_entries is not None else crawl["sitemap_entries"]
     current_gsc, previous_gsc, gsc_meta = _gsc_page_metrics(project_dir)
     for page in pages:
+        page["evidence_quality"] = _page_quality(page)
         metric = current_gsc.get(normalize_url(page.get("url", ""))) or current_gsc.get(normalize_url(page.get("final_url", "")))
         previous = previous_gsc.get(normalize_url(page.get("url", ""))) or previous_gsc.get(normalize_url(page.get("final_url", "")))
         page["search_performance"] = {"status": "available" if metric else "not_found", **(metric or {}), "previous": previous or {}}
-    issues = prioritize_issues(evaluate_rules(pages, sitemap_records, sitemap_entries, config), current_gsc, previous_gsc)
+    unavailable = [page for page in pages if _page_quality(page)["status"] == "unavailable"]
+    site_unavailable = crawl.get("robots", {}).get("collection_status") == "unavailable" or any(
+        not _page_quality(record)["http_eligible"] or record.get("status_code") != 200 or record.get("type") not in {"sitemapindex", "urlset"} or record.get("entries_truncated") or record.get("sitemaps_truncated")
+        for record in sitemap_records
+    )
+    coverage_complete = not (crawl["errors"] or crawl["stopped_by_limit"] or unavailable or site_unavailable or crawl.get("remaining_queue"))
+    issues = prioritize_issues(evaluate_rules(pages, sitemap_records, sitemap_entries, config, coverage_complete=coverage_complete), current_gsc, previous_gsc)
     issue_actions = _issue_action_groups(issues)
     previous_fingerprints = {item.get("fingerprint") for item in baseline_issues}
     new_high = [item for item in issues if item.get("fingerprint") not in previous_fingerprints and item.get("priority", {}).get("tier") in {"critical", "high"}]
@@ -1830,7 +1846,7 @@ def _finalize_tech_audit_run(
     remaining_queue = crawl.get("remaining_queue", [])
     rate_limited = sum(page.get("crawl_status") == "rate_limited" for page in pages)
     blocked_by_waf = sum(page.get("crawl_status") == "blocked_by_waf" for page in pages)
-    collection_status = "partial" if crawl["errors"] or crawl["stopped_by_limit"] else "ok"
+    collection_status = "ok" if coverage_complete else "partial"
     config_fingerprint = _semantic_config_fingerprint(config)
     fingerprint_matches = (
         bool(baseline_config_fingerprint)
@@ -1843,7 +1859,7 @@ def _finalize_tech_audit_run(
         baseline_issues,
         run_id=run_id,
         verification_allowed=collection_status == "ok" and fingerprint_matches,
-        verification_provisional=collection_status != "ok" and fingerprint_matches,
+        verification_provisional=collection_status != "ok" and fingerprint_matches and not unavailable and not site_unavailable,
         now=generated_at,
     )
     summary = {
@@ -1856,6 +1872,7 @@ def _finalize_tech_audit_run(
         "crawl_batch": batch_number,
         "link_inventory": len(link_inventory),
         "successful_pages": sum(1 for page in pages if page.get("status_code") == 200),
+        "evidence_unavailable": len(unavailable),
         "issues": len(issues),
         "issue_actions": len(issue_actions),
         "new_high_impact": len(new_high),
@@ -1870,6 +1887,8 @@ def _finalize_tech_audit_run(
     }
     atomic_write_text(run_root / "summary.json", json.dumps(summary, ensure_ascii=False, indent=2) + "\n")
     warnings: list[str] = []
+    if unavailable or site_unavailable:
+        warnings.append("some page or site evidence is unavailable; absence-based findings and verification are restricted")
     if crawl["stopped_by_limit"]:
         warnings.append("crawl stopped at max_urls; use Continue crawl to process the persisted queue")
     if queue_recovered:
@@ -2026,7 +2045,11 @@ def continue_tech_audit(project_dir: Path, config: CrawlConfig | None = None) ->
         old_sitemap_records = old_site.get("sitemaps", []) if isinstance(old_site, dict) else []
         old_sitemap_entries = _jsonl_read(state.safe_project_path(project_dir, str(snapshot.get("artifacts", {}).get("sitemap_entries_path", "")))) if snapshot.get("artifacts", {}).get("sitemap_entries_path") else []
         sitemap_entries_by_url = {str(item.get("url", "")): item for item in [*old_sitemap_entries, *crawl.get("sitemap_entries", [])] if item.get("url")}
-        crawl["sitemap_records"] = [*old_sitemap_records, *crawl.get("sitemap_records", [])]
+        crawl["sitemap_records"] = list({
+            str(record["url"]): record
+            for record in [*old_sitemap_records, *crawl.get("sitemap_records", [])]
+            if record.get("url")
+        }.values())
         crawl["sitemap_entries"] = list(sitemap_entries_by_url.values())
         batch_number = int(snapshot.get("summary", {}).get("crawl_batch", 1) or 1) + 1
         return _finalize_tech_audit_run(

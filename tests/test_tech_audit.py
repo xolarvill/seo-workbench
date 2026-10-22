@@ -176,7 +176,7 @@ def test_semantic_config_fingerprint_ignores_collection_parameters() -> None:
     assert _semantic_config_fingerprint(base) == _semantic_config_fingerprint(relaxed)
     strict = CrawlConfig(high_depth=5)
     assert _semantic_config_fingerprint(base) != _semantic_config_fingerprint(strict)
-    assert CONFIG_FINGERPRINT_VERSION == "v2-semantic"
+    assert CONFIG_FINGERPRINT_VERSION == "v3-evidence-gates"
     assert page_template("https://example.com/en-ca/blogs/articles/guide") == "article"
     assert page_template("https://example.com/es/blogs/news") == "blog"
     assert page_type("https://example.com/es/custom/landing") == "other"

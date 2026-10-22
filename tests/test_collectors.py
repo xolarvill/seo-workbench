@@ -185,6 +185,7 @@ def test_headless_audit_flags_rendered_only_schema() -> None:
 
 def test_headless_audit_records_rendered_only_body_links_and_images() -> None:
     raw = {
+        "status": 200,
         "url": "https://example.com",
         "final_url": "https://example.com",
         "title": "Example",

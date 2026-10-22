@@ -123,12 +123,12 @@ def collection_status(bundle: dict[str, Any]) -> str:
     successful_pages = [
         page
         for page in pages
-        if not page.get("error") and 200 <= int(page.get("status", 0) or 0) < 400
+        if not page.get("error") and page.get("evidence_quality", {}).get("status") != "unavailable" and 200 <= int(page.get("status", 0) or 0) < 400
     ]
     failed_pages = [
         page
         for page in pages
-        if page.get("error") or not 200 <= int(page.get("status", 0) or 0) < 400
+        if page.get("error") or page.get("evidence_quality", {}).get("status") == "unavailable" or not 200 <= int(page.get("status", 0) or 0) < 400
     ]
     site_failed = bool(bundle.get("site", {}).get("error"))
     if not successful_pages and site_failed:
@@ -227,7 +227,7 @@ def _duplicate_groups(pages: list[dict[str, Any]], field: str) -> list[dict[str,
 
 
 def route_sample_audit(pages: list[dict[str, Any]], discovered_urls: list[str]) -> dict[str, Any]:
-    successful = [page for page in pages if not page.get("error") and 200 <= int(page.get("status", 200) or 0) < 400]
+    successful = [page for page in pages if not page.get("error") and page.get("evidence_quality", {}).get("status") != "unavailable" and 200 <= int(page.get("status", 200) or 0) < 400]
     raw_shell_pages = sum(
         not page.get("content_audit", {}).get("has_body_text_in_raw_html", False)
         and not page.get("link_summary", {}).get("anchor_count", 0)
