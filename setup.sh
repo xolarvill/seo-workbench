@@ -243,8 +243,9 @@ Environment ready. Next steps:
   1. Initialize a project with the agent-neutral CLI:
        ./seo init shopify --name "My Store" --url "https://example.com"
 
-  2. Check the next workflow step:
-       ./seo next
+  2. Give your agent a goal and project context:
+       ./seo status --json
+     Read AGENTS.md and skills/README.md; choose relevant local methods.
 
   3. Optional Google evidence requires credentials after setup:
        export SEO_WORKBENCH_CRUX_API_KEY="..."

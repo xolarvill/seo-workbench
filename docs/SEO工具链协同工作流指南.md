@@ -34,28 +34,26 @@ projects/
 
 Shopify Liquid 使用 `shopify`，Hydrogen 或其他 Headless Shopify 使用 `shopify-headless`。已经有状态文件的项目可以使用 `existing`，不要用 `--force` 覆盖仍有价值的资料。
 
-## 两条并行链路
+## Agent判断与工具执行
 
-Workbench 有工作流和证据两条链路。工作流记录接下来该做什么，证据记录网站现在是什么状态。
+从用户当前目标、项目决定、已有产物和证据出发，由agent选择方法、组合步骤并调整计划。CLI负责确定性的采集、查询、保存和校验。阶段记录不充当任务调度器。
 
 ```text
-业务资料和目标
-      │
-      ├── 工作流：战略 → 内容 → 质量 → 技术 → 外链 → 监测
-      │
-      └── 证据：raw → rendered → technology → Lighthouse → CrUX → GSC
+当前目标 + 项目资料 + 已有证据
+             │
+     agent选择本地技能与所需操作
+             │
+       产物、决定、缺口与复查
 ```
 
-工作流不会自动替你完成专业判断。`next` 返回步骤和对应的本地 skill，agent 读取 skill、项目上下文和证据后执行，再显式更新状态。
+先读仓库 `AGENTS.md`、项目自己的指令与相关任务材料，再按 `skills/README.md` 找到适用方法；索引不是调用白名单。不要求重新跑已完成且仍适用的研究，也不让局部审稿升级为整套生产流程。
 
 ```bash
 ./seo --project my-site status --json
-./seo --project my-site next --json
-./seo --project my-site step start
-./seo --project my-site step done
+./seo --help
 ```
 
-需要跳过不适用的步骤时使用 `step skip` 并在项目笔记中说明原因。不要为了让进度条变绿而跳过仍未确认的工作。
+`next` 命令已退役。旧项目的phase、step和history保留，`phase`／`step`命令只供显式维护兼容记录；不需要先进入某个阶段才能使用技能。UI的Methods地图可随时打开所需工作区，不再给出“Next action”或步骤打勾按钮。
 
 ## 第一次基线采集
 
@@ -190,11 +188,7 @@ DataForSEO 使用 REST v3，不引入 SDK。单个关键词可在抽屉中确认
 
 ## 内容战略和生产
 
-内容工作通过项目上下文和本地 skill 完成，不再使用旧项目的 slash command。agent 可以从当前步骤发现相应 skill：
-
-```bash
-./seo --project my-site next --json
-```
+内容工作通过项目上下文和本地skill完成，不再使用旧项目的slash command。Agent通过 `skills/README.md` 主动发现相关方法，必要时搜索三来源的其他本地模块；不依赖阶段步骤。
 
 常用 skill 包括：
 
@@ -206,7 +200,7 @@ DataForSEO 使用 REST v3，不引入 SDK。单个关键词可在抽屉中确认
 
 适合交给 agent 的请求：
 
-> 读取 `my-site` 项目的当前状态、上下文和最新证据。执行 next 返回的 skill，把结果写入对应的项目目录，并说明哪些结论来自实测、哪些需要人工资料。
+> 继续 `my-site` 的已有话题群准备：先恢复brief、页面owner、研究证据和未完成项，再判断需要补研究还是调整规格。把产物留在原任务中，说明复用依据和缺口；暂不写稿或发布。
 
 内容简报不要把竞品字数当成目标。它应明确用户任务、页面类型、必须回答的问题、第一方证据、内部链接和转化路径。
 

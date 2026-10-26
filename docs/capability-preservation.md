@@ -6,7 +6,7 @@ The independent workbench keeps the three original SEO repos as distinct capabil
 
 Role: content strategy and quality review.
 
-Primary workflow modules:
+Workbench method entrypoints:
 
 - `skills/keyword-deep-dive`
 - `skills/topic-cluster-planning`
@@ -33,13 +33,13 @@ Preserved as local pipeline assets under `skills/seo-machine-pipeline/`:
 - `agents/` - SEO optimizer, metadata creator, internal linker, keyword mapper, editor, CRO, headline, cluster, and performance specialists.
 - `skills/` - copywriting, content strategy, programmatic SEO, CRO, schema markup, social, ads, launch, referral, and related production modules.
 
-These assets are not the default state-machine executor. The default executor is `seo_workbench` plus local `skills/`.
+These assets are local method references, not an installed slash-command or agent executor. Agents choose useful methods from `skills/README.md` and the current task; `seo_workbench` executes explicit operations. Stored phase mappings are compatibility records, not the scheduler.
 
 ## Claude SEO
 
 Role: site-wide technical, performance, structured data, search visibility, and specialty SEO audits.
 
-Primary workflow modules:
+Workbench method entrypoints:
 
 - `skills/technical-audit`
 - `skills/schema`
@@ -57,6 +57,6 @@ Additional preserved modules live under `skills/claude-seo-extra/`, including:
 
 ## Workbench Native
 
-- `seo_workbench/` - harness-neutral CLI and workflow contract.
+- `seo_workbench/` - harness-neutral operation CLI and legacy step references.
 - `seo_workbench_tools/` - raw/rendered evidence collectors.
 - `skills/headless-precheck` - local Headless precheck built on evidence JSON.

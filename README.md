@@ -55,7 +55,7 @@ Run your coding agent from the repository root. SEO Workbench is agent-neutral. 
  A useful first request is:
 > Audit the `my-site` project, explain the technical and performance findings, then prepare a content SEO strategy using the local workbench. Give me a report of what should be done in this week.
 
-Agents can discover the current workflow step, use the skills stored in local workbench. When the UI is open, new audit files and Markdown documents appear there automatically.
+Agents choose methods from the current goal, project artifacts, and evidence. Read `AGENTS.md` and the task-oriented `skills/README.md`, then load and combine the relevant local methods. Stored phases do not schedule work; the `next` command has been retired. When the UI is open, new audit files and Markdown documents appear there automatically.
 
 ### Working manually
 
@@ -177,11 +177,9 @@ Click below to open dropdown for details
 <summary>Commands list</summary>
 
 ```bash
-# Projects and workflow
+# Projects and task context
 ./seo projects --json
 ./seo --project my-site status --json
-./seo --project my-site next
-./seo --project my-site step done
 ./seo --project my-site keywords collect --google-ads-csv google-ads.csv --semrush-xlsx semrush.xlsx --json
 
 # Technical evidence

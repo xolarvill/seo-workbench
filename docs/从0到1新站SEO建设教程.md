@@ -26,12 +26,13 @@
 
 把品牌、受众和业务事实写入项目 `context/`。每个站点使用独立项目目录，测试站、客户站和自己的站不要混用同一份状态或 GSC 绑定。
 
-检查下一步：
+读取项目现状，再按目标选择方法：
 
 ```bash
 ./seo --project new-site status --json
-./seo --project new-site next --json
 ```
+
+Agent先读仓库 `AGENTS.md`、`skills/README.md` 与项目资料，再选择需要的方法。旧阶段状态不决定下一步；无需运行已退役的 `next` 命令。
 
 ## 上线前需要哪些页面
 
