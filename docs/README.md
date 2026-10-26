@@ -32,6 +32,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 - [Hexcal BLOG adapter](hexcal-blog-migration.md): optional Feishu field aliases, ownership boundaries, and retained production capabilities.
 - [Standalone workbench architecture](independent-workbench.md): local setup, project isolation, CLI boundaries, and runtime design.
 - [Preserved SEO capability families](capability-preservation.md): provenance and capability-preservation notes from the standalone refactor.
+- [Local skill integration diagnosis](20261026-local-skill-integration-diagnosis.md): discovery, routing, and execution gaps; prompted use is not evidence of autonomous selection.
 
 ## Evidence selection
 
