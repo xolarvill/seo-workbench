@@ -2,6 +2,15 @@
 
 Agent-neutral SEO workflow repo. Use the local Python CLI and local `skills/` first.
 
+## Agent-led work
+
+- Start from the user's current goal, the project's `AGENTS.md` when present, relevant decisions, artifacts, and evidence. Choose the work from that context; a stored phase is historical context, not a gate or a task scheduler.
+- For substantive SEO work, consult [`skills/README.md`](skills/README.md), select and read the useful local skill bodies before doing the professional work. Discover and combine any relevant local modules as needed; do not wait for the user to name them or require a fixed skill sequence. Engineering-only changes need SEO skills only when they change SEO semantics.
+- Scale the method to the task. Reuse applicable, sufficiently current research; a local wording review does not need a new full SERP study. Read only supporting references needed now. If context was compressed and the method is no longer available, reload the relevant body.
+- Briefly explain the chosen method and purpose. Keep decisions, outputs, evidence pointers, and remaining gaps in the existing task artifact so another session can resume from the work itself. Reading a skill or marking a legacy step done is not proof that its method was completed.
+- CLI commands execute explicit operations and return evidence; use `./seo --help` or command-specific help to choose them. The `next` command is retired. Legacy `phase`/`step` records remain compatible but never prescribe the next action or restrict skill choice.
+- Skill selection does not expand the user's authorized scope. Project facts and current Workbench evidence/collection rules override conflicting source-material recipes; do not execute archived slash commands or old scripts blindly.
+
 ## Current Shape
 
 ```text
@@ -22,7 +31,6 @@ The Feishu adapter is implemented inside Workbench. Keep it limited to the Base,
 
 ```bash
 ./seo --project example-store status --json
-./seo next
 ./seo evidence --rendered --crawl-limit 5 --json
 ./seo statistics collect --json
 ./seo validate --json
@@ -112,14 +120,9 @@ Initialize a project:
 - Do not restore Claude slash commands or external repo dependencies unless the user explicitly asks.
 - Each reform layer should be committed separately.
 
-## Skill Modules
+## Skill discovery
 
-- `skills/keyword-deep-dive`
-- `skills/content-brief`
-- `skills/reader-experience-review` — use for reader-facing prose review and before delivering new or revised articles; judge confusion in context and preserve useful caution.
-- `skills/technical-audit`
-
-Load only the referenced files needed for the current step.
+Use [`skills/README.md`](skills/README.md) for task-oriented entrypoints and the three preserved source families. It is a navigation aid, not an exhaustive allowlist. Search local modules when the task falls outside the examples.
 
 - Technical issue identity uses explicit per-rule source/target fields; timings, sizes, group members and content hashes remain observations. New findings are candidates until fresh comparable evidence confirms them. Targeted rechecks never verify absence, must preserve concurrent operator decisions, and keep graph/target/sitemap/rendered rules pending without sufficient coverage. Legacy identity migration is preview-only until an explicit apply workflow is reviewed; retain every member decision/history and report missing target evidence rather than guessing.
 

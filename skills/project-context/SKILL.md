@@ -36,5 +36,5 @@ Use live SERP research for keyword selection. If Search Console, paid keyword vo
 - Keep verified facts, evidence-backed inference, and unknowns visibly separate.
 - Preserve regional differences instead of combining incompatible prices, claims, or product specifications.
 - Map every primary keyword to one intended owner page.
-- Ensure the file path matches the workflow contract.
-- Run `./seo --project <id> next --json` and mark the step done only after the declared output exists.
+- Save the context in the current project; preserve existing approved documents and their actual paths.
+- Check the saved artifact against the requested scope, record unresolved facts and supporting evidence, and run `./seo --project <id> validate --json` when state or workflow contracts changed. No phase transition or next-step command is required.
