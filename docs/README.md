@@ -33,6 +33,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 - [Standalone workbench architecture](independent-workbench.md): local setup, project isolation, CLI boundaries, and runtime design.
 - [Preserved SEO capability families](capability-preservation.md): provenance and capability-preservation notes from the standalone refactor.
 - [Local skill integration diagnosis](20261026-local-skill-integration-diagnosis.md): discovery, routing, and execution gaps; prompted use is not evidence of autonomous selection.
+- [Agent skill routing design](agent-skill-routing-design.md): proposed task-based discovery, source adaptation, recurring handoffs, and independent-session acceptance; not implemented yet.
 
 ## Evidence selection
 
