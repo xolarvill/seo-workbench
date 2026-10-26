@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { ArrowRight, Check, Circle, Clock3, Play } from "lucide-react";
+import { ArrowRight, Circle, Play } from "lucide-react";
 
 import type { Workspace } from "../../api/types";
 import styles from "./WorkflowPage.module.css";
@@ -104,12 +103,12 @@ const phaseGuides: Record<string, PhaseGuide> = {
 
 const fallbackGuide = (phaseName: string, steps: Array<{ id: string; label: string }>): PhaseGuide => ({
   title: phaseName.replaceAll("_", " "),
-  purpose: "Follow the project-defined steps and keep each output attached to its source workspace.",
-  handoff: "The documented output for this project phase",
+  purpose: "Consult project-specific references when they help the current task.",
+  handoff: "The artifact appropriate to the current task",
   tasks: steps.map((step) => ({
     id: step.id,
     label: step.label,
-    description: "Use the project workflow contract for this step and record the resulting artifact.",
+    description: "Review the project-specific reference and record the resulting artifact when applicable.",
     capability: "Project workflow",
     availability: "CLI / skill",
   })),
@@ -143,71 +142,45 @@ function GuideLink({ task, onOpenKeywords, onOpenContent }: { task: GuideTask; o
   );
 }
 
-export function WorkflowPage({ workspace, onStepAction, onOpenActions, onOpenKeywords, onOpenContent }: { workspace: Workspace; onStepAction: (action: "start" | "done" | "skip") => Promise<void> | void; onOpenActions?: () => void; onOpenKeywords?: () => void; onOpenContent?: () => void }) {
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const canEditInit = workspace.phase === "INIT" && Boolean(workspace.step);
-  const currentGuide = phaseGuides[workspace.phase] || fallbackGuide(workspace.phase, workspace.phases[workspace.phase]?.steps || []);
-  const nextLabel = workspace.next?.label || workspace.step?.label || currentGuide.handoff;
-  const run = async (action: "start" | "done" | "skip") => {
-    setBusy(true);
-    setError(null);
-    try {
-      await onStepAction(action);
-    } catch (reason) {
-      setError(reason instanceof Error ? reason.message : String(reason));
-    } finally {
-      setBusy(false);
-    }
-  };
+export function WorkflowPage({ workspace, onOpenActions, onOpenKeywords, onOpenContent }: { workspace: Workspace; onOpenActions?: () => void; onOpenKeywords?: () => void; onOpenContent?: () => void }) {
+  const groups = [...Object.keys(phaseGuides), ...Object.keys(workspace.phases).filter((name) => !phaseGuides[name])];
 
   return (
     <section className={styles.page} aria-labelledby="workflow-heading">
-      <h1 id="workflow-heading" className="srOnly">SEO workflow</h1>
+      <h1 id="workflow-heading" className="srOnly">SEO capability map</h1>
       <header className={styles.header}>
         <div className={styles.headerAside}>
           {onOpenActions ? <button className={styles.runActions} type="button" onClick={onOpenActions}><Play aria-hidden="true" size={14} fill="currentColor" />Run audit evidence</button> : null}
         </div>
       </header>
 
-      <section className={styles.orientation} aria-label="How to use this workflow">
-        <div><strong>Understand</strong><span>Read each stage as a decision and handoff, not a completion meter.</span></div>
-        <div><strong>Execute</strong><span>Open the owning workspace when the guide points to a concrete operation.</span></div>
+      <section className={styles.orientation} aria-label="How to use this capability map">
+        <div><strong>Understand</strong><span>Choose useful methods from the current goal, project context, and evidence.</span></div>
+        <div><strong>Execute</strong><span>Combine relevant skills and open the owning workspace for explicit operations.</span></div>
         <div><strong>Verify</strong><span>Keep the expected artifact and evidence boundary attached to the work.</span></div>
       </section>
 
-      <section className={styles.locationPanel} aria-labelledby="current-location-heading">
+      <section className={styles.locationPanel} aria-labelledby="capability-choice-heading">
         <div className={styles.locationCopy}>
-          <span className={styles.kicker}>Current context</span>
-          <h2 id="current-location-heading">{currentGuide.title}</h2>
-          <p>{currentGuide.purpose}</p>
+          <span className={styles.kicker}>Choose by task</span>
+          <h2 id="capability-choice-heading">Use the methods the work needs</h2>
+          <p>Start from the current objective and existing artifacts. Any capability can be used at any time; saved phases do not prescribe the next action.</p>
         </div>
         <div className={styles.locationMeta}>
-          <span>Next handoff</span>
-          <strong>{nextLabel}</strong>
-          {workspace.next?.skill ? <code>{workspace.next.skill}</code> : null}
-          {workspace.next?.output ? <small>Expected output: {workspace.next.output}</small> : null}
-          {canEditInit ? <div className={styles.controls}>
-            {workspace.step?.status !== "in_progress" ? <button type="button" disabled={busy} onClick={() => void run("start")}>Start</button> : null}
-            <button type="button" disabled={busy} onClick={() => void run("done")}>Mark done</button>
-            <button type="button" disabled={busy} onClick={() => void run("skip")}>Skip</button>
-          </div> : null}
-          {error ? <p className={styles.error} role="alert">{error}</p> : null}
+          <span>Local skill index</span>
+          <code>skills/README.md</code>
+          <small>Read the relevant method, reuse valid evidence, and record outputs and remaining gaps.</small>
         </div>
       </section>
 
-      <ol className={styles.timeline} aria-label="Recommended SEO workflow stages">
-        {workspace.phase_order.map((phaseName, index) => {
+      <ul className={styles.timeline} aria-label="SEO capabilities by task">
+        {groups.map((phaseName) => {
           const phase = workspace.phases[phaseName];
           const guide = phaseGuides[phaseName] || fallbackGuide(phaseName, phase?.steps || []);
-          const current = phaseName === workspace.phase;
-          const initComplete = phaseName === "INIT" && phase?.status === "done";
-          const runtimeSteps = new Map((phase?.steps || []).map((step) => [step.id, step]));
           return (
-            <li key={phaseName} className={[styles.stage, current ? styles.current : "", initComplete ? styles.initComplete : ""].filter(Boolean).join(" ")}>
+            <li key={phaseName} className={styles.stage}>
               <div className={styles.stageMarker} aria-hidden="true">
-                <span className={styles.markerIcon}>{initComplete ? <Check size={16} /> : current ? <Clock3 size={16} /> : <Circle size={14} />}</span>
-                <span className={styles.stageIndex}>{String(index + 1).padStart(2, "0")}</span>
+                <span className={styles.markerIcon}><Circle size={14} /></span>
               </div>
               <div className={styles.stageBody}>
                 <header className={styles.stageHeader}>
@@ -215,17 +188,14 @@ export function WorkflowPage({ workspace, onStepAction, onOpenActions, onOpenKey
                     <span className={styles.stageKicker}>{displayPhaseName(phaseName)}</span>
                     <h2>{guide.title}</h2>
                   </div>
-                  <span className={styles.stageState}>{initComplete ? "Foundation set" : current ? "Current context" : "Recommended stage"}</span>
+                  <span className={styles.stageState}>Available when relevant</span>
                 </header>
                 <p className={styles.stagePurpose}>{guide.purpose}</p>
                 <div className={styles.taskList}>
-                  {guide.tasks.map((task, taskIndex) => {
-                    const runtimeStep = runtimeSteps.get(task.id);
-                    const taskDone = phaseName === "INIT" && runtimeStep?.status === "done";
-                    const taskCurrent = current && runtimeStep?.id === workspace.step?.id;
+                  {guide.tasks.map((task) => {
                     return (
-                      <div key={task.id} className={[styles.task, taskDone ? styles.taskDone : "", taskCurrent ? styles.taskCurrent : ""].filter(Boolean).join(" ")}>
-                        <span className={styles.taskIndex}>{taskDone ? <Check aria-label="Done" size={14} /> : String(taskIndex + 1).padStart(2, "0")}</span>
+                      <div key={task.id} className={styles.task}>
+                        <span className={styles.taskIndex}><Circle aria-hidden="true" size={10} /></span>
                         <div className={styles.taskMain}>
                           <strong>{task.label}</strong>
                           <p>{task.description}</p>
@@ -241,8 +211,8 @@ export function WorkflowPage({ workspace, onStepAction, onOpenActions, onOpenKey
             </li>
           );
         })}
-      </ol>
-      <p className={styles.footerNote}>Plan is the shared map. Home can focus on immediate attention, while Keywords, Content, Pages, Audits, Reports, and CLI skills remain the owners of execution.</p>
+      </ul>
+      <p className={styles.footerNote}>This map offers entrypoints, not a required sequence. Choose local methods freely within the task scope; existing workspaces own execution and records.</p>
     </section>
   );
 }

@@ -465,15 +465,6 @@ export type PhaseState = {
   steps: WorkflowStep[];
 };
 
-export type NextContract = {
-  phase: string;
-  step: string;
-  label: string;
-  skill: string;
-  context: string[];
-  output: string;
-};
-
 export type Workspace = {
   project_id: string;
   project: {
@@ -484,7 +475,6 @@ export type Workspace = {
   };
   phase: string;
   step: WorkflowStep | null;
-  next: NextContract | null;
   phase_order: string[];
   phases: Record<string, PhaseState>;
   evidence: {

@@ -13,7 +13,7 @@ vi.mock("../api/client", () => ({
 }));
 
 function workspace(projectId: string): Workspace {
-  return { project_id: projectId, project: { name: projectId, url: `https://${projectId}.example`, type: "existing" }, phase: "INIT", step: null, next: null, phase_order: [], phases: {}, evidence: { items: [], performance: { score: null, high_variance: null, metrics: { lcp: null, tbt: null, cls: null } }, technology: {}, channels: [], business: { status: "not_collected", windows: {} }, diff: {} }, changes: { count: 0, due: 0, counts: {}, items: [] }, content: { items: [], counts: {}, due_for_indexing: { count: 0, urls: [], items: [] }, ops: { schema_version: "1.0", generated_at: "", actions: [] }, portfolio: { collection_status: "not_collected", count: 0, counts: {}, items: [] } }, recent_files: [] };
+  return { project_id: projectId, project: { name: projectId, url: `https://${projectId}.example`, type: "existing" }, phase: "INIT", step: null, phase_order: [], phases: {}, evidence: { items: [], performance: { score: null, high_variance: null, metrics: { lcp: null, tbt: null, cls: null } }, technology: {}, channels: [], business: { status: "not_collected", windows: {} }, diff: {} }, changes: { count: 0, due: 0, counts: {}, items: [] }, content: { items: [], counts: {}, due_for_indexing: { count: 0, urls: [], items: [] }, ops: { schema_version: "1.0", generated_at: "", actions: [] }, portfolio: { collection_status: "not_collected", count: 0, counts: {}, items: [] } }, recent_files: [] };
 }
 
 describe("project-scoped data hooks", () => {

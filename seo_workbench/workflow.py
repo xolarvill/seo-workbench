@@ -100,7 +100,8 @@ def output_for_step(phase: str, step_id: str, project_dir: Path) -> str:
     return str(outputs[step_id]) if step_id in outputs else ""
 
 
-def next_contract(workflow: dict[str, Any], phase: str, step: dict[str, Any], project_dir: Path = Path("projects/default")) -> dict[str, Any]:
+def step_reference(workflow: dict[str, Any], phase: str, step: dict[str, Any], project_dir: Path = Path("projects/default")) -> dict[str, Any]:
+    """Describe a legacy step without selecting or scheduling agent work."""
     step_id = step.get("id", "")
     return {
         "phase": phase,
@@ -114,7 +115,7 @@ def next_contract(workflow: dict[str, Any], phase: str, step: dict[str, Any], pr
 
 def _self_test() -> None:
     workflow = {"skills": {"x": "skills/x/SKILL.md"}}
-    contract = next_contract(workflow, "STRATEGY", {"id": "x", "label": "X"}, Path("project"))
+    contract = step_reference(workflow, "STRATEGY", {"id": "x", "label": "X"}, Path("project"))
     assert contract["skill"] == "skills/x/SKILL.md"
     assert contract["output"] == ""
     assert "project/state.json" in contract["context"]

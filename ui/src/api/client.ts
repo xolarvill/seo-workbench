@@ -503,10 +503,3 @@ export async function updateContentStatus(
   );
   return payload;
 }
-
-export async function updateWorkflow(projectId: string, action: "start" | "done" | "skip" | "reset", stepId?: string): Promise<void> {
-  await request(`/api/v1/projects/${encodeURIComponent(projectId)}/workflow`, {
-    method: "POST",
-    body: JSON.stringify({ action, step_id: stepId || null }),
-  });
-}

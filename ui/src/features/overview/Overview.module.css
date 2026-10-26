@@ -85,7 +85,7 @@
 
 .healthScore,
 .healthFacts,
-.healthSummary > .nextAction { min-width: 0; padding: 16px 18px; }
+.healthSummary > .capabilityLink { min-width: 0; padding: 16px 18px; }
 
 .healthScore { display: grid; align-content: center; gap: 4px; }
 .eyebrow { color: var(--ink-muted); font: 600 10px/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
@@ -126,8 +126,8 @@
 .evidenceTrigger > span:last-child { color: var(--primary-dark); font: 700 11px/1.2 var(--font-ui); }
 .evidenceTrigger:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
 
-.healthSummary > .nextAction { margin: 10px; border-color: var(--primary); background: var(--primary-wash); }
-.healthSummary > .nextAction em { color: var(--primary-dark); font-size: 11px; font-style: normal; font-weight: 700; }
+.healthSummary > .capabilityLink { margin: 10px; border-color: var(--primary); background: var(--primary-wash); }
+.healthSummary > .capabilityLink em { color: var(--primary-dark); font-size: 11px; font-style: normal; font-weight: 700; }
 
 .detailBody {
   display: grid;
@@ -195,7 +195,7 @@
   gap: 8px;
 }
 
-.detailRowBody .nextAction { margin-bottom: 2px; }
+.detailRowBody .capabilityLink { margin-bottom: 2px; }
 
 .blockTitle svg {
   width: 16px;
@@ -290,7 +290,7 @@
   font-weight: 650;
 }
 
-.nextAction {
+.capabilityLink {
   width: 100%;
   min-height: 42px;
   display: flex;
@@ -306,19 +306,19 @@
   cursor: pointer;
 }
 
-.nextAction span {
+.capabilityLink span {
   display: grid;
   gap: 3px;
 }
 
-.nextAction small {
+.capabilityLink small {
   color: var(--primary);
   font-size: 11px;
   font-weight: 750;
   text-transform: uppercase;
 }
 
-.nextAction strong {
+.capabilityLink strong {
   font-size: 13px;
 }
 
@@ -574,7 +574,7 @@
 @media (hover: hover) {
   .detailGroup:hover { border-color: var(--separator-strong); }
 
-  .nextAction:hover,
+  .capabilityLink:hover,
   .fileRow:hover {
     background: var(--surface-soft);
   }
@@ -593,7 +593,7 @@
     border-inline: 0;
   }
 
-  .healthSummary > .nextAction {
+  .healthSummary > .capabilityLink {
     margin: 10px;
   }
 

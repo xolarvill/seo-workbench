@@ -47,7 +47,7 @@ type AppShellProps = {
 
 const navigation = [
   { id: "overview" as const, label: "Home", icon: House },
-  { id: "workflow" as const, label: "Plan", icon: GitBranch },
+  { id: "workflow" as const, label: "Methods", icon: GitBranch },
   { id: "owners" as const, label: "Owners", icon: UserRound },
   { id: "keywords" as const, label: "Keywords", icon: Tags },
   { id: "pages" as const, label: "Pages", icon: PanelsTopLeft },
@@ -90,7 +90,7 @@ const viewLabels: Record<ViewName, string> = {
   pages: "Pages",
   "link-building": "Link building",
   statistics: "Statistics",
-  workflow: "Plan",
+  workflow: "Methods",
   content: "Content",
   reports: "Reports",
   audits: "Audit",

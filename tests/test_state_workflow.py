@@ -1,12 +1,35 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from seo_workbench.content_pipeline import normalize_status
 from seo_workbench.hexcal_blog_import import HEXCAL_STATUS_MAP
 from seo_workbench import state
 from seo_workbench.cli import main
 from seo_workbench.validation import validate_project
-from seo_workbench.workflow import DEFAULT_WORKFLOW, load_workflow, next_contract
+from seo_workbench.workflow import DEFAULT_WORKFLOW, load_workflow, step_reference
+
+
+def test_next_is_not_an_agent_command(capsys) -> None:
+    with pytest.raises(SystemExit) as exc:
+        main(["next", "--json"])
+    assert exc.value.code == 2
+    assert "invalid choice" in capsys.readouterr().err
+
+
+def test_status_does_not_prescribe_work_or_mutate_legacy_state(tmp_path: Path, capsys) -> None:
+    path = state.init_state("shopify", "Shop", "https://example.com", project_dir=tmp_path)
+    data = state.read_json(path)
+    data["nextAction"] = "Run next"
+    state.write_json(path, data)
+    before = path.read_bytes()
+
+    assert main(["--project-dir", str(tmp_path), "status", "--json"]) == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert "next" not in payload
+    assert payload["skill_index"] == "skills/README.md"
+    assert path.read_bytes() == before
 
 
 def test_non_headless_init_skips_headless_precheck(tmp_path: Path) -> None:
@@ -38,8 +61,8 @@ def test_validate_project_reports_contract(tmp_path: Path) -> None:
 
 def test_init_steps_declare_skill_context_and_output(tmp_path: Path) -> None:
     workflow = load_workflow(DEFAULT_WORKFLOW)
-    brand = next_contract(workflow, "INIT", {"id": "config-brand-voice", "label": "Brand"}, tmp_path)
-    keywords = next_contract(workflow, "INIT", {"id": "config-target-keywords", "label": "Keywords"}, tmp_path)
+    brand = step_reference(workflow, "INIT", {"id": "config-brand-voice", "label": "Brand"}, tmp_path)
+    keywords = step_reference(workflow, "INIT", {"id": "config-target-keywords", "label": "Keywords"}, tmp_path)
 
     assert brand["skill"] == "skills/project-context/SKILL.md"
     assert brand["output"] == str(tmp_path / "context/brand-voice.md")
@@ -52,7 +75,7 @@ def test_init_steps_declare_skill_context_and_output(tmp_path: Path) -> None:
 def test_agent_context_includes_optional_browser_evidence(tmp_path: Path) -> None:
     workflow = load_workflow(DEFAULT_WORKFLOW)
     for phase, step in (("TECHNICAL_AUDIT", "technical-audit"), ("MONITORING", "technical-recheck")):
-        contract = next_contract(workflow, phase, {"id": step, "label": step}, tmp_path)
+        contract = step_reference(workflow, phase, {"id": step, "label": step}, tmp_path)
         assert str(tmp_path / "audits/browser/latest.json") in contract["context"]
 
 
@@ -80,7 +103,7 @@ def test_content_production_steps_have_dynamic_contract(tmp_path: Path) -> None:
     steps = data["phases"]["CONTENT_PRODUCTION"]["steps"]
 
     assert [step["id"] for step in steps] == ["draft-content", "revise-content", "prepare-publish"]
-    contract = next_contract(workflow, "CONTENT_PRODUCTION", steps[0], tmp_path)
+    contract = step_reference(workflow, "CONTENT_PRODUCTION", steps[0], tmp_path)
     assert contract["skill"] == "skills/write-content/SKILL.md"
     assert str(tmp_path / "strategy/keyword-pool.jsonl") in contract["context"]
     assert str(tmp_path / "content/blog-pipeline.jsonl") in contract["context"]

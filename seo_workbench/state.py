@@ -226,7 +226,7 @@ def set_phase(data: dict[str, Any], phase: str) -> None:
         raise ValueError(f"unknown phase: {phase}")
     data["currentPhase"] = phase
     data["lastAction"] = f"Switched to {phase}"
-    data["nextAction"] = "Run next"
+    data["nextAction"] = ""
     record_history(data, "phase", phase)
 
 
@@ -246,9 +246,7 @@ def advance_if_done(data: dict[str, Any]) -> None:
         data["phases"][phase]["status"] = "done"
         if next_phase := phase_after(data, phase):
             data["currentPhase"] = next_phase
-            data["nextAction"] = f"Run {next_phase}"
-        else:
-            data["nextAction"] = "Workflow complete"
+        data["nextAction"] = ""
 
 
 def update_step(data: dict[str, Any], action: str, step_id: str | None = None) -> tuple[str, str]:
@@ -276,7 +274,7 @@ def update_step(data: dict[str, Any], action: str, step_id: str | None = None) -
     elif action in {"done", "reset", "start"}:
         target.pop("skipped", None)
     data["lastAction"] = f"{action}: {phase}/{target['id']}"
-    data["nextAction"] = "Run next"
+    data["nextAction"] = ""
     record_history(data, action, phase, target["id"])
     advance_if_done(data)
     return phase, target["id"]

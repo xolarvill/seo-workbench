@@ -36,6 +36,19 @@ def ui_client(tmp_path: Path) -> tuple[TestClient, Path]:
     return client, project_dir
 
 
+def test_workspace_does_not_schedule_an_agent_step(tmp_path: Path) -> None:
+    client, project_dir = ui_client(tmp_path)
+    path = project_dir / "state.json"
+    before = path.read_bytes()
+    with client:
+        response = client.get("/api/v1/projects/store/workspace")
+    assert response.status_code == 200
+    workspace = response.json()["workspace"]
+    assert "next" not in workspace
+    assert workspace["phases"] == json.loads(before)["phases"]
+    assert path.read_bytes() == before
+
+
 def browser_capture(url: str = "https://example.com/product?utm_source=test&token=secret") -> dict:
     return {
         "schema_version": "browser-capture-v1",

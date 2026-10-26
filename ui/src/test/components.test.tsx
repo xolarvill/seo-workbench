@@ -86,7 +86,6 @@ const workspace: Workspace = {
   project: { name: "Example Shop", url: "https://example.com", type: "shopify" },
   phase: "TECHNICAL_AUDIT",
   step: { id: "collect", label: "Collect evidence", status: "pending" },
-  next: { phase: "TECHNICAL_AUDIT", step: "collect", label: "Collect evidence", skill: "technical-audit", context: [], output: "audits/technical.md" },
   phase_order: ["DISCOVERY", "TECHNICAL_AUDIT"],
   phases: {
     DISCOVERY: { status: "done", steps: [{ id: "brief", label: "Brief", status: "done" }] },
@@ -307,7 +306,7 @@ describe("workbench frontend", () => {
     render(<AppShell projects={[project]} selectedProject="shop" activeView="overview" onProjectChange={vi.fn()} onNavigate={navigate}><p>Workspace</p></AppShell>);
     expect(screen.getAllByText("Example Shop").length).toBeGreaterThan(0);
     expect(screen.getAllByText("example.com").length).toBeGreaterThan(0);
-    fireEvent.click(screen.getAllByRole("button", { name: /Plan/i })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: /Methods/i })[0]);
     expect(navigate).toHaveBeenCalledWith("workflow");
     fireEvent.click(screen.getAllByRole("button", { name: /Keywords/i })[0]);
     expect(navigate).toHaveBeenCalledWith("keywords");
@@ -372,24 +371,25 @@ describe("workbench frontend", () => {
     expect(screen.getAllByRole("button", { name: "Audit" })[0].getAttribute("aria-expanded")).toBe("true");
   });
 
-  it("shows the current workflow instruction and phase states", () => {
+  it("offers capabilities independently of the stored workflow phase", () => {
     const onOpenActions = vi.fn();
     const onOpenKeywords = vi.fn();
-    render(<WorkflowPage workspace={{ ...workspace, phase_order: ["DISCOVERY", "STRATEGY", "TECHNICAL_AUDIT"], phases: { ...workspace.phases, STRATEGY: { status: "pending", steps: [] } } }} onStepAction={vi.fn()} onOpenActions={onOpenActions} onOpenKeywords={onOpenKeywords} />);
+    render(<WorkflowPage workspace={{ ...workspace, phase_order: ["DISCOVERY", "STRATEGY", "TECHNICAL_AUDIT"], phases: { ...workspace.phases, STRATEGY: { status: "pending", steps: [] } } }} onOpenActions={onOpenActions} onOpenKeywords={onOpenKeywords} />);
     fireEvent.click(screen.getByRole("button", { name: "Run audit evidence" }));
     expect(onOpenActions).toHaveBeenCalledOnce();
-    expect(screen.getAllByText("Collect evidence").length).toBeGreaterThan(0);
-    expect(screen.getByText("technical-audit")).toBeTruthy();
-    expect(screen.getByText("DISCOVERY")).toBeTruthy();
+    expect(screen.queryByText("Collect evidence")).toBeNull();
+    expect(screen.getAllByText("Available when relevant").length).toBeGreaterThan(0);
+    expect(screen.getByText("Discovery")).toBeTruthy();
+    expect(screen.queryByText("Next handoff")).toBeNull();
     expect(screen.queryByText("Workflow complete")).toBeNull();
     expect(screen.getByText("Map demand and ownership")).toBeTruthy();
     fireEvent.click(screen.getAllByRole("link", { name: "Open Keywords" })[0]);
     expect(onOpenKeywords).toHaveBeenCalledOnce();
   });
 
-  it("explains content production without turning Plan into a queue", () => {
+  it("explains content production without turning the map into a queue", () => {
     const onOpenContent = vi.fn();
-    render(<WorkflowPage workspace={{ ...workspace, phase: "CONTENT_PRODUCTION", phase_order: ["DISCOVERY", "CONTENT_PRODUCTION", "TECHNICAL_AUDIT"], step: null, next: null, phases: { ...workspace.phases, CONTENT_PRODUCTION: { status: "pending", steps: [] } } }} onStepAction={vi.fn()} onOpenContent={onOpenContent} />);
+    render(<WorkflowPage workspace={{ ...workspace, phase: "CONTENT_PRODUCTION", phase_order: ["DISCOVERY", "CONTENT_PRODUCTION", "TECHNICAL_AUDIT"], step: null, phases: { ...workspace.phases, CONTENT_PRODUCTION: { status: "pending", steps: [] } } }} onOpenContent={onOpenContent} />);
     expect(screen.getAllByText("Create or improve the page").length).toBeGreaterThan(0);
     expect(screen.getByText("Write or improve the content")).toBeTruthy();
     expect(screen.queryByText("Review content queue")).toBeNull();
@@ -397,24 +397,28 @@ describe("workbench frontend", () => {
     expect(onOpenContent).toHaveBeenCalledOnce();
   });
 
-  it("keeps workflow action failures visible", async () => {
+  it("does not prescribe or mutate a step even for a pending INIT project", () => {
     const initWorkspace: Workspace = {
       ...workspace,
       phase: "INIT",
-      phase_order: ["INIT", "STRATEGY"],
+      phase_order: ["INIT"],
       step: { id: "config-brand-voice", label: "Define brand voice", status: "pending" },
-      next: { phase: "INIT", step: "config-brand-voice", label: "Define brand voice", skill: "project-context", context: [], output: "context/brand-voice.md" },
-      phases: { ...workspace.phases, INIT: { status: "in_progress", steps: [{ id: "config-brand-voice", label: "Define brand voice", status: "pending" }] }, STRATEGY: { status: "pending", steps: [] } },
+      phases: { INIT: { status: "in_progress", steps: [{ id: "config-brand-voice", label: "Define brand voice", status: "pending" }] } },
     };
-    render(<WorkflowPage workspace={initWorkspace} onStepAction={vi.fn().mockRejectedValue(new Error("State revision changed."))} />);
-    fireEvent.click(screen.getByRole("button", { name: "Mark done" }));
-    expect((await screen.findByRole("alert")).textContent).toContain("State revision changed.");
+    render(<WorkflowPage workspace={initWorkspace} />);
+    expect(screen.queryByRole("button", { name: "Mark done" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Skip" })).toBeNull();
+    expect(screen.queryByText("Next handoff")).toBeNull();
+    expect(screen.getByText("Create or improve the page")).toBeTruthy();
+    expect(screen.getByText("Validate the technical foundation")).toBeTruthy();
   });
 
   it("shows recorded SEO change outcomes", () => {
     const navigatePages = vi.fn();
     render(<OverviewPage workspace={workspace} updatedPaths={{}} onNavigateWorkflow={vi.fn()} onNavigatePages={navigatePages} onOpenFile={vi.fn()} />);
     expect(screen.getByText("SEO change outcomes")).toBeTruthy();
+    expect(screen.queryByText("Next action")).toBeNull();
+    expect(screen.queryByText("Workflow complete")).toBeNull();
     expect(screen.getByText("Improve qualified clicks")).toBeTruthy();
     expect(screen.getByText("winning")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Open outcome reviews" }));

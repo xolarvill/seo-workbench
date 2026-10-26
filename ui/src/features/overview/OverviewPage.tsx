@@ -56,10 +56,6 @@ function healthStatusTone(score: number | null): StatusTone {
   return "success";
 }
 
-function phaseLabel(phase: string) {
-  return phase.replaceAll("_", " ");
-}
-
 function asRecord(value: unknown): Record<string, unknown> | null {
   return value && typeof value === "object" && !Array.isArray(value) ? value as Record<string, unknown> : null;
 }
@@ -116,7 +112,6 @@ export function OverviewPage({ workspace, updatedPaths, onNavigateWorkflow, onNa
   const crossSource = asRecord(portfolioStatistics?.cross_source_consistency);
   const technicalEffects = asRecord(portfolioStatistics?.technical_issue_effects);
   const score = performance.score ?? 0;
-  const nextLabel = workspace.next?.label || workspace.step?.label || "Workflow complete";
   const evidenceReady = workspace.evidence.items.filter((item) => ["ok", "ready", "complete"].includes(item.status)).length;
 
   useEffect(() => {
@@ -163,10 +158,10 @@ export function OverviewPage({ workspace, updatedPaths, onNavigateWorkflow, onNa
               {evidenceOpen ? <EvidenceStatusCard items={workspace.evidence.items} /> : null}
             </div>
             <div><span>Reviews due</span><strong className={workspace.changes.due ? styles.statusWarning : styles.statusSuccess}>{workspace.changes.due}</strong><small>SEO changes</small></div>
-            <div><span>Current phase</span><strong>{phaseLabel(workspace.phase)}</strong><small>{workspace.step?.label || "No pending step"}</small></div>
+            <div><span>Content items</span><strong>{workspace.content.items.length}</strong><small>Recorded in this workspace</small></div>
           </div>
-          <button className={styles.nextAction} type="button" onClick={onNavigateWorkflow}>
-            <span><small>Next action</small><strong>{nextLabel}</strong><em>Open workflow</em></span>
+          <button className={styles.capabilityLink} type="button" onClick={onNavigateWorkflow}>
+            <span><small>Explore methods</small><strong>Choose by task</strong><em>Open capability map</em></span>
             <ArrowRight aria-hidden="true" size={20} />
           </button>
         </section>
@@ -211,9 +206,8 @@ export function OverviewPage({ workspace, updatedPaths, onNavigateWorkflow, onNa
           </DetailGroup>
 
           <DetailGroup index="3" title="Operations and technical context" subtitle="Delivery workflow, technical systems, and supporting evidence">
-            <DetailRow icon={GitBranch} title="Workflow" subtitle={phaseLabel(workspace.phase)} summary={<><b>{nextLabel}</b><span>{workspace.phase_order.length} phases</span></>}>
-              <button className={styles.nextAction} type="button" onClick={onNavigateWorkflow}><span><small>Next action</small><strong>{nextLabel}</strong><em>Open workflow</em></span><ArrowRight aria-hidden="true" size={20} /></button>
-              <ol className={styles.phaseList}>{workspace.phase_order.map((phase) => { const current = phase === workspace.phase; const complete = workspace.phases[phase]?.status === "done"; return <li className={current ? styles.currentPhase : complete ? styles.completePhase : undefined} key={phase}><span /><strong>{phaseLabel(phase)}</strong><small>{current ? "Current" : complete ? "Complete" : "Upcoming"}</small></li>; })}</ol>
+            <DetailRow icon={GitBranch} title="Capability map" subtitle="Choose methods from the current goal" summary={<span>Available across tasks</span>}>
+              <button className={styles.capabilityLink} type="button" onClick={onNavigateWorkflow}><span><small>Explore methods</small><strong>Choose by task</strong><em>Open capability map</em></span><ArrowRight aria-hidden="true" size={20} /></button>
             </DetailRow>
             <DetailRow icon={Braces} title="Technology architecture" subtitle="Detected stack" summary={<span>{Object.keys(layers).length ? `${Object.keys(layers).length} layers detected` : "No data"}</span>}>
               {Object.entries(layers).slice(0, 5).map(([layer, technologies]) => <div className={styles.architectureRow} key={layer}><strong>{layerLabels[layer] || layer.replaceAll("_", " ")}</strong><span>{technologies.join(" · ")}</span></div>)}

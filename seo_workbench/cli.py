@@ -90,7 +90,6 @@ from seo_workbench.tech_audit import (
 )
 from seo_workbench.tech_issues import USER_ISSUE_STATUSES, list_issue_register, update_issue_status
 from seo_workbench.validation import validate_project
-from seo_workbench.workflow import load_workflow, next_contract
 from seo_workbench_tools import ga4_probe, shopify_orders_probe
 
 
@@ -140,7 +139,7 @@ def cmd_status(args: argparse.Namespace) -> int:
         "project": data.get("project", {}),
         "phase": phase,
         "step": step,
-        "next": data.get("nextAction") or "",
+        "skill_index": "skills/README.md",
         "last": data.get("lastAction") or "",
     }
     if args.json_output:
@@ -149,7 +148,7 @@ def cmd_status(args: argparse.Namespace) -> int:
     print(f"project: {data.get('project', {}).get('name', '')}")
     print(f"phase: {phase}")
     print(f"step: {step.get('id') if step else 'none'}")
-    print(f"next: {data.get('nextAction') or ''}")
+    print("skills: skills/README.md (choose methods from the current goal and evidence)")
     return 0
 
 
@@ -168,32 +167,6 @@ def cmd_step(args: argparse.Namespace) -> int:
         print_json({"ok": True, "action": args.action, "phase": phase, "step": step_id})
         return 0
     print(f"{args.action}: {phase}/{step_id}")
-    return 0
-
-
-def cmd_next(args: argparse.Namespace) -> int:
-    data = state.load_state(args.project_dir)
-    phase, step = state.current_step(data)
-    if not step:
-        if args.json_output:
-            print_json({"ok": True, "phase": phase, "step": None, "pending": False})
-            return 0
-        print(f"{phase}: no pending step")
-        return 0
-    contract = next_contract(load_workflow(args.workflow), phase, step, args.project_dir)
-    if args.json_output:
-        print_json({"ok": True, "pending": True, **contract})
-        return 0
-    print(f"{contract['phase']}/{contract['step']}: {contract['label']}")
-    if contract["skill"]:
-        print(f"skill: {contract['skill']}")
-    if contract["context"]:
-        print("context:")
-        for path in contract["context"]:
-            print(f"- {path}")
-    if contract["output"]:
-        print(f"output: {contract['output']}")
-    print(f"after: ./seo --project-dir {args.project_dir} step done")
     return 0
 
 
@@ -1484,19 +1457,15 @@ def build_parser() -> argparse.ArgumentParser:
     status.add_argument("--json", action="store_true", dest="json_output")
     status.set_defaults(func=cmd_status)
 
-    phase = sub.add_parser("phase")
+    phase = sub.add_parser("phase", help="Maintain legacy phase records; does not schedule agent work")
     phase.add_argument("phase")
     phase.set_defaults(func=cmd_phase)
 
-    step = sub.add_parser("step")
+    step = sub.add_parser("step", help="Maintain legacy step records; does not verify task completion")
     step.add_argument("action", choices=["done", "skip", "reset", "start"])
     step.add_argument("step_id", nargs="?")
     step.add_argument("--json", action="store_true", dest="json_output")
     step.set_defaults(func=cmd_step)
-
-    next_cmd = sub.add_parser("next")
-    next_cmd.add_argument("--json", action="store_true", dest="json_output")
-    next_cmd.set_defaults(func=cmd_next)
 
     evidence = sub.add_parser("evidence")
     evidence.add_argument("--timeout", type=float, default=15)

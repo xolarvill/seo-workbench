@@ -57,7 +57,6 @@ from seo_workbench.shopify_crawler import (
     delete_crawler_access,
     write_crawler_access,
 )
-from seo_workbench.workflow import DEFAULT_WORKFLOW, load_workflow, next_contract
 from seo_workbench.tech_audit import (
     TechAuditViewQuery,
     delete_tech_audit_run,
@@ -1861,7 +1860,6 @@ def _content_command(project_dir: Path, request: ContentActionRequest) -> tuple[
 def _workspace(project_id: str, project_dir: Path, runtime_dir: Path) -> dict[str, Any]:
     data = state.load_state(project_dir)
     phase, step = state.current_step(data)
-    contract = next_contract(load_workflow(DEFAULT_WORKFLOW), phase, step, project_dir) if step else None
     files = _markdown_files(project_dir)
     recent = sorted(files, key=lambda item: item["modified_at"], reverse=True)[:8]
     try:
@@ -1873,7 +1871,6 @@ def _workspace(project_id: str, project_dir: Path, runtime_dir: Path) -> dict[st
         "project": data.get("project", {}),
         "phase": phase,
         "step": step,
-        "next": contract,
         "phase_order": data.get("phaseOrder", []),
         "phases": data.get("phases", {}),
         "evidence": _evidence_summary(project_dir, runtime_dir),
