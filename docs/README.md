@@ -27,6 +27,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 ## Operations and architecture
 
 - [Google integrations](google-integrations.md): CrUX and read-only GSC configuration, evidence scopes, and status meanings.
+- [Analytics MCP assessment](20261027-analytics-mcp-assessment.md): API and MCP boundaries, current Google / Clarity tools, and the proposed optional Clarity integration.
 - [Shopify integrations](shopify-integrations.md): Admin API credential setup, granted scopes, rotation, and project isolation.
 - [Statistical SEO operations](统计学SEO操作手册.md): the minimum operator preparation, daily collection entry point, measurement boundaries, and metric catalog.
 - [Hexcal BLOG adapter](hexcal-blog-migration.md): optional Feishu field aliases, ownership boundaries, and retained production capabilities.
