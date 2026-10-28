@@ -1,6 +1,6 @@
 # Clarity MCP 分阶段整合计划
 
-日期：2026-10-28。状态：待实施。本文件承接 [能力评估](20261027-analytics-mcp-assessment.md)。
+日期：2026-10-28。状态：五阶段实施与联调已执行；面板及录制可用，官方文档查询实测 HTTP 500，保留外部服务限制。验收见 [实施记录](20261028-clarity-mcp-acceptance.md)。本文件承接 [能力评估](20261027-analytics-mcp-assessment.md)。
 
 ## 目标与架构
 
