@@ -109,6 +109,48 @@ result's availability. Check the tool and fields needed for the current task rat
 than treating every partial observation as an authentication or transport failure.
 Explicit user instructions to stop on a problem still take precedence.
 
+### Click-event source page boundary (collector 1.2.0)
+
+`clarity query --source-page https://example-store.com/` records an explicit task
+requirement that clicks occurred on that exact clean same-site page. The query sent
+upstream states that session EntryUrl and VisitedUrl are not substitutes. The exact
+legacy phrase `Source page must be exactly https://...` also activates this guard;
+this is bounded compatibility, not a general natural-language contract parser.
+
+The current natural-language MCP dashboard response does not supply independently
+verified event-page attribution. These queries therefore return
+`capability_status=unsupported_scope` and a nonzero CLI exit, even when transport
+succeeds and a response contains counts. Provider descriptions containing an
+`EntryUrl =` predicate additionally flag `scope_status=mismatch` and
+`click_source_scope_conflict`; other descriptions retain
+`click_source_scope_unverified`. This is a conservative rejection signal, not a
+complete semantic SQL verifier. Merely echoing a source page in text or row labels
+cannot pass the guard. Counts remain observations and must not be attributed to a
+page or section. Normal session/dashboard exploration remains separate.
+
+The original recurrence was missed because scope checks covered dates, timezone
+and site, while the caller required the page where an event happened. Regression
+tests now cover both the original wording and explicit source-page option, plus
+the CLI failure path. On 2026-10-28, a real read-only retry with the explicit
+contract returned `provider_query_error`; no automatic retry followed. Local
+rejection behavior is tested; successful remote page-level attribution is still
+unproven. Do not interpret the undocumented error code as proof of schema absence.
+
+For a verifiable read-only alternative, use the official Clarity Heatmaps UI:
+select the exact page URL, the requested dates and a device, inspect the page
+screenshot/layout version, then inspect click/area and scroll maps. Preserve the
+selected filters and any exported CSV/PNG with the analysis evidence. A session
+Entry URL filter alone does not establish the clicked page. Area-map CTR is the
+area's clicks divided by all clicks on matched pages, not exposed-user conversion.
+GA4 homepage referrer page views can provide navigation context but cannot identify
+which homepage section was clicked. Do not add tracking or invent historical zeros
+to fill this gap.
+
+Official references: [Entry URL semantics](https://learn.microsoft.com/en-us/clarity/filters/clarity-filters),
+[exact heatmap URL filters](https://learn.microsoft.com/en-us/clarity/filters/path-filters-operators),
+[area maps and CTR denominator](https://learn.microsoft.com/en-us/clarity/heatmaps/area-maps),
+[scroll maps](https://learn.microsoft.com/en-us/clarity/heatmaps/scroll-maps).
+
 Operations have a 60-second parent deadline, bounded output and owned-process cleanup.
 Queries and credential verification share a nonblocking per-brand lease and cooldown.
 Known 429s trigger 60 seconds of cooldown; no automatic network retries. Matching usable
