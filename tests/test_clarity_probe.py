@@ -102,3 +102,66 @@ def test_storage_failure_is_structured(project, monkeypatch):
     report = collect(project, "docs", query="Consent", caller=lambda *a, **k: result({"answer": "Documentation"}))
     assert report["reason_code"] == "evidence_write_failed"
     assert "manifest" not in report
+
+
+def test_provider_description_is_preserved_without_claiming_verified_scope(project):
+    description = "Counts non-bot unique sessions on https://example.com/?token=secret in UTC; secret-token-123456; person@example.com"
+    report = collect(project, "query", query="Sessions", start="2026-10-26", end="2026-10-26",
+                     caller=lambda *a, **k: result({"query": description, "data": [{"TotalSessions": 7}]}))
+    assert report["transport_status"] == "ok"
+    assert report["scope_status"] == "provider_described"
+    assert report["identity_status"] == "operator_declared"
+    assert report["capability_status"] == "available"
+    assert report["collection_status"] == "partial"
+    assert "non-bot unique sessions" in report["provider_query_description"]
+    assert "token=secret" not in report["provider_query_description"]
+    assert "secret-token-123456" not in report["provider_query_description"]
+    assert "person@example.com" not in report["provider_query_description"]
+
+
+@pytest.mark.parametrize("scope,scope_status,reason", [
+    ({"startDate": "2026-10-26", "endDate": "2026-10-26", "timezone": "UTC", "site_url": "https://example.com"}, "structured_match", "identity_unverified"),
+    ({"startDate": "2026-10-25", "endDate": "2026-10-26", "timezone": "UTC", "site_url": "https://example.com"}, "mismatch", "scope_mismatch"),
+    ({"startDate": "2026-10-26", "endDate": "2026-10-26", "timezone": "UTC", "site_url": "https://other.com"}, "mismatch", "scope_mismatch"),
+    ({"startDate": "2026-10-26", "endDate": "2026-10-26", "timezone": "America/New_York", "site_url": "https://example.com"}, "mismatch", "scope_mismatch"),
+    ({"startDate": "2026-10-26", "endDate": "2026-10-26", "timezone": "UTC"}, "unknown", "scope_incomplete"),
+])
+def test_structured_scope_is_compared_to_actual_request(project, scope, scope_status, reason):
+    report = collect(project, "query", query="Sessions", start="2026-10-26", end="2026-10-26",
+                     caller=lambda *a, **k: result({"scope": scope, "data": [{"TotalSessions": 7}]}))
+    assert report["scope_status"] == scope_status
+    assert report["reason_code"] == reason
+    assert not report["identity_verified"]
+    assert report["collection_status"] == "partial"
+
+
+def test_documentation_failure_does_not_contaminate_dashboard(project):
+    failed = collect(project, "docs", query="Consent", caller=lambda *a, **k: {"ok": True, "http_status": 500, "result": {"content": [{"type": "text", "text": "An error occurred while fetching the data."}]}})
+    assert failed["capability_status"] == "unavailable"
+    dashboard = collect(project, "query", query="Sessions", start="2026-10-26", end="2026-10-26",
+                        caller=lambda *a, **k: result({"sessions": 7}))
+    assert dashboard["transport_status"] == "ok"
+    assert dashboard["capability_status"] == "available"
+    assert dashboard["errors"] == []
+    index = json.loads((project / "audits/clarity/latest.json").read_text())["sources"]
+    assert index["dashboard"]["transport_status"] == "ok"
+    assert index["documentation"]["capability_status"] == "unavailable"
+
+
+def test_unrecognized_metrics_are_not_a_usable_empty_result(project):
+    report = collect(project, "query", query="Sessions", start="2026-10-26", end="2026-10-26",
+                     caller=lambda *a, **k: result({"data": [{"unrecognizedMetric": 7}], "dataErrorType": 0}))
+    assert report["transport_status"] == "ok"
+    assert report["capability_status"] == "unsupported_response"
+    assert report["reason_code"] == "unsupported_response"
+
+
+def test_new_collector_does_not_reuse_legacy_cache(project):
+    old = collect(project, "query", query="Sessions", start="2026-10-26", end="2026-10-26", caller=lambda *a, **k: result({"sessions": 7}))
+    target = project / old["manifest"]["latest_path"]
+    payload = json.loads(target.read_text())
+    payload.pop("collector_version", None)
+    target.write_text(json.dumps(payload))
+    refreshed = collect(project, "query", query="Sessions", start="2026-10-26", end="2026-10-26", caller=lambda *a, **k: result({"sessions": 8}))
+    assert not refreshed["cache_hit"]
+    assert refreshed["response"]["sessions"] == 8

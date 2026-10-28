@@ -18,6 +18,7 @@ from seo_workbench_tools.clarity_runtime import call, SERVER_VERSION, SDK_VERSIO
 
 TOOLS = {"query": ("dashboard", "query-analytics-dashboard"), "recordings": ("recordings", "list-session-recordings"),
          "docs": ("documentation", "query-documentation-resources")}
+COLLECTOR_VERSION = "1.1.0"
 DEVICES = {"Mobile", "PC", "Tablet"}
 CHANNELS = {"OrganicSearch", "Direct", "Email", "Display", "Social", "PaidSearch", "Other", "Affiliate", "Referral", "Video", "Audio", "SMS", "AITools", "PaidAITools"}
 SAFE_KEYS = set("data result results metrics metric metricName metricValue information value values count total totalCount sessions sessionCount totalSessionCount totalBotSessionCount distinctUsers distantUserCount users pageViews pageviews average percentage rate scrollDepth engagementTime activeTime totalTime deadClickCount rageClickCount scriptErrorCount quickBackCount browser Browser device Device deviceType country Country channel Channel source Source medium Medium campaign Campaign url URL pageUrl entryUrl exitUrl startDate endDate start end timezone dateRange scope metadata title description text answer response observation documentation content snippets citations links duration sessionDuration pageCount pagesCount clickCount summary insights rows columns type label name unit date error status message recordingUrl recordingLink sessionUrl recordingLinkUrl".split())
@@ -159,7 +160,8 @@ def _persist(project_dir: Path, kind: str, report: dict) -> dict:
             clarity.private_write(project_dir, f"{root}/last_successful.json", report)
         pointer = state.safe_project_path(project_dir, "audits/clarity/latest.json")
         index = json.loads(pointer.read_text()) if pointer.exists() else {"schema_version": "clarity-index-v1", "sources": {}}
-        index["sources"][kind] = {"path": relative, "collection_status": report["collection_status"], "generated_at": report["generated_at"]}
+        index["sources"][kind] = {"path": relative, "collection_status": report["collection_status"], "generated_at": report["generated_at"],
+                                  **{key: report[key] for key in ("transport_status", "scope_status", "identity_status", "capability_status") if key in report}}
         clarity.private_write(project_dir, "audits/clarity/latest.json", index)
     return report
 
@@ -174,14 +176,100 @@ def _save(project_dir: Path, kind: str, report: dict) -> dict:
         return report
 
 
+def _observations(value: Any, kind: str) -> bool:
+    """Metadata and filtered empty objects are not observed metrics or samples."""
+    if isinstance(value, dict):
+        excluded = {"scope", "metadata", "daterange", "dataerrortype", "query", "date", "startdate", "enddate", "timezone", "siteurl"}
+        return any(_observations(item, kind) for key, item in value.items() if re.sub(r"[^a-z]", "", key.lower()) not in excluded)
+    if isinstance(value, list):
+        return any(_observations(item, kind) for item in value)
+    if isinstance(value, str):
+        return bool(value.strip()) if kind != "dashboard" else bool(re.fullmatch(r"-?\d+(?:\.\d+)?%?", value))
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
+def _scope_quality(report: dict, payload: Any, action: str, binding: dict, options: dict, arguments: dict, tz: str) -> None:
+    if action == "docs":
+        report.update(scope_status="not_applicable", identity_status="not_applicable")
+        return
+    expected = {"startDate": options["start"], "endDate": options["end"], "timezone": tz, "site_url": binding["site_url"]}
+    if action == "recordings":
+        expected["filters"] = arguments["filters"]
+    report["requested_scope"] = expected
+    supplied = payload.get("scope") if isinstance(payload, dict) else None
+    description = payload.get("query") if isinstance(payload, dict) else None
+    if isinstance(description, str) and description.strip():
+        report["provider_query_description"] = clean_text(description.replace(binding["token"], "[redacted-token]"))
+        report["scope_status"] = "provider_described"
+    if not isinstance(supplied, dict) or not supplied:
+        return
+    observed = {key: supplied[key] for key in expected if key in supplied}
+    # Accept explicit URL aliases only as field names; never infer hostname aliases.
+    if "site_url" not in observed:
+        for alias in ("url", "website"):
+            if alias in supplied:
+                observed["site_url"] = supplied[alias]
+                break
+    report["observed_scope"] = {
+        key: sanitize(value, kind=TOOLS[action][0]) if key != "site_url" else clean_text(str(value))
+        for key, value in observed.items()
+    }
+    checks = {}
+    for key, wanted in expected.items():
+        if key not in observed:
+            checks[key] = "unknown"
+            continue
+        actual = observed[key]
+        if action == "recordings" and key in ("startDate", "endDate"):
+            try:
+                matched = _utc(actual) == _utc(wanted)
+            except (ValueError, TypeError, AttributeError):
+                matched = False
+        elif key == "site_url":
+            matched = isinstance(actual, str) and actual.rstrip("/") == wanted.rstrip("/")
+        else:
+            matched = actual == wanted
+        checks[key] = "match" if matched else "mismatch"
+    report["scope_checks"] = checks
+    if "mismatch" in checks.values():
+        report["scope_status"] = "mismatch"
+    elif all(value == "match" for value in checks.values()):
+        report["scope_status"] = "structured_match"
+
+
+def _classify(report: dict, payload: Any, safe: Any, action: str, error: str | None) -> None:
+    report["capability_status"] = "available"
+    explicit_empty = isinstance(payload, list) and not payload or isinstance(payload, dict) and payload.get("data") == []
+    if not _observations(safe, TOOLS[action][0]) and not explicit_empty:
+        report.update(collection_status="partial", reason_code="unsupported_response", capability_status="unsupported_response")
+        report["warnings"].append("The response has no recognized observations after redaction; it is not zero data")
+        return
+    if action == "docs" and not error:
+        report.update(collection_status="ok", reason_code="reference_only")
+        return
+    scope_status = report["scope_status"]
+    reason = {"mismatch": "scope_mismatch", "structured_match": "identity_unverified", "provider_described": "scope_provider_described"}.get(scope_status, "scope_incomplete" if report.get("observed_scope") is not None else "scope_unverified")
+    report.update(collection_status="partial", reason_code="unstructured_response" if error else reason)
+    report["warnings"].append("Remote project identity has not been independently verified")
+    if scope_status == "provider_described":
+        report["warnings"].append("Provider-described scope is explanatory text, not independent execution verification")
+    if scope_status == "mismatch":
+        report["warnings"].append("Provider scope conflicts with the request; do not use these observations for that window or site")
+    if scope_status == "structured_match":
+        report["warnings"].append("Structured match covers the explicit scope_checks fields, not every natural-language query condition")
+    report["warnings"].append("Exploratory evidence; do not merge into statistics or infer overall rates from recordings")
+
+
 def collect(project_dir: Path, action: str, *, caller: Callable = call, force: bool = False, transient_sink: Callable | None = None, **options) -> dict:
     if action not in TOOLS:
         raise ValueError("Unsupported Clarity operation")
     kind, tool = TOOLS[action]
     report: dict[str, Any] = {"schema_version": "clarity-evidence-v1", "provider": "microsoft-clarity-mcp",
-        "server_version": SERVER_VERSION, "sdk_version": SDK_VERSION, "generated_at": clarity.now(),
+        "server_version": SERVER_VERSION, "sdk_version": SDK_VERSION, "collector_version": COLLECTOR_VERSION, "generated_at": clarity.now(),
         "collection_status": "not_collected", "reason_code": "needs_config", "errors": [], "warnings": [], "cache_hit": False,
-        "observed_scope": None, "identity_verified": False}
+        "observed_scope": None, "identity_verified": False, "transport_status": "not_collected",
+        "scope_status": "not_applicable" if action == "docs" else "unknown",
+        "identity_status": "not_applicable" if action == "docs" else "operator_declared", "capability_status": "not_collected"}
     try:
         binding = clarity.load(project_dir)
     except (ValueError, OSError):
@@ -189,7 +277,7 @@ def collect(project_dir: Path, action: str, *, caller: Callable = call, force: b
     arguments, tz = prepare(binding, action, **options)
     report.update(project_id=binding["project_id"], site_url=binding["site_url"], identity_source="operator_declared",
                   request={"tool": tool, "arguments": arguments, "timezone": tz})
-    cache_key = hashlib.sha256(json.dumps([str(project_dir.resolve()), binding["generation"], SERVER_VERSION, SDK_VERSION, tool, arguments, tz], sort_keys=True).encode()).hexdigest()
+    cache_key = hashlib.sha256(json.dumps([str(project_dir.resolve()), binding["generation"], SERVER_VERSION, SDK_VERSION, COLLECTOR_VERSION, tool, arguments, tz], sort_keys=True).encode()).hexdigest()
     report["cache_key"] = cache_key
     try:
         with clarity.operation_lock(project_dir):
@@ -201,16 +289,18 @@ def collect(project_dir: Path, action: str, *, caller: Callable = call, force: b
             cache = state.safe_project_path(project_dir, f"audits/clarity/{kind}/latest.json")
             if not force and cache.exists():
                 previous = json.loads(cache.read_text())
-                if previous.get("cache_key") == cache_key and previous.get("collection_status") in ("ok", "partial") and previous.get("response") is not None and datetime.fromisoformat(previous["generated_at"]) > datetime.now(timezone.utc) - timedelta(minutes=15):
+                if previous.get("collector_version") == COLLECTOR_VERSION and previous.get("cache_key") == cache_key and previous.get("capability_status") == "available" and previous.get("scope_status") != "mismatch" and previous.get("collection_status") in ("ok", "partial") and previous.get("response") is not None and datetime.fromisoformat(previous["generated_at"]) > datetime.now(timezone.utc) - timedelta(minutes=15):
                     return {**previous, "cache_hit": True}
             raw = caller(tool, arguments, token=binding["token"], timezone=tz)
             if isinstance(raw.get("http_status"), int):
                 report["http_status"] = raw["http_status"]
             payload, error = clarity.interpret(raw)
+            report["transport_status"] = "ok" if raw.get("ok") and error in (None, "unstructured_response") else "failed"
             if clarity.load(project_dir)["generation"] != binding["generation"]:
                 report.update(collection_status="failed", reason_code="connection_changed", errors=["Connection changed during query; result discarded"])
                 return _save(project_dir, kind, report)
             if error and error != "unstructured_response":
+                report["capability_status"] = "unavailable"
                 report.update(collection_status="not_collected" if error in ("needs_runtime", "needs_auth", "busy") else "failed", reason_code=error, errors=[error])
                 if error == "rate_limited":
                     clarity.record_cooldown(project_dir)
@@ -220,16 +310,8 @@ def collect(project_dir: Path, action: str, *, caller: Callable = call, force: b
                 transient_sink({"links": recording_links(payload), "generation": binding["generation"], "created_at": clarity.now(), "cache_key": cache_key})
             report["response"] = safe
             report["response_shape"] = "list" if isinstance(payload, list) else "object"
-            report["warnings"].append("Remote project identity has not been independently verified")
-            # Only provider-confirmed range metadata can establish observed scope.
-            scope = payload.get("scope") if isinstance(payload, dict) else None
-            if isinstance(scope, dict) and all(scope.get(key) for key in ("startDate", "endDate", "timezone")):
-                report["observed_scope"] = sanitize(scope, kind=kind)
-            if action == "docs" and safe and not error:
-                report.update(collection_status="ok", reason_code="reference_only")
-            else:
-                report.update(collection_status="partial", reason_code="unstructured_response" if error else "scope_unverified")
-                report["warnings"].append("Exploratory evidence; do not merge into statistics or infer overall rates from recordings")
+            _scope_quality(report, payload, action, binding, options, arguments, tz)
+            _classify(report, payload, safe, action, error)
             return _save(project_dir, kind, report)
     except Timeout:
         report.update(reason_code="busy")

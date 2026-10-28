@@ -31,10 +31,10 @@ def execute(args) -> int:
                          count=getattr(args, "count", 10), force=args.force,
                          transient_sink=transient.update if action == "recordings" and os.environ.get("SEO_WORKBENCH_CLARITY_TRANSIENT") == "1" else None)
         # A background job must not copy session/document content into its log.
-        payload = {key: report[key] for key in ("collection_status", "reason_code", "warnings", "manifest", "cache_hit") if key in report}
+        payload = {key: report[key] for key in ("collection_status", "reason_code", "transport_status", "scope_status", "identity_status", "capability_status", "warnings", "manifest", "cache_hit") if key in report}
         if action == "recordings":
             payload["cache_key"] = report.get("cache_key")
-        payload["ok"] = report["collection_status"] in ("ok", "partial")
+        payload["ok"] = report["collection_status"] in ("ok", "partial") and report.get("capability_status") == "available" and report.get("scope_status") != "mismatch"
         if transient:
             payload["_private_clarity_links"] = transient
     print(json.dumps(payload, ensure_ascii=False, indent=2))
