@@ -1437,6 +1437,9 @@ def build_parser() -> argparse.ArgumentParser:
     project_group.add_argument("--project-dir", type=Path, help="Explicit project directory")
     parser.add_argument("--workflow", type=Path, default=None)
     sub = parser.add_subparsers(dest="command", required=True)
+    from seo_workbench.clarity_cli import register as register_clarity
+
+    register_clarity(sub)
 
     projects = sub.add_parser("projects")
     projects.add_argument("--json", action="store_true", dest="json_output")
