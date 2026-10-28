@@ -84,6 +84,24 @@ these responses; nonempty text alone is not a successful metric query. Hidden HT
 status stays `provider_error` rather than a guessed auth/limit diagnosis. The backend's
 nonzero `dataErrorType` is `provider_query_error`; do not invent its undocumented enum meaning.
 
+Collector 1.1.0 separates `transport_status`, `capability_status`, `scope_status`
+and `identity_status` in both evidence and CLI summaries. A successful request may
+still produce partial evidence. `provider_query_description` preserves the sanitized
+server explanation, including metric definitions; descriptive text is not independent
+execution verification. `structured_match` requires the returned scope to match the
+explicit requested date window, timezone and website (plus filters for recordings).
+Missing fields remain unknown; conflicts are `mismatch`. A matching window never
+verifies the declared remote project identity. The `scope_checks` fields identify
+exactly what was compared, without claiming every natural-language condition was checked.
+
+Responses whose unknown metrics were removed by the safety allowlist are marked
+`unsupported_response`, not interpreted as an empty dataset. CLI exits nonzero for
+that condition and scope conflicts. Old collector cache entries are not reused.
+Documentation failures belong to documentation only; they do not change a dashboard
+result's availability. Check the tool and fields needed for the current task rather
+than treating every partial observation as an authentication or transport failure.
+Explicit user instructions to stop on a problem still take precedence.
+
 Operations have a 60-second parent deadline, bounded output and owned-process cleanup.
 Queries and credential verification share a nonblocking per-brand lease and cooldown.
 Known 429s trigger 60 seconds of cooldown; no automatic network retries. Matching usable

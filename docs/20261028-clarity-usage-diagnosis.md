@@ -1,6 +1,6 @@
 # Clarity 首次使用诊断：连接成功与分析就绪之间的缺口
 
-日期：2026-10-28。范围：诊断与整改建议；本轮未修改运行代码或网站埋点。
+日期：2026-10-28。状态：P0适配层修复已实施；保留原诊断证据。P1板块测量核查仍是独立工作，未改网站埋点。
 
 ## 已确认的根因
 
@@ -34,6 +34,8 @@
 
 ## 本轮验证与边界
 
+- P0修复验收：107项后端回归、11项相关前端用例、UI类型检查与构建通过；项目validate通过，保留原有可选browser证据缺失警告。桌面和手机浏览器均验证范围说明展示、文档失败隔离、面板查询入口可用，无页面错误或横向溢出。
+- 修复后的固定日期只读查询返回transport_status=ok、capability_status=available、scope_status=provider_described；保留partial及operator_declared身份状态，没有将自然语言范围说明升级为独立核实。
 - 一次固定窗口、只读面板诊断成功，dataErrorType=0；上游query描述有URL、日期、UTC及非机器人唯一会话口径。
 - 独立临时fixture证明已存在scope仍被标scope_unverified，且query被sanitize丢弃。
 - 没有重新执行文档查询；HTTP500引用此前真实不可变证据。没有核实网站当前所有事件，也没有完成首页板块分析或任何删改判断。
