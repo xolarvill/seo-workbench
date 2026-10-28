@@ -134,6 +134,16 @@ export function ClarityPanel({ projectId }: { projectId: string }) {
       </form>
       <section aria-label="Clarity evidence"><h3>Latest {kinds[action]} evidence</h3><StatusPill value={statusLabel(evidence?.collection_status || "not_collected")} context="evidence" />
         <p>{evidence?.reason_code?.replaceAll("_", " ")} {evidence?.generated_at ? `· ${evidence.generated_at}` : ""}</p>
+        {evidence?.transport_status ? <dl aria-label="Clarity evidence quality">
+          <dt>Request</dt><dd><StatusPill value={evidence.transport_status === "ok" ? "succeeded" : evidence.transport_status} context="evidence" /></dd>
+          <dt>Response capability</dt><dd>{statusLabel(evidence.capability_status)}</dd>
+          <dt>Reporting scope</dt><dd>{statusLabel(evidence.scope_status)}</dd>
+          <dt>Project identity</dt><dd>{statusLabel(evidence.identity_status)}</dd>
+        </dl> : evidence?.collection_status && evidence.collection_status !== "not_collected" ? <p>Earlier evidence lacks detailed quality states. Refresh this operation to collect them.</p> : null}
+        {evidence?.transport_status === "ok" && evidence.capability_status === "available" && evidence.collection_status === "partial" ? <p>The request succeeded. Evidence remains partial because scope or project identity still needs confirmation.</p> : null}
+        {action === "docs" && evidence?.collection_status === "failed" ? <p>This documentation failure does not determine dashboard or recording availability.</p> : null}
+        {evidence?.provider_query_description ? <><h4>Provider query description</h4><p>Provider explanation; not independent execution verification.</p><pre className={styles.clarityResult}>{evidence.provider_query_description}</pre></> : null}
+        {evidence?.scope_checks ? <><h4>Structured scope checks</h4><pre className={styles.clarityResult}>{JSON.stringify(evidence.scope_checks, null, 2)}</pre></> : null}
         {evidence?.warnings?.map(warning => <p key={warning}>{warning}</p>)}
         {evidence?.errors?.map(message => <p key={message}>{message}</p>)}
         {action === "recordings" && links.length ? <><p>Private recording links expire from this local viewer after 15 minutes.</p><ul>{links.map((link, index) => <li key={link}><a href={link} target="_blank" rel="noreferrer">Open recording sample {index + 1}</a></li>)}</ul></> : null}

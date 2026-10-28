@@ -955,6 +955,13 @@ export type ClarityQuery = {
 
 export type ClarityEvidence = {
   collection_status: string;
+  transport_status?: string;
+  scope_status?: string;
+  identity_status?: string;
+  capability_status?: string;
+  provider_query_description?: string;
+  requested_scope?: unknown;
+  scope_checks?: Record<string, string>;
   reason_code?: string;
   generated_at?: string;
   observed_scope?: unknown;

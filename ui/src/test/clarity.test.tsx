@@ -20,6 +20,14 @@ beforeEach(() => {
 });
 
 describe("Clarity connection", () => {
+  it("distinguishes a successful request from provider-described partial evidence", async () => {
+    vi.mocked(fetchClarityEvidence).mockResolvedValue({ collection_status: "partial", transport_status: "ok", scope_status: "provider_described", identity_status: "operator_declared", capability_status: "available", provider_query_description: "Counts non-bot unique sessions in UTC." });
+    render(<ClarityPanel projectId="store" />);
+    await screen.findByText("Counts non-bot unique sessions in UTC.");
+    expect(screen.getByText(/The request succeeded/)).toBeTruthy();
+    expect(screen.getByText("provider described")).toBeTruthy();
+    expect(screen.getByText("Provider explanation; not independent execution verification.")).toBeTruthy();
+  });
   it("clears the write-only token after a failed save", async () => {
     vi.mocked(saveClarityCredentials).mockRejectedValue(new Error("Verification failed"));
     render(<ClarityPanel projectId="store" />);
