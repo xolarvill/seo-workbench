@@ -97,6 +97,13 @@ exactly what was compared, without claiming every natural-language condition was
 Responses whose unknown metrics were removed by the safety allowlist are marked
 `unsupported_response`, not interpreted as an empty dataset. CLI exits nonzero for
 that condition and scope conflicts. Old collector cache entries are not reused.
+Collector 1.1.1 additionally preserves observed dashboard aliases for total page views,
+average scroll depth percentage, dead/rage/quickback clicks and excessive scrolls,
+plus homepage URL and UTC date labels. Row labels do not establish verified scope.
+`response_projection.omitted_numeric_fields` counts unsupported numeric fields in
+recognized response containers and adds a warning when present; unknown field names,
+values and identifiers remain excluded. This does not assert that every requested
+metric was returned, or that homepage totals describe an individual section.
 Documentation failures belong to documentation only; they do not change a dashboard
 result's availability. Check the tool and fields needed for the current task rather
 than treating every partial observation as an authentication or transport failure.

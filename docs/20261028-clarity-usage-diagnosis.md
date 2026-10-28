@@ -34,6 +34,9 @@
 
 ## 本轮验证与边界
 
+- 二次使用补查：新鲜上游响应确实包含TotalPageViews、AvgScrollDepthPercent、TotalDeadClicks、TotalRageClicks、TotalQuickbackClicks、TotalExcessiveScrolls，以及HomepageURL和UTC日期标签；1.1.0白名单只保存Device及TotalSessions，导致说明与持久化指标不一致。此前测试仅覆盖会话数及全未知响应，未覆盖已知与未知指标混合，是上次修复遗漏。
+- 1.1.1按实测字段补齐精确白名单，并在支持的容器中出现未知数值字段时增加数量及不完整警告，不保存未知名称、值或标识符；缓存版本升级，旧快照保持不可变。新增两项回归先在旧代码失败，再随修复通过；相关后端39项通过。Dashboard、recordings和docs共用sanitize，仅dashboard启用新增投影诊断，recordings既有标识符和内容过滤保持不变。
+- 修复后再次执行相同首页查询，实际保存的每个设备行均保留上述七项指标，未遗漏数值字段，未出现token；请求成功，范围仍是provider_described。上游自然语言查询每次可能改变返回列，行级URL及日期标签并非每次都有；不承诺固定响应schema，也不据此宣称板块级数据可用。
 - P0修复验收：107项后端回归、11项相关前端用例、UI类型检查与构建通过；项目validate通过，保留原有可选browser证据缺失警告。桌面和手机浏览器均验证范围说明展示、文档失败隔离、面板查询入口可用，无页面错误或横向溢出。
 - 修复后的固定日期只读查询返回transport_status=ok、capability_status=available、scope_status=provider_described；保留partial及operator_declared身份状态，没有将自然语言范围说明升级为独立核实。
 - 一次固定窗口、只读面板诊断成功，dataErrorType=0；上游query描述有URL、日期、UTC及非机器人唯一会话口径。
