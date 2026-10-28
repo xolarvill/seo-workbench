@@ -18,12 +18,15 @@ from seo_workbench_tools.clarity_runtime import call, SERVER_VERSION, SDK_VERSIO
 
 TOOLS = {"query": ("dashboard", "query-analytics-dashboard"), "recordings": ("recordings", "list-session-recordings"),
          "docs": ("documentation", "query-documentation-resources")}
-COLLECTOR_VERSION = "1.1.0"
+COLLECTOR_VERSION = "1.1.1"
 DEVICES = {"Mobile", "PC", "Tablet"}
 CHANNELS = {"OrganicSearch", "Direct", "Email", "Display", "Social", "PaidSearch", "Other", "Affiliate", "Referral", "Video", "Audio", "SMS", "AITools", "PaidAITools"}
 SAFE_KEYS = set("data result results metrics metric metricName metricValue information value values count total totalCount sessions sessionCount totalSessionCount totalBotSessionCount distinctUsers distantUserCount users pageViews pageviews average percentage rate scrollDepth engagementTime activeTime totalTime deadClickCount rageClickCount scriptErrorCount quickBackCount browser Browser device Device deviceType country Country channel Channel source Source medium Medium campaign Campaign url URL pageUrl entryUrl exitUrl startDate endDate start end timezone dateRange scope metadata title description text answer response observation documentation content snippets citations links duration sessionDuration pageCount pagesCount clickCount summary insights rows columns type label name unit date error status message recordingUrl recordingLink sessionUrl recordingLinkUrl".split())
 IDENTIFIER = re.compile(r"token|secret|password|email|user.?id|session.?id|recording.?id|(^id$)|enteredtext|input|client.?id|visitor|ipaddress", re.I)
 SAFE_NORMALIZED = {re.sub(r"[^a-z]", "", key.lower()) for key in SAFE_KEYS} | {"totalsessions", "totalusers", "dataerrortype", "timestamp", "totalduration", "activeduration", "sessionclickcount", "timeline", "fid", "cls", "lcp", "score", "referrerurl", "pageloadtime"}
+# Exact aliases observed in official dashboard responses; arbitrary keys stay excluded.
+SAFE_NORMALIZED |= {"homepageurl", "startdateutc", "enddateutc", "totalpageviews", "avgscrolldepthpercent",
+                    "totaldeadclicks", "totalrageclicks", "totalquickbackclicks", "totalexcessivescrolls"}
 
 
 def clean_text(value: str) -> str:
@@ -188,6 +191,25 @@ def _observations(value: Any, kind: str) -> bool:
     return isinstance(value, (int, float)) and not isinstance(value, bool)
 
 
+def _omitted_numeric_fields(value: Any, depth: int = 0) -> int:
+    """Count unsupported numeric leaves without recording unknown names or values."""
+    if depth > 15:
+        return 0
+    if isinstance(value, list):
+        return sum(_omitted_numeric_fields(item, depth + 1) for item in value[:1000])
+    if not isinstance(value, dict):
+        return 0
+    count = 0
+    for key, item in value.items():
+        if IDENTIFIER.search(key):
+            continue
+        if re.sub(r"[^a-z]", "", key.lower()) not in SAFE_NORMALIZED:
+            count += int(isinstance(item, (int, float)) and not isinstance(item, bool))
+        else:
+            count += _omitted_numeric_fields(item, depth + 1)
+    return count
+
+
 def _scope_quality(report: dict, payload: Any, action: str, binding: dict, options: dict, arguments: dict, tz: str) -> None:
     if action == "docs":
         report.update(scope_status="not_applicable", identity_status="not_applicable")
@@ -309,6 +331,11 @@ def collect(project_dir: Path, action: str, *, caller: Callable = call, force: b
             if action == "recordings" and transient_sink:
                 transient_sink({"links": recording_links(payload), "generation": binding["generation"], "created_at": clarity.now(), "cache_key": cache_key})
             report["response"] = safe
+            if kind == "dashboard":
+                omitted = _omitted_numeric_fields(payload)
+                report["response_projection"] = {"omitted_numeric_fields": omitted}
+                if omitted:
+                    report["warnings"].append("Unsupported numeric fields were omitted by the safety allowlist; the saved response is incomplete")
             report["response_shape"] = "list" if isinstance(payload, list) else "object"
             _scope_quality(report, payload, action, binding, options, arguments, tz)
             _classify(report, payload, safe, action, error)

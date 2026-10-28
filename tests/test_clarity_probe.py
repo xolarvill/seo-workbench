@@ -165,3 +165,26 @@ def test_new_collector_does_not_reuse_legacy_cache(project):
     refreshed = collect(project, "query", query="Sessions", start="2026-10-26", end="2026-10-26", caller=lambda *a, **k: result({"sessions": 8}))
     assert not refreshed["cache_hit"]
     assert refreshed["response"]["sessions"] == 8
+
+
+def test_homepage_dashboard_preserves_observed_provider_metric_aliases(project):
+    row = {"Device": "Mobile", "HomepageURL": "https://example.com/?private=value",
+           "StartDateUTC": "2026-10-20T00:00:00Z", "EndDateUTC": "2026-10-26T23:59:59Z",
+           "TotalSessions": 7, "TotalPageViews": 12, "AvgScrollDepthPercent": 48.5,
+           "TotalDeadClicks": 2, "TotalRageClicks": 0, "TotalQuickbackClicks": 1,
+           "TotalExcessiveScrolls": 0, "sessionId": "private-session"}
+    report = collect(project, "query", query="Homepage metrics", start="2026-10-20", end="2026-10-26",
+                     caller=lambda *a, **k: result({"data": [row]}))
+    expected = {k: v for k, v in row.items() if k != "sessionId"}
+    expected["HomepageURL"] = "https://example.com/"
+    assert report["response"]["data"] == [expected]
+    assert report["scope_status"] == "unknown"  # Row labels are not independent scope verification.
+    assert "private-session" not in json.dumps(report)
+
+
+def test_mixed_known_and_unknown_numeric_fields_are_not_silently_projected(project):
+    report = collect(project, "query", query="Metrics", start="2026-10-26", end="2026-10-26",
+                     caller=lambda *a, **k: result({"data": [{"TotalSessions": 7, "UnrecognizedMetric": 9, "sessionId": 123}]}))
+    assert report["response"]["data"] == [{"TotalSessions": 7}]
+    assert report["response_projection"]["omitted_numeric_fields"] == 1
+    assert any("numeric fields" in warning for warning in report["warnings"])
