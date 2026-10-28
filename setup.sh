@@ -184,6 +184,7 @@ if (( CHECK_ONLY )); then
     -m seo_workbench_tools.browser_runtime --print >/dev/null \
     || { err "Chrome or Chromium is missing"; exit 1; }
   (cd "${PROJECT_ROOT}" && "${NODE_BIN}" seo_workbench_tools/lighthouse_runner.mjs --self-test >/dev/null)
+  (cd "${PROJECT_ROOT}" && "${NODE_BIN}" seo_workbench_tools/clarity_self_test.mjs)
   "${TECH_BIN}" -h >/dev/null 2>&1
   (cd "${PROJECT_ROOT}" && ./seo --help >/dev/null)
   info "./seo, local UI, project-local Python, Go helper, Wappalyzer, Google auth, Lighthouse, and browser runtime are ready"

@@ -79,6 +79,11 @@ def _ui_session_detail(session_path: Path) -> tuple[bool, str]:
 
 def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
     checks: list[dict[str, Any]] = []
+    from seo_workbench_tools.clarity_runtime import runtime_status
+
+    clarity_runtime = runtime_status()
+    checks.append(_check("clarity_mcp_runtime", clarity_runtime["runtime_ready"],
+                         "pinned runtime installed" if clarity_runtime["runtime_ready"] else "optional; run ./setup.sh", "warning"))
     version_ok = sys.version_info[:2] == (3, 11)
     checks.append(_check("python_3_11", version_ok, f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}", "warning"))
     uv_path = shutil.which("uv")

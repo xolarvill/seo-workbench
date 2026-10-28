@@ -16,7 +16,8 @@
     "extension:build": "vite build --config extension/vite.config.ts",
     "extension:typecheck": "tsc --project extension/tsconfig.json --noEmit",
     "extension:test": "vitest run --config extension/vitest.config.ts",
-    "extension:package": "npm run extension:build && python3 scripts/package_extension.py"
+    "extension:package": "npm run extension:build && python3 scripts/package_extension.py",
+    "clarity:self-test": "node seo_workbench_tools/clarity_self_test.mjs"
   },
   "dependencies": {
     "@codemirror/lang-markdown": "6.5.1",
@@ -25,6 +26,8 @@
     "@fontsource/archivo": "5.2.8",
     "@fontsource/azeret-mono": "5.2.11",
     "@fontsource/source-serif-4": "5.2.9",
+    "@microsoft/clarity-mcp-server": "2.0.1",
+    "@modelcontextprotocol/sdk": "1.32.2",
     "chrome-launcher": "1.2.1",
     "codemirror": "6.0.2",
     "lighthouse": "13.4.0",
