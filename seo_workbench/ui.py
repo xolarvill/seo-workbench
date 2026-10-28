@@ -583,6 +583,7 @@ class JobManager:
         self._processes: dict[str, asyncio.subprocess.Process] = {}
         self._scheduler_task: asyncio.Task[None] | None = None
         self._presentation_attempts: set[tuple[str, int, int]] = set()
+        self.clarity_links: dict[str, dict[str, Any]] = {}
 
     def list(self, project_id: str) -> list[dict[str, Any]]:
         return sorted(
@@ -629,13 +630,29 @@ class JobManager:
                 cwd=str(state.ROOT),
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.STDOUT,
-                env={**os.environ, "PYTHONUNBUFFERED": "1"},
+                env={**os.environ, "PYTHONUNBUFFERED": "1", "SEO_WORKBENCH_CLARITY_TRANSIENT": "1" if job["action"] == "clarity-recordings" else "0"},
                 start_new_session=os.name == "posix",
             )
             self._processes[job_id] = process
             output, _ = await process.communicate()
             job["exit_code"] = process.returncode
             decoded = output.decode("utf-8", errors="replace")
+            if job["action"] == "clarity-recordings":
+                previous_links = self.clarity_links.pop(job["project_id"], None)
+                try:
+                    payload = json.loads(decoded)
+                    links = payload.pop("_private_clarity_links", None)
+                    if isinstance(links, dict):
+                        self.clarity_links[job["project_id"]] = links
+                        def expire_links(project_id=job["project_id"], value=links):
+                            if self.clarity_links.get(project_id) is value:
+                                self.clarity_links.pop(project_id, None)
+                        asyncio.get_running_loop().call_later(15 * 60, expire_links)
+                    elif payload.get("cache_hit") and previous_links and previous_links.get("cache_key") == payload.get("cache_key"):
+                        self.clarity_links[job["project_id"]] = previous_links
+                    decoded = json.dumps(payload, ensure_ascii=False)
+                except ValueError:
+                    decoded = '{"ok": false, "error": "Invalid Clarity job response"}'
             job["output"] = _safe_job_output(decoded)
             job["status"] = "succeeded" if process.returncode == 0 else "failed"
         except asyncio.CancelledError:
@@ -3154,6 +3171,9 @@ def create_app(
         def missing_frontend() -> str:
             return "<main><h1>SEO Workbench UI</h1><p>Frontend assets are not built yet.</p></main>"
 
+    from seo_workbench.clarity_ui import register as register_clarity_ui
+
+    register_clarity_ui(app, jobs, projects_root, _project, _require_local_credential_access)
     return app
 
 

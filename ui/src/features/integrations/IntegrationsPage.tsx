@@ -44,6 +44,7 @@ import { confirmAction } from "../../components/ActionButton";
 import { StatusPill, statusLabel, statusTone } from "../../components/StatusPill";
 import type { ConnectionSection } from "../../components/AppShell";
 import styles from "./IntegrationsPage.module.css";
+import { ClarityPanel } from "./ClarityPanel";
 
 
 function messageFrom(error: unknown): string {
@@ -134,19 +135,24 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
   const [ga4Properties, setGa4Properties] = useState<Ga4Property[]>([]);
   const [ga4SelectedProperty, setGa4SelectedProperty] = useState("");
   const ga4FileInput = useRef<HTMLInputElement>(null);
+  const loadedProject = useRef<string | null>(null);
 
   useEffect(() => {
     let active = true;
     setError(null);
-    setIntegration(null);
-    setShopify(null);
-    setShopDomain("");
-    setShopifyToken("");
-    setCrawlerDomain("");
-    setCrawlerSignature("");
-    setCrawlerSignatureInput("");
-    setCrawlerSignatureAgent('"https://shopify.com"');
-    setCrawlerExpiresAt("");
+    // Evidence watcher refreshes must not unmount an in-flight Clarity query.
+    if (loadedProject.current !== projectId) {
+      loadedProject.current = projectId;
+      setIntegration(null);
+      setShopify(null);
+      setShopDomain("");
+      setShopifyToken("");
+      setCrawlerDomain("");
+      setCrawlerSignature("");
+      setCrawlerSignatureInput("");
+      setCrawlerSignatureAgent('"https://shopify.com"');
+      setCrawlerExpiresAt("");
+    }
     Promise.all([fetchGoogleIntegration(projectId), fetchShopifyIntegration(projectId)])
       .then(([googleResult, shopifyResult]) => {
         if (!active) return;
@@ -712,6 +718,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
         </form>
       </article> : <div className={styles.state}>Loading optional provider status</div>}
 
+      {section === "optional" ? <ClarityPanel key={projectId} projectId={projectId} /> : null}
       <footer className={styles.securityFooter}>
         <LockKeyhole aria-hidden="true" size={16} />
         <p><strong>Security boundary:</strong> secret values are accepted only by fixed local endpoints, written to ignored runtime files, and never included in status responses. Remote Workbench hosts cannot access this page's credential APIs.</p>

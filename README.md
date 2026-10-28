@@ -263,6 +263,10 @@ CrUX requires a Google API key. GSC supports desktop OAuth and service accounts,
 
 See [Google integrations](docs/google-integrations.md) for setup, authentication, evidence scopes, and status meanings.
 
+### Optional Clarity integration
+
+Clarity MCP provides project-scoped dashboard queries, recording samples and documentation retrieval. Configure it in **Connections → Optional**, or run `./seo --project example-store clarity --help`. Tokens are write-only; observations remain separate from formal statistics. See [Clarity integration](docs/clarity-integrations.md).
+
 ### Optional Shopify integration
 
 Shopify projects can store one project-scoped Admin API access token. The Workbench verifies the canonical `.myshopify.com` domain and granted access scopes before saving, never returns the token, and warns when the connected app has write scopes.

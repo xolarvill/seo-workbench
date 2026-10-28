@@ -227,6 +227,9 @@ fi
 if [[ -f "${PROJECT_ROOT}/seo_workbench_tools/lighthouse_runner.mjs" ]]; then
   (cd "${PROJECT_ROOT}" && "${NODE_BIN}" seo_workbench_tools/lighthouse_runner.mjs --self-test)
 fi
+if [[ -f "${PROJECT_ROOT}/seo_workbench_tools/clarity_self_test.mjs" ]]; then
+  (cd "${PROJECT_ROOT}" && "${NODE_BIN}" seo_workbench_tools/clarity_self_test.mjs)
+fi
 
 "${TECH_BIN}" -h >/dev/null 2>&1
 env PLAYWRIGHT_BROWSERS_PATH="${BROWSER_DIR}" "${PROJECT_ROOT}/.venv/bin/python" \

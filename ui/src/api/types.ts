@@ -925,3 +925,40 @@ export type SeoChangesResponse = {
   count: number;
   changes: SeoChangeRecord[];
 };
+export type ClarityIntegration = {
+  configured: boolean;
+  status: string;
+  runtime_ready: boolean;
+  credential_verified: boolean;
+  identity_verified: boolean;
+  project_id?: string;
+  site_url?: string;
+  timezone?: string;
+  credential_verified_at?: string | null;
+};
+
+export type ClarityQuery = {
+  action: "query" | "recordings" | "docs";
+  query?: string;
+  start?: string;
+  end?: string;
+  timezone?: string;
+  url?: string;
+  device?: "Mobile" | "PC" | "Tablet";
+  channel?: string;
+  count?: number;
+  rage_click?: boolean;
+  dead_click?: boolean;
+  js_error?: boolean;
+  force?: boolean;
+};
+
+export type ClarityEvidence = {
+  collection_status: string;
+  reason_code?: string;
+  generated_at?: string;
+  observed_scope?: unknown;
+  response?: unknown;
+  warnings?: string[];
+  errors?: string[];
+};

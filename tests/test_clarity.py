@@ -65,3 +65,22 @@ def test_concurrent_rotation_does_not_overwrite(project):
 ])
 def test_provider_error_contract(raw, reason):
     assert clarity.interpret(raw)[1] == reason
+
+
+def test_verify_respects_same_project_operation_lease(project):
+    clarity.configure(project, "secret-token-123456", "abc123", "UTC", verify=False)
+    with clarity.operation_lock(project):
+        with pytest.raises(ValueError, match="running operation"):
+            clarity.verify_connection(project, caller=lambda *a, **k: pytest.fail("must not call during another operation"))
+
+
+def test_verify_respects_cooldown(project):
+    clarity.configure(project, "secret-token-123456", "abc123", "UTC", verify=False)
+    clarity.record_cooldown(project)
+    with pytest.raises(ValueError, match="rate_limited"):
+        clarity.verify_connection(project, caller=lambda *a, **k: pytest.fail("must not call during cooldown"))
+
+
+def test_control_characters_in_tokens_are_rejected(project):
+    with pytest.raises(ValueError, match="token must"):
+        clarity.configure(project, "secret-token-with\x00null", "abc123", "UTC", verify=False)

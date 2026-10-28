@@ -9,6 +9,9 @@ const statusLabels: Record<string, string> = {
   partial: "Partial",
   needs_key: "Needs key",
   needs_auth: "Needs authentication",
+  needs_config: "Needs configuration",
+  configured_unverified: "Configured, unverified",
+  invalid_connection: "Invalid connection",
   not_bound: "Not bound",
   reauth_required: "Reauthentication required",
   incomplete: "Incomplete",
@@ -44,6 +47,8 @@ export function statusTone(value: unknown, context: StatusContext): StatusTone {
   }
   if (context === "urgency") return ({ critical: "danger", high: "warning", medium: "info", low: "neutral" } as Record<string, StatusTone>)[text] || "neutral";
   if (context === "evidence") {
+    if (["needs_config", "configured_unverified"].includes(text)) return "warning";
+    if (text === "invalid_connection") return "danger";
     if (["ok", "comparable", "complete", "succeeded", "ready", "strong", "stable", "verified"].includes(text)) return "success";
     if (["partial", "needs_refresh", "needs_key", "needs_auth", "needs_tracking", "not_bound", "reauth_required", "incomplete", "review", "possible_measurement_break", "decrease", "decreasing", "uncertain", "anomaly", "yes"].includes(text)) return "warning";
     if (["incomparable", "insufficient_data", "error", "failed", "invalid"].includes(text)) return "danger";

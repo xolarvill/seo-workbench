@@ -2,6 +2,8 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
+  fetchClarityIntegration,
+  fetchClarityEvidence,
   fetchGoogleIntegration,
   fetchDataForSeoIntegration,
   fetchGscProperties,
@@ -19,6 +21,8 @@ vi.mock("../api/client", async (importOriginal) => {
   const original = await importOriginal<typeof import("../api/client")>();
   return {
     ...original,
+    fetchClarityIntegration: vi.fn(),
+    fetchClarityEvidence: vi.fn(),
     fetchGoogleIntegration: vi.fn(),
     fetchDataForSeoIntegration: vi.fn(),
     fetchGscProperties: vi.fn(),
@@ -112,9 +116,18 @@ beforeEach(() => {
   vi.mocked(fetchGoogleIntegration).mockResolvedValue(emptyIntegration);
   vi.mocked(fetchShopifyIntegration).mockResolvedValue(emptyShopify);
   vi.mocked(fetchDataForSeoIntegration).mockResolvedValue(emptyDataForSeo);
+  vi.mocked(fetchClarityIntegration).mockResolvedValue({ configured: false, status: "needs_config", runtime_ready: true, credential_verified: false, identity_verified: false });
+  vi.mocked(fetchClarityEvidence).mockResolvedValue({ collection_status: "not_collected" });
 });
 
 describe("SEO integrations page", () => {
+  it("preserves the Clarity query across evidence watcher refreshes", async () => {
+    const { rerender } = render(<IntegrationsPage projectId="store" refreshKey={0} section="optional" onRunAction={vi.fn()} />);
+    const question = await screen.findByLabelText("Clarity question");
+    fireEvent.change(question, { target: { value: "Mobile sessions" } });
+    rerender(<IntegrationsPage projectId="store" refreshKey={1} section="optional" onRunAction={vi.fn()} />);
+    expect((screen.getByLabelText("Clarity question") as HTMLInputElement).value).toBe("Mobile sessions");
+  });
   it("verifies and stores a write-only Shopify Admin API token", async () => {
     vi.mocked(saveShopifyCredentials).mockResolvedValue(readyShopify);
     render(<IntegrationsPage projectId="store" refreshKey={0} onRunAction={vi.fn()} />);

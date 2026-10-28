@@ -40,6 +40,35 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return payload;
 }
 
+export async function fetchClarityIntegration(projectId: string) {
+  return (await request<{ integration: import("./types").ClarityIntegration }>(`/api/v1/projects/${encodeURIComponent(projectId)}/integrations/clarity`)).integration;
+}
+
+export async function saveClarityCredentials(projectId: string, token: string, clarityProject: string, timezone: string) {
+  return (await request<{ integration: import("./types").ClarityIntegration }>(`/api/v1/projects/${encodeURIComponent(projectId)}/integrations/clarity/credentials`,
+    { method: "PUT", body: JSON.stringify({ token, project_id: clarityProject, timezone }) })).integration;
+}
+
+export async function verifyClarityConnection(projectId: string) {
+  return (await request<{ integration: import("./types").ClarityIntegration }>(`/api/v1/projects/${encodeURIComponent(projectId)}/integrations/clarity/verify`, { method: "POST" })).integration;
+}
+
+export async function deleteClarityCredentials(projectId: string) {
+  return (await request<{ integration: import("./types").ClarityIntegration }>(`/api/v1/projects/${encodeURIComponent(projectId)}/integrations/clarity/credentials`, { method: "DELETE" })).integration;
+}
+
+export async function startClarityQuery(projectId: string, query: import("./types").ClarityQuery) {
+  return (await request<{ job: Job }>(`/api/v1/projects/${encodeURIComponent(projectId)}/clarity/jobs`, { method: "POST", body: JSON.stringify(query) })).job;
+}
+
+export async function fetchClarityEvidence(projectId: string, kind: string) {
+  return (await request<{ evidence: import("./types").ClarityEvidence }>(`/api/v1/projects/${encodeURIComponent(projectId)}/clarity/evidence/${encodeURIComponent(kind)}`)).evidence;
+}
+
+export async function fetchClarityRecordingLinks(projectId: string): Promise<string[]> {
+  return (await request<{ links: string[] }>(`/api/v1/projects/${encodeURIComponent(projectId)}/clarity/recording-links`)).links;
+}
+
 function queryString<T extends object>(params: T) {
   const search = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {

@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Callable
 from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+from filelock import FileLock, Timeout
 
 from seo_workbench import state
 from seo_workbench.locks import project_lock
@@ -56,7 +57,7 @@ def site_url(project_dir: Path) -> str:
 
 
 def validate(project_dir: Path, token: str, project_id: str, tz: str) -> None:
-    if not isinstance(token, str) or not 16 <= len(token) <= 16384 or re.search(r"\s", token):
+    if not isinstance(token, str) or not 16 <= len(token) <= 16384 or re.search(r"[\s\x00-\x1f\x7f]", token):
         raise ValueError("Clarity token must be 16–16384 characters without whitespace")
     if not re.fullmatch(r"[A-Za-z0-9]{1,64}", project_id):
         raise ValueError("Clarity project ID must contain letters and digits only")
@@ -98,17 +99,42 @@ def interpret(raw: dict[str, Any]) -> tuple[Any, str | None]:
         return None, "invalid_response"
     if isinstance(decoded, dict) and (decoded.get("error") or decoded.get("success") is False):
         return None, "provider_error"
+    if isinstance(decoded, dict) and decoded.get("dataErrorType") not in (None, 0):
+        return None, "provider_query_error"
     return decoded, None
 
 
-def _credential_check(value: dict[str, Any], caller: Callable = call) -> None:
+def operation_lock(project_dir: Path) -> FileLock:
+    target = state.safe_project_path(project_dir, ".runtime/clarity/operation.lock")
+    target.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    return FileLock(str(target), timeout=0)
+
+
+def check_cooldown(project_dir: Path) -> None:
+    target = state.safe_project_path(project_dir, ".runtime/clarity/cooldown.json")
+    if target.exists() and datetime.fromisoformat(json.loads(target.read_text())["until"]) > datetime.now(timezone.utc):
+        raise ValueError("rate_limited")
+
+
+def record_cooldown(project_dir: Path) -> None:
+    private_write(project_dir, ".runtime/clarity/cooldown.json", {"until": (datetime.now(timezone.utc) + timedelta(seconds=60)).isoformat()})
+
+
+def _credential_check(value: dict[str, Any], caller: Callable = call, *, project_dir: Path) -> None:
     day = (datetime.now(ZoneInfo(value["timezone"])) - timedelta(days=1)).date().isoformat()
-    response = caller("query-analytics-dashboard", {"query":
-        f"Total sessions on {value['site_url']} from {day} through {day}, timezone {value['timezone']}."},
-        token=value["token"], timezone=value["timezone"])
-    _, error = interpret(response)
-    if error:
-        raise ValueError(f"Clarity connection verification failed ({error})")
+    try:
+        with operation_lock(project_dir):
+            check_cooldown(project_dir)
+            response = caller("query-analytics-dashboard", {"query":
+                f"Total sessions on {value['site_url']} from {day} through {day}, timezone {value['timezone']}."},
+                token=value["token"], timezone=value["timezone"])
+            _, error = interpret(response)
+            if error:
+                if error == "rate_limited":
+                    record_cooldown(project_dir)
+                raise ValueError(f"Clarity connection verification failed ({error})")
+    except Timeout:
+        raise ValueError("Clarity project already has a running operation") from None
 
 
 def configure(project_dir: Path, token: str, project_id: str, tz: str, *, verify: bool = True, caller: Callable = call) -> dict[str, Any]:
@@ -122,7 +148,7 @@ def configure(project_dir: Path, token: str, project_id: str, tz: str, *, verify
              "identity_source": "operator_declared"}
     # Rotation always verifies before replacing a working credential.
     if verify or existing:
-        _credential_check(value, caller)
+        _credential_check(value, caller, project_dir=project_dir)
         value["credential_verified_at"] = now()
     with project_lock(project_dir):
         current = load(project_dir)["generation"] if path(project_dir).exists() else None
@@ -134,7 +160,7 @@ def configure(project_dir: Path, token: str, project_id: str, tz: str, *, verify
 
 def verify_connection(project_dir: Path, *, caller: Callable = call) -> dict[str, Any]:
     value = load(project_dir)
-    _credential_check(value, caller)
+    _credential_check(value, caller, project_dir=project_dir)
     with project_lock(project_dir):
         current = load(project_dir)
         if current["generation"] != value["generation"]:

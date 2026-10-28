@@ -274,3 +274,8 @@
   .collectRow { align-items: stretch; flex-direction: column; padding: 18px; }
   .collectRow button { width: 100%; }
 }
+.clarity { overflow: visible; }
+.clarityBody { display: grid; gap: 24px; padding: 24px; min-width: 0; }
+.clarityBody form { display: grid; gap: 16px; }
+.clarityFields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px; }
+.clarityResult { max-height: 440px; max-width: 100%; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; }

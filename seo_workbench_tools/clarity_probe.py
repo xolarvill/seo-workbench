@@ -22,6 +22,7 @@ DEVICES = {"Mobile", "PC", "Tablet"}
 CHANNELS = {"OrganicSearch", "Direct", "Email", "Display", "Social", "PaidSearch", "Other", "Affiliate", "Referral", "Video", "Audio", "SMS", "AITools", "PaidAITools"}
 SAFE_KEYS = set("data result results metrics metric metricName metricValue information value values count total totalCount sessions sessionCount totalSessionCount totalBotSessionCount distinctUsers distantUserCount users pageViews pageviews average percentage rate scrollDepth engagementTime activeTime totalTime deadClickCount rageClickCount scriptErrorCount quickBackCount browser Browser device Device deviceType country Country channel Channel source Source medium Medium campaign Campaign url URL pageUrl entryUrl exitUrl startDate endDate start end timezone dateRange scope metadata title description text answer response observation documentation content snippets citations links duration sessionDuration pageCount pagesCount clickCount summary insights rows columns type label name unit date error status message recordingUrl recordingLink sessionUrl recordingLinkUrl".split())
 IDENTIFIER = re.compile(r"token|secret|password|email|user.?id|session.?id|recording.?id|(^id$)|enteredtext|input|client.?id|visitor|ipaddress", re.I)
+SAFE_NORMALIZED = {re.sub(r"[^a-z]", "", key.lower()) for key in SAFE_KEYS} | {"totalsessions", "totalusers", "dataerrortype", "timestamp", "totalduration", "activeduration", "sessionclickcount", "timeline", "fid", "cls", "lcp", "score", "referrerurl", "pageloadtime"}
 
 
 def clean_text(value: str) -> str:
@@ -29,7 +30,10 @@ def clean_text(value: str) -> str:
     value = re.sub(r"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}", "[redacted-email]", value, flags=re.I)
     def clean_url(match):
         raw = match.group(0)
-        parts = urlsplit(raw)
+        try:
+            parts = urlsplit(raw)
+        except ValueError:
+            return "[invalid-url]"
         if (parts.hostname or "").endswith("clarity.ms") or (parts.hostname or "").endswith("clarity.microsoft.com"):
             if "/recording/" in parts.path or "/recordings/" in parts.path or "/player/" in parts.path:
                 return "[private-recording-link]"
@@ -44,7 +48,7 @@ def sanitize(value: Any, *, kind: str, key: str = "", depth: int = 0) -> Any:
         return None
     if isinstance(value, dict):
         return {k: sanitize(v, kind=kind, key=k, depth=depth + 1)
-                for k, v in value.items() if k in SAFE_KEYS and not IDENTIFIER.search(k)
+                for k, v in value.items() if re.sub(r"[^a-z]", "", k.lower()) in SAFE_NORMALIZED and not IDENTIFIER.search(k)
                 and not (kind == "recordings" and re.search(r"recording|sessionUrl|text|name|title|description|message", k, re.I))}
     if isinstance(value, list):
         return [sanitize(item, kind=kind, key=key, depth=depth + 1) for item in value[:1000]]
@@ -95,7 +99,7 @@ def prepare(binding: dict, action: str, *, query: str = "", start: str = "", end
         raise ValueError("Invalid Clarity count, device or channel")
     target = url or binding["site_url"]
     parts, site = urlsplit(target), urlsplit(binding["site_url"])
-    if parts.scheme != "https" or parts.hostname != site.hostname or parts.username or parts.password or parts.query or parts.fragment or parts.port not in (None, 443):
+    if target != clean_text(target) or parts.scheme != "https" or parts.hostname != site.hostname or parts.username or parts.password or parts.query or parts.fragment or parts.port not in (None, 443):
         raise ValueError("Recording URL must be a clean HTTPS URL on this project's site")
     filters: dict[str, Any] = {"date": {"start": start, "end": end},
                                "visitedUrls": [{"url": target, "operator": "isExactly" if url else "startsWith"}]}
@@ -119,7 +123,32 @@ def read_evidence(project_dir: Path, kind: str) -> dict:
     return json.loads(target.read_text()) if target.exists() else {"collection_status": "not_collected"}
 
 
-def _save(project_dir: Path, kind: str, report: dict) -> dict:
+def recording_links(payload: Any) -> list[str]:
+    """Validated links for the transient local viewer, never for persisted evidence."""
+    found: list[str] = []
+    def visit(value, depth=0):
+        if depth > 15 or len(found) >= 50:
+            return
+        if isinstance(value, dict):
+            for item in value.values():
+                visit(item, depth + 1)
+        elif isinstance(value, list):
+            for item in value[:1000]:
+                visit(item, depth + 1)
+        elif isinstance(value, str):
+            for link in re.findall(r'https://[^\s<>"\)]+', value):
+                try:
+                    parts = urlsplit(link)
+                    valid = parts.hostname in {"clarity.ms", "www.clarity.ms", "clarity.microsoft.com", "www.clarity.microsoft.com"} and not parts.username and not parts.password and parts.port in (None, 443)
+                except ValueError:
+                    continue
+                if valid and re.search(r"/(player|recordings?)/", parts.path) and link not in found:
+                    found.append(link)
+    visit(payload)
+    return found[:50]
+
+
+def _persist(project_dir: Path, kind: str, report: dict) -> dict:
     root = f"audits/clarity/{kind}"
     relative = f"{root}/clarity-{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')}-{uuid4().hex[:8]}.json"
     report["manifest"] = {"path": relative, "latest_path": f"{root}/latest.json"}
@@ -135,7 +164,17 @@ def _save(project_dir: Path, kind: str, report: dict) -> dict:
     return report
 
 
-def collect(project_dir: Path, action: str, *, caller: Callable = call, force: bool = False, **options) -> dict:
+def _save(project_dir: Path, kind: str, report: dict) -> dict:
+    try:
+        return _persist(project_dir, kind, report)
+    except (OSError, ValueError):
+        # Storage failures must not become tracebacks or claims of saved evidence.
+        report.pop("manifest", None)
+        report.update(collection_status="failed", reason_code="evidence_write_failed", errors=["Clarity evidence could not be saved"])
+        return report
+
+
+def collect(project_dir: Path, action: str, *, caller: Callable = call, force: bool = False, transient_sink: Callable | None = None, **options) -> dict:
     if action not in TOOLS:
         raise ValueError("Unsupported Clarity operation")
     kind, tool = TOOLS[action]
@@ -152,13 +191,11 @@ def collect(project_dir: Path, action: str, *, caller: Callable = call, force: b
                   request={"tool": tool, "arguments": arguments, "timezone": tz})
     cache_key = hashlib.sha256(json.dumps([str(project_dir.resolve()), binding["generation"], SERVER_VERSION, SDK_VERSION, tool, arguments, tz], sort_keys=True).encode()).hexdigest()
     report["cache_key"] = cache_key
-    lock_path = state.safe_project_path(project_dir, ".runtime/clarity/operation.lock")
-    lock_path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     try:
-        with FileLock(str(lock_path), timeout=0):
-            lock_path.chmod(0o600)
-            cool = state.safe_project_path(project_dir, ".runtime/clarity/cooldown.json")
-            if cool.exists() and datetime.fromisoformat(json.loads(cool.read_text())["until"]) > datetime.now(timezone.utc):
+        with clarity.operation_lock(project_dir):
+            try:
+                clarity.check_cooldown(project_dir)
+            except ValueError:
                 report.update(reason_code="rate_limited", collection_status="not_collected")
                 return _save(project_dir, kind, report)
             cache = state.safe_project_path(project_dir, f"audits/clarity/{kind}/latest.json")
@@ -167,6 +204,8 @@ def collect(project_dir: Path, action: str, *, caller: Callable = call, force: b
                 if previous.get("cache_key") == cache_key and previous.get("collection_status") in ("ok", "partial") and previous.get("response") is not None and datetime.fromisoformat(previous["generated_at"]) > datetime.now(timezone.utc) - timedelta(minutes=15):
                     return {**previous, "cache_hit": True}
             raw = caller(tool, arguments, token=binding["token"], timezone=tz)
+            if isinstance(raw.get("http_status"), int):
+                report["http_status"] = raw["http_status"]
             payload, error = clarity.interpret(raw)
             if clarity.load(project_dir)["generation"] != binding["generation"]:
                 report.update(collection_status="failed", reason_code="connection_changed", errors=["Connection changed during query; result discarded"])
@@ -174,9 +213,11 @@ def collect(project_dir: Path, action: str, *, caller: Callable = call, force: b
             if error and error != "unstructured_response":
                 report.update(collection_status="not_collected" if error in ("needs_runtime", "needs_auth", "busy") else "failed", reason_code=error, errors=[error])
                 if error == "rate_limited":
-                    clarity.private_write(project_dir, ".runtime/clarity/cooldown.json", {"until": (datetime.now(timezone.utc) + timedelta(seconds=60)).isoformat()})
+                    clarity.record_cooldown(project_dir)
                 return _save(project_dir, kind, report)
             safe = sanitize(payload, kind=kind)
+            if action == "recordings" and transient_sink:
+                transient_sink({"links": recording_links(payload), "generation": binding["generation"], "created_at": clarity.now(), "cache_key": cache_key})
             report["response"] = safe
             report["response_shape"] = "list" if isinstance(payload, list) else "object"
             report["warnings"].append("Remote project identity has not been independently verified")

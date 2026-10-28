@@ -46,7 +46,7 @@ async function main() {
   function attachStderr() {
     transport.stderr?.on('data', chunk => {
       stderrBytes += chunk.length;
-      const match = String(chunk).match(/status:.*\s(400|401|403|429|5\d\d)\b/);
+      const match = String(chunk).match(/status:.*\s([45]\d\d)\b/);
       if (match) httpStatus = Number(match[1]);
       if (stderrBytes > 65536) void close();
     });

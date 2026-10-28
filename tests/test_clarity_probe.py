@@ -59,7 +59,7 @@ def test_recordings_are_bounded_and_site_filtered(project):
     assert args["count"] == 10 and args["filters"]["rageClickPresent"]
     assert args["filters"]["visitedUrls"][0]["url"] == "https://example.com"
     assert tz == "UTC"
-    for invalid in ({"count": 51}, {"url": "https://elsewhere.com"}, {"start": "2026-10-25"}):
+    for invalid in ({"count": 51}, {"url": "https://elsewhere.com"}, {"url": "https://example.com/checkouts/private-capability"}, {"start": "2026-10-25"}):
         with pytest.raises(ValueError):
             prepare(binding, "recordings", **{"start": "2026-10-25T00:00:00Z", "end": "2026-10-26T00:00:00Z", **invalid})
 
@@ -81,3 +81,24 @@ def test_busy_does_not_touch_latest(project):
 def test_missing_configuration_is_structured(tmp_path):
     state.init_state("shopify", "Store", "https://example.com", project_dir=tmp_path)
     assert collect(tmp_path, "docs", query="Consent")["reason_code"] == "needs_config"
+
+
+def test_recording_links_are_transient_and_host_checked(project):
+    from seo_workbench_tools.clarity_probe import recording_links
+    link = "https://clarity.microsoft.com/player/abc/secret"
+    assert recording_links([link, "https://clarity.microsoft.com.evil.test/player/secret"]) == [link]
+    temporary = {}
+    report = collect(project, "recordings", start="2026-10-25T00:00:00Z", end="2026-10-26T00:00:00Z",
+                     caller=lambda *a, **k: result([{"link": link, "duration": 20}]), transient_sink=temporary.update)
+    assert temporary["links"] == [link]
+    assert link not in json.dumps(report)
+    assert "secret" not in (project / report["manifest"]["path"]).read_text()
+
+
+def test_storage_failure_is_structured(project, monkeypatch):
+    def fail(*a, **k):
+        raise OSError("disk full")
+    monkeypatch.setattr(clarity, "private_write", fail)
+    report = collect(project, "docs", query="Consent", caller=lambda *a, **k: result({"answer": "Documentation"}))
+    assert report["reason_code"] == "evidence_write_failed"
+    assert "manifest" not in report
