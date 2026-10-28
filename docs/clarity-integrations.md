@@ -151,6 +151,32 @@ Official references: [Entry URL semantics](https://learn.microsoft.com/en-us/cla
 [area maps and CTR denominator](https://learn.microsoft.com/en-us/clarity/heatmaps/area-maps),
 [scroll maps](https://learn.microsoft.com/en-us/clarity/heatmaps/scroll-maps).
 
+### Query failure diagnostics (collector 1.2.1)
+
+A valid MCP response carrying a nonzero `dataErrorType` is a provider query
+failure, not a transport failure: `transport_status=ok`,
+`collection_status=failed`, `capability_status=unavailable`. Evidence preserves
+only a bounded numeric `provider_error_code`; failed payloads, messages and result
+rows are discarded. The undocumented enum is never translated into a guessed
+authentication, schema, quota or date error. CLI still exits nonzero.
+
+The [official MCP documentation](https://learn.microsoft.com/en-us/clarity/third-party-integrations/clarity-mcp-server)
+publishes 10 requests/day, at most 3 days of data and 3 dimensions per request.
+Longer dashboard windows now carry an explicit warning; successful responses do
+not prove supported coverage. Do not automatically split and sum session queries,
+because sessions may overlap and the endpoint's interval semantics are unconfirmed.
+Prefer single-purpose metrics within the documented envelope. No automatic retries
+or quota assumptions are added.
+
+Further read-only checks on 2026-10-28 found that simplifying a source-page click
+query could produce a response using `VisitedUrl` in its explanation, while a
+single-day/single-metric click query still produced a provider query error. A
+same-day total-sessions control succeeded. This rules out a generally broken
+credential/runtime and does not establish query complexity or interval length as
+the sole cause. Reliable event-page attribution remains unproven; a generated
+filter description is not an executed-query contract. Use official page-scoped
+heatmap exports for independent reconciliation before making section decisions.
+
 Operations have a 60-second parent deadline, bounded output and owned-process cleanup.
 Queries and credential verification share a nonblocking per-brand lease and cooldown.
 Known 429s trigger 60 seconds of cooldown; no automatic network retries. Matching usable
