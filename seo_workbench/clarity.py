@@ -100,7 +100,9 @@ def interpret(raw: dict[str, Any]) -> tuple[Any, str | None]:
     if isinstance(decoded, dict) and (decoded.get("error") or decoded.get("success") is False):
         return None, "provider_error"
     if isinstance(decoded, dict) and decoded.get("dataErrorType") not in (None, 0):
-        return None, "provider_query_error"
+        code = decoded["dataErrorType"]
+        # Preserve only a bounded numeric enum for diagnosis, never failed payloads.
+        return ({"dataErrorType": code} if type(code) is int and abs(code) <= 2**31 else None), "provider_query_error"
     return decoded, None
 
 

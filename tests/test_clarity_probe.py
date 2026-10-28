@@ -214,3 +214,23 @@ def test_click_source_claim_does_not_become_verified_by_text(project):
 def test_click_source_page_must_be_clean_same_site(project):
     with pytest.raises(ValueError):
         prepare(clarity.load(project), 'query', query='Clicks', source_page='https://elsewhere.com/', start='2026-10-20', end='2026-10-26')
+
+
+def test_provider_query_error_is_not_a_transport_failure(project):
+    report = collect(project, 'query', query='Clicks', source_page='https://example.com/',
+                     start='2026-10-26', end='2026-10-26',
+                     caller=lambda *a, **k: result({'dataErrorType': 42, 'data': [{'sessionId': 'private'}], 'query': 'secret-token-123456'}))
+    assert report['transport_status'] == 'ok'
+    assert report['collection_status'] == 'failed'
+    assert report['reason_code'] == 'provider_query_error'
+    assert report['provider_error_code'] == 42
+    assert report['requested_scope']['source_page_url'] == 'https://example.com/'
+    assert 'response' not in report
+    assert 'private' not in json.dumps(report)
+    assert 'secret-token' not in json.dumps(report)
+
+
+def test_dashboard_warns_about_documented_window_limit(project):
+    report = collect(project, 'query', query='Sessions', start='2026-10-20', end='2026-10-26',
+                     caller=lambda *a, **k: result({'sessions': 7}))
+    assert any('3 days' in warning for warning in report['warnings'])

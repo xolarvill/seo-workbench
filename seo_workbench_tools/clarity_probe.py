@@ -18,7 +18,7 @@ from seo_workbench_tools.clarity_runtime import call, SERVER_VERSION, SDK_VERSIO
 
 TOOLS = {"query": ("dashboard", "query-analytics-dashboard"), "recordings": ("recordings", "list-session-recordings"),
          "docs": ("documentation", "query-documentation-resources")}
-COLLECTOR_VERSION = "1.2.0"
+COLLECTOR_VERSION = "1.2.1"
 DEVICES = {"Mobile", "PC", "Tablet"}
 CHANNELS = {"OrganicSearch", "Direct", "Email", "Display", "Social", "PaidSearch", "Other", "Affiliate", "Referral", "Video", "Audio", "SMS", "AITools", "PaidAITools"}
 SAFE_KEYS = set("data result results metrics metric metricName metricValue information value values count total totalCount sessions sessionCount totalSessionCount totalBotSessionCount distinctUsers distantUserCount users pageViews pageviews average percentage rate scrollDepth engagementTime activeTime totalTime deadClickCount rageClickCount scriptErrorCount quickBackCount browser Browser device Device deviceType country Country channel Channel source Source medium Medium campaign Campaign url URL pageUrl entryUrl exitUrl startDate endDate start end timezone dateRange scope metadata title description text answer response observation documentation content snippets citations links duration sessionDuration pageCount pagesCount clickCount summary insights rows columns type label name unit date error status message recordingUrl recordingLink sessionUrl recordingLinkUrl".split())
@@ -314,6 +314,8 @@ def collect(project_dir: Path, action: str, *, caller: Callable = call, force: b
     report.update(project_id=binding["project_id"], site_url=binding["site_url"], identity_source="operator_declared",
                   request={"tool": tool, "arguments": arguments, "timezone": tz})
     source_page = _source_page(options.get("query", ""), options.get("source_page")) if action == "query" else None
+    if action == "query" and (date.fromisoformat(options["end"]) - date.fromisoformat(options["start"])).days + 1 > 3:
+        report["warnings"].append("Requested interval exceeds the published MCP maximum of 3 days per request; returned values do not establish supported date coverage. Verify in the Clarity dashboard; do not sum overlapping session windows")
     if source_page:
         # Retain the task contract even if the provider fails before returning data.
         report["requested_scope"] = {"startDate": options["start"], "endDate": options["end"],
@@ -336,11 +338,13 @@ def collect(project_dir: Path, action: str, *, caller: Callable = call, force: b
             if isinstance(raw.get("http_status"), int):
                 report["http_status"] = raw["http_status"]
             payload, error = clarity.interpret(raw)
-            report["transport_status"] = "ok" if raw.get("ok") and error in (None, "unstructured_response") else "failed"
+            report["transport_status"] = "ok" if raw.get("ok") and error in (None, "unstructured_response", "provider_query_error") else "failed"
             if clarity.load(project_dir)["generation"] != binding["generation"]:
                 report.update(collection_status="failed", reason_code="connection_changed", errors=["Connection changed during query; result discarded"])
                 return _save(project_dir, kind, report)
             if error and error != "unstructured_response":
+                if error == "provider_query_error" and isinstance(payload, dict) and "dataErrorType" in payload:
+                    report["provider_error_code"] = payload["dataErrorType"]
                 report["capability_status"] = "unavailable"
                 report.update(collection_status="not_collected" if error in ("needs_runtime", "needs_auth", "busy") else "failed", reason_code=error, errors=[error])
                 if error == "rate_limited":
