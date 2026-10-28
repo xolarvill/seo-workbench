@@ -18,7 +18,7 @@ from seo_workbench_tools.clarity_runtime import call, SERVER_VERSION, SDK_VERSIO
 
 TOOLS = {"query": ("dashboard", "query-analytics-dashboard"), "recordings": ("recordings", "list-session-recordings"),
          "docs": ("documentation", "query-documentation-resources")}
-COLLECTOR_VERSION = "1.1.1"
+COLLECTOR_VERSION = "1.2.0"
 DEVICES = {"Mobile", "PC", "Tablet"}
 CHANNELS = {"OrganicSearch", "Direct", "Email", "Display", "Social", "PaidSearch", "Other", "Affiliate", "Referral", "Video", "Audio", "SMS", "AITools", "PaidAITools"}
 SAFE_KEYS = set("data result results metrics metric metricName metricValue information value values count total totalCount sessions sessionCount totalSessionCount totalBotSessionCount distinctUsers distantUserCount users pageViews pageviews average percentage rate scrollDepth engagementTime activeTime totalTime deadClickCount rageClickCount scriptErrorCount quickBackCount browser Browser device Device deviceType country Country channel Channel source Source medium Medium campaign Campaign url URL pageUrl entryUrl exitUrl startDate endDate start end timezone dateRange scope metadata title description text answer response observation documentation content snippets citations links duration sessionDuration pageCount pagesCount clickCount summary insights rows columns type label name unit date error status message recordingUrl recordingLink sessionUrl recordingLinkUrl".split())
@@ -73,7 +73,14 @@ def _utc(value: str) -> datetime:
         raise ValueError("Recordings require explicit UTC ISO timestamps") from None
 
 
-def prepare(binding: dict, action: str, *, query: str = "", start: str = "", end: str = "", timezone_name: str | None = None,
+def _source_page(query: str, explicit: str | None = None) -> str | None:
+    # Compatibility for the exact wording used by the first affected caller.
+    # Other prose is not a contract parser: callers should use --source-page.
+    match = re.search(r"Source page must be exactly (https://[^\s]+)", query, re.I)
+    return explicit or (match.group(1).rstrip(".") if match else None)
+
+
+def prepare(binding: dict, action: str, *, query: str = "", start: str = "", end: str = "", timezone_name: str | None = None, source_page: str | None = None,
             url: str | None = None, device: str | None = None, channel: str | None = None,
             rage_click: bool = False, dead_click: bool = False, js_error: bool = False, count: int = 10) -> tuple[dict, str]:
     if action not in TOOLS:
@@ -90,13 +97,20 @@ def prepare(binding: dict, action: str, *, query: str = "", start: str = "", end
     if action == "docs":
         return {"query": query}, tz
     if action == "query":
+        source_page = _source_page(query, source_page)
+        source_clause = ""
+        if source_page:
+            page, site = urlsplit(source_page), urlsplit(binding["site_url"])
+            if source_page != clean_text(source_page) or page.scheme != "https" or page.hostname != site.hostname or page.username or page.password or page.query or page.fragment or page.port not in (None, 443):
+                raise ValueError("Click source page must be a clean same-site HTTPS URL")
+            source_clause = f"\nClick events must occur on exactly {source_page}. EntryUrl and session VisitedUrl filters are not substitutes. Return unavailable if event-page scope cannot be established."
         try:
             first, last = date.fromisoformat(start), date.fromisoformat(end)
         except ValueError:
             raise ValueError("Dashboard dates must use YYYY-MM-DD") from None
         if first > last:
             raise ValueError("Clarity start must not be after end")
-        return {"query": f"{query}\nWebsite: {binding['site_url']}. Date range: {start} through {end} inclusive. Timezone: {tz}. Use only this range and website."}, tz
+        return {"query": f"{query}\nWebsite: {binding['site_url']}. Date range: {start} through {end} inclusive. Timezone: {tz}. Use only this range and website.{source_clause}"}, tz
     if _utc(start) >= _utc(end):
         raise ValueError("Clarity start must be before end")
     if not 1 <= count <= 50 or device and device not in DEVICES or channel and channel not in CHANNELS:
@@ -299,6 +313,11 @@ def collect(project_dir: Path, action: str, *, caller: Callable = call, force: b
     arguments, tz = prepare(binding, action, **options)
     report.update(project_id=binding["project_id"], site_url=binding["site_url"], identity_source="operator_declared",
                   request={"tool": tool, "arguments": arguments, "timezone": tz})
+    source_page = _source_page(options.get("query", ""), options.get("source_page")) if action == "query" else None
+    if source_page:
+        # Retain the task contract even if the provider fails before returning data.
+        report["requested_scope"] = {"startDate": options["start"], "endDate": options["end"],
+                                     "timezone": tz, "site_url": binding["site_url"], "source_page_url": source_page}
     cache_key = hashlib.sha256(json.dumps([str(project_dir.resolve()), binding["generation"], SERVER_VERSION, SDK_VERSION, COLLECTOR_VERSION, tool, arguments, tz], sort_keys=True).encode()).hexdigest()
     report["cache_key"] = cache_key
     try:
@@ -339,6 +358,16 @@ def collect(project_dir: Path, action: str, *, caller: Callable = call, force: b
             report["response_shape"] = "list" if isinstance(payload, list) else "object"
             _scope_quality(report, payload, action, binding, options, arguments, tz)
             _classify(report, payload, safe, action, error)
+            if source_page:
+                report["requested_scope"]["source_page_url"] = source_page
+                description = report.get("provider_query_description", "")
+                entry_substitution = bool(re.search(r"\bEntryUrl\s*=", description, re.I))
+                report["scope_checks"] = {**report.get("scope_checks", {}), "click_source_page": "mismatch" if entry_substitution else "unknown"}
+                report.update(collection_status="partial", capability_status="unsupported_scope",
+                              reason_code="click_source_scope_conflict" if entry_substitution else "click_source_scope_unverified")
+                if entry_substitution:
+                    report["scope_status"] = "mismatch"
+                report["warnings"].append("Click-event source page is not established. EntryUrl/session VisitedUrl cannot attribute clicks to a page or section; do not use these counts for that attribution")
             return _save(project_dir, kind, report)
     except Timeout:
         report.update(reason_code="busy")

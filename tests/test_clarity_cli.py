@@ -24,3 +24,22 @@ def test_cli_exposes_quality_and_rejects_wrong_scope(tmp_path, monkeypatch, caps
     assert cli.main(["--project-dir", str(tmp_path), "clarity", "query", "--query", "Sessions", "--start", "2026-10-26", "--end", "2026-10-26", "--json"]) == 1
     response = json.loads(capsys.readouterr().out)
     assert response["transport_status"] == "ok" and response["scope_status"] == "mismatch"
+
+
+def test_cli_source_page_contract_exits_nonzero_for_unverified_click_scope(tmp_path, monkeypatch, capsys):
+    from seo_workbench import clarity
+    from seo_workbench_tools import clarity_probe
+    state.init_state('shopify', 'Store', 'https://example.com', project_dir=tmp_path)
+    clarity.configure(tmp_path, 'secret-token-123456', 'abc123', 'UTC', verify=False)
+    real_collect = clarity_probe.collect
+    def collect(*args, **kwargs):
+        assert kwargs['source_page'] == 'https://example.com/'
+        return real_collect(*args, **kwargs, caller=lambda *a, **k: {'ok': True, 'result': {'content': [
+            {'type': 'text', 'text': json.dumps({'query': 'Clicks occurred on homepage', 'data': [{'count': 14}]})}]}})
+    monkeypatch.setattr(clarity_probe, 'collect', collect)
+    assert cli.main(['--project-dir', str(tmp_path), 'clarity', 'query', '--query', 'Article clicks',
+                     '--source-page', 'https://example.com/', '--start', '2026-10-20', '--end', '2026-10-26', '--json']) == 1
+    response = json.loads(capsys.readouterr().out)
+    assert response['transport_status'] == 'ok'
+    assert response['capability_status'] == 'unsupported_scope'
+    assert not response['ok']

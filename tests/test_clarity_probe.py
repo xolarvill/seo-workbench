@@ -188,3 +188,29 @@ def test_mixed_known_and_unknown_numeric_fields_are_not_silently_projected(proje
     assert report["response"]["data"] == [{"TotalSessions": 7}]
     assert report["response_projection"]["omitted_numeric_fields"] == 1
     assert any("numeric fields" in warning for warning in report["warnings"])
+
+
+@pytest.mark.parametrize('explicit', [False, True])
+def test_click_source_page_rejects_entry_url_substitution(project, explicit):
+    report = collect(project, 'query', query='Count ordinary clicks. Source page must be exactly https://example.com/.',
+                     start='2026-10-20', end='2026-10-26',
+                     **({'source_page': 'https://example.com/'} if explicit else {}),
+                     caller=lambda *a, **k: result({'query': "Counts clicks for users (EntryUrl = 'https://example.com/')", 'data': [{'count': 14}]}))
+    assert report['scope_status'] == 'mismatch'
+    assert report['reason_code'] == 'click_source_scope_conflict'
+    assert report['capability_status'] == 'unsupported_scope'
+    assert report['requested_scope']['source_page_url'] == 'https://example.com/'
+    assert report['response']['data'][0]['count'] == 14  # Observation retained, attribution rejected.
+
+
+def test_click_source_claim_does_not_become_verified_by_text(project):
+    report = collect(project, 'query', query='Count article clicks', source_page='https://example.com/',
+                     start='2026-10-20', end='2026-10-26',
+                     caller=lambda *a, **k: result({'query': "Clicks occurred only on https://example.com/", 'data': [{'count': 14}]}))
+    assert report['capability_status'] == 'unsupported_scope'
+    assert report['reason_code'] == 'click_source_scope_unverified'
+
+
+def test_click_source_page_must_be_clean_same_site(project):
+    with pytest.raises(ValueError):
+        prepare(clarity.load(project), 'query', query='Clicks', source_page='https://elsewhere.com/', start='2026-10-20', end='2026-10-26')

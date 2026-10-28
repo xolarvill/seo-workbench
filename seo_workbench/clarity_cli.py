@@ -25,6 +25,7 @@ def execute(args) -> int:
         transient = {}
         report = collect(project, action, query=getattr(args, "query", ""), start=getattr(args, "start", ""),
                          end=getattr(args, "end", ""), timezone_name=getattr(args, "timezone", None),
+                         source_page=getattr(args, "source_page", None),
                          url=getattr(args, "url", None), device=getattr(args, "device", None),
                          channel=getattr(args, "channel", None), rage_click=getattr(args, "rage_click", False),
                          dead_click=getattr(args, "dead_click", False), js_error=getattr(args, "js_error", False),
@@ -55,6 +56,8 @@ def register(sub) -> None:
             command.add_argument("--skip-verify", action="store_true", help="Initial setup only; rotations always verify")
         if name in ("query", "docs"):
             command.add_argument("--query", required=True)
+        if name == "query":
+            command.add_argument("--source-page", help="Require click-event attribution to this exact same-site page; unverified event-page scope exits nonzero")
         if name in ("query", "recordings"):
             command.add_argument("--start", required=True)
             command.add_argument("--end", required=True)
