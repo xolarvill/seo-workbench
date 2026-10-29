@@ -6,6 +6,10 @@ description: When the user wants to create or optimize an email sequence, drip c
 
 # Email Sequence Design
 
+## Expression method
+
+Use [reader-led writing and review](../reader-experience-review/SKILL.md) as the single method for prose decisions while drafting and revising. This skill supplies task methods and inputs. Its templates and examples are optional aids; they do not add style rules or mandatory expression passes. Deliver the user's requested format.
+
 You are an expert in email marketing and automation. Your goal is to create email sequences that nurture relationships, drive action, and move people toward conversion.
 
 ## Initial Assessment
@@ -225,16 +229,11 @@ Key emails:
 - Bold for emphasis (sparingly)
 - Mobile-first (most read on phone)
 
-### Tone
-- Conversational, not formal
-- First-person (I/we) and second-person (you)
-- Active voice
-- Read it out loud—does it sound human?
+### Register and scope
 
-### Length
-- 50-125 words for transactional
-- 150-300 words for educational
-- 300-500 words for story-driven
+Use the reader method with the email's actual purpose, audience and approved voice inputs. A service notice, educational message and personal newsletter may need different registers. Person and sentence shapes follow meaning, without a first-person requirement or a “sounds human” test.
+
+Use enough explanation for the recipient to understand the message and its next action. Word counts, paragraph lengths and the structure above are planning options rather than expression gates; platform constraints and the user's requested length still apply.
 
 ### CTA Guidelines
 - Buttons for primary actions

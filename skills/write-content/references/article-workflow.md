@@ -11,7 +11,7 @@ Read when an article requires coordinating research, a brief and a draft. Use [w
 
 ## Deliverable
 
-Deliver the draft and its supporting task record, preserving factual gaps outside the reader-facing article unless needed for meaning.
+Deliver the requested draft; maintain its supporting record in the existing task artifact. Provide that record separately when requested, and include factual conditions in the public text when the reader needs them for meaning or action.
 
 ## Source
 

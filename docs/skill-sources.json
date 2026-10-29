@@ -2,7 +2,7 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "51376add01fab35d18501ef8311b5035b96000a4",
+  "local_snapshot_commit": "166260fb14d1fdb252c4c411ec85fabb29de8008",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
@@ -29,11 +29,11 @@
       "identical": 222,
       "workbench_native": 50
     },
-    "dependency_occurrences": 781,
+    "dependency_occurrences": 798,
     "dependencies_by_status": {
       "example_reference": 4,
       "project_context_reference": 91,
-      "resolved_local": 672,
+      "resolved_local": 689,
       "route_or_example": 1,
       "template_reference": 3,
       "upstream_runtime_reference": 10
@@ -115,8 +115,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "eeb61c52e3494fda71a44920bf56fed3d00434600ded811a2c822c47fe97488f",
-      "local_git_blob_sha": "fbf3993fc02c58b56fce856df259ae13fc4b3da8",
+      "local_sha256": "fcf1ae5e9bc5b7b7d5b64de144d1bdb8f8bd09150f2e1a290f31e2d4edbad3b4",
+      "local_git_blob_sha": "6a284f9f421d15330075d670e2638a7db8a8f6c5",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -142,7 +142,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/ab-test-setup/SKILL.md",
@@ -709,8 +709,8 @@
       "upstream_path": "skills/content-brief/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "ca94032f6089da5402e1c55aeb19aff3727d9a5ae0a23eb62cdf36e34b679671",
-      "local_git_blob_sha": "3aab3bf3f8f64f714964eabf6beba2c30d4fa4c1",
+      "local_sha256": "4455e14d9de6cc6a11cb2631c7232adb8224e26c2a4b6196db0e107256efda3d",
+      "local_git_blob_sha": "a167061c427dd69507cb78aa93ccb9b3b097600f",
       "comparison_upstream_blob_sha": "6431da427cbbedd7107a13fed67f2703e11a1ae4",
       "comparison_status": "different",
       "first_local_record": {
@@ -736,7 +736,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-content-brief/SKILL.md",
@@ -791,8 +791,8 @@
       "upstream_path": ".claude/skills/content-strategy/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "d962ed30f85f5c00b6a827ffe795c5f1af5eee13291f672d2ddea12f49f85264",
-      "local_git_blob_sha": "ea88b32b268ac3eaa9ec524db056c725c74749a5",
+      "local_sha256": "69d18b4fc6a10f97c5699550add0f29f4b314110df501ea8dd29e4969467d97f",
+      "local_git_blob_sha": "f06a4e098cf666b4ffeac7c39dd166f1ab58b7e0",
       "comparison_upstream_blob_sha": "fc64f068383ef0f7c5989f6eadb9537dfe3b6332",
       "comparison_status": "different",
       "first_local_record": {
@@ -818,7 +818,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/content-strategy/references/calendar-planning.md",
@@ -994,8 +994,8 @@
       "upstream_path": ".claude/skills/copy-editing/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "c96280031f24a7674402886b218306e0101f81c7c98fbab565b78ed8bbf39ca8",
-      "local_git_blob_sha": "71b7cb782184e0a26a0c2735bae96fa13504ee9f",
+      "local_sha256": "da53e77c787f6ec1a1d65848af50a4ce4bf6ad648cf8b77aed670ec70f51210a",
+      "local_git_blob_sha": "68865f6136e0b35b207d9484ea967881696d504e",
       "comparison_upstream_blob_sha": "6d6227f7f5243512d6f06c14c3db8372a84cb92e",
       "comparison_status": "different",
       "first_local_record": {
@@ -1021,7 +1021,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/copy-editing/references/article-editing.md",
@@ -1058,10 +1058,10 @@
       "derived_from": [
         "seomachine:.claude/agents/editor.md"
       ],
-      "local_sha256": "e3ba68afd52c2d69a929c09dce991fb8d47c49e43f22ec8fb4a247db883999e6",
-      "local_git_blob_sha": "e7df603f1d14ea766c9fa1abf29f9d8aff695408",
+      "local_sha256": "dbec309fb37a606babd43451dfac56e639257fa91b17de38570a73543df19e60",
+      "local_git_blob_sha": "2d532356bc185acb079a8453e076f4e761f0b53b",
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/copy-editing/references/plain-english-alternatives.md",
@@ -1120,8 +1120,8 @@
       "upstream_path": ".claude/skills/copywriting/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "0a82623894fc7cbc5f3050cbb7c05132fb0e17e23e6825e9d5e20ec33ca4ada6",
-      "local_git_blob_sha": "8f6b98bc4f871eafd89b302d7907f2802a3c580a",
+      "local_sha256": "abb89c0d7a2bc3abbedba276e1678395d6a5bc5ad817efdceff08f1759caeac4",
+      "local_git_blob_sha": "fdc4893ef655292e23ee0732053f475fa9ef8b99",
       "comparison_upstream_blob_sha": "d49f6e3e8d90bee129978b59da9c9bbf9da34a21",
       "comparison_status": "different",
       "first_local_record": {
@@ -1147,7 +1147,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/copywriting/references/copy-frameworks.md",
@@ -2077,8 +2077,8 @@
       "upstream_path": ".claude/skills/email-sequence/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "e35021ac4e98ce4becff1a296057bca21bba8f321be20ecfd51b4328caffe689",
-      "local_git_blob_sha": "f5871d398e3e6e3107cd991da40958b89ff33b0e",
+      "local_sha256": "217985376bd10cc72e787b0a111e578e2d341e55271500344ee8a658d4ccbd6d",
+      "local_git_blob_sha": "8a361e46665ad86f42e90309f43c98a5aaa4ddd6",
       "comparison_upstream_blob_sha": "6b5054630917977ee8e002088c9f64ad1b714a94",
       "comparison_status": "different",
       "first_local_record": {
@@ -2104,7 +2104,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/email-sequence/references/copy-guidelines.md",
@@ -3214,8 +3214,8 @@
       "upstream_path": "skills/improve-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "29acf08efabf2e84eb0a17e5a2fdaa83356e27351f32b808e6c72c13f696fb81",
-      "local_git_blob_sha": "25fca6a61322a6267b8667ef4d52da19c17bea43",
+      "local_sha256": "3d665710a34e28631f9005aa5d2237f2aa2fb2425571aecd419cd8fe5832e978",
+      "local_git_blob_sha": "0ff5abfdfd44fe1669cf53a2d981cda5489f399e",
       "comparison_upstream_blob_sha": "8f1ff6b0c8fca8e96e4b821773d296ebf5c70c21",
       "comparison_status": "different",
       "first_local_record": {
@@ -3241,7 +3241,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/improve-content/references/anti-slop-ruleset.md",
@@ -4278,16 +4278,16 @@
         "path": "skills/improve-content/references/refresh-workflow.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
         "seomachine:.claude/commands/rewrite.md"
       ],
-      "local_sha256": "928071e0dc478cd0f428b20e53d4a59ee01be2e4c606d3dba4f3b9109a2ceae6",
-      "local_git_blob_sha": "91c921ea0d4febe40e26e924750571ecdd5adeb9",
+      "local_sha256": "7be04734dc383d6debab3d2b4380cb644628376fd4afaa78aa6605ccb839dbb6",
+      "local_git_blob_sha": "b7eac50f98623e7dc2ad4e6602288bf05cf851fa",
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/improve-content/references/seo-editing.md",
@@ -7040,9 +7040,9 @@
         "path": "skills/project-context/SKILL.md"
       },
       "last_local_change": {
-        "commit": "a3ef96475196c9036186b5d8ff7c65c941ae7262",
-        "date": "2026-10-26",
-        "subject": "refactor: make local skill selection goal-driven",
+        "commit": "166260fb14d1fdb252c4c411ec85fabb29de8008",
+        "date": "2026-10-29",
+        "subject": "fix: separate editorial evidence from reader-facing prose",
         "path": "skills/project-context/SKILL.md",
         "record_status": "committed"
       },
@@ -7056,7 +7056,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/project-context/agents/openai.yaml",
@@ -7113,8 +7113,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "b18e8c2a29aacfcd21b1ea44ab044dcbc5f9f8f10bcac8cccb725b4d92d21c27",
-      "local_git_blob_sha": "f523759843c9ea0c74569e1a8ea2b26bf4e4adf0",
+      "local_sha256": "18ca6cb952a4a120aaf3e958cd3e0232d5e750370f2d189c1f607bae2b062d41",
+      "local_git_blob_sha": "7a4a2dd4d7fd432ca7ee39958681cb6aa720dd88",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -7124,9 +7124,9 @@
         "path": "skills/reader-experience-review/SKILL.md"
       },
       "last_local_change": {
-        "commit": "50719b14adc80235b11784675c613578d8539287",
+        "commit": "166260fb14d1fdb252c4c411ec85fabb29de8008",
         "date": "2026-10-29",
-        "subject": "fix: prioritize reader needs over defensive writing",
+        "subject": "fix: separate editorial evidence from reader-facing prose",
         "path": "skills/reader-experience-review/SKILL.md",
         "record_status": "committed"
       },
@@ -7200,24 +7200,24 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "166260fb14d1fdb252c4c411ec85fabb29de8008",
         "date": "2026-10-29",
+        "subject": "fix: separate editorial evidence from reader-facing prose",
         "path": "skills/reader-experience-review/references/evidence-to-prose.md",
-        "subject": "Workbench method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "166260fb14d1fdb252c4c411ec85fabb29de8008",
         "date": "2026-10-29",
+        "subject": "fix: separate editorial evidence from reader-facing prose",
         "path": "skills/reader-experience-review/references/evidence-to-prose.md",
-        "subject": "Workbench method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "f8c4e7d93cddbb43ffa2a349034c4ed11b581279233ddf2eb66b21632396d1be",
       "local_git_blob_sha": "d4df8cded0b0fc34059de13ee6480572c9f7f704",
       "maintenance_status": "active"
@@ -8162,8 +8162,8 @@
       "upstream_path": "skills/seo-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "ffd167d3e71250cfe32c64ecb77a951557a667fe686146e385a7423bdf1ab92d",
-      "local_git_blob_sha": "6058d09ca580d232678322b0a984dbcf869379ca",
+      "local_sha256": "6e2d29d0ea0353ebc5136b456f145aeaa7d12240dd0ae827494c03cc17e6a038",
+      "local_git_blob_sha": "83c548cd8dc69d9fd0af654735c8160b98262a82",
       "comparison_upstream_blob_sha": "be86bd23b85c7bffa157bacd8761caa45157d94d",
       "comparison_status": "different",
       "first_local_record": {
@@ -8189,7 +8189,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-dataforseo/LICENSE.txt",
@@ -13909,8 +13909,8 @@
       "upstream_path": ".claude/skills/social-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "1bc39c62d2b91f8bfcfae9c503a9e69061a8a51c539c9077b0c9d8dedbd9f2ea",
-      "local_git_blob_sha": "fb0240a8e9a99639f3665d770c66dafa28415d6e",
+      "local_sha256": "3d2ee6da1b00a58521df9ab4ac43dfd600cb0148c246a781c2dcbdf1e219c1a7",
+      "local_git_blob_sha": "93e364110225f5c3560d201c5fd972c8c7af6e89",
       "comparison_upstream_blob_sha": "ef019c451aeaf314c7409c586d3cb7c7a1c19306",
       "comparison_status": "different",
       "first_local_record": {
@@ -13936,7 +13936,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/social-content/references/content-repurposing.md",
@@ -14576,8 +14576,8 @@
       "upstream_path": "skills/write-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "48cf66f484b4bab098bb789e5c9b045505b553f6ce2040ceb575a19a68a86b7d",
-      "local_git_blob_sha": "751c0384d25808f18b1257e1ee6176ca728118bf",
+      "local_sha256": "f0fd5ea8aa809179e501af507c5b5f5b5ea58f8aab794d81933145daebca7436",
+      "local_git_blob_sha": "11fa66e1bffef55da806e482d97eda1116c2b798",
       "comparison_upstream_blob_sha": "35c6c4041ba0a03de482ccc8e439183e6031d681",
       "comparison_status": "different",
       "first_local_record": {
@@ -14603,7 +14603,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/anti-slop-ruleset.md",
@@ -14618,8 +14618,8 @@
       "upstream_path": "skills/write-content/references/anti-slop-ruleset.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "a512e6213f743b6836950c6236b1fc32811dde34eda6ee73ce978f307ced3633",
-      "local_git_blob_sha": "d9efacccdf84e2a8fc380ff197a19243329d8d79",
+      "local_sha256": "3a944eae3c41c989535a6a38d683f84f9a6409c046ef12695058e5cc657eca6e",
+      "local_git_blob_sha": "7ec8fd93442252e4b0bfdf691f5924f1ce7a2a6f",
       "comparison_upstream_blob_sha": "21b48bfa3d45a89e00e7c13b9096d085e18f9bea",
       "comparison_status": "different",
       "first_local_record": {
@@ -14645,7 +14645,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/write-content/references/article-workflow.md",
@@ -14676,16 +14676,16 @@
         "path": "skills/write-content/references/article-workflow.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
         "seomachine:.claude/commands/article.md"
       ],
-      "local_sha256": "3db69db0a446d004d833cd62417b4f58a62e688c152d9242c6b877e54cddbcf0",
-      "local_git_blob_sha": "0052c890302180a2783f6e106ad0f25f3ead0cb5",
+      "local_sha256": "061bbc770cbb6797a74d0091543965f7e76f1e39e38ba6d2a5d7d7f7b3069492",
+      "local_git_blob_sha": "4103f079ed2ab07d0d88a6d14e238e5b8d592178",
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/content-types-overview.md",
@@ -15673,9 +15673,9 @@
         "path": "skills/write-content/references/fact-checking.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "166260fb14d1fdb252c4c411ec85fabb29de8008",
         "date": "2026-10-29",
-        "subject": "feat: adopt selected upstream skill methods and policy corrections",
+        "subject": "fix: separate editorial evidence from reader-facing prose",
         "path": "skills/write-content/references/fact-checking.md",
         "record_status": "committed"
       },
@@ -15689,7 +15689,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/write-content/references/geo-optimization.md",
@@ -15914,8 +15914,8 @@
       "upstream_path": "skills/write-content/references/quality-scoring.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "b30c60450e533cab1ac3ab71d1f4e0915dbe8496b3d4e891879ff809c8e8cd85",
-      "local_git_blob_sha": "333b6690fb74019704db8b44ce13db889995b53e",
+      "local_sha256": "a831c6b577d223e04402b0e5e48e7771ede813725d5ed593c7a44dd512e8c69c",
+      "local_git_blob_sha": "8b78dcd269668e2035cff344d04a232b2f638bc8",
       "comparison_upstream_blob_sha": "5d3a3ad5559e4c6f587b1a3a0adda4e175a2bb63",
       "comparison_status": "different",
       "first_local_record": {
@@ -15941,7 +15941,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/seo-optimization-layer.md",
@@ -16082,8 +16082,8 @@
       "upstream_path": "skills/write-content/references/voice-injection-playbook.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "56494711a26f58317dee5fc95717fea3d9c9f4eaf6afba3e763346cbac5013eb",
-      "local_git_blob_sha": "af3804258767e100566686d495be68c871e6ae77",
+      "local_sha256": "1faa4dd904c8b2248a9eb248c0f9d384b4fe6b41ab3b8c8e60a02904f3904054",
+      "local_git_blob_sha": "775efc3249dee78cc8a9b7d08aa3b69e715d00b4",
       "comparison_upstream_blob_sha": "e207293e40a6c6f0a91133a4d3a87d2e99e05d83",
       "comparison_status": "different",
       "first_local_record": {
@@ -16109,7 +16109,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/writing-pipeline.md",
@@ -16124,8 +16124,8 @@
       "upstream_path": "skills/write-content/references/writing-pipeline.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "03c2263788b60da73e74ab50fe6184c1275bb81a02b1b60fd0ce07c243954fa1",
-      "local_git_blob_sha": "ae53d89571f9e0ac77f92d8e7ad3b303c67d8db7",
+      "local_sha256": "07696830ba599f4a2cb740c43cde5606968019eb9b9540e8b091276fda16b605",
+      "local_git_blob_sha": "e5f26e49d6802895f96778aeb3b3f4770d3a0c36",
       "comparison_upstream_blob_sha": "c8a4c3c70a9526389f1cbf3eacf9f10c9ae4d0c2",
       "comparison_status": "different",
       "first_local_record": {
@@ -16135,9 +16135,9 @@
         "path": "skills/write-content/references/writing-pipeline.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "166260fb14d1fdb252c4c411ec85fabb29de8008",
         "date": "2026-10-29",
-        "subject": "refactor: unify writing methods around reader tasks and evidence",
+        "subject": "fix: separate editorial evidence from reader-facing prose",
         "path": "skills/write-content/references/writing-pipeline.md",
         "record_status": "committed"
       },
@@ -17838,71 +17838,7 @@
   "dependencies": [
     {
       "from_path": "skills/README.md",
-      "line": 11,
-      "syntax": "markdown_link",
-      "target": "site-audit/SKILL.md",
-      "resolved_path": "skills/site-audit/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 12,
-      "syntax": "markdown_link",
-      "target": "project-context/SKILL.md",
-      "resolved_path": "skills/project-context/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 13,
-      "syntax": "markdown_link",
-      "target": "keyword-deep-dive/SKILL.md",
-      "resolved_path": "skills/keyword-deep-dive/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 13,
-      "syntax": "markdown_link",
-      "target": "semantic-gap-analysis/SKILL.md",
-      "resolved_path": "skills/semantic-gap-analysis/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 14,
-      "syntax": "markdown_link",
-      "target": "topic-cluster-planning/SKILL.md",
-      "resolved_path": "skills/topic-cluster-planning/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 15,
-      "syntax": "markdown_link",
-      "target": "content-brief/SKILL.md",
-      "resolved_path": "skills/content-brief/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 15,
-      "syntax": "markdown_link",
-      "target": "expert-interview/SKILL.md",
-      "resolved_path": "skills/expert-interview/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 16,
-      "syntax": "markdown_link",
-      "target": "write-content/SKILL.md",
-      "resolved_path": "skills/write-content/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 16,
+      "line": 9,
       "syntax": "markdown_link",
       "target": "reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -17910,18 +17846,74 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 17,
+      "line": 9,
       "syntax": "markdown_link",
-      "target": "improve-content/SKILL.md",
-      "resolved_path": "skills/improve-content/SKILL.md",
+      "target": "reader-experience-review/references/evidence-to-prose.md",
+      "resolved_path": "skills/reader-experience-review/references/evidence-to-prose.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 13,
+      "syntax": "markdown_link",
+      "target": "site-audit/SKILL.md",
+      "resolved_path": "skills/site-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 14,
+      "syntax": "markdown_link",
+      "target": "project-context/SKILL.md",
+      "resolved_path": "skills/project-context/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 15,
+      "syntax": "markdown_link",
+      "target": "keyword-deep-dive/SKILL.md",
+      "resolved_path": "skills/keyword-deep-dive/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 15,
+      "syntax": "markdown_link",
+      "target": "semantic-gap-analysis/SKILL.md",
+      "resolved_path": "skills/semantic-gap-analysis/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 16,
+      "syntax": "markdown_link",
+      "target": "topic-cluster-planning/SKILL.md",
+      "resolved_path": "skills/topic-cluster-planning/SKILL.md",
       "status": "resolved_local"
     },
     {
       "from_path": "skills/README.md",
       "line": 17,
       "syntax": "markdown_link",
-      "target": "page-audit/SKILL.md",
-      "resolved_path": "skills/page-audit/SKILL.md",
+      "target": "content-brief/SKILL.md",
+      "resolved_path": "skills/content-brief/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 17,
+      "syntax": "markdown_link",
+      "target": "expert-interview/SKILL.md",
+      "resolved_path": "skills/expert-interview/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 18,
+      "syntax": "markdown_link",
+      "target": "write-content/SKILL.md",
+      "resolved_path": "skills/write-content/SKILL.md",
       "status": "resolved_local"
     },
     {
@@ -17936,509 +17928,21 @@
       "from_path": "skills/README.md",
       "line": 19,
       "syntax": "markdown_link",
+      "target": "improve-content/SKILL.md",
+      "resolved_path": "skills/improve-content/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 19,
+      "syntax": "markdown_link",
       "target": "page-audit/SKILL.md",
       "resolved_path": "skills/page-audit/SKILL.md",
       "status": "resolved_local"
     },
     {
       "from_path": "skills/README.md",
-      "line": 19,
-      "syntax": "markdown_link",
-      "target": "eeat-audit/SKILL.md",
-      "resolved_path": "skills/eeat-audit/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 19,
-      "syntax": "markdown_link",
-      "target": "semantic-gap-analysis/SKILL.md",
-      "resolved_path": "skills/semantic-gap-analysis/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
       "line": 20,
-      "syntax": "markdown_link",
-      "target": "featured-snippet-optimizer/SKILL.md",
-      "resolved_path": "skills/featured-snippet-optimizer/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 21,
-      "syntax": "markdown_link",
-      "target": "technical-audit/SKILL.md",
-      "resolved_path": "skills/technical-audit/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 21,
-      "syntax": "markdown_link",
-      "target": "headless-precheck/SKILL.md",
-      "resolved_path": "skills/headless-precheck/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 22,
-      "syntax": "markdown_link",
-      "target": "schema/SKILL.md",
-      "resolved_path": "skills/schema/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 22,
-      "syntax": "markdown_link",
-      "target": "sitemap/SKILL.md",
-      "resolved_path": "skills/sitemap/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 22,
-      "syntax": "markdown_link",
-      "target": "images/SKILL.md",
-      "resolved_path": "skills/images/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 23,
-      "syntax": "markdown_link",
-      "target": "drift/SKILL.md",
-      "resolved_path": "skills/drift/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 24,
-      "syntax": "markdown_link",
-      "target": "backlinks/SKILL.md",
-      "resolved_path": "skills/backlinks/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 24,
-      "syntax": "markdown_link",
-      "target": "linkbuilding/SKILL.md",
-      "resolved_path": "skills/linkbuilding/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 30,
-      "syntax": "markdown_link",
-      "target": "../docs/skill-sources.md",
-      "resolved_path": "docs/skill-sources.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 30,
-      "syntax": "markdown_link",
-      "target": "../third_party/NOTICE.md",
-      "resolved_path": "third_party/NOTICE.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 30,
-      "syntax": "markdown_link",
-      "target": "../docs/20261029-skill-layout-migration.md",
-      "resolved_path": "docs/20261029-skill-layout-migration.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 30,
-      "syntax": "backtick_path",
-      "target": "skills/<capability>/SKILL.md",
-      "resolved_path": null,
-      "status": "template_reference"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 36,
-      "syntax": "markdown_link",
-      "target": "seo/SKILL.md",
-      "resolved_path": "skills/seo/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 36,
-      "syntax": "markdown_link",
-      "target": "seo-plan/SKILL.md",
-      "resolved_path": "skills/seo-plan/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 36,
-      "syntax": "markdown_link",
-      "target": "seo-flow/SKILL.md",
-      "resolved_path": "skills/seo-flow/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 36,
-      "syntax": "markdown_link",
-      "target": "seo-cluster/SKILL.md",
-      "resolved_path": "skills/seo-cluster/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 37,
-      "syntax": "markdown_link",
-      "target": "seo-content/SKILL.md",
-      "resolved_path": "skills/seo-content/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 37,
-      "syntax": "markdown_link",
-      "target": "seo-sxo/SKILL.md",
-      "resolved_path": "skills/seo-sxo/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 37,
-      "syntax": "markdown_link",
-      "target": "seo-competitor-pages/SKILL.md",
-      "resolved_path": "skills/seo-competitor-pages/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 37,
-      "syntax": "markdown_link",
-      "target": "seo-geo/SKILL.md",
-      "resolved_path": "skills/seo-geo/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 38,
-      "syntax": "markdown_link",
-      "target": "seo-ecommerce/SKILL.md",
-      "resolved_path": "skills/seo-ecommerce/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 38,
-      "syntax": "markdown_link",
-      "target": "seo-hreflang/SKILL.md",
-      "resolved_path": "skills/seo-hreflang/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 38,
-      "syntax": "markdown_link",
-      "target": "seo-local/SKILL.md",
-      "resolved_path": "skills/seo-local/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 38,
-      "syntax": "markdown_link",
-      "target": "seo-maps/SKILL.md",
-      "resolved_path": "skills/seo-maps/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 39,
-      "syntax": "markdown_link",
-      "target": "seo-google/SKILL.md",
-      "resolved_path": "skills/seo-google/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 39,
-      "syntax": "markdown_link",
-      "target": "seo-dataforseo/SKILL.md",
-      "resolved_path": "skills/seo-dataforseo/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 39,
-      "syntax": "markdown_link",
-      "target": "seo-image-gen/SKILL.md",
-      "resolved_path": "skills/seo-image-gen/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 40,
-      "syntax": "markdown_link",
-      "target": "programmatic-seo/SKILL.md",
-      "resolved_path": "skills/programmatic-seo/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 41,
-      "syntax": "markdown_link",
-      "target": "product-marketing-context/SKILL.md",
-      "resolved_path": "skills/product-marketing-context/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 41,
-      "syntax": "markdown_link",
-      "target": "content-strategy/SKILL.md",
-      "resolved_path": "skills/content-strategy/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 41,
-      "syntax": "markdown_link",
-      "target": "copywriting/SKILL.md",
-      "resolved_path": "skills/copywriting/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 41,
-      "syntax": "markdown_link",
-      "target": "copy-editing/SKILL.md",
-      "resolved_path": "skills/copy-editing/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 41,
-      "syntax": "markdown_link",
-      "target": "competitor-alternatives/SKILL.md",
-      "resolved_path": "skills/competitor-alternatives/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 42,
-      "syntax": "markdown_link",
-      "target": "page-cro/SKILL.md",
-      "resolved_path": "skills/page-cro/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 42,
-      "syntax": "markdown_link",
-      "target": "form-cro/SKILL.md",
-      "resolved_path": "skills/form-cro/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 42,
-      "syntax": "markdown_link",
-      "target": "popup-cro/SKILL.md",
-      "resolved_path": "skills/popup-cro/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 42,
-      "syntax": "markdown_link",
-      "target": "signup-flow-cro/SKILL.md",
-      "resolved_path": "skills/signup-flow-cro/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 42,
-      "syntax": "markdown_link",
-      "target": "onboarding-cro/SKILL.md",
-      "resolved_path": "skills/onboarding-cro/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 42,
-      "syntax": "markdown_link",
-      "target": "paywall-upgrade-cro/SKILL.md",
-      "resolved_path": "skills/paywall-upgrade-cro/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 42,
-      "syntax": "markdown_link",
-      "target": "ab-test-setup/SKILL.md",
-      "resolved_path": "skills/ab-test-setup/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 43,
-      "syntax": "markdown_link",
-      "target": "analytics-tracking/SKILL.md",
-      "resolved_path": "skills/analytics-tracking/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 43,
-      "syntax": "markdown_link",
-      "target": "email-sequence/SKILL.md",
-      "resolved_path": "skills/email-sequence/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 43,
-      "syntax": "markdown_link",
-      "target": "social-content/SKILL.md",
-      "resolved_path": "skills/social-content/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 43,
-      "syntax": "markdown_link",
-      "target": "paid-ads/SKILL.md",
-      "resolved_path": "skills/paid-ads/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "growth-lead/SKILL.md",
-      "resolved_path": "skills/growth-lead/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "launch-strategy/SKILL.md",
-      "resolved_path": "skills/launch-strategy/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "pricing-strategy/SKILL.md",
-      "resolved_path": "skills/pricing-strategy/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "referral-program/SKILL.md",
-      "resolved_path": "skills/referral-program/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "free-tool-strategy/SKILL.md",
-      "resolved_path": "skills/free-tool-strategy/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "marketing-ideas/SKILL.md",
-      "resolved_path": "skills/marketing-ideas/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "marketing-psychology/SKILL.md",
-      "resolved_path": "skills/marketing-psychology/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "copy-editing/references/article-editing.md",
-      "resolved_path": "skills/copy-editing/references/article-editing.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "topic-cluster-planning/references/internal-link-review.md",
-      "resolved_path": "skills/topic-cluster-planning/references/internal-link-review.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "page-audit/references/metadata-writing.md",
-      "resolved_path": "skills/page-audit/references/metadata-writing.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "improve-content/references/seo-editing.md",
-      "resolved_path": "skills/improve-content/references/seo-editing.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "page-cro/references/conversion-analysis.md",
-      "resolved_path": "skills/page-cro/references/conversion-analysis.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "../docs/skill-method-adaptations.json",
-      "resolved_path": "docs/skill-method-adaptations.json",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "../third_party/skill-history/seomachine/README.md",
-      "resolved_path": "third_party/skill-history/seomachine/README.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 50,
-      "syntax": "markdown_link",
-      "target": "write-content/SKILL.md",
-      "resolved_path": "skills/write-content/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 50,
       "syntax": "markdown_link",
       "target": "reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -18446,7 +17950,519 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 54,
+      "line": 21,
+      "syntax": "markdown_link",
+      "target": "page-audit/SKILL.md",
+      "resolved_path": "skills/page-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 21,
+      "syntax": "markdown_link",
+      "target": "eeat-audit/SKILL.md",
+      "resolved_path": "skills/eeat-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 21,
+      "syntax": "markdown_link",
+      "target": "semantic-gap-analysis/SKILL.md",
+      "resolved_path": "skills/semantic-gap-analysis/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 22,
+      "syntax": "markdown_link",
+      "target": "featured-snippet-optimizer/SKILL.md",
+      "resolved_path": "skills/featured-snippet-optimizer/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 23,
+      "syntax": "markdown_link",
+      "target": "technical-audit/SKILL.md",
+      "resolved_path": "skills/technical-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 23,
+      "syntax": "markdown_link",
+      "target": "headless-precheck/SKILL.md",
+      "resolved_path": "skills/headless-precheck/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 24,
+      "syntax": "markdown_link",
+      "target": "schema/SKILL.md",
+      "resolved_path": "skills/schema/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 24,
+      "syntax": "markdown_link",
+      "target": "sitemap/SKILL.md",
+      "resolved_path": "skills/sitemap/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 24,
+      "syntax": "markdown_link",
+      "target": "images/SKILL.md",
+      "resolved_path": "skills/images/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 25,
+      "syntax": "markdown_link",
+      "target": "drift/SKILL.md",
+      "resolved_path": "skills/drift/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 26,
+      "syntax": "markdown_link",
+      "target": "backlinks/SKILL.md",
+      "resolved_path": "skills/backlinks/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 26,
+      "syntax": "markdown_link",
+      "target": "linkbuilding/SKILL.md",
+      "resolved_path": "skills/linkbuilding/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 32,
+      "syntax": "markdown_link",
+      "target": "../docs/skill-sources.md",
+      "resolved_path": "docs/skill-sources.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 32,
+      "syntax": "markdown_link",
+      "target": "../third_party/NOTICE.md",
+      "resolved_path": "third_party/NOTICE.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 32,
+      "syntax": "markdown_link",
+      "target": "../docs/20261029-skill-layout-migration.md",
+      "resolved_path": "docs/20261029-skill-layout-migration.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 32,
+      "syntax": "backtick_path",
+      "target": "skills/<capability>/SKILL.md",
+      "resolved_path": null,
+      "status": "template_reference"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 38,
+      "syntax": "markdown_link",
+      "target": "seo/SKILL.md",
+      "resolved_path": "skills/seo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 38,
+      "syntax": "markdown_link",
+      "target": "seo-plan/SKILL.md",
+      "resolved_path": "skills/seo-plan/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 38,
+      "syntax": "markdown_link",
+      "target": "seo-flow/SKILL.md",
+      "resolved_path": "skills/seo-flow/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 38,
+      "syntax": "markdown_link",
+      "target": "seo-cluster/SKILL.md",
+      "resolved_path": "skills/seo-cluster/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 39,
+      "syntax": "markdown_link",
+      "target": "seo-content/SKILL.md",
+      "resolved_path": "skills/seo-content/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 39,
+      "syntax": "markdown_link",
+      "target": "seo-sxo/SKILL.md",
+      "resolved_path": "skills/seo-sxo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 39,
+      "syntax": "markdown_link",
+      "target": "seo-competitor-pages/SKILL.md",
+      "resolved_path": "skills/seo-competitor-pages/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 39,
+      "syntax": "markdown_link",
+      "target": "seo-geo/SKILL.md",
+      "resolved_path": "skills/seo-geo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 40,
+      "syntax": "markdown_link",
+      "target": "seo-ecommerce/SKILL.md",
+      "resolved_path": "skills/seo-ecommerce/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 40,
+      "syntax": "markdown_link",
+      "target": "seo-hreflang/SKILL.md",
+      "resolved_path": "skills/seo-hreflang/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 40,
+      "syntax": "markdown_link",
+      "target": "seo-local/SKILL.md",
+      "resolved_path": "skills/seo-local/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 40,
+      "syntax": "markdown_link",
+      "target": "seo-maps/SKILL.md",
+      "resolved_path": "skills/seo-maps/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 41,
+      "syntax": "markdown_link",
+      "target": "seo-google/SKILL.md",
+      "resolved_path": "skills/seo-google/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 41,
+      "syntax": "markdown_link",
+      "target": "seo-dataforseo/SKILL.md",
+      "resolved_path": "skills/seo-dataforseo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 41,
+      "syntax": "markdown_link",
+      "target": "seo-image-gen/SKILL.md",
+      "resolved_path": "skills/seo-image-gen/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 42,
+      "syntax": "markdown_link",
+      "target": "programmatic-seo/SKILL.md",
+      "resolved_path": "skills/programmatic-seo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 43,
+      "syntax": "markdown_link",
+      "target": "product-marketing-context/SKILL.md",
+      "resolved_path": "skills/product-marketing-context/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 43,
+      "syntax": "markdown_link",
+      "target": "content-strategy/SKILL.md",
+      "resolved_path": "skills/content-strategy/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 43,
+      "syntax": "markdown_link",
+      "target": "copywriting/SKILL.md",
+      "resolved_path": "skills/copywriting/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 43,
+      "syntax": "markdown_link",
+      "target": "copy-editing/SKILL.md",
+      "resolved_path": "skills/copy-editing/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 43,
+      "syntax": "markdown_link",
+      "target": "competitor-alternatives/SKILL.md",
+      "resolved_path": "skills/competitor-alternatives/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 44,
+      "syntax": "markdown_link",
+      "target": "page-cro/SKILL.md",
+      "resolved_path": "skills/page-cro/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 44,
+      "syntax": "markdown_link",
+      "target": "form-cro/SKILL.md",
+      "resolved_path": "skills/form-cro/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 44,
+      "syntax": "markdown_link",
+      "target": "popup-cro/SKILL.md",
+      "resolved_path": "skills/popup-cro/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 44,
+      "syntax": "markdown_link",
+      "target": "signup-flow-cro/SKILL.md",
+      "resolved_path": "skills/signup-flow-cro/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 44,
+      "syntax": "markdown_link",
+      "target": "onboarding-cro/SKILL.md",
+      "resolved_path": "skills/onboarding-cro/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 44,
+      "syntax": "markdown_link",
+      "target": "paywall-upgrade-cro/SKILL.md",
+      "resolved_path": "skills/paywall-upgrade-cro/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 44,
+      "syntax": "markdown_link",
+      "target": "ab-test-setup/SKILL.md",
+      "resolved_path": "skills/ab-test-setup/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 45,
+      "syntax": "markdown_link",
+      "target": "analytics-tracking/SKILL.md",
+      "resolved_path": "skills/analytics-tracking/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 45,
+      "syntax": "markdown_link",
+      "target": "email-sequence/SKILL.md",
+      "resolved_path": "skills/email-sequence/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 45,
+      "syntax": "markdown_link",
+      "target": "social-content/SKILL.md",
+      "resolved_path": "skills/social-content/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 45,
+      "syntax": "markdown_link",
+      "target": "paid-ads/SKILL.md",
+      "resolved_path": "skills/paid-ads/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 46,
+      "syntax": "markdown_link",
+      "target": "growth-lead/SKILL.md",
+      "resolved_path": "skills/growth-lead/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 46,
+      "syntax": "markdown_link",
+      "target": "launch-strategy/SKILL.md",
+      "resolved_path": "skills/launch-strategy/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 46,
+      "syntax": "markdown_link",
+      "target": "pricing-strategy/SKILL.md",
+      "resolved_path": "skills/pricing-strategy/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 46,
+      "syntax": "markdown_link",
+      "target": "referral-program/SKILL.md",
+      "resolved_path": "skills/referral-program/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 46,
+      "syntax": "markdown_link",
+      "target": "free-tool-strategy/SKILL.md",
+      "resolved_path": "skills/free-tool-strategy/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 46,
+      "syntax": "markdown_link",
+      "target": "marketing-ideas/SKILL.md",
+      "resolved_path": "skills/marketing-ideas/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 46,
+      "syntax": "markdown_link",
+      "target": "marketing-psychology/SKILL.md",
+      "resolved_path": "skills/marketing-psychology/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 48,
+      "syntax": "markdown_link",
+      "target": "copy-editing/references/article-editing.md",
+      "resolved_path": "skills/copy-editing/references/article-editing.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 48,
+      "syntax": "markdown_link",
+      "target": "topic-cluster-planning/references/internal-link-review.md",
+      "resolved_path": "skills/topic-cluster-planning/references/internal-link-review.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 48,
+      "syntax": "markdown_link",
+      "target": "page-audit/references/metadata-writing.md",
+      "resolved_path": "skills/page-audit/references/metadata-writing.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 48,
+      "syntax": "markdown_link",
+      "target": "improve-content/references/seo-editing.md",
+      "resolved_path": "skills/improve-content/references/seo-editing.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 48,
+      "syntax": "markdown_link",
+      "target": "page-cro/references/conversion-analysis.md",
+      "resolved_path": "skills/page-cro/references/conversion-analysis.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 48,
+      "syntax": "markdown_link",
+      "target": "../docs/skill-method-adaptations.json",
+      "resolved_path": "docs/skill-method-adaptations.json",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 48,
+      "syntax": "markdown_link",
+      "target": "../third_party/skill-history/seomachine/README.md",
+      "resolved_path": "third_party/skill-history/seomachine/README.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 52,
+      "syntax": "markdown_link",
+      "target": "reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 52,
+      "syntax": "markdown_link",
+      "target": "write-content/SKILL.md",
+      "resolved_path": "skills/write-content/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 56,
       "syntax": "markdown_link",
       "target": "seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
@@ -18662,7 +18678,15 @@
     },
     {
       "from_path": "skills/content-brief/SKILL.md",
-      "line": 12,
+      "line": 10,
+      "syntax": "markdown_link",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/content-brief/SKILL.md",
+      "line": 16,
       "syntax": "markdown_link",
       "target": "references/existing-page-scope.md",
       "resolved_path": "skills/content-brief/references/existing-page-scope.md",
@@ -18670,7 +18694,7 @@
     },
     {
       "from_path": "skills/content-brief/SKILL.md",
-      "line": 26,
+      "line": 30,
       "syntax": "markdown_link",
       "target": "../write-content/references/fact-checking.md",
       "resolved_path": "skills/write-content/references/fact-checking.md",
@@ -18678,7 +18702,7 @@
     },
     {
       "from_path": "skills/content-brief/SKILL.md",
-      "line": 50,
+      "line": 54,
       "syntax": "backtick_path",
       "target": "../write-content/references/content-types-overview.md",
       "resolved_path": "skills/write-content/references/content-types-overview.md",
@@ -18686,7 +18710,7 @@
     },
     {
       "from_path": "skills/content-brief/SKILL.md",
-      "line": 111,
+      "line": 115,
       "syntax": "backtick_path",
       "target": "../write-content/references/content-types-overview.md",
       "resolved_path": "skills/write-content/references/content-types-overview.md",
@@ -18694,7 +18718,7 @@
     },
     {
       "from_path": "skills/content-brief/SKILL.md",
-      "line": 112,
+      "line": 116,
       "syntax": "backtick_path",
       "target": "../write-content/references/structured-data-snippets.md",
       "resolved_path": "skills/write-content/references/structured-data-snippets.md",
@@ -18702,7 +18726,7 @@
     },
     {
       "from_path": "skills/content-brief/SKILL.md",
-      "line": 113,
+      "line": 117,
       "syntax": "backtick_path",
       "target": "../write-content/references/human-input-framework.md",
       "resolved_path": "skills/write-content/references/human-input-framework.md",
@@ -18710,7 +18734,7 @@
     },
     {
       "from_path": "skills/content-brief/SKILL.md",
-      "line": 114,
+      "line": 118,
       "syntax": "backtick_path",
       "target": "../write-content/references/fact-checking.md",
       "resolved_path": "skills/write-content/references/fact-checking.md",
@@ -18726,7 +18750,15 @@
     },
     {
       "from_path": "skills/content-strategy/SKILL.md",
-      "line": 14,
+      "line": 11,
+      "syntax": "markdown_link",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/content-strategy/SKILL.md",
+      "line": 18,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -18734,7 +18766,7 @@
     },
     {
       "from_path": "skills/content-strategy/SKILL.md",
-      "line": 362,
+      "line": 366,
       "syntax": "markdown_link",
       "target": "references/topic-opportunities.md",
       "resolved_path": "skills/content-strategy/references/topic-opportunities.md",
@@ -18742,7 +18774,7 @@
     },
     {
       "from_path": "skills/content-strategy/SKILL.md",
-      "line": 363,
+      "line": 367,
       "syntax": "markdown_link",
       "target": "references/trend-research.md",
       "resolved_path": "skills/content-strategy/references/trend-research.md",
@@ -18750,7 +18782,7 @@
     },
     {
       "from_path": "skills/content-strategy/SKILL.md",
-      "line": 364,
+      "line": 368,
       "syntax": "markdown_link",
       "target": "references/work-priorities.md",
       "resolved_path": "skills/content-strategy/references/work-priorities.md",
@@ -18758,7 +18790,7 @@
     },
     {
       "from_path": "skills/content-strategy/SKILL.md",
-      "line": 365,
+      "line": 369,
       "syntax": "markdown_link",
       "target": "references/calendar-planning.md",
       "resolved_path": "skills/content-strategy/references/calendar-planning.md",
@@ -18766,7 +18798,7 @@
     },
     {
       "from_path": "skills/content-strategy/SKILL.md",
-      "line": 369,
+      "line": 373,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -18774,7 +18806,7 @@
     },
     {
       "from_path": "skills/content-strategy/SKILL.md",
-      "line": 369,
+      "line": 373,
       "syntax": "backtick_path",
       "target": "projects/<id>/",
       "resolved_path": null,
@@ -18846,7 +18878,15 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 14,
+      "line": 11,
+      "syntax": "markdown_link",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/copy-editing/SKILL.md",
+      "line": 18,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -18854,7 +18894,7 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 415,
+      "line": 359,
       "syntax": "markdown_link",
       "target": "references/plain-english-alternatives.md",
       "resolved_path": "skills/copy-editing/references/plain-english-alternatives.md",
@@ -18862,7 +18902,7 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 450,
+      "line": 394,
       "syntax": "markdown_link",
       "target": "references/article-editing.md",
       "resolved_path": "skills/copy-editing/references/article-editing.md",
@@ -18870,7 +18910,7 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 454,
+      "line": 398,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -18878,7 +18918,7 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 454,
+      "line": 398,
       "syntax": "backtick_path",
       "target": "projects/<id>/",
       "resolved_path": null,
@@ -18902,7 +18942,15 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 16,
+      "line": 11,
+      "syntax": "markdown_link",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/copywriting/SKILL.md",
+      "line": 20,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -18910,7 +18958,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 122,
+      "line": 111,
       "syntax": "markdown_link",
       "target": "references/copy-frameworks.md",
       "resolved_path": "skills/copywriting/references/copy-frameworks.md",
@@ -18918,7 +18966,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 124,
+      "line": 113,
       "syntax": "markdown_link",
       "target": "references/natural-transitions.md",
       "resolved_path": "skills/copywriting/references/natural-transitions.md",
@@ -18926,7 +18974,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 148,
+      "line": 137,
       "syntax": "markdown_link",
       "target": "references/copy-frameworks.md",
       "resolved_path": "skills/copywriting/references/copy-frameworks.md",
@@ -18934,7 +18982,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 261,
+      "line": 250,
       "syntax": "markdown_link",
       "target": "references/headline-options.md",
       "resolved_path": "skills/copywriting/references/headline-options.md",
@@ -18942,7 +18990,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 262,
+      "line": 251,
       "syntax": "markdown_link",
       "target": "references/landing-page-draft.md",
       "resolved_path": "skills/copywriting/references/landing-page-draft.md",
@@ -18950,7 +18998,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 263,
+      "line": 252,
       "syntax": "markdown_link",
       "target": "references/landing-page-handoff.md",
       "resolved_path": "skills/copywriting/references/landing-page-handoff.md",
@@ -18958,7 +19006,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 267,
+      "line": 256,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -18966,7 +19014,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 267,
+      "line": 256,
       "syntax": "backtick_path",
       "target": "projects/<id>/",
       "resolved_path": null,
@@ -19262,7 +19310,15 @@
     },
     {
       "from_path": "skills/email-sequence/SKILL.md",
-      "line": 14,
+      "line": 11,
+      "syntax": "markdown_link",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/email-sequence/SKILL.md",
+      "line": 18,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -19270,7 +19326,7 @@
     },
     {
       "from_path": "skills/email-sequence/SKILL.md",
-      "line": 165,
+      "line": 169,
       "syntax": "markdown_link",
       "target": "references/sequence-templates.md",
       "resolved_path": "skills/email-sequence/references/sequence-templates.md",
@@ -19278,7 +19334,7 @@
     },
     {
       "from_path": "skills/email-sequence/SKILL.md",
-      "line": 208,
+      "line": 212,
       "syntax": "markdown_link",
       "target": "references/email-types.md",
       "resolved_path": "skills/email-sequence/references/email-types.md",
@@ -19286,7 +19342,7 @@
     },
     {
       "from_path": "skills/email-sequence/SKILL.md",
-      "line": 245,
+      "line": 244,
       "syntax": "markdown_link",
       "target": "references/copy-guidelines.md",
       "resolved_path": "skills/email-sequence/references/copy-guidelines.md",
@@ -19294,7 +19350,7 @@
     },
     {
       "from_path": "skills/email-sequence/SKILL.md",
-      "line": 289,
+      "line": 288,
       "syntax": "markdown_link",
       "target": "references/provider-inputs.md",
       "resolved_path": "skills/email-sequence/references/provider-inputs.md",
@@ -19302,7 +19358,7 @@
     },
     {
       "from_path": "skills/email-sequence/SKILL.md",
-      "line": 302,
+      "line": 301,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -19310,7 +19366,7 @@
     },
     {
       "from_path": "skills/email-sequence/SKILL.md",
-      "line": 302,
+      "line": 301,
       "syntax": "backtick_path",
       "target": "projects/<id>/",
       "resolved_path": null,
@@ -19486,7 +19542,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 14,
+      "line": 10,
       "syntax": "markdown_link",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -19494,7 +19550,15 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 41,
+      "line": 18,
+      "syntax": "markdown_link",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/SKILL.md",
+      "line": 45,
       "syntax": "markdown_link",
       "target": "references/content-freshness.md",
       "resolved_path": "skills/improve-content/references/content-freshness.md",
@@ -19502,7 +19566,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 52,
+      "line": 56,
       "syntax": "backtick_path",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -19510,7 +19574,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 62,
+      "line": 66,
       "syntax": "backtick_path",
       "target": "references/content-types-overview.md",
       "resolved_path": "skills/improve-content/references/content-types-overview.md",
@@ -19518,7 +19582,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 62,
+      "line": 66,
       "syntax": "backtick_path",
       "target": "references/content-types/<type>.md",
       "resolved_path": null,
@@ -19526,7 +19590,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 72,
+      "line": 76,
       "syntax": "backtick_path",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -19534,7 +19598,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 84,
+      "line": 88,
       "syntax": "backtick_path",
       "target": "references/content-types",
       "resolved_path": "skills/improve-content/references/content-types",
@@ -19542,7 +19606,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 88,
+      "line": 92,
       "syntax": "backtick_path",
       "target": "references/content-types-overview.md",
       "resolved_path": "skills/improve-content/references/content-types-overview.md",
@@ -19550,7 +19614,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 103,
+      "line": 107,
       "syntax": "markdown_link",
       "target": "references/seo-editing.md",
       "resolved_path": "skills/improve-content/references/seo-editing.md",
@@ -19558,7 +19622,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 104,
+      "line": 108,
       "syntax": "markdown_link",
       "target": "references/refresh-workflow.md",
       "resolved_path": "skills/improve-content/references/refresh-workflow.md",
@@ -19566,7 +19630,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 105,
+      "line": 109,
       "syntax": "markdown_link",
       "target": "references/optimization-workflow.md",
       "resolved_path": "skills/improve-content/references/optimization-workflow.md",
@@ -19574,7 +19638,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 109,
+      "line": 113,
       "syntax": "markdown_link",
       "target": "../write-content/references/fact-checking.md",
       "resolved_path": "skills/write-content/references/fact-checking.md",
@@ -20526,7 +20590,7 @@
     },
     {
       "from_path": "skills/reader-experience-review/SKILL.md",
-      "line": 51,
+      "line": 65,
       "syntax": "markdown_link",
       "target": "references/evidence-to-prose.md",
       "resolved_path": "skills/reader-experience-review/references/evidence-to-prose.md",
@@ -20534,7 +20598,7 @@
     },
     {
       "from_path": "skills/reader-experience-review/SKILL.md",
-      "line": 57,
+      "line": 71,
       "syntax": "markdown_link",
       "target": "references/calibration.md",
       "resolved_path": "skills/reader-experience-review/references/calibration.md",
@@ -20734,23 +20798,7 @@
     },
     {
       "from_path": "skills/seo-content/SKILL.md",
-      "line": 19,
-      "syntax": "markdown_link",
-      "target": "../seo/references/workbench-operations.md",
-      "resolved_path": "skills/seo/references/workbench-operations.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/seo-content/SKILL.md",
-      "line": 35,
-      "syntax": "markdown_link",
-      "target": "../seo/references/eeat-framework.md",
-      "resolved_path": "skills/seo/references/eeat-framework.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/seo-content/SKILL.md",
-      "line": 70,
+      "line": 21,
       "syntax": "markdown_link",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -20758,23 +20806,7 @@
     },
     {
       "from_path": "skills/seo-content/SKILL.md",
-      "line": 133,
-      "syntax": "markdown_link",
-      "target": "../write-content/references/geo-optimization.md",
-      "resolved_path": "skills/write-content/references/geo-optimization.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/seo-content/SKILL.md",
-      "line": 135,
-      "syntax": "markdown_link",
-      "target": "../schema/references/search-eligibility.md",
-      "resolved_path": "skills/schema/references/search-eligibility.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/seo-content/SKILL.md",
-      "line": 164,
+      "line": 23,
       "syntax": "markdown_link",
       "target": "../seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
@@ -20782,7 +20814,47 @@
     },
     {
       "from_path": "skills/seo-content/SKILL.md",
-      "line": 176,
+      "line": 39,
+      "syntax": "markdown_link",
+      "target": "../seo/references/eeat-framework.md",
+      "resolved_path": "skills/seo/references/eeat-framework.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-content/SKILL.md",
+      "line": 74,
+      "syntax": "markdown_link",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-content/SKILL.md",
+      "line": 137,
+      "syntax": "markdown_link",
+      "target": "../write-content/references/geo-optimization.md",
+      "resolved_path": "skills/write-content/references/geo-optimization.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-content/SKILL.md",
+      "line": 139,
+      "syntax": "markdown_link",
+      "target": "../schema/references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-content/SKILL.md",
+      "line": 168,
+      "syntax": "markdown_link",
+      "target": "../seo/references/workbench-operations.md",
+      "resolved_path": "skills/seo/references/workbench-operations.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-content/SKILL.md",
+      "line": 180,
       "syntax": "markdown_link",
       "target": "../seo-flow/SKILL.md",
       "resolved_path": "skills/seo-flow/SKILL.md",
@@ -22982,7 +23054,15 @@
     },
     {
       "from_path": "skills/social-content/SKILL.md",
-      "line": 14,
+      "line": 11,
+      "syntax": "markdown_link",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/social-content/SKILL.md",
+      "line": 18,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -22990,7 +23070,7 @@
     },
     {
       "from_path": "skills/social-content/SKILL.md",
-      "line": 50,
+      "line": 54,
       "syntax": "markdown_link",
       "target": "references/platforms.md",
       "resolved_path": "skills/social-content/references/platforms.md",
@@ -22998,7 +23078,7 @@
     },
     {
       "from_path": "skills/social-content/SKILL.md",
-      "line": 103,
+      "line": 107,
       "syntax": "markdown_link",
       "target": "references/post-templates.md",
       "resolved_path": "skills/social-content/references/post-templates.md",
@@ -23006,7 +23086,7 @@
     },
     {
       "from_path": "skills/social-content/SKILL.md",
-      "line": 257,
+      "line": 261,
       "syntax": "markdown_link",
       "target": "references/reverse-engineering.md",
       "resolved_path": "skills/social-content/references/reverse-engineering.md",
@@ -23014,7 +23094,7 @@
     },
     {
       "from_path": "skills/social-content/SKILL.md",
-      "line": 283,
+      "line": 287,
       "syntax": "markdown_link",
       "target": "references/content-repurposing.md",
       "resolved_path": "skills/social-content/references/content-repurposing.md",
@@ -23022,7 +23102,7 @@
     },
     {
       "from_path": "skills/social-content/SKILL.md",
-      "line": 287,
+      "line": 291,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -23030,7 +23110,7 @@
     },
     {
       "from_path": "skills/social-content/SKILL.md",
-      "line": 287,
+      "line": 291,
       "syntax": "backtick_path",
       "target": "projects/<id>/",
       "resolved_path": null,
@@ -23182,7 +23262,15 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 12,
+      "line": 10,
+      "syntax": "markdown_link",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/SKILL.md",
+      "line": 16,
       "syntax": "markdown_link",
       "target": "references/draft-handoff.md",
       "resolved_path": "skills/write-content/references/draft-handoff.md",
@@ -23190,7 +23278,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 12,
+      "line": 16,
       "syntax": "markdown_link",
       "target": "../seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
@@ -23198,7 +23286,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 24,
+      "line": 28,
       "syntax": "backtick_path",
       "target": "context/",
       "resolved_path": null,
@@ -23206,7 +23294,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 24,
+      "line": 28,
       "syntax": "backtick_path",
       "target": "strategy/",
       "resolved_path": null,
@@ -23214,7 +23302,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 45,
+      "line": 49,
       "syntax": "backtick_path",
       "target": "references/content-types-overview.md",
       "resolved_path": "skills/write-content/references/content-types-overview.md",
@@ -23222,7 +23310,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 74,
+      "line": 78,
       "syntax": "backtick_path",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -23230,7 +23318,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 103,
+      "line": 107,
       "syntax": "backtick_path",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -23238,7 +23326,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 117,
+      "line": 121,
       "syntax": "backtick_path",
       "target": "references/content-types",
       "resolved_path": "skills/write-content/references/content-types",
@@ -23246,7 +23334,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 121,
+      "line": 125,
       "syntax": "backtick_path",
       "target": "references/content-types-overview.md",
       "resolved_path": "skills/write-content/references/content-types-overview.md",
@@ -23254,7 +23342,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 137,
+      "line": 141,
       "syntax": "markdown_link",
       "target": "references/article-workflow.md",
       "resolved_path": "skills/write-content/references/article-workflow.md",
@@ -23262,7 +23350,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 138,
+      "line": 142,
       "syntax": "markdown_link",
       "target": "references/drafting-workflow.md",
       "resolved_path": "skills/write-content/references/drafting-workflow.md",
@@ -23270,7 +23358,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 139,
+      "line": 143,
       "syntax": "markdown_link",
       "target": "references/draft-handoff.md",
       "resolved_path": "skills/write-content/references/draft-handoff.md",
@@ -23278,10 +23366,26 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 143,
+      "line": 147,
       "syntax": "markdown_link",
       "target": "references/fact-checking.md",
       "resolved_path": "skills/write-content/references/fact-checking.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/anti-slop-ruleset.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/anti-slop-ruleset.md",
+      "line": 12,
+      "syntax": "markdown_link",
+      "target": "../../reader-experience-review/references/evidence-to-prose.md",
+      "resolved_path": "skills/reader-experience-review/references/evidence-to-prose.md",
       "status": "resolved_local"
     },
     {
@@ -23381,6 +23485,22 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/write-content/references/quality-scoring.md",
+      "line": 5,
+      "syntax": "markdown_link",
+      "target": "../../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/quality-scoring.md",
+      "line": 36,
+      "syntax": "markdown_link",
+      "target": "../../reader-experience-review/references/evidence-to-prose.md",
+      "resolved_path": "skills/reader-experience-review/references/evidence-to-prose.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/write-content/references/structured-data-snippets.md",
       "line": 19,
       "syntax": "markdown_link",
@@ -23389,8 +23509,24 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/write-content/references/voice-injection-playbook.md",
+      "line": 5,
+      "syntax": "markdown_link",
+      "target": "../../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/write-content/references/writing-pipeline.md",
-      "line": 33,
+      "line": 5,
+      "syntax": "markdown_link",
+      "target": "../../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/writing-pipeline.md",
+      "line": 35,
       "syntax": "markdown_link",
       "target": "anti-slop-ruleset.md",
       "resolved_path": "skills/write-content/references/anti-slop-ruleset.md",
@@ -23398,7 +23534,7 @@
     },
     {
       "from_path": "skills/write-content/references/writing-pipeline.md",
-      "line": 45,
+      "line": 47,
       "syntax": "markdown_link",
       "target": "seo-optimization-layer.md",
       "resolved_path": "skills/write-content/references/seo-optimization-layer.md",
@@ -23406,7 +23542,7 @@
     },
     {
       "from_path": "skills/write-content/references/writing-pipeline.md",
-      "line": 51,
+      "line": 53,
       "syntax": "markdown_link",
       "target": "quality-scoring.md",
       "resolved_path": "skills/write-content/references/quality-scoring.md",
@@ -23414,7 +23550,7 @@
     },
     {
       "from_path": "skills/write-content/references/writing-pipeline.md",
-      "line": 53,
+      "line": 55,
       "syntax": "markdown_link",
       "target": "../../reader-experience-review/references/evidence-to-prose.md",
       "resolved_path": "skills/reader-experience-review/references/evidence-to-prose.md",

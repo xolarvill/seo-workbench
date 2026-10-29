@@ -5,6 +5,10 @@ description: Use when rewriting or refreshing an existing page that's underperfo
 
 # Improve Content
 
+## Expression method
+
+Use [reader-led writing and review](../reader-experience-review/SKILL.md) as the single method for prose decisions while drafting and revising. This skill supplies task methods and inputs. Its templates and examples are optional aids; they do not add style rules or mandatory expression passes. Deliver the user's requested format.
+
 Improves an existing page's usefulness and search relevance through supported explanations, appropriate structure and the shared reader-experience review.
 
 ## Input
@@ -92,9 +96,9 @@ Load from `references` only when needed — don't preload the whole folder.
 - `voice-injection-playbook.md` — optional techniques for a specific clarity or requested voice problem; do not force personality into adequate prose
 - `content-freshness.md` — decay signals and what to refresh vs. leave alone (the core of Step 3's update interview)
 - `writing-pipeline.md` — the research → rewrite → edit loop adapted for updates
-- `quality-scoring.md` — scoring rubric to run before delivering the rewrite
+- `quality-scoring.md` — task and evidence acceptance checks when relevant; expression remains with the reader method
 
-Supporting references may contain word bans, mandatory stylistic quirks, fixed keyword densities or outdated SEO advice. Do not adopt these as execution rules. This entrypoint and the shared reader-experience review govern prose decisions; current project evidence, the shared content-type overview, the `schema` skill and current primary documentation govern SEO claims.
+Supporting references may contain word bans, mandatory stylistic quirks, fixed keyword densities or outdated SEO advice. Do not adopt these as execution rules. The reader method alone governs prose decisions; this entrypoint governs task scope and delivery; current project evidence, the shared content-type overview, the `schema` skill and current primary documentation govern SEO claims.
 
 ## Adapted specialist and workflow references
 

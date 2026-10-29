@@ -2,6 +2,8 @@
 
 ## Purpose and scope
 
+Use this reference for task completeness, factual support and applicable SEO acceptance. [The reader method](../../reader-experience-review/SKILL.md) alone decides expression; this reference is not another prose review.
+
 Review whether content fulfills its brief and reader task using the evidence available. Use findings by dimension rather than a composite score. A numeric total cannot establish factual accuracy, publication approval, AI authorship or expected search performance.
 
 Set the review scope first: a three-sentence instruction, section draft and full SEO article need different checks. Mark checks outside that scope as not applicable. Missing observations are not zero-quality findings.
@@ -29,14 +31,9 @@ Set the review scope first: a three-sentence instruction, section draft and full
 - Does synthesis clarify conditions, reconcile sources or expose a useful gap?
 - Keep useful common facts and standard procedures. Novelty is not required in every section; do not add contrarian views or examples just to earn credit.
 
-### Clarity and voice
+### Reader-method findings
 
-- Is the wording direct and precise, with stable terms and clear references?
-- Are ordering, paragraphs and headings easy to follow?
-- Does the register fit the format and any genuine voice samples?
-- Can padding, inflated language or unnecessary rhetorical framing be removed?
-
-Do not grade sentence-length variation, pronoun frequency or stylistic imperfections. A readable short instruction can pass without a story, personal voice or unusual wording.
+Use any relevant findings from the reader method already applied during composition. Do not rescore voice, create a second style checklist or request changes to clear a stylistic gate. A factual acceptance issue identifies the claim to correct; use [evidence to prose](../../reader-experience-review/references/evidence-to-prose.md) to express the supported result.
 
 ### SEO and discoverability, when in scope
 
@@ -59,7 +56,7 @@ If necessary evidence or a user decision is missing, state exactly which claim o
 
 ## Reporting format
 
-For a substantial review:
+For a requested substantial review, use relevant rows below. When this reference is used internally during drafting, keep acceptance findings in the task artifact and return the requested public copy without this table.
 
 | Dimension | Status | Evidence or passage | Needed change |
 |-----------|--------|---------------------|---------------|
@@ -69,7 +66,7 @@ For a substantial review:
 | Clarity and voice | ... | ... | ... |
 | SEO, if in scope | ... | ... | ... |
 
-Conclude with necessary edits, unresolved evidence and the scope of completion. Draft review is not publication or measured SEO success. For a small passage, report only the actionable findings or that no edit is needed.
+For an explicitly requested review report, state necessary edits and unresolved evidence in that report. For direct drafting or editing, follow the parent task's output format and keep internal findings with the task artifact. A small passage can be accepted unchanged.
 
 ## Key Sources
 

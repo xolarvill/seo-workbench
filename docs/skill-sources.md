@@ -71,7 +71,7 @@ JSON 覆盖 skills/ 和 third_party/skill-history/ 的受维护文件，不含�
 
 ## 引用关系与适配线索
 
-当前登记 781 处字面路径引用：Markdown 链接目标，以及指定前缀的无空白反引号路径。每条保存来源文件、行号、原始目标、解析位置和状态。它用于后续修复定位，不执行其中的命令。
+当前登记 798 处字面路径引用：Markdown 链接目标，以及指定前缀的无空白反引号路径。每条保存来源文件、行号、原始目标、解析位置和状态。它用于后续修复定位，不执行其中的命令。
 
 | 状态 | 解释 |
 |---|---|
@@ -317,7 +317,7 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [skills/page-cro/references/landing-research.md](../skills/page-cro/references/landing-research.md) | seomachine:.claude/commands/landing-research.md | 本地方法 | `08d0679` |
 | [skills/paid-ads/references/provider-inputs.md](../skills/paid-ads/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
 | [skills/reader-experience-review/references/calibration.md](../skills/reader-experience-review/references/calibration.md) | Workbench 本地方法 | 本地方法 | `aff4dea` |
-| [skills/reader-experience-review/references/evidence-to-prose.md](../skills/reader-experience-review/references/evidence-to-prose.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/reader-experience-review/references/evidence-to-prose.md](../skills/reader-experience-review/references/evidence-to-prose.md) | Workbench 本地方法 | 本地方法 | `166260f` |
 | [skills/referral-program/references/provider-inputs.md](../skills/referral-program/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
 | [skills/schema/references/search-eligibility.md](../skills/schema/references/search-eligibility.md) | Workbench 本地方法 | 本地方法 | `51376ad` |
 | [skills/semantic-gap-analysis/references/research-gap-workflow.md](../skills/semantic-gap-analysis/references/research-gap-workflow.md) | seomachine:.claude/commands/research-gaps.md | 本地方法 | `08d0679` |

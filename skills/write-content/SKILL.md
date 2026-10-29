@@ -5,6 +5,10 @@ description: Write a complete SEO article, or prepare an approved article for th
 
 # Write Content
 
+## Expression method
+
+Use [reader-led writing and review](../reader-experience-review/SKILL.md) as the single method for prose decisions while drafting and revising. This skill supplies task methods and inputs. Its templates and examples are optional aids; they do not add style rules or mandatory expression passes. Deliver the user's requested format.
+
 Writes a complete SEO article. Four phases: research → content type decision → knowledge extraction → write. Use evidence to answer the reader's task and the shared reader-experience review to assess the prose.
 
 ## Delivery mode
@@ -104,7 +108,7 @@ Use these patterns when they serve the task; short explanations do not need a fu
 
 ### Output
 
-Clean markdown. Title + article content. Nothing else.
+Follow the user's requested format. For a complete article, default to clean Markdown with title and article body; for body-only copy, return that body. Keep internal review and evidence notes in the existing task artifact.
 
 ### Language
 
@@ -128,7 +132,7 @@ Load from `references` only when the step or rule calls for them. Don't preload 
 - `fact-checking.md` — how to verify every specific number and claim
 - `human-input-framework.md` — the knowledge-extraction questions (reinforces Phase 3)
 
-Supporting references may contain word bans, mandatory stylistic quirks, vendor benchmarks, fixed keyword densities, outdated rich-result advice or hypotheses about private ranking systems. Do not adopt these as execution rules. This entrypoint and the shared reader-experience review govern prose decisions; current project evidence, the shared content-type overview, the `schema` skill and current primary documentation govern SEO claims.
+Supporting references may contain word bans, mandatory stylistic quirks, vendor benchmarks, fixed keyword densities, outdated rich-result advice or hypotheses about private ranking systems. Do not adopt these as execution rules. The reader method alone governs prose decisions; this entrypoint governs task scope and delivery; current project evidence, the shared content-type overview, the `schema` skill and current primary documentation govern SEO claims.
 
 ## Adapted specialist and workflow references
 

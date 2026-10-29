@@ -1,10 +1,14 @@
 ---
 name: copy-editing
 version: 1.0.0
-description: "When the user wants to edit, review, or improve existing marketing copy. Also use when the user mentions 'edit this copy,' 'review my copy,' 'copy feedback,' 'proofread,' 'polish this,' 'make this better,' or 'copy sweep.' This skill provides a systematic approach to editing marketing copy through multiple focused passes."
+description: "Use when editing or reviewing existing marketing copy for offer clarity, evidence, benefits or real customer objections. Supplies task-specific diagnostics within the shared reader expression method."
 ---
 
 # Copy Editing
+
+## Expression method
+
+Use [reader-led writing and review](../reader-experience-review/SKILL.md) as the single method for prose decisions while drafting and revising. This skill supplies task methods and inputs. Its templates and examples are optional aids; they do not add style rules or mandatory expression passes. Deliver the user's requested format.
 
 You are an expert copy editor specializing in marketing and conversion copy. Your goal is to systematically improve existing copy through focused editing passes while preserving the core message.
 
@@ -13,11 +17,11 @@ You are an expert copy editor specializing in marketing and conversion copy. You
 **Check for product marketing context first:**
 If `context/product-marketing-context.md` exists, read it before editing. Use brand voice and customer language from that context to guide your edits.
 
-Good copy editing isn't about rewriting—it's about enhancing. Each pass focuses on one dimension, catching issues that get missed when you try to fix everything at once.
+Good copy editing isn't about rewriting—it's about enhancing. The sweeps below are optional marketing diagnostics within the reader method; use only the dimensions needed for the current task.
 
 **Key principles:**
 - Don't change the core message; focus on enhancing it
-- Multiple focused passes beat one unfocused review
+- Use the relevant checks within the reader method; a small task may need only one reading
 - Each edit should have a clear reason
 - Preserve the author's voice while improving clarity
 
@@ -29,56 +33,11 @@ Start with the current reader's task and the genre. A concise technical explanat
 
 Select the useful sweeps for this task; these are review lenses, not seven required changes. Recheck affected earlier decisions after an edit. For short informational prose, clarity and accuracy may be sufficient.
 
-### Sweep 1: Clarity
+### Sweeps 1 and 2: Reader-method findings
 
-**Focus:** Can the reader understand what you're saying?
+Clarity, order, terminology and register are decided by the reader method used during drafting or revision. Use its existing findings here. Do not start new clarity and voice review rounds, enforce a “You Rule,” or require a change when the passage already serves the reader.
 
-**What to check:**
-- Confusing sentence structures
-- Unclear pronoun references
-- Jargon or insider language
-- Ambiguous statements
-- Missing context
-
-**Common clarity killers:**
-- Sentences trying to say too much
-- Abstract language instead of concrete
-- Assuming reader knowledge they don't have
-- Burying the point in qualifications
-
-**Process:**
-1. Read through quickly, highlighting unclear parts
-2. Don't correct yet—just note problem areas
-3. After marking issues, recommend specific edits
-4. Verify edits maintain the original intent
-
-**After this sweep:** Confirm the "Rule of One" (one main idea per section) and "You Rule" (copy speaks to the reader) are intact.
-
----
-
-### Sweep 2: Voice and Tone
-
-**Focus:** Is the copy consistent in how it sounds?
-
-**What to check:**
-- Shifts between formal and casual
-- Inconsistent brand personality
-- Mood changes that feel jarring
-- Word choices that don't match the brand
-
-**Common voice issues:**
-- Starting casual, becoming corporate
-- Mixing "we" and "the company" references
-- Humor in some places, serious in others (unintentionally)
-- Technical language appearing randomly
-
-**Process:**
-1. Read aloud to hear inconsistencies
-2. Mark where tone shifts unexpectedly
-3. Recommend edits that smooth transitions
-4. Ensure personality remains throughout
-
-**After this sweep:** Return to Clarity Sweep to ensure voice edits didn't introduce confusion.
+The remaining sweeps are optional marketing diagnostics. Choose one only when its business question matters to the current offer or task, then bring that finding into the same reader method.
 
 ---
 
@@ -111,7 +70,6 @@ Ask what reader question or decision a statement serves. A specification, instru
 3. Add a supported benefit bridge only where it helps the reader
 4. Ensure benefits connect to real reader desires
 
-**After this sweep:** Return to Voice and Tone, then Clarity.
 
 ---
 
@@ -146,7 +104,6 @@ Ask what reader question or decision a statement serves. A specification, instru
 3. Flag unsupported assertions
 4. Recommend adding proof or softening claims
 
-**After this sweep:** Return to So What, Voice and Tone, then Clarity.
 
 ---
 
@@ -184,7 +141,6 @@ These are illustrative transformations, not facts or required numeric targets. U
 3. Add sourced numbers, timeframes, or clearly labeled examples where useful; never invent precision
 4. Keep useful qualitative explanations and uncertainty; remove content only when it contributes nothing to the reader's task
 
-**After this sweep:** Return to Prove It, So What, Voice and Tone, then Clarity.
 
 ---
 
@@ -219,7 +175,6 @@ These are illustrative transformations, not facts or required numeric targets. U
 3. Use an evidenced experience or clearly labeled illustration only when it fills that gap
 4. Accept clear informational language unchanged; no story or emotional texture is required
 
-**After this sweep:** Return to Specificity, Prove It, So What, Voice and Tone, then Clarity.
 
 ---
 
@@ -255,7 +210,6 @@ These are illustrative transformations, not facts or required numeric targets. U
 3. Address relevant concerns without introducing hypothetical objections or unrelated rebuttals
 4. Add only available, accurate guarantees, trial terms or evidence; skip this sweep when there is no relevant decision or CTA
 
-**After this sweep:** Recheck any clarity, accuracy or tone affected by the edits. Stop when no useful changes remain.
 
 ---
 
@@ -281,30 +235,20 @@ Use these for faster reviews when a full seven-sweep process isn't needed.
 | Leverage | Use |
 | Facilitate | Help |
 | Innovative | New |
-| Robust | Strong |
+| Robust | Keep established technical usage; otherwise name the actual property |
 | Seamless | Smooth |
 | Cutting-edge | New/Modern |
 
 **Watch for:**
-- Adverbs (usually unnecessary)
-- Passive voice (switch to active)
+- Adverbs or modifiers that add no useful meaning in this passage
+- Passive voice when it obscures who acts; keep it when the actor is unknown or unimportant
 - Nominalizations (verb → noun: "make a decision" → "decide")
 
-### Sentence-Level Checks
+### Passage checks within the reader method
 
-- One idea per sentence
-- Vary sentence length (mix short and long)
-- Front-load important information
-- Max 3 conjunctions per sentence
-- No more than 25 words (usually)
+Check whether the reader can follow the action and the relationships between ideas. Inspect a crowded sentence, unclear reference or awkward paragraph in context. Split, connect or reorder only when that resolves the actual problem; there are no sentence-length, conjunction-count or paragraph-size thresholds.
 
-### Paragraph-Level Checks
-
-- One topic per paragraph
-- Short paragraphs (2-4 sentences for web)
-- Strong opening sentences
-- Logical flow between paragraphs
-- White space for scannability
+Read affected surrounding text after an edit. Do not vary rhythm, remove passive voice or replace an established term merely to satisfy a checklist. Use the reader method's required / useful / accepted decisions and keep internal review findings separate from requested finished copy.
 
 ---
 
@@ -382,7 +326,7 @@ Use these for faster reviews when a full seven-sweep process isn't needed.
 
 ### Problem: Buried CTA
 **Symptom:** The ask comes after too much buildup, or isn't clear
-**Fix:** Make the CTA obvious, early, and repeated
+**Fix:** Make the actual next action clear and place it where the reader has the information needed to decide
 
 ### Problem: No Proof
 **Symptom:** "Customers love us" with no evidence
@@ -398,7 +342,7 @@ Use these for faster reviews when a full seven-sweep process isn't needed.
 
 ### Problem: Feature Overload
 **Symptom:** Listing every capability, overwhelming the reader
-**Fix:** Focus on 3-5 key benefits that matter most to the audience
+**Fix:** Focus on the supported benefits that matter to this reader
 
 ---
 
@@ -427,7 +371,7 @@ For already-authorized editing, apply the necessary changes directly and verify 
 
 ## Related Skills
 
-- **copywriting**: For writing new copy from scratch (use this skill to edit after your first draft is complete)
+- **copywriting**: For writing new copy from scratch (use a relevant diagnostic when the draft has an observed issue)
 - **page-cro**: For broader page optimization beyond copy
 - **marketing-psychology**: For understanding why certain edits improve conversion
 - **ab-test-setup**: For testing copy variations
@@ -440,7 +384,7 @@ For already-authorized editing, apply the necessary changes directly and verify 
 |------|--------------|
 | Writing new page copy from scratch | copywriting |
 | Reviewing and improving existing copy | copy-editing (this skill) |
-| Editing copy you just wrote | copy-editing (this skill) |
+| A specific marketing issue remains in a draft | Relevant copy-editing diagnostic within the reader method |
 | Structural or strategic page changes | page-cro |
 
 ## Adapted specialist and workflow references

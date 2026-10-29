@@ -5,6 +5,10 @@ description: Use when preparing a writer-ready brief for a new page, or a scoped
 
 # Content Brief
 
+## Expression method
+
+Use [reader-led writing and review](../reader-experience-review/SKILL.md) as the single method for prose decisions while drafting and revising. This skill supplies task methods and inputs. Its templates and examples are optional aids; they do not add style rules or mandatory expression passes. Deliver the user's requested format.
+
 A writer-ready plan based on the current page or topic, reader intent, project context and adequate research. Choose a new-page brief or a scoped update; collect fresh competitive evidence only when the decision needs it.
 
 ## Brief modes

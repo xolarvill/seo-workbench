@@ -6,6 +6,10 @@ description: When the user wants to write, rewrite, or improve marketing copy fo
 
 # Copywriting
 
+## Expression method
+
+Use [reader-led writing and review](../reader-experience-review/SKILL.md) as the single method for prose decisions while drafting and revising. This skill supplies task methods and inputs. Its templates and examples are optional aids; they do not add style rules or mandatory expression passes. Deliver the user's requested format.
+
 You are an expert conversion copywriter. Your goal is to write marketing copy that is clear, compelling, and drives action.
 
 Match the method to the actual genre and reader task. The conversion structures below are options for marketing pages, not requirements for guides, technical explanations or maintenance notices. Clear informational prose can be accepted with zero edits. Do not manufacture a contrarian claim, imagined opponent, emotional story or customer objection to fill a framework. Keep real comparisons and documented customer concerns when they help a decision.
@@ -59,26 +63,11 @@ Each section should advance one argument. Build a logical flow down the page.
 
 ---
 
-## Writing Style Rules
+## Use offer evidence within the reader method
 
-### Core Principles
+Read the page's real offer, audience and decision before choosing a headline, benefit explanation, comparison, story or CTA. These are options for answering the reader's question. Use the reader method to decide wording, register and which conditions belong in the public copy.
 
-1. **Simple over complex** — "Use" not "utilize," "help" not "facilitate"
-2. **Specific over vague** — Avoid "streamline," "optimize," "innovative"
-3. **Active over passive** — "We generate reports" not "Reports are generated"
-4. **Accurate confidence** — Cut empty intensifiers; preserve qualifications that describe real uncertainty, scope or compatibility
-5. **Show over tell** — Describe the outcome instead of using adverbs
-6. **Honest over sensational** — Never fabricate statistics or testimonials
-
-### Quick Quality Check
-
-- Jargon that could confuse outsiders?
-- Sentences trying to do too much?
-- Passive voice constructions?
-- Exclamation points? (remove them)
-- Marketing buzzwords without substance?
-
-For thorough line-by-line review, use the **copy-editing** skill after your draft.
+Check factual promises against available evidence. Consult copy-editing for a relevant marketing issue such as a real customer objection or offer clarity; it uses the same expression method and does not add a mandatory style review. Preserve clear technical terms and appropriate punctuation.
 
 ---
 
@@ -126,7 +115,7 @@ Puns and wit make copy memorable—but only if it fits the brand and doesn't und
 **Subheadline**
 - Expands on headline
 - Adds specificity
-- 1-2 sentences max
+- Use the space needed to clarify this offer without repeating the headline
 
 **Primary CTA**
 - Action-oriented button text
@@ -140,8 +129,8 @@ Choose sections from the actual offer, evidence and reader questions. Do not add
 |---------|---------|
 | Social Proof | Build credibility (logos, stats, testimonials) |
 | Problem/Pain | Show you understand their situation |
-| Solution/Benefits | Connect to outcomes (3-5 key benefits) |
-| How It Works | Reduce perceived complexity (3-4 steps) |
+| Solution/Benefits | Explain supported outcomes relevant to the reader |
+| How It Works | Explain the actual steps needed for the task |
 | Objection Handling | FAQ, comparisons, guarantees |
 | Final CTA | Recap value, repeat CTA, risk reversal |
 
@@ -151,10 +140,10 @@ Choose sections from the actual offer, evidence and reader questions. Do not add
 
 ## CTA Copy Guidelines
 
-**Weak CTAs (avoid):**
+**Generic CTA examples; assess whether the action is clear in context:**
 - Submit, Sign Up, Learn More, Click Here, Get Started
 
-**Strong CTAs (use):**
+**More specific CTA examples; use only when they describe the actual action:**
 - Start Free Trial
 - Get [Specific Thing]
 - See [Product] in Action
@@ -222,7 +211,7 @@ Maintain consistency, but adjust intensity:
 
 ## Output Format
 
-When writing copy, provide:
+Deliver the requested copy. The sections below are options for a complete page handoff; include annotations, alternatives or rationale only when the user asks for them or they are part of the agreed handoff. For finished copy only, return only that copy. Keep internal evidence and editing notes in the existing task artifact.
 
 ### Page Copy
 Organized by section:
@@ -231,12 +220,12 @@ Organized by section:
 - Secondary CTAs
 
 ### Annotations
-For key elements, explain:
+When editorial annotations are requested, explain:
 - Why you made this choice
 - What principle it applies
 
 ### Alternatives
-For headlines and CTAs, provide 2-3 options:
+When headline or CTA alternatives are requested, provide useful distinct options:
 - Option A: [copy] — [rationale]
 - Option B: [copy] — [rationale]
 
@@ -248,7 +237,7 @@ For headlines and CTAs, provide 2-3 options:
 
 ## Related Skills
 
-- **copy-editing**: For polishing existing copy (use after your draft)
+- **copy-editing**: For a focused marketing diagnostic when the task needs it; expression stays with the reader method
 - **page-cro**: If page structure/strategy needs work, not just copy
 - **email-sequence**: For email copywriting
 - **popup-cro**: For popup and modal copy

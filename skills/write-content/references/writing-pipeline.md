@@ -2,6 +2,8 @@
 
 ## Purpose and scaling
 
+Use [the reader method](../../reader-experience-review/SKILL.md) throughout composition and revision. This reference organizes work and evidence; it does not choose a second expression method. Anti-slop notes, voice inputs and quality checks remain supporting resources, without separate required prose passes.
+
 Organize research, outlining, writing, editing, factual verification and SEO review around the current task. These are responsibilities, not a requirement to spawn agents, select temperatures or run every stage on every request. Use delegation only when authorized by the applicable instructions.
 
 Reuse an approved brief, current research, genuine voice samples and available evidence. A local wording edit may need only the passage and its sources. A new competitive article may need the full method. Stored phases are historical context, not a scheduler or approval gate.
@@ -30,7 +32,7 @@ Use natural terms, clear actions and suitable paragraph shapes. Do not prescribe
 
 ## 4. Edit for reader problems
 
-Use [plain writing review](anti-slop-ruleset.md) to identify ambiguity, repetition, inflated wording, unsupported framing and misplaced answers. Every proposed edit needs a reader benefit. Preserve clear passages; zero edits can be the correct outcome.
+Use the reader method on the actual passage. Consult [wording diagnostics](anti-slop-ruleset.md) only for a specific ambiguity, repetition or other observed problem. Preserve clear passages; zero edits can be the correct outcome.
 
 Review the edited passage for factual drift and surrounding flow. Do not rewrite a percentage of the article or change rhythm simply to demonstrate editing activity.
 
@@ -48,7 +50,7 @@ A direct answer may use a paragraph, steps or table depending on the question. D
 
 ## 7. Review the result and deliver
 
-Use [content quality review](quality-scoring.md) to assess task completion, accuracy, useful depth, clarity and applicable SEO requirements. Report concrete findings rather than a total score. Fix observed issues, verify the affected content and stop when the brief is fulfilled.
+Use [task acceptance checks](quality-scoring.md) when scope, evidence or SEO completeness needs checking. Expression decisions remain with the reader method already used during writing. Fix observed issues, verify the affected content and stop when the brief is fulfilled.
 
 Deliver the requested public draft or edit in its requested format. Keep evidence pointers, verification status and unresolved inputs with the existing task artifact; include a separate editorial report only when requested. Use [evidence to prose](../../reader-experience-review/references/evidence-to-prose.md) for conditions that affect the reader's interpretation or action. Include meta elements or schema when requested or within scope. Record delivery and any authorized publication in the existing workflow.
 

@@ -6,6 +6,8 @@ This index offers starting points, not a required sequence or an allowlist. Comb
 
 ## Workbench entrypoints
 
+For prose, [reader-experience-review](reader-experience-review/SKILL.md) is the single expression method for drafting and revision. Domain skills supply research, offer facts, structure and delivery. Voice samples are inputs; editing references are diagnostics. They do not establish separate style authorities or require another prose pass. Follow the user's requested output, and use [evidence to prose](reader-experience-review/references/evidence-to-prose.md) to keep internal verification notes out of an article unless readers need the condition.
+
 | Task or question | Start here | Useful combinations |
 |---|---|---|
 | Site-wide or multi-template diagnosis | [site-audit](site-audit/SKILL.md) | Select specialist checks from current scope and evidence |
@@ -47,7 +49,7 @@ Current specialist methods are attached to their canonical owners: [article edit
 
 Source material is available for judgment and adaptation, not automatic execution. Check its assumptions against the current task and Workbench contracts. Current evidence eligibility, bounded collectors, project isolation, and user authorization take precedence. Do not restore old scripts, crawl sizes, publishing behavior or external dependencies just because a preserved recipe names them.
 
-Some recipes still impose fixed article lengths, keyword density, invented authority estimates or generic scoring. These are not Workbench acceptance gates: use reader-task coverage, verified facts, observed intent and evidence quality. [write-content](write-content/SKILL.md) and [reader-experience-review](reader-experience-review/SKILL.md) govern prose quality; attribution preserves the source, not the authority of every old rule.
+Some recipes still impose fixed article lengths, keyword density, invented authority estimates or generic scoring. These are not Workbench acceptance gates: use reader-task coverage, verified facts, observed intent and evidence quality. [reader-experience-review](reader-experience-review/SKILL.md) alone governs expression; [write-content](write-content/SKILL.md) organizes article work; attribution preserves the source, not the authority of every old rule.
 
 ## Resuming work
 

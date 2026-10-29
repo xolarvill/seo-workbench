@@ -2,6 +2,8 @@
 
 ## Purpose
 
+Voice samples are inputs to [the reader method](../../reader-experience-review/SKILL.md), which alone decides expression. Use this reference to extract truthful register and terminology evidence, not to run another style pass.
+
 Preserve a recognizable author or brand voice while helping the intended reader. Use documented examples rather than inventing a persona, personal history or stylistic quirks. Personality is optional; clear, plain instructions may be the correct voice.
 
 ## 1. Collect relevant samples
@@ -47,7 +49,7 @@ Check that voice changes have not altered facts or obscured the answer. Keep som
 
 ## Deliverable
 
-For substantive work, record the samples or guidance used, a short voice profile if needed, applied changes and any limits to the match. For a local edit, a short explanation or zero-change finding is sufficient. There is no required share of personality, anecdotes or proprietary details.
+For substantive work, keep the samples and any useful voice profile in the existing task artifact. Return only the requested copy unless a voice analysis is part of the handoff. A local edit needs no new profile, explanation or extra deliverable. There is no required share of personality, anecdotes or proprietary details.
 
 ## Key Sources
 

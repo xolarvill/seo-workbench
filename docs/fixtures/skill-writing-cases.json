@@ -72,6 +72,30 @@
       "task": "A competitor fetch failed during a supported partial brief",
       "text": "Only title/snippet available; no page body or supplied copy.",
       "expected": "Do not infer missing sections, author or tests from the failed fetch. Continue supported work with exact gaps in task artifact; no public self-defense boilerplate."
+    },
+    {
+      "id": "editorial-record-is-not-copy",
+      "task": "Write body-only cable-routing advice from approved practical steps",
+      "text": "Internal record: no productivity trial, electrical verification or load rating; the requested article makes none of those claims.",
+      "expected": "Use supported practical steps; no test-gap preface or universal disclaimer. Preserve the actual moving-desk slack check."
+    },
+    {
+      "id": "one-expression-authority",
+      "task": "Compose with write-content and its workflow, wording and quality references loaded together",
+      "text": "A clear passage already answers the practical question. No further facts or SEO changes are needed.",
+      "expected": "Reader method alone decides expression; other methods supply inputs or factual/task acceptance. No independent voice/anti-slop style round, quota or extra editorial output."
+    },
+    {
+      "id": "marketing-finished-copy",
+      "task": "Use copywriting to return two finished trial sentences only",
+      "text": "Approved offer: 14-day free trial, no credit card, cancel during trial; reader asks about a card. Internal records have no conversion-uplift data or security certificate.",
+      "expected": "Answer the actual trial/card question using those facts. No unrequested rationale, options, certification promise or evidence-gap disclaimer."
+    },
+    {
+      "id": "useful-attribution-limit",
+      "task": "Two-sentence effect assessment for a manager asking whether growth is attributable to a redesign",
+      "text": "Post 28-day organic clicks grew 12% versus preceding 28 days; a brand campaign began in the same window; controls cannot separate their contributions.",
+      "expected": "Keep both windows, observed growth and the attribution limit. Answer the question without claiming a causal redesign effect or repeating the same disclaimer."
     }
   ]
 }

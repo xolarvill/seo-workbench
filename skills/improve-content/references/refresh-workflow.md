@@ -11,7 +11,7 @@ Read when an existing article needs a scoped refresh rather than a new unrelated
 
 ## Deliverable
 
-Return the revised draft with material change rationale and the evidence that motivated it.
+Return the requested revised draft or passages. Keep change rationale and supporting evidence in the existing task artifact, or a separate editorial report when requested.
 
 ## Source
 
