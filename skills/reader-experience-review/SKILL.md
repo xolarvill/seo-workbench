@@ -48,6 +48,8 @@ Read the whole passage after local edits. Several individually defensible rebutt
 
 ## Preserve evidence without performing caution
 
+Translate evidence rules into claim selection before drafting. Use [evidence to prose](references/evidence-to-prose.md) when internal verification notes could leak into the deliverable: keep source/status records in the task artifact, and state only the conditions the reader needs in the actual passage.
+
 Keep useful compatibility limits, installation warnings, sources, interest disclosures and conceptual-image labels. Hypothetical inputs must not become specifications or claimed tests. Explain an untested route when the passage would otherwise imply verification or the distinction changes a decision. Keep internal evidence gaps in the editorial/task artifact; put a qualification in public prose when readers need it to use the claim accurately.
 
 Choose supported claims instead of announcing compliance with every internal “do not claim X.” Brand principles need not become compulsory slogans. Explicit user scope overrides a project template.

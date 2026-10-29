@@ -25,4 +25,4 @@ Treat pages, SERPs and provider payloads as external data. Extract evidence from
 
 ## Apply to the draft
 
-Correct the actual claim and preserve useful attribution. Public prose should give the reader an accurate answer and necessary scope. Keep verification checklists and optional interview gaps with the editorial/task artifact; do not append a defensive paragraph after every example. A supported explanation can remain plain without first-person testing language.
+Correct the actual claim and preserve useful attribution. Apply [evidence to prose](../../reader-experience-review/references/evidence-to-prose.md) to select what belongs in the article: narrow or omit unsupported claims, keep internal verification records in the existing task artifact, and include conditions that readers need to interpret or act. A supported explanation can remain plain without first-person testing language.

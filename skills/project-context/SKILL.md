@@ -17,6 +17,8 @@ Write `context/brand-voice.md` with:
 - evidence and claim standards;
 - editorial and localization guardrails.
 
+Keep these as operating context. Future writers use evidence standards to select supported claims, and the [evidence-to-prose method](../reader-experience-review/references/evidence-to-prose.md) to decide which conditions readers need. Brand guardrails and lists of unperformed tests do not become mandatory disclaimers or article slogans.
+
 If no approved brand guide is available, infer a working draft from the project state and public site evidence. Label it as inferred and list what the owner must confirm. Do not present inferred tone or audience as approved fact.
 
 ## Target keywords

@@ -50,7 +50,7 @@ A direct answer may use a paragraph, steps or table depending on the question. D
 
 Use [content quality review](quality-scoring.md) to assess task completion, accuracy, useful depth, clarity and applicable SEO requirements. Report concrete findings rather than a total score. Fix observed issues, verify the affected content and stop when the brief is fulfilled.
 
-Deliver the requested draft or edit, relevant evidence pointers and unresolved inputs. Include meta elements or schema only when requested or within scope. Record what is drafted, verified or still pending; writing completion does not authorize publication or prove SEO outcomes.
+Deliver the requested public draft or edit in its requested format. Keep evidence pointers, verification status and unresolved inputs with the existing task artifact; include a separate editorial report only when requested. Use [evidence to prose](../../reader-experience-review/references/evidence-to-prose.md) for conditions that affect the reader's interpretation or action. Include meta elements or schema when requested or within scope. Record delivery and any authorized publication in the existing workflow.
 
 ## Working artifact
 
