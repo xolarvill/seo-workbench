@@ -15,6 +15,13 @@ metadata:
 
 # Schema Markup Analysis & Generation
 
+## Implementation mode
+
+For adding or repairing markup, establish the page type, existing markup, visible source facts and implementation stack. Apply the detection and validation rules below, then choose how the site's templates or components emit JSON-LD. Check the rendered result against the visible facts and record validation results.
+
+Consult [implementation patterns](references/implementation/guide.md) for static, framework and CMS integration, multiple types and validation errors, and [JSON-LD examples](references/implementation/references/schema-examples.md) for a relevant example. The current project and this entrypoint govern eligibility; examples are not a separate eligibility policy.
+
+
 ## Detection
 
 1. Scan page source for JSON-LD `<script type="application/ld+json">`

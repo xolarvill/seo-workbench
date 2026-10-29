@@ -36,6 +36,28 @@
 
 第 2 步与第 3 步分别提交。回滚采用对应 commit 的 revert；项目私有技能与业务数据不参与迁移。
 
+### 本次执行结果
+
+- 第 2 步归属与迁移决定提交为 `f80ef1f`。第 3 步保留全部 364 个原文件及其稳定来源 ID，增加两份 Workbench 组合入口，当前清单覆盖 366 个文件。
+- 60 个 SKILL.md 均位于同一目录层级，frontmatter name 与目录名一致且唯一；索引直接链接全部入口。
+- 11 份专家方法、24 份流程文档迁入来源参考区；六份被合并的原入口保留在对应主能力的 references。许可证和 FLOW 的细分归属随记录保留。
+- 原来有效的 218 处字面本地依赖，其迁移目标全部存在。按原文件与原目标核对迁移后的候选清单，没有新增缺失字面目标。旧缺口继续由清单记录。
+- 28 项结构、状态、workspace 和关键词交接回归通过；显式项目 validate 返回 ok=true，保留既有 project_dir.missing 目录 warning。两个新增入口通过 skill-creator 的结构校验。
+- 暂存时发现原有不带根锚点的忽略规则会漏收 39 个新位置文件；新增回归先复现，再将三处上游 clone 目录规则限定在仓库根目录，保证迁移参考材料和许可证进入 Git。
+- 两个独立只读会话覆盖全站诊断和三个专项场景：单 URL 技术检查、静态 JSON-LD 实现规划、生成页面的规划与诊断。均从当前入口找到相关正文／参考，并按请求跳过联网、采集和写入。单页技术模式没有扩展到 SERP 研究。
+- 独立架构复核未发现可行动问题。该抽样验证选取与范围控制，不代表完成任何站点审计或后续写作规则升级。
+
+实际运行的回归命令：
+
+```bash
+.venv/bin/python -m pytest tests/test_skill_layout.py tests/test_state_workflow.py \
+  tests/test_ui.py::test_workspace_does_not_schedule_an_agent_step \
+  tests/test_keyword_workspace.py::test_stage_progression_and_handoff_paths -q
+./seo --project hexcal validate --json
+```
+
+本次输出：`28 passed`；来源清单、索引与迁移记录的本地链接检查通过。新增的目录约束回归以当前来源清单为准，原迁移表只用于核对来源 ID 和路径历史，允许后续维护更新当前路径与入口数量。
+
 ## 全部入口的归属表
 
 | 原入口 | 统一入口 | 处理 |

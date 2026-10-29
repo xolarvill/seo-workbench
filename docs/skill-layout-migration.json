@@ -114,7 +114,9 @@
     "skills/seo-machine-pipeline/skills/programmatic-seo": "skills/programmatic-seo",
     "skills/seo-machine-pipeline/skills/referral-program": "skills/referral-program",
     "skills/seo-machine-pipeline/skills/signup-flow-cro": "skills/signup-flow-cro",
-    "skills/seo-machine-pipeline/skills/social-content": "skills/social-content"
+    "skills/seo-machine-pipeline/skills/social-content": "skills/social-content",
+    "skills/claude-seo-extra": "skills",
+    "skills/seo-machine-pipeline": "third_party/skill-history/seomachine"
   },
   "owner_aliases": {
     "skills/claude-seo-extra/seo-audit/SKILL.md": "skills/site-audit/SKILL.md",
@@ -3505,7 +3507,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "target_path": "skills/seo-machine-pipeline"
+      "target_path": "third_party/skill-history/seomachine"
     },
     {
       "from_path": "skills/README.md",
@@ -3529,7 +3531,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "target_path": "skills/claude-seo-extra"
+      "target_path": "skills"
     },
     {
       "from_path": "skills/README.md",

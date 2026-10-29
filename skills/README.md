@@ -8,6 +8,7 @@ This index offers starting points, not a required sequence or an allowlist. Comb
 
 | Task or question | Start here | Useful combinations |
 |---|---|---|
+| Site-wide or multi-template diagnosis | [site-audit](site-audit/SKILL.md) | Select specialist checks from current scope and evidence |
 | Audience, positioning, brand voice, evidence boundaries | [project-context](project-context/SKILL.md) | Existing project context and approved facts |
 | Query opportunity, intent, SERP, existing page owner | [keyword-deep-dive](keyword-deep-dive/SKILL.md) | [semantic-gap-analysis](semantic-gap-analysis/SKILL.md) for coverage gaps |
 | Hubs, spokes, overlapping articles and internal links | [topic-cluster-planning](topic-cluster-planning/SKILL.md) | Query research and current content inventory |
@@ -24,13 +25,25 @@ This index offers starting points, not a required sequence or an allowlist. Comb
 
 Project-specific skills add store facts, assets and delivery formats. They complement these professional methods rather than replace them. Follow the project's own `AGENTS.md` when present.
 
-## Three source families
+## Unified skill namespace
 
-The original repositories are not runtime dependencies. Their methods are available locally; see [capability preservation](../docs/capability-preservation.md) and [attribution](../third_party/NOTICE.md).
+Every callable method lives at `skills/<capability>/SKILL.md`. The 60 entrypoints share one namespace; source repositories are recorded in [the provenance reference](../docs/skill-sources.md) and [attribution](../third_party/NOTICE.md). [The migration map](../docs/20261029-skill-layout-migration.md) connects old paths to current owners.
 
-- **SuperSEO:** the strategy, research, writing and review entrypoints above, including `improve-content`, `featured-snippet-optimizer` and `expert-interview`.
-- **SEO Machine:** [production material](seo-machine-pipeline/), including [editor](seo-machine-pipeline/agents/editor.md), [internal-linker](seo-machine-pipeline/agents/internal-linker.md), [meta-creator](seo-machine-pipeline/agents/meta-creator.md), [SEO optimizer](seo-machine-pipeline/agents/seo-optimizer.md) and [CRO analyst](seo-machine-pipeline/agents/cro-analyst.md). Consult the relevant specialist method for an editing, linking, metadata or conversion question; the old commands and agent names are not installed executors.
-- **Claude SEO:** technical entrypoints above plus [specialty modules](claude-seo-extra/) for ecommerce, hreflang, GEO, local, SXO, competitor pages and other focused questions. Search the directory for the matching `SKILL.md`; these modules may still refer to upstream tools and paths.
+Additional entrypoints are listed below. These are capability groupings for navigation, not source-specific directories.
+
+| Capability | Methods |
+|---|---|
+| Scope, strategy and query grouping | [seo](seo/SKILL.md), [seo-plan](seo-plan/SKILL.md), [seo-flow](seo-flow/SKILL.md), [seo-cluster](seo-cluster/SKILL.md) |
+| Content and search experience | [seo-content](seo-content/SKILL.md), [seo-sxo](seo-sxo/SKILL.md), [seo-competitor-pages](seo-competitor-pages/SKILL.md), [seo-geo](seo-geo/SKILL.md) |
+| Ecommerce, international and local | [seo-ecommerce](seo-ecommerce/SKILL.md), [seo-hreflang](seo-hreflang/SKILL.md), [seo-local](seo-local/SKILL.md), [seo-maps](seo-maps/SKILL.md) |
+| Data services and generated images | [seo-google](seo-google/SKILL.md), [seo-dataforseo](seo-dataforseo/SKILL.md), [seo-image-gen](seo-image-gen/SKILL.md) |
+| Dataset-driven pages | [programmatic-seo](programmatic-seo/SKILL.md) |
+| Marketing context and copy | [product-marketing-context](product-marketing-context/SKILL.md), [content-strategy](content-strategy/SKILL.md), [copywriting](copywriting/SKILL.md), [copy-editing](copy-editing/SKILL.md), [competitor-alternatives](competitor-alternatives/SKILL.md) |
+| Conversion and experiments | [page-cro](page-cro/SKILL.md), [form-cro](form-cro/SKILL.md), [popup-cro](popup-cro/SKILL.md), [signup-flow-cro](signup-flow-cro/SKILL.md), [onboarding-cro](onboarding-cro/SKILL.md), [paywall-upgrade-cro](paywall-upgrade-cro/SKILL.md), [ab-test-setup](ab-test-setup/SKILL.md) |
+| Measurement and distribution | [analytics-tracking](analytics-tracking/SKILL.md), [email-sequence](email-sequence/SKILL.md), [social-content](social-content/SKILL.md), [paid-ads](paid-ads/SKILL.md) |
+| Growth and offers | [growth-lead](growth-lead/SKILL.md), [launch-strategy](launch-strategy/SKILL.md), [pricing-strategy](pricing-strategy/SKILL.md), [referral-program](referral-program/SKILL.md), [free-tool-strategy](free-tool-strategy/SKILL.md), [marketing-ideas](marketing-ideas/SKILL.md), [marketing-psychology](marketing-psychology/SKILL.md) |
+
+Preserved specialist and workflow documents live in [the source reference area](../third_party/skill-history/seomachine). Examples include [editor](../third_party/skill-history/seomachine/agents/editor.md), [internal-linker](../third_party/skill-history/seomachine/agents/internal-linker.md), [meta-creator](../third_party/skill-history/seomachine/agents/meta-creator.md), [SEO optimizer](../third_party/skill-history/seomachine/agents/seo-optimizer.md) and [CRO analyst](../third_party/skill-history/seomachine/agents/cro-analyst.md). Read a specialist method when relevant; these documents are not installed executors.
 
 Source material is available for judgment and adaptation, not automatic execution. Check its assumptions against the current task and Workbench contracts. Current evidence eligibility, bounded collectors, project isolation, and user authorization take precedence. Do not restore old scripts, crawl sizes, publishing behavior or external dependencies just because a preserved recipe names them.
 

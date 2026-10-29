@@ -67,7 +67,7 @@ Conduct the interview in the language the user responds in.
 
 ## Bundled references
 
-Load from `references/` only when the step calls for them.
+Load from `references` only when the step calls for them.
 
 - **`question-bank-by-topic.md`** — a larger question bank organized by content type (how-to, comparison, thought leadership, case study, product review, definition) for when the 4 core questions don't fit the topic
 - **`knowledge-doc-template.md`** — the full structured knowledge document template (Output section, when producing a reusable artifact instead of a one-off writeup)

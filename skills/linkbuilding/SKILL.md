@@ -5,7 +5,7 @@ description: Use when planning link acquisition. Classifies the site's authority
 
 # Link Building
 
-A phase-appropriate link acquisition strategy with specific, executable tactics. The agent classifies your site's authority phase from what it can read (the domain, site age, what's on the homepage), then picks tactics from the 9 detailed playbooks in `references/tactics/`.
+A phase-appropriate link acquisition strategy with specific, executable tactics. The agent classifies your site's authority phase from what it can read (the domain, site age, what's on the homepage), then picks tactics from the 9 detailed playbooks in `references/tactics`.
 
 ## Input
 
@@ -106,12 +106,12 @@ Once foundation links are built, a keyword deep dive on your biggest opportunity
 
 ## Bundled references
 
-Load from `references/` only when the step or situation calls for them.
+Load from `references` only when the step or situation calls for them.
 
-**Tactic playbooks** (`references/tactics/`) — load one before giving execution instructions for that tactic in Step 2:
+**Tactic playbooks** (`references/tactics`) — load one before giving execution instructions for that tactic in Step 2:
 - `entity-stacking.md`, `citations-directories.md`, `competitor-backlink-gap.md`, `guest-posting.md`, `resource-pages.md`, `skyscraper-technique.md`, `strategic-partnerships.md`, `podcast-guesting.md`, `new-site-launch-strategy.md`
 
-**Diagnostic and safety references** (`references/`):
+**Diagnostic and safety references** (`references`):
 - `phase-classification-tree.md` — decision tree when Step 1 signals are ambiguous
 - `anchor-text-safety-guide.md` — full anchor safety framework and penalty recovery (Step 3)
 - `link-velocity-redflags.md` — velocity red flags and SpamBrain patterns (diagnosing a traffic drop that looks link-related)

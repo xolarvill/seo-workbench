@@ -5,6 +5,13 @@ description: Use when auditing a specific page's SEO performance, content qualit
 
 # Page Audit
 
+## Scope modes
+
+For a single URL's technical/on-page question, inspect eligible metadata, canonical/robots, structured data, images, rendering and existing field evidence. Use [the single-page checklist](references/claude-seo/single-page-checks.md) for relevant checks and the schema/images/technical methods for their current contracts. A technical-only request does not require competitor research.
+
+For content quality or competitive position, use the research and seven-dimension method below; reuse applicable existing research. A multi-page or full-site diagnosis belongs to [site-audit](../site-audit/SKILL.md).
+
+
 A complete SEO audit on a specific URL. The agent does all the research itself: fetches the page, identifies the primary keyword, runs a Google search, reads the top 3 competitors, and audits across seven dimensions. No GSC access, no crawl exports, no manual data pasting.
 
 ## Input
@@ -273,7 +280,7 @@ Without GSC data, the audit can't say "this problem is urgent because this page 
 
 ## Bundled references
 
-Load from `references/` only when the step calls for them — don't preload the whole folder.
+Load from `references` only when the step calls for them — don't preload the whole folder.
 
 - **`eeat-scoring-rubric-compact.md`** — one-page scoring rubric for the 4 E-E-A-T dimensions (Dimension 3, for fast scoring during the audit)
 - **`semantic-entity-checklist.md`** — entity / predicate / EAV checklist for extracting what competitors have and this page doesn't (Phase 1B and Dimension 2)

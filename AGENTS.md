@@ -10,6 +10,7 @@ Agent-neutral SEO workflow repo. Use the local Python CLI and local `skills/` fi
 - Briefly explain the chosen method and purpose. Keep decisions, outputs, evidence pointers, and remaining gaps in the existing task artifact so another session can resume from the work itself. Reading a skill or marking a legacy step done is not proof that its method was completed.
 - CLI commands execute explicit operations and return evidence; use `./seo --help` or command-specific help to choose them. The `next` command is retired. Legacy `phase`/`step` records remain compatible but never prescribe the next action or restrict skill choice.
 - Skill selection does not expand the user's authorized scope. Project facts and current Workbench evidence/collection rules override conflicting source-material recipes; do not execute archived slash commands or old scripts blindly.
+- Callable methods share `skills/<capability>/SKILL.md`. Keep one canonical entrypoint per capability, put complementary methods in its references, and preserve source IDs and old paths in `docs/skill-sources.json` when moving material. Historical specialist/workflow documents live under `third_party/skill-history/`.
 
 ## Current Shape
 

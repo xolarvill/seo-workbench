@@ -108,7 +108,7 @@ Turn the content addition plan into an actual rewrite: use the `improve-content`
 
 ## Bundled references
 
-Load from `references/` only when the step calls for them.
+Load from `references` only when the step calls for them.
 
 - **`eav-triple-worked-examples.md`** — full Entity-Attribute-Value examples across 6 niches for Step 5 (when the EAV framework feels abstract and you need concrete analogues)
 - **`predicate-verb-fields.md`** — domain-specific verb fields that signal contextual depth to NLP models (Step 3, when extracting predicates from competitor pages)

@@ -1,6 +1,6 @@
 # Capability Preservation
 
-The independent workbench keeps the three original SEO repos as distinct capability families.
+Callable methods share skills/<capability>/SKILL.md. The [task index](../skills/README.md) lists 60 canonical entrypoints. Sources are recorded in [the provenance reference](skill-sources.md), and old paths in [the migration record](20261029-skill-layout-migration.md). The families below describe attribution, not separate skill namespaces.
 
 ## SuperSEO
 
@@ -27,11 +27,11 @@ Additional preserved modules:
 
 Role: content production pipeline.
 
-Preserved as local pipeline assets under `skills/seo-machine-pipeline/`:
+Callable marketing, copy, CRO, measurement and commercial strategy methods live directly under skills/. Preserved specialist and workflow documents live under [third_party/skill-history/seomachine](../third_party/skill-history/seomachine):
 
 - `commands/` - research, write, optimize, publish, repurpose, landing page, content calendar, and performance workflows.
 - `agents/` - SEO optimizer, metadata creator, internal linker, keyword mapper, editor, CRO, headline, cluster, and performance specialists.
-- `skills/` - copywriting, content strategy, programmatic SEO, CRO, schema markup, social, ads, launch, referral, and related production modules.
+- `skills` - copywriting, content strategy, programmatic SEO, CRO, schema markup, social, ads, launch, referral, and related production modules.
 
 These assets are local method references, not an installed slash-command or agent executor. Agents choose useful methods from `skills/README.md` and the current task; `seo_workbench` executes explicit operations. Stored phase mappings are compatibility records, not the scheduler.
 
@@ -48,7 +48,7 @@ Workbench method entrypoints:
 - `skills/drift`
 - `skills/backlinks`
 
-Additional preserved modules live under `skills/claude-seo-extra/`, including:
+Specialty modules share the skills/ root, including:
 
 - full site audit, content audit, page audit, cluster and competitor page analysis
 - DataForSEO and Google integrations
@@ -60,3 +60,5 @@ Additional preserved modules live under `skills/claude-seo-extra/`, including:
 - `seo_workbench/` - harness-neutral operation CLI and legacy step references.
 - `seo_workbench_tools/` - raw/rendered evidence collectors.
 - `skills/headless-precheck` - local Headless precheck built on evidence JSON.
+
+The canonical site-audit, page-audit, schema and programmatic-seo entrypoints own overlapping source methods. Original texts and licenses remain in their references; shared Claude SEO references are under [seo/references](../skills/seo/references). Project-context and reader-experience-review remain Workbench methods; site-audit and seo compose preserved methods with current execution rules.

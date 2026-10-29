@@ -64,4 +64,4 @@ These numbers assume a normal-authority domain. New domains are slower, establis
 
 ## Cross-reference
 
-The general theory of hub-and-spoke clustering lives in [topic-cluster-strategy.md](./topic-cluster-strategy.md). That file explains *why* clusters work. This file is the operational decision layer: given that you've chosen to build a cluster, which order do you ship the pieces?
+The general theory of hub-and-spoke clustering lives in [topic-cluster-strategy.md](topic-cluster-strategy.md). That file explains *why* clusters work. This file is the operational decision layer: given that you've chosen to build a cluster, which order do you ship the pieces?

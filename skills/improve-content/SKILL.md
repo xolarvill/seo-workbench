@@ -82,15 +82,15 @@ Write in the same language as the existing page content.
 
 ## Bundled references
 
-Load from `references/` only when needed — don't preload the whole folder.
+Load from `references` only when needed — don't preload the whole folder.
 
-**Content type templates** (`references/content-types/`) — load one in Step 4:
+**Content type templates** (`references/content-types`) — load one in Step 4:
 - Common: `how-to.md`, `definition.md`, `comparison.md`, `listicle.md`, `pillar-page.md`, `faq-page.md`, `landing-page.md`, `service-page.md`, `case-study.md`
 - Content and news: `statistics-page.md`, `news-article.md`, `glossary-page.md`
 - Commercial: `alternatives-page.md`, `buying-guide.md`, `product-page.md`, `category-page.md`, `integration-page.md`, `location-page.md`, `programmatic-page.md`
 - `references/content-types-overview.md` for the decision table across all 23 content types (load this FIRST if unsure which type to pick)
 
-**Rewriting technique modules** (`references/`) — load when a rule calls for more depth:
+**Rewriting technique modules** (`references`) — load when a rule calls for more depth:
 - `anti-slop-ruleset.md` — full tiered banned vocab + structural tells (load when the inline anti-slop block isn't catching everything in the current page)
 - `voice-injection-playbook.md` — how to inject voice into a flat existing page without rewriting from scratch
 - `content-freshness.md` — decay signals and what to refresh vs. leave alone (the core of Step 3's update interview)

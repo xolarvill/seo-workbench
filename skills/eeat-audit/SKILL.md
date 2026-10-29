@@ -164,7 +164,7 @@ To apply the fixes: use the `improve-content` skill with this URL, and paste the
 
 ## Bundled references
 
-Load from `references/` only when the step calls for them.
+Load from `references` only when the step calls for them.
 
 **Scoring and diagnosis:**
 - **`ymyl-scoring-rubric.md`** — stricter scoring rubric for Your Money Your Life pages (finance, medical, legal) where the E-E-A-T bar is materially higher (Step 2, any YMYL page)
@@ -173,5 +173,5 @@ Load from `references/` only when the step calls for them.
 - **`eeat-signal-embedding.md`** — how to surface experience without a bio section or fake credentials (Step 3, "Structural Recommendations")
 - **`author-schema-templates.md`** — copy-paste Person / Author / Organization JSON-LD for the schema fix (Step 3)
 
-**YMYL content-type templates** (`references/content-types/`) — load when auditing one of these types for the type-specific E-E-A-T bar:
+**YMYL content-type templates** (`references/content-types`) — load when auditing one of these types for the type-specific E-E-A-T bar:
 - `thought-leadership.md`, `product-reviews.md`, `pricing-pages.md`, `service-pages.md`, `case-studies.md`, `about-pages.md`

@@ -1,5 +1,5 @@
 ---
-name: seo-technical
+name: technical-audit
 description: >
   Technical SEO audit across 9 categories: crawlability, indexability, security,
   URL structure, mobile, Core Web Vitals, structured data, JavaScript rendering,

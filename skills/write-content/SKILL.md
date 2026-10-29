@@ -142,15 +142,15 @@ Write in the language from the business context. If not specified, match the lan
 
 ## Bundled references
 
-Load from `references/` only when the step or rule calls for them. Don't preload — each file is heavy enough to blow context if stacked.
+Load from `references` only when the step or rule calls for them. Don't preload — each file is heavy enough to blow context if stacked.
 
-**Content type templates** (`references/content-types/`) — load one after Phase 2:
+**Content type templates** (`references/content-types`) — load one after Phase 2:
 - Common: `how-to.md`, `definition.md`, `comparison.md`, `listicle.md`, `pillar-page.md`, `faq-page.md`, `landing-page.md`, `service-page.md`, `case-study.md`
 - Content and news: `statistics-page.md`, `news-article.md`, `glossary-page.md`
 - Commercial: `alternatives-page.md`, `buying-guide.md`, `product-page.md`, `category-page.md`, `integration-page.md`, `location-page.md`, `programmatic-page.md`
 - `references/content-types-overview.md` for the decision table across all 23 content types (load this FIRST if unsure which type to pick)
 
-**Writing technique modules** (`references/`) — load only when the matching rule needs more depth:
+**Writing technique modules** (`references`) — load only when the matching rule needs more depth:
 - `anti-slop-ruleset.md` — full tiered banned vocab + structural tell list (when the inline anti-slop block isn't catching something)
 - `voice-injection-playbook.md` — voice and register techniques (when the draft reads flat)
 - `eeat-signal-embedding.md` — how to surface experience without a bio section

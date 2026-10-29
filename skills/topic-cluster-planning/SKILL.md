@@ -125,7 +125,7 @@ For each spoke, use `content-brief` with the spoke's target keyword to produce a
 
 ## Bundled references
 
-Load from `references/` only when the step calls for them.
+Load from `references` only when the step calls for them.
 
 - **`spoke-selection-worked-example.md`** — an illustrative cluster; do not copy its page count or schedule as a quota
 - **`topic-cluster-strategy.md`** — optional architecture background; treat “topical authority” claims as a planning model, not a measured Google score
