@@ -444,3 +444,9 @@ This iterative process ensures each edit doesn't create new problems while respe
 | Reviewing and improving existing copy | copy-editing (this skill) |
 | Editing copy you just wrote | copy-editing (this skill) |
 | Structural or strategic page changes | page-cro |
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [Article editing review](references/article-editing.md): an article needs a substantive editing pass after research and drafting.

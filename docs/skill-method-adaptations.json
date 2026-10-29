@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "created_on": "2026-10-29",
+  "scope": "Approved step 4: portable professional methods and delivery handoffs; original source files remain historical.",
+  "materials": [
+    {
+      "source_id": "seomachine:.claude/agents/editor.md",
+      "preserved_sha256": "1f1d5bee8164d954da946332134edba8d35ea6935d65ea2764dbc13d58e4944a",
+      "historical_path": "third_party/skill-history/seomachine/agents/editor.md",
+      "owner_path": "skills/copy-editing/SKILL.md",
+      "adapted_path": "skills/copy-editing/references/article-editing.md",
+      "disposition": "adapted_reference",
+      "use_when": "an article needs a substantive editing pass after research and drafting"
+    },
+    {
+      "source_id": "seomachine:.claude/agents/content-analyzer.md",
+      "preserved_sha256": "24a12320ec06282a4424d8146da1a64c700886a8b8a8cffafcbe9061ef47a31d",
+      "historical_path": "third_party/skill-history/seomachine/agents/content-analyzer.md",
+      "owner_path": "skills/page-audit/SKILL.md",
+      "adapted_path": "skills/page-audit/references/content-assessment.md",
+      "disposition": "adapted_reference",
+      "use_when": "a completed page needs an evidence-based content assessment"
+    },
+    {
+      "source_id": "seomachine:.claude/agents/cro-analyst.md",
+      "preserved_sha256": "7f2979ee0b98aa467359a8d27d614050f4c67a1687e8753c24c2ad0b02c5e534",
+      "historical_path": "third_party/skill-history/seomachine/agents/cro-analyst.md",
+      "owner_path": "skills/page-cro/SKILL.md",
+      "adapted_path": "skills/page-cro/references/conversion-analysis.md",
+      "disposition": "adapted_reference",
+      "use_when": "a landing page needs an explanation of likely conversion friction"
+    },
+    {
+      "source_id": "seomachine:.claude/agents/landing-page-optimizer.md",
+      "preserved_sha256": "67bc8a6ccc1eaad13b0a36618567e76afa67aee0eedc37bb9496d570969ac3fb",
+      "historical_path": "third_party/skill-history/seomachine/agents/landing-page-optimizer.md",
+      "owner_path": "skills/page-cro/SKILL.md",
+      "adapted_path": "skills/page-cro/references/landing-page-review.md",
+      "disposition": "adapted_reference",
+      "use_when": "a landing page needs a practical conversion review"
+    },
+    {
+      "source_id": "seomachine:.claude/agents/meta-creator.md",
+      "preserved_sha256": "ae8f2dbe38db646fb3f6e24f45e6ab38e3f5a1f55a009bb74681a97462f25875",
+      "historical_path": "third_party/skill-history/seomachine/agents/meta-creator.md",
+      "owner_path": "skills/page-audit/SKILL.md",
+      "adapted_path": "skills/page-audit/references/metadata-writing.md",
+      "disposition": "adapted_reference",
+      "use_when": "a page needs title or description options"
+    },
+    {
+      "source_id": "seomachine:.claude/agents/seo-optimizer.md",
+      "preserved_sha256": "e089098e5ee670b0f7316014ef872ff76595e51ffa27d80c06135b7ec50b917a",
+      "historical_path": "third_party/skill-history/seomachine/agents/seo-optimizer.md",
+      "owner_path": "skills/improve-content/SKILL.md",
+      "adapted_path": "skills/improve-content/references/seo-editing.md",
+      "disposition": "adapted_reference",
+      "use_when": "a researched article needs focused on-page improvements"
+    },
+    {
+      "source_id": "seomachine:.claude/agents/internal-linker.md",
+      "preserved_sha256": "8d69c89aef7adf1d4b75fdf284c4b9c000830a5fde3291a352e47047eab218b7",
+      "historical_path": "third_party/skill-history/seomachine/agents/internal-linker.md",
+      "owner_path": "skills/topic-cluster-planning/SKILL.md",
+      "adapted_path": "skills/topic-cluster-planning/references/internal-link-review.md",
+      "disposition": "adapted_reference",
+      "use_when": "an article or cluster needs contextual link recommendations"
+    },
+    {
+      "source_id": "seomachine:.claude/agents/keyword-mapper.md",
+      "preserved_sha256": "1ef32b5f5d768fe07de06509dc8915e7d211588370b0773ffd3afa6f579763e0",
+      "historical_path": "third_party/skill-history/seomachine/agents/keyword-mapper.md",
+      "owner_path": "skills/keyword-deep-dive/SKILL.md",
+      "adapted_path": "skills/keyword-deep-dive/references/keyword-placement-review.md",
+      "disposition": "adapted_reference",
+      "use_when": "a draft needs its main topic and supporting terms mapped to page sections"
+    },
+    {
+      "source_id": "seomachine:.claude/agents/cluster-strategist.md",
+      "preserved_sha256": "64df9e4e0c50ec973627a953f2aa638d10520a90384d5a26f9df9ab527a1f31b",
+      "historical_path": "third_party/skill-history/seomachine/agents/cluster-strategist.md",
+      "owner_path": "skills/topic-cluster-planning/SKILL.md",
+      "adapted_path": "skills/topic-cluster-planning/references/cluster-review.md",
+      "disposition": "adapted_reference",
+      "use_when": "a proposed cluster needs an ownership and architecture check"
+    },
+    {
+      "source_id": "seomachine:.claude/agents/headline-generator.md",
+      "preserved_sha256": "a6d2cb298e2e66d125ccafbc8880d1bd35bab9151dda2d14468921920d64fc4e",
+      "historical_path": "third_party/skill-history/seomachine/agents/headline-generator.md",
+      "owner_path": "skills/copywriting/SKILL.md",
+      "adapted_path": "skills/copywriting/references/headline-options.md",
+      "disposition": "adapted_reference",
+      "use_when": "a landing page needs distinct headline options or a headline experiment"
+    },
+    {
+      "source_id": "seomachine:.claude/agents/performance.md",
+      "preserved_sha256": "bd7f05dd0b524f4ef40346ef54c06b29bd5a6961ca610e2dd8dba12bec7bcfb0",
+      "historical_path": "third_party/skill-history/seomachine/agents/performance.md",
+      "owner_path": "skills/drift/SKILL.md",
+      "adapted_path": "skills/drift/references/content-performance-review.md",
+      "disposition": "adapted_reference",
+      "use_when": "content work needs prioritization from observed performance"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/research.md",
+      "preserved_sha256": "206386dbb37a98e57f6796815934d2be40e8e7ae3a47378e875ea6a6bc1862e9",
+      "historical_path": "third_party/skill-history/seomachine/commands/research.md",
+      "owner_path": "skills/keyword-deep-dive/SKILL.md",
+      "adapted_path": "skills/keyword-deep-dive/references/research-workflow.md",
+      "disposition": "adapted_reference",
+      "use_when": "a topic needs research before a brief is prepared"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/research-serp.md",
+      "preserved_sha256": "281ab90d6a5b3915ac1fe39e34c6129733a6d597ede72e290e20212015a16ee5",
+      "historical_path": "third_party/skill-history/seomachine/commands/research-serp.md",
+      "owner_path": "skills/keyword-deep-dive/SKILL.md",
+      "adapted_path": "skills/keyword-deep-dive/references/serp-review.md",
+      "disposition": "adapted_reference",
+      "use_when": "a query needs a closer result-format and intent analysis"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/research-gaps.md",
+      "preserved_sha256": "aea63b3c054952885e79fe0327298c633cfa2e99e7bb57695b0331f3c72730d9",
+      "historical_path": "third_party/skill-history/seomachine/commands/research-gaps.md",
+      "owner_path": "skills/semantic-gap-analysis/SKILL.md",
+      "adapted_path": "skills/semantic-gap-analysis/references/research-gap-workflow.md",
+      "disposition": "adapted_reference",
+      "use_when": "competitive evidence is being used to find missing useful coverage"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/research-topics.md",
+      "preserved_sha256": "b8f5e3a000d6d77e87c6e921f39b86e6a4004b7637cd55be82e8af2552948161",
+      "historical_path": "third_party/skill-history/seomachine/commands/research-topics.md",
+      "owner_path": "skills/content-strategy/SKILL.md",
+      "adapted_path": "skills/content-strategy/references/topic-opportunities.md",
+      "disposition": "adapted_reference",
+      "use_when": "content planning needs a view of strong and weak topic coverage"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/research-performance.md",
+      "preserved_sha256": "49cdb9cc8fafe8d1a4c5056ad6d90f10a4848c9acb2b6590bec6746240759613",
+      "historical_path": "third_party/skill-history/seomachine/commands/research-performance.md",
+      "owner_path": "skills/drift/SKILL.md",
+      "adapted_path": "skills/drift/references/performance-priorities.md",
+      "disposition": "adapted_reference",
+      "use_when": "a content inventory needs descriptive performance grouping"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/research-trending.md",
+      "preserved_sha256": "125a24a572293ab358bd7bb3c63787e9af22a9ab7955ef9b396703a88e5ffd58",
+      "historical_path": "third_party/skill-history/seomachine/commands/research-trending.md",
+      "owner_path": "skills/content-strategy/SKILL.md",
+      "adapted_path": "skills/content-strategy/references/trend-research.md",
+      "disposition": "adapted_reference",
+      "use_when": "a planning question concerns a recent rise in topic interest"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/research-ai-citations.md",
+      "preserved_sha256": "48b3e06a8f36d7ffa829c3171eb1f56d03310d1252a7ded260666c0adaab3374",
+      "historical_path": "third_party/skill-history/seomachine/commands/research-ai-citations.md",
+      "owner_path": "skills/seo-geo/SKILL.md",
+      "adapted_path": "skills/seo-geo/references/citation-research.md",
+      "disposition": "adapted_reference",
+      "use_when": "a topic needs a prompt-based citation observation plan"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/priorities.md",
+      "preserved_sha256": "bd89b11bdf632ace25fbe63f50b315c119e75cac24776bdb39d2aeb72f27f2d5",
+      "historical_path": "third_party/skill-history/seomachine/commands/priorities.md",
+      "owner_path": "skills/content-strategy/SKILL.md",
+      "adapted_path": "skills/content-strategy/references/work-priorities.md",
+      "disposition": "adapted_reference",
+      "use_when": "multiple research angles need to become an actionable content queue"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/cluster.md",
+      "preserved_sha256": "2352542f8877b31f6aba9a6c5dcee2caae71e87e2abbfb9368e7640e2bd97813",
+      "historical_path": "third_party/skill-history/seomachine/commands/cluster.md",
+      "owner_path": "skills/topic-cluster-planning/SKILL.md",
+      "adapted_path": "skills/topic-cluster-planning/references/cluster-workflow.md",
+      "disposition": "adapted_reference",
+      "use_when": "a topic is moving from research to a hub/spoke production plan"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/content-calendar.md",
+      "preserved_sha256": "62e1a487b450cc4406aeae0b700716ffad6407d8d192f2181ae0dd2c567a693b",
+      "historical_path": "third_party/skill-history/seomachine/commands/content-calendar.md",
+      "owner_path": "skills/content-strategy/SKILL.md",
+      "adapted_path": "skills/content-strategy/references/calendar-planning.md",
+      "disposition": "adapted_reference",
+      "use_when": "approved content priorities need a realistic delivery calendar"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/article.md",
+      "preserved_sha256": "c3c330c96914a85de6b6337f08810b7cdf37a569b59cd8678107828e2d492a6f",
+      "historical_path": "third_party/skill-history/seomachine/commands/article.md",
+      "owner_path": "skills/write-content/SKILL.md",
+      "adapted_path": "skills/write-content/references/article-workflow.md",
+      "disposition": "adapted_reference",
+      "use_when": "an article requires coordinating research, a brief and a draft"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/write.md",
+      "preserved_sha256": "b99c5247128ff34e3f22bc21d81d7ce59d8dd6910c3bb5c821f3666a529b173a",
+      "historical_path": "third_party/skill-history/seomachine/commands/write.md",
+      "owner_path": "skills/write-content/SKILL.md",
+      "adapted_path": "skills/write-content/references/drafting-workflow.md",
+      "disposition": "adapted_reference",
+      "use_when": "a writer-ready brief is being turned into an article"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/rewrite.md",
+      "preserved_sha256": "3035ad0ff600b09ea55561a21698daa19711eeef766176d21de07de2856d04d1",
+      "historical_path": "third_party/skill-history/seomachine/commands/rewrite.md",
+      "owner_path": "skills/improve-content/SKILL.md",
+      "adapted_path": "skills/improve-content/references/refresh-workflow.md",
+      "disposition": "adapted_reference",
+      "use_when": "an existing article needs a scoped refresh rather than a new unrelated page"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/optimize.md",
+      "preserved_sha256": "47fa2537a688df176c456d5474180fb611fa1b49820a8cdc717dc22447b6b4bc",
+      "historical_path": "third_party/skill-history/seomachine/commands/optimize.md",
+      "owner_path": "skills/improve-content/SKILL.md",
+      "adapted_path": "skills/improve-content/references/optimization-workflow.md",
+      "disposition": "adapted_reference",
+      "use_when": "a draft or page needs specific SEO improvements"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/analyze-existing.md",
+      "preserved_sha256": "ffcee4953de5beaede9543a2ee37aad4e8c222ff68d38b21e877c0c8384d7c02",
+      "historical_path": "third_party/skill-history/seomachine/commands/analyze-existing.md",
+      "owner_path": "skills/page-audit/SKILL.md",
+      "adapted_path": "skills/page-audit/references/existing-page-review.md",
+      "disposition": "adapted_reference",
+      "use_when": "an existing article needs diagnosis before a refresh decision"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/performance-review.md",
+      "preserved_sha256": "7a71e0761e9a684ccd2f4e652ec4bbe0bdd798dc4ba8c4528e0df1e3e4382b29",
+      "historical_path": "third_party/skill-history/seomachine/commands/performance-review.md",
+      "owner_path": "skills/drift/SKILL.md",
+      "adapted_path": "skills/drift/references/content-performance-workflow.md",
+      "disposition": "adapted_reference",
+      "use_when": "content outcomes are being reviewed across an explicit reporting period"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/landing-audit.md",
+      "preserved_sha256": "90b0ade20730e5a91440693a129fd07545e10e3f93cc5e87466b468e75095884",
+      "historical_path": "third_party/skill-history/seomachine/commands/landing-audit.md",
+      "owner_path": "skills/page-cro/SKILL.md",
+      "adapted_path": "skills/page-cro/references/landing-audit.md",
+      "disposition": "adapted_reference",
+      "use_when": "a landing page needs conversion diagnosis"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/landing-competitor.md",
+      "preserved_sha256": "6a00097df458c4a096899e9aaf01d80a32b03906eee6043fde7c2421f4fdd786",
+      "historical_path": "third_party/skill-history/seomachine/commands/landing-competitor.md",
+      "owner_path": "skills/page-cro/SKILL.md",
+      "adapted_path": "skills/page-cro/references/landing-competitor-review.md",
+      "disposition": "adapted_reference",
+      "use_when": "an inspected competitor landing page may inform a conversion decision"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/landing-research.md",
+      "preserved_sha256": "eb501a2d708f63dd4f904319d2eadef4733621a92553e0655690ebab95cfe39d",
+      "historical_path": "third_party/skill-history/seomachine/commands/landing-research.md",
+      "owner_path": "skills/page-cro/SKILL.md",
+      "adapted_path": "skills/page-cro/references/landing-research.md",
+      "disposition": "adapted_reference",
+      "use_when": "a landing page needs an intent and conversion brief before copy is drafted"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/landing-write.md",
+      "preserved_sha256": "545874d74dadb29cbdf99cafed5df3f53ed68a20dcd6328b32b882c28c5cd851",
+      "historical_path": "third_party/skill-history/seomachine/commands/landing-write.md",
+      "owner_path": "skills/copywriting/SKILL.md",
+      "adapted_path": "skills/copywriting/references/landing-page-draft.md",
+      "disposition": "adapted_reference",
+      "use_when": "a landing-page brief is ready for copy"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/landing-publish.md",
+      "preserved_sha256": "b8e582b59aef9b364de5c9a4754af6b71c2d6d709ef20f64bc5d7162136bb497",
+      "historical_path": "third_party/skill-history/seomachine/commands/landing-publish.md",
+      "owner_path": "skills/copywriting/SKILL.md",
+      "adapted_path": "skills/copywriting/references/landing-page-handoff.md",
+      "disposition": "adapted_reference",
+      "use_when": "approved landing-page copy needs to be handed to the site implementation owner"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/publish-draft.md",
+      "preserved_sha256": "fb4895fb37920b772ffa1286ea70d9539e50ea017a91cf5988bb759fd9746749",
+      "historical_path": "third_party/skill-history/seomachine/commands/publish-draft.md",
+      "owner_path": "skills/write-content/SKILL.md",
+      "adapted_path": "skills/write-content/references/draft-handoff.md",
+      "disposition": "adapted_reference",
+      "use_when": "an approved article needs metadata and CMS delivery preparation"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/repurpose.md",
+      "preserved_sha256": "f1e8ebb9cfcb96ab27e6a3a62015775960e482ea03822503c34207b48c69292c",
+      "historical_path": "third_party/skill-history/seomachine/commands/repurpose.md",
+      "owner_path": "skills/social-content/SKILL.md",
+      "adapted_path": "skills/social-content/references/content-repurposing.md",
+      "disposition": "adapted_reference",
+      "use_when": "an existing article needs platform-specific derivative drafts"
+    },
+    {
+      "source_id": "seomachine:.claude/commands/scrub.md",
+      "preserved_sha256": "859b30964a523a1af2a826496a3fb85ea565299fde661992bf168ac6938c2d3f",
+      "historical_path": "third_party/skill-history/seomachine/commands/scrub.md",
+      "owner_path": null,
+      "adapted_path": null,
+      "disposition": "historical_only",
+      "reason": "Character scrubbing and watermark claims do not establish reader-facing quality; the original executor is not installed."
+    }
+  ]
+}

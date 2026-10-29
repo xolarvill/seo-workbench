@@ -159,3 +159,11 @@ Load from `references` only when the step or rule calls for them. Don't preload 
 - `human-input-framework.md` — the knowledge-extraction questions (reinforces Phase 3)
 
 Other archived technique notes may contain vendor benchmarks, fixed keyword densities, outdated rich-result advice, or hypotheses about private ranking systems. Do not load them as execution rules. Current project evidence, the shared content-type overview, the `schema` skill, and current primary documentation override them.
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [Research-to-article handoff](references/article-workflow.md): an article requires coordinating research, a brief and a draft.
+- [Draft production handoff](references/drafting-workflow.md): a writer-ready brief is being turned into an article.
+- [Draft delivery handoff](references/draft-handoff.md): an approved article needs metadata and CMS delivery preparation.

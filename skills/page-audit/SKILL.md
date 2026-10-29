@@ -287,3 +287,11 @@ Load from `references` only when the step calls for them — don't preload the w
 - **`content-types-audit-summary.md`** — content-type-specific audit criteria across all 23 types (Phase 0, after content identity is classified, for type-specific red flags)
 
 The scoring rubric is an internal diagnostic. Ignore fixed word counts, mandatory FAQ sections, deprecated HowTo advice, general FAQ rich-result promises, and vendor ranking-factor weights in older reference notes. Current project evidence and the `schema` skill override them.
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [Content assessment](references/content-assessment.md): a completed page needs an evidence-based content assessment.
+- [Metadata options](references/metadata-writing.md): a page needs title or description options.
+- [Existing-page diagnosis](references/existing-page-review.md): an existing article needs diagnosis before a refresh decision.

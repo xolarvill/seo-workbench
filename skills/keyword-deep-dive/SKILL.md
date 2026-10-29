@@ -130,3 +130,11 @@ Need a full content brief to execute the ranking plan? Use `content-brief` with 
 ## Bundled references
 
 Load references only when they help interpret the current result page. `serp-features-recognition.md` can help inventory visible features and `serp-volatility-heuristics.md` can frame uncertainty. Do not load bundled CTR curves, universal zero-click percentages, or fixed ranking timelines as site evidence. Prefer current GSC data and clearly sourced, dated market studies.
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [Keyword placement review](references/keyword-placement-review.md): a draft needs its main topic and supporting terms mapped to page sections.
+- [Topic research handoff](references/research-workflow.md): a topic needs research before a brief is prepared.
+- [SERP review](references/serp-review.md): a query needs a closer result-format and intent analysis.

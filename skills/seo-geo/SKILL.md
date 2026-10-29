@@ -253,3 +253,9 @@ If DataForSEO MCP tools are available, use `ai_optimization_chat_gpt_scraper` to
 ## FLOW Framework Integration
 
 For prompt-guided AI content optimization, use `/seo flow optimize <url>` — FLOW's 21 optimize-stage prompts complement GEO's citability and structure analysis with evidence-led AI prompts.
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [AI citation research](references/citation-research.md): a topic needs a prompt-based citation observation plan.

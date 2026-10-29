@@ -33,7 +33,7 @@ Callable marketing, copy, CRO, measurement and commercial strategy methods live 
 - `agents/` - SEO optimizer, metadata creator, internal linker, keyword mapper, editor, CRO, headline, cluster, and performance specialists.
 - `skills` - copywriting, content strategy, programmatic SEO, CRO, schema markup, social, ads, launch, referral, and related production modules.
 
-These assets are local method references, not an installed slash-command or agent executor. Agents choose useful methods from `skills/README.md` and the current task; `seo_workbench` executes explicit operations. Stored phase mappings are compatibility records, not the scheduler.
+Thirty-four portable methods are attached to their canonical skills as references, with their original sources recorded in [the adaptation map](skill-method-adaptations.json). The old scrub routine remains historical only. The originals are preserved for comparison, not installed slash commands or agent executors. Agents choose methods from `skills/README.md`; `seo_workbench` executes explicit operations. Stored phase mappings are compatibility records, not the scheduler.
 
 ## Claude SEO
 

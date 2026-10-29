@@ -275,3 +275,9 @@ Instead of guessing, analyze what's working for top creators in your niche:
 - **launch-strategy**: For coordinating social with launches
 - **email-sequence**: For nurturing social audience via email
 - **marketing-psychology**: For understanding what drives engagement
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [Content repurposing](references/content-repurposing.md): an existing article needs platform-specific derivative drafts.

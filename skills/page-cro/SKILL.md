@@ -179,3 +179,13 @@ When recommending experiments, consider tests for:
 - **popup-cro**: If considering popups as part of the strategy
 - **copywriting**: If the page needs a complete copy rewrite
 - **ab-test-setup**: To properly test recommended changes
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [Conversion reasoning](references/conversion-analysis.md): a landing page needs an explanation of likely conversion friction.
+- [Landing-page review](references/landing-page-review.md): a landing page needs a practical conversion review.
+- [Landing-page audit handoff](references/landing-audit.md): a landing page needs conversion diagnosis.
+- [Competitor landing-page review](references/landing-competitor-review.md): an inspected competitor landing page may inform a conversion decision.
+- [Landing-page research brief](references/landing-research.md): a landing page needs an intent and conversion brief before copy is drafted.

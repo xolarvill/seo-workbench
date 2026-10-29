@@ -96,3 +96,11 @@ Load from `references` only when needed — don't preload the whole folder.
 - `content-freshness.md` — decay signals and what to refresh vs. leave alone (the core of Step 3's update interview)
 - `writing-pipeline.md` — the research → rewrite → edit loop adapted for updates
 - `quality-scoring.md` — scoring rubric to run before delivering the rewrite
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [SEO editing review](references/seo-editing.md): a researched article needs focused on-page improvements.
+- [Existing-page refresh](references/refresh-workflow.md): an existing article needs a scoped refresh rather than a new unrelated page.
+- [Targeted optimization](references/optimization-workflow.md): a draft or page needs specific SEO improvements.

@@ -145,3 +145,11 @@ If the optional UI is active, continue using the same CLI and project files. The
 - Trust or evidence issue: `eeat-audit`
 - Lighthouse or CrUX change: `technical-audit`
 - Query, index, or Sitemap change: `technical-audit` with GSC evidence
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [Content performance review](references/content-performance-review.md): content work needs prioritization from observed performance.
+- [Performance-based priorities](references/performance-priorities.md): a content inventory needs descriptive performance grouping.
+- [Periodic content performance review](references/content-performance-workflow.md): content outcomes are being reviewed across an explicit reporting period.

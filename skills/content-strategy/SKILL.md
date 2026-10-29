@@ -354,3 +354,12 @@ Visual or structured representation of how content interconnects.
 - **programmatic-seo**: For scaled content generation
 - **email-sequence**: For email-based content
 - **social-content**: For social media content
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [Topic opportunity review](references/topic-opportunities.md): content planning needs a view of strong and weak topic coverage.
+- [Trend research](references/trend-research.md): a planning question concerns a recent rise in topic interest.
+- [Content work priorities](references/work-priorities.md): multiple research angles need to become an actionable content queue.
+- [Content calendar planning](references/calendar-planning.md): approved content priorities need a realistic delivery calendar.

@@ -114,3 +114,9 @@ Load from `references` only when the step calls for them.
 - **`predicate-verb-fields.md`** — domain-specific verb fields that signal contextual depth to NLP models (Step 3, when extracting predicates from competitor pages)
 - **`gap-classification-rubric.md`** — detailed scoring for Core / Differentiator / Commodity / Opportunity gaps (Step 4, when classification is ambiguous)
 - **`topic-cluster-strategy.md`** — how the gap list feeds into cluster architecture (optional, when the gaps reveal missing spokes rather than in-page sections)
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [Competitor coverage gaps](references/research-gap-workflow.md): competitive evidence is being used to find missing useful coverage.

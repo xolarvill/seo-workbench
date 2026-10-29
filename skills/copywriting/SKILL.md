@@ -249,3 +249,11 @@ For headlines and CTAs, provide 2-3 options:
 - **email-sequence**: For email copywriting
 - **popup-cro**: For popup and modal copy
 - **ab-test-setup**: To test copy variations
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [Headline alternatives](references/headline-options.md): a landing page needs distinct headline options or a headline experiment.
+- [Landing-page draft](references/landing-page-draft.md): a landing-page brief is ready for copy.
+- [Landing-page implementation handoff](references/landing-page-handoff.md): approved landing-page copy needs to be handed to the site implementation owner.

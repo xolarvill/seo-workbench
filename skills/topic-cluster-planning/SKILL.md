@@ -130,3 +130,11 @@ Load from `references` only when the step calls for them.
 - **`spoke-selection-worked-example.md`** — an illustrative cluster; do not copy its page count or schedule as a quota
 - **`topic-cluster-strategy.md`** — optional architecture background; treat “topical authority” claims as a planning model, not a measured Google score
 - **`pillar-page-template.md`** — optional hub outline; adapt it to the actual user task
+
+## Adapted specialist and workflow references
+
+Read the matching reference when it supports the current task:
+
+- [Internal-link review](references/internal-link-review.md): an article or cluster needs contextual link recommendations.
+- [Cluster strategy review](references/cluster-review.md): a proposed cluster needs an ownership and architecture check.
+- [Cluster planning handoff](references/cluster-workflow.md): a topic is moving from research to a hub/spoke production plan.
