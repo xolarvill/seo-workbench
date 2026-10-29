@@ -286,7 +286,7 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 
 | 当前文件 | 固定版本中的上游路径／派生来源 | 内容比对 | 本地首次记录 |
 |---|---|---|---|
-| [skills/analytics-tracking/references/provider-inputs.md](../skills/analytics-tracking/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/analytics-tracking/references/provider-inputs.md](../skills/analytics-tracking/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
 | [skills/content-strategy/references/calendar-planning.md](../skills/content-strategy/references/calendar-planning.md) | seomachine:.claude/commands/content-calendar.md | 本地方法 | `08d0679` |
 | [skills/content-strategy/references/topic-opportunities.md](../skills/content-strategy/references/topic-opportunities.md) | seomachine:.claude/commands/research-topics.md | 本地方法 | `08d0679` |
 | [skills/content-strategy/references/trend-research.md](../skills/content-strategy/references/trend-research.md) | seomachine:.claude/commands/research-trending.md | 本地方法 | `08d0679` |
@@ -298,7 +298,7 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [skills/drift/references/content-performance-review.md](../skills/drift/references/content-performance-review.md) | seomachine:.claude/agents/performance.md | 本地方法 | `08d0679` |
 | [skills/drift/references/content-performance-workflow.md](../skills/drift/references/content-performance-workflow.md) | seomachine:.claude/commands/performance-review.md | 本地方法 | `08d0679` |
 | [skills/drift/references/performance-priorities.md](../skills/drift/references/performance-priorities.md) | seomachine:.claude/commands/research-performance.md | 本地方法 | `08d0679` |
-| [skills/email-sequence/references/provider-inputs.md](../skills/email-sequence/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/email-sequence/references/provider-inputs.md](../skills/email-sequence/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
 | [skills/improve-content/references/optimization-workflow.md](../skills/improve-content/references/optimization-workflow.md) | seomachine:.claude/commands/optimize.md | 本地方法 | `08d0679` |
 | [skills/improve-content/references/refresh-workflow.md](../skills/improve-content/references/refresh-workflow.md) | seomachine:.claude/commands/rewrite.md | 本地方法 | `08d0679` |
 | [skills/improve-content/references/seo-editing.md](../skills/improve-content/references/seo-editing.md) | seomachine:.claude/agents/seo-optimizer.md | 本地方法 | `08d0679` |
@@ -313,12 +313,12 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [skills/page-cro/references/landing-competitor-review.md](../skills/page-cro/references/landing-competitor-review.md) | seomachine:.claude/commands/landing-competitor.md | 本地方法 | `08d0679` |
 | [skills/page-cro/references/landing-page-review.md](../skills/page-cro/references/landing-page-review.md) | seomachine:.claude/agents/landing-page-optimizer.md | 本地方法 | `08d0679` |
 | [skills/page-cro/references/landing-research.md](../skills/page-cro/references/landing-research.md) | seomachine:.claude/commands/landing-research.md | 本地方法 | `08d0679` |
-| [skills/paid-ads/references/provider-inputs.md](../skills/paid-ads/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/paid-ads/references/provider-inputs.md](../skills/paid-ads/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
 | [skills/reader-experience-review/references/calibration.md](../skills/reader-experience-review/references/calibration.md) | Workbench 本地方法 | 本地方法 | `aff4dea` |
-| [skills/referral-program/references/provider-inputs.md](../skills/referral-program/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/referral-program/references/provider-inputs.md](../skills/referral-program/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
 | [skills/semantic-gap-analysis/references/research-gap-workflow.md](../skills/semantic-gap-analysis/references/research-gap-workflow.md) | seomachine:.claude/commands/research-gaps.md | 本地方法 | `08d0679` |
 | [skills/seo-geo/references/citation-research.md](../skills/seo-geo/references/citation-research.md) | seomachine:.claude/commands/research-ai-citations.md | 本地方法 | `08d0679` |
-| [skills/seo/references/workbench-operations.md](../skills/seo/references/workbench-operations.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/seo/references/workbench-operations.md](../skills/seo/references/workbench-operations.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
 | [skills/social-content/references/content-repurposing.md](../skills/social-content/references/content-repurposing.md) | seomachine:.claude/commands/repurpose.md | 本地方法 | `08d0679` |
 | [skills/topic-cluster-planning/references/cluster-review.md](../skills/topic-cluster-planning/references/cluster-review.md) | seomachine:.claude/agents/cluster-strategist.md | 本地方法 | `08d0679` |
 | [skills/topic-cluster-planning/references/cluster-workflow.md](../skills/topic-cluster-planning/references/cluster-workflow.md) | seomachine:.claude/commands/cluster.md | 本地方法 | `08d0679` |

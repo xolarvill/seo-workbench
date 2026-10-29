@@ -24,7 +24,7 @@ Default to audit; apply already-authorized edits without reconfirming. Review al
 ## Decide before rewriting
 
 1. Which reader question or action does this sentence serve?
-2. Was the denied claim introduced, or is it a plausible misunderstanding?
+2. Was the denied claim introduced in this text, explicitly requested as a comparison, or tied to an identifiable mistake in this task? Merely imagining a possible objection is insufficient.
 3. Would deletion lose a fact, warning, source, uncertainty or example/test distinction?
 4. Does editing improve understanding, rather than satisfy a stylistic preference?
 
@@ -32,15 +32,23 @@ Classify the result:
 
 | Decision | Threshold | Action |
 | --- | --- | --- |
-| Must fix | Leaked instructions, serious jumps, misleading meaning or broken sentences | Minimal edit |
+| Must fix | Leaked instructions, serious jumps, misleading meaning, broken sentences, or defensive passages that add no reader-useful condition, fact or action | Minimal edit |
 | Useful refinement | Concrete clarity or flow improvement | Selective recommendation |
 | Accept unchanged | Useful caution, adequate wording or minor repetition | Close as accepted, not unresolved or fixed |
 
 No issue quotas, AI probabilities, authenticity scores or mandatory “human” quirks. Word lists, negative sentences and repeated phrases prompt inspection; they do not prove confusion or authorship. Preserve correct technical terminology.
 
+## Address the reader's task
+
+Lead with the supported answer, then the explanation, example or condition needed to use it. A limitation belongs where it changes a reader's choice or action. Prefer the concrete condition and check: “Before ordering, check VESA spacing, supported load and the display's weight without its stand.”
+
+Remove author-protection language that supplies no such information: denials of promises nobody made, explanations of motives nobody questioned, or repeated declarations that an example proves nothing. If the relevant scope is already clear in a source note or caption, merge or remove the repeated defense. A neutral-sounding paragraph can still require editing for this reason.
+
+Read the whole passage after local edits. Several individually defensible rebuttals can turn a guide into an argument with an absent opponent. Reconnect the useful statements around the reader's next question. Do not force a contrarian opening, invented objection, anecdote or reassurance into a passage that already works.
+
 ## Preserve evidence without performing caution
 
-Keep useful compatibility limits, installation warnings, sources, interest disclosures and conceptual-image labels. Hypothetical inputs must not become specifications or claimed tests. An untested-route caveat can be appropriate; do not automatically add one when the existing wording is clear.
+Keep useful compatibility limits, installation warnings, sources, interest disclosures and conceptual-image labels. Hypothetical inputs must not become specifications or claimed tests. Explain an untested route when the passage would otherwise imply verification or the distinction changes a decision. Keep internal evidence gaps in the editorial/task artifact; put a qualification in public prose when readers need it to use the claim accurately.
 
 Choose supported claims instead of announcing compliance with every internal “do not claim X.” Brand principles need not become compulsory slogans. Explicit user scope overrides a project template.
 
