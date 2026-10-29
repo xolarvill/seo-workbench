@@ -1,12 +1,77 @@
 {
   "purpose": "Context-sensitive behavior evaluation; decisions require reading the passage, not counting words or negatives.",
   "cases": [
-    {"id":"absent-opponent", "task":"Review a practical desk guide; no prior discussion", "text":"先把每天要用的物品放进顺手的位置，再决定要添什么。这不是为了追求社交媒体上完美的桌面，也不是说所有人都需要添置配件。我们不主张所有桌面都应遵循同一种布局，也不对使用这些建议后的效率提升作任何承诺。把充电线引到桌后，在桌沿留出连接电脑的长度。这里的建议不应被理解为对工作习惯的普遍判断。", "expected":"Required edit: retain placement and cable routing, remove invented motive/promise debate; do not add a fresh shopping reassurance."},
-    {"id":"real-compatibility", "task":"Review display connection instructions", "text":"USB-C 接口的外形不能说明它是否支持视频。连接显示器前，查看电脑规格中的视频输出协议。", "expected":"Accept unchanged; the distinction and check affect the connection decision."},
-    {"id":"clean-maintenance", "task":"Review manufacturer-verified maintenance steps", "text":"关机后拔掉电源线，等待设备冷却。用干燥软布擦拭外壳。清洁时不要让液体流进接口。", "expected":"Accept unchanged; keep the safety instruction; no invented tests, anecdotes, voice quirks or mandatory edits."},
-    {"id":"requested-comparison", "task":"Reader asks whether organizing this desk requires buying accessories; existing items fit within reach", "text":"先使用现有收纳盒，把每天要用的物品放在顺手的位置。暂时不用添置配件。", "expected":"Accept; purchasing is a real reader question in this context."},
-    {"id":"caption-and-repetition", "task":"Illustrative layout with a clear caption", "text":"概念布局，尺寸仅作示意。把常用物品放在顺手的位置。我们没有测试这个配置。把充电线引到桌后。我们没有测试这个配置。", "expected":"Keep the conceptual label, remove repeated editorial defense, preserve useful actions."},
-    {"id":"one-go-draft", "task":"Write directly from an approved brief, 100-180 Chinese characters, no interview, plain tone", "text":"电脑USB-C须支持视频输出，线缆也须支持视频；先查电脑规格，再查线缆规格，连接后选择输入源。研究与context已完成，没有第一手测试或案例。", "expected":"Deliver from the supplied facts without confirmation/interview, invented experience, contrarian preamble or fixed rhythm quotas."},
-    {"id":"english-defense", "task":"Edit a guide to organizing a desk; no prior debate", "text":"Keep daily-use items within reach. This is not a promise of higher productivity, nor an endorsement of a particular lifestyle. Route the charging cable behind the desk.", "expected":"Required edit: preserve the actions and remove the unsolicited promise/lifestyle defense."}
+    {
+      "id": "absent-opponent",
+      "task": "Review a practical desk guide; no prior discussion",
+      "text": "先把每天要用的物品放进顺手的位置，再决定要添什么。这不是为了追求社交媒体上完美的桌面，也不是说所有人都需要添置配件。我们不主张所有桌面都应遵循同一种布局，也不对使用这些建议后的效率提升作任何承诺。把充电线引到桌后，在桌沿留出连接电脑的长度。这里的建议不应被理解为对工作习惯的普遍判断。",
+      "expected": "Required edit: retain placement and cable routing, remove invented motive/promise debate; do not add a fresh shopping reassurance."
+    },
+    {
+      "id": "real-compatibility",
+      "task": "Review display connection instructions",
+      "text": "USB-C 接口的外形不能说明它是否支持视频。连接显示器前，查看电脑规格中的视频输出协议。",
+      "expected": "Accept unchanged; the distinction and check affect the connection decision."
+    },
+    {
+      "id": "clean-maintenance",
+      "task": "Review manufacturer-verified maintenance steps",
+      "text": "关机后拔掉电源线，等待设备冷却。用干燥软布擦拭外壳。清洁时不要让液体流进接口。",
+      "expected": "Accept unchanged; keep the safety instruction; no invented tests, anecdotes, voice quirks or mandatory edits."
+    },
+    {
+      "id": "requested-comparison",
+      "task": "Reader asks whether organizing this desk requires buying accessories; existing items fit within reach",
+      "text": "先使用现有收纳盒，把每天要用的物品放在顺手的位置。暂时不用添置配件。",
+      "expected": "Accept; purchasing is a real reader question in this context."
+    },
+    {
+      "id": "caption-and-repetition",
+      "task": "Illustrative layout with a clear caption",
+      "text": "概念布局，尺寸仅作示意。把常用物品放在顺手的位置。我们没有测试这个配置。把充电线引到桌后。我们没有测试这个配置。",
+      "expected": "Keep the conceptual label, remove repeated editorial defense, preserve useful actions."
+    },
+    {
+      "id": "one-go-draft",
+      "task": "Write directly from an approved brief, 100-180 Chinese characters, no interview, plain tone",
+      "text": "电脑USB-C须支持视频输出，线缆也须支持视频；先查电脑规格，再查线缆规格，连接后选择输入源。研究与context已完成，没有第一手测试或案例。",
+      "expected": "Deliver from the supplied facts without confirmation/interview, invented experience, contrarian preamble or fixed rhythm quotas."
+    },
+    {
+      "id": "english-defense",
+      "task": "Edit a guide to organizing a desk; no prior debate",
+      "text": "Keep daily-use items within reach. This is not a promise of higher productivity, nor an endorsement of a particular lifestyle. Route the charging cable behind the desk.",
+      "expected": "Required edit: preserve the actions and remove the unsolicited promise/lifestyle defense."
+    },
+    {
+      "id": "existing-brief",
+      "task": "Existing USB-C article needs only keep/strengthen/add; page and adequate research supplied; store sells arms, not cables",
+      "text": "The actual SERP includes forums and merchants. Preserve the video-output explanation and improve the specification check.",
+      "expected": "Use existing-page mode, keep relevant explanations, add only evidenced gaps, retain actual result types; no invented cable offer, whole-page rewrite or renewed research gate."
+    },
+    {
+      "id": "js-lazy-evidence",
+      "task": "Review a below-fold image from raw data and a native-attribute summary",
+      "text": "img has data-src and lazysizes, no loading attribute; only without_lazy_loading count is available.",
+      "expected": "Report JS loader clues and unverified behavior; no missing-lazy finding from native counts, no fabricated lazy_method field."
+    },
+    {
+      "id": "metadata-information",
+      "task": "Review title and description with supplied page facts",
+      "text": "Title: Monitor arm installation guide. Description: Monitor arm installation guide. Learn more. Page covers mounting preparation and adjustment steps.",
+      "expected": "Identify repeated preview and generic CTA; use supported page detail without arbitrary length quotas or a sitewide penalty claim."
+    },
+    {
+      "id": "schema-display",
+      "task": "Review current search feature eligibility with the checked local policy reference",
+      "text": "Existing accurate FAQPage; mobile Breadcrumb non-display; online-only event.",
+      "expected": "Keep useful FAQ content and assess consumers; no Google FAQ rich result; desktop Breadcrumb scope; online-only not eligible for Google Event. Do not equate semantic validity with display."
+    },
+    {
+      "id": "failed-source",
+      "task": "A competitor fetch failed during a supported partial brief",
+      "text": "Only title/snippet available; no page body or supplied copy.",
+      "expected": "Do not infer missing sections, author or tests from the failed fetch. Continue supported work with exact gaps in task artifact; no public self-defense boilerplate."
+    }
   ]
 }

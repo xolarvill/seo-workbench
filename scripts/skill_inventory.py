@@ -132,7 +132,7 @@ def render_tables(inventory: dict) -> str:
         lines.append('')
     # Imported entrypoints retained as references still have an independent source record.
     retained = [r for r in inventory['files'] if r.get('original_kind') == 'skill' and r['kind'] == 'reference']
-    lines += ['### 合并后保留的来源正文', '', '| 当前文件 | 来源 ID |', '|---|---|']
+    lines += ['### 归入参考的来源方法', '', '| 当前文件 | 来源 ID |', '|---|---|']
     lines += [f"| [{r['local_path']}](../{r['local_path']}) | `{r['id']}` |" for r in retained]
     return '\n'.join(lines).rstrip() + '\n'
 

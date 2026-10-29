@@ -2,12 +2,12 @@
 
 本文件是技能来源维护入口，配套的 [skill-sources.json](skill-sources.json) 保存完整文件映射、内容指纹、本地历史和引用关系。最后核查：**2026-10-29（Asia/Shanghai）**。第 1 步建立来源基线；第 2、3 步已按[能力归属与目录迁移记录](20261029-skill-layout-migration.md)更新为 60 个一级入口。
 
-第 4、5 步的[方法与运行适配记录](20261029-skill-methods-runtime-adaptation.md)保存了专业参考归属、失效执行引用的处理与验证。
+第 4、5 步的[方法与运行适配记录](20261029-skill-methods-runtime-adaptation.md)保存了专业参考归属、失效执行引用的处理与验证。第 6、7、8 步见[写作与上游适配](20261029-skill-writing-upstream-adaptation.md)。
 
 ## 快速查询
 
 - 查某个技能来自哪里：在下方入口表中找名称，打开固定版本的上游链接。
-- 查 references、assets、许可证等配套文件：在 JSON 的 `files` 中按 `local_path` 查找。当前 406 个受维护文件均有记录；原材料与派生方法保持独立来源身份。
+- 查 references、assets、许可证等配套文件：在 JSON 的 `files` 中按 `local_path` 查找。当前 408 个受维护文件均有记录；原材料与派生方法保持独立来源身份。
 - 查本地何时修改：查看 `first_local_record`、`last_local_change`，再用 Git 读取对应文件差异。
 - 查旧工具路径和断开的引用：在 JSON 的 `dependencies` 中按 `from_path` 或 `target` 查询。后续修复应更新这里的状态。
 - 查升级范围：比较同一来源的 `comparison_ref` 与新提交，按本文后面的步骤审阅。
@@ -33,17 +33,17 @@
 
 | 来源 | 全部文件 | 活跃技能 | 专家原文 | 流程原文 | 与上游相同 | 与上游有差异 |
 |---|---:|---:|---:|---:|---:|---:|
-| superseo | 125 | 11 | 0 | 0 | 90 | 35 |
-| claude-seo | 140 | 20 | 0 | 0 | 71 | 69 |
+| superseo | 125 | 11 | 0 | 0 | 87 | 38 |
+| claude-seo | 141 | 20 | 0 | 0 | 71 | 70 |
 | seomachine | 93 | 24 | 11 | 24 | 64 | 29 |
-| workbench | 48 | 5 | 0 | 0 | 不适用 | 不适用 |
-| 合计 | **406** | **60** | **11** | **24** | **225** | **133** |
+| workbench | 49 | 5 | 0 | 0 | 不适用 | 不适用 |
+| 合计 | **408** | **60** | **11** | **24** | **222** | **137** |
 
 原有 364 个文件的来源 ID 全部保留。新增组合入口和适配参考分别登记为 Workbench 文件，并通过 composed_from 或 derived_from 关联原记录；历史专家与流程原文保留在 third_party/skill-history。
 
 JSON 覆盖 skills/ 和 third_party/skill-history/ 的受维护文件，不含系统文件或店铺私有技能。指纹包括换行、路径和适配差异；different 只表示内容不同，不能全部解释为上游升级。
 
-当前上游而本地尚无对应入口的技能：Claude SEO 的 `skills/seo-agentic/SKILL.md` 和 `skills/seo-content-brief/SKILL.md`。JSON 的 `upstream_skill_entrypoints_not_mapped` 保留这些路径；是否新建入口或吸收进既有方法由后续步骤决定。
+当前上游而本地尚无对应入口的技能：Claude SEO 的 `skills/seo-agentic/SKILL.md`。`seo-content-brief` 的旧页保留／加强／新增及业务相关性方法已归入现有 content-brief 的参考，来源单独登记；未新增竞争入口。JSON 的 `upstream_skill_entrypoints_not_mapped` 保留尚未归入的方法路径。
 
 ## 文件清单字段
 
@@ -71,7 +71,7 @@ JSON 覆盖 skills/ 和 third_party/skill-history/ 的受维护文件，不含�
 
 ## 引用关系与适配线索
 
-当前登记 737 处字面路径引用：Markdown 链接目标，以及指定前缀的无空白反引号路径。每条保存来源文件、行号、原始目标、解析位置和状态。它用于后续修复定位，不执行其中的命令。
+当前登记 776 处字面路径引用：Markdown 链接目标，以及指定前缀的无空白反引号路径。每条保存来源文件、行号、原始目标、解析位置和状态。它用于后续修复定位，不执行其中的命令。
 
 | 状态 | 解释 |
 |---|---|
@@ -92,6 +92,8 @@ JSON 覆盖 skills/ 和 third_party/skill-history/ 的受维护文件，不含�
 - Claude SEO 核心入口：技术采集、证据资格、字段性能数据与当前结构化数据规则；结合 AGENTS 和对应文件的本地 Git 差异阅读。
 - Workbench 原生方法：project-context、headless-precheck、reader-experience-review 没有对应的外部上游正文。
 - 每文件的实际本地变更可由 JSON 的 commit 指针恢复，不把“与上游不同”统一归类为本地补丁。
+
+本轮按条目吸收和未采用的决定见 [skill-upstream-adoptions.json](skill-upstream-adoptions.json) 与[实施记录](20261029-skill-writing-upstream-adaptation.md)。每项保留固定 SHA、实际读取的上游文件 blob、落点与本地适配，不把单项采用视为整包升级。
 
 ## 以后如何比对上游更新
 
@@ -140,7 +142,7 @@ print(f'{len(recorded)} files: coverage and SHA-256 verified')
 PY
 ```
 
-以下表覆盖 60 个当前入口、11 份专家方法、24 份流程文档和六份转为参考的原入口。原始路径与当前路径也可在 skill-layout-migration.json 中交叉查询；其余配套文件逐项见 JSON。
+以下表覆盖 60 个当前入口、11 份专家方法、24 份流程文档和六份历史合并入口及一份新增 brief 适配参考。原始路径与当前路径也可在 skill-layout-migration.json 中交叉查询；其余配套文件逐项见 JSON。
 
 ## 本地清单维护
 
@@ -282,7 +284,7 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [third_party/skill-history/seomachine/commands/scrub.md](../third_party/skill-history/seomachine/commands/scrub.md) | [.claude/commands/scrub.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/commands/scrub.md) | 相同 | `f0116d2` |
 | [third_party/skill-history/seomachine/commands/write.md](../third_party/skill-history/seomachine/commands/write.md) | [.claude/commands/write.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/commands/write.md) | 相同 | `f0116d2` |
 
-### workbench / reference（40）
+### workbench / reference（41）
 
 | 当前文件 | 固定版本中的上游路径／派生来源 | 内容比对 | 本地首次记录 |
 |---|---|---|---|
@@ -316,6 +318,7 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [skills/paid-ads/references/provider-inputs.md](../skills/paid-ads/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
 | [skills/reader-experience-review/references/calibration.md](../skills/reader-experience-review/references/calibration.md) | Workbench 本地方法 | 本地方法 | `aff4dea` |
 | [skills/referral-program/references/provider-inputs.md](../skills/referral-program/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
+| [skills/schema/references/search-eligibility.md](../skills/schema/references/search-eligibility.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
 | [skills/semantic-gap-analysis/references/research-gap-workflow.md](../skills/semantic-gap-analysis/references/research-gap-workflow.md) | seomachine:.claude/commands/research-gaps.md | 本地方法 | `08d0679` |
 | [skills/seo-geo/references/citation-research.md](../skills/seo-geo/references/citation-research.md) | seomachine:.claude/commands/research-ai-citations.md | 本地方法 | `08d0679` |
 | [skills/seo/references/workbench-operations.md](../skills/seo/references/workbench-operations.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
@@ -327,10 +330,11 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [skills/write-content/references/draft-handoff.md](../skills/write-content/references/draft-handoff.md) | seomachine:.claude/commands/publish-draft.md | 本地方法 | `08d0679` |
 | [skills/write-content/references/drafting-workflow.md](../skills/write-content/references/drafting-workflow.md) | seomachine:.claude/commands/write.md | 本地方法 | `08d0679` |
 
-### 合并后保留的来源正文
+### 归入参考的来源方法
 
 | 当前文件 | 来源 ID |
 |---|---|
+| [skills/content-brief/references/existing-page-scope.md](../skills/content-brief/references/existing-page-scope.md) | `claude-seo:skills/seo-content-brief/SKILL.md` |
 | [skills/page-audit/references/claude-seo/single-page-checks.md](../skills/page-audit/references/claude-seo/single-page-checks.md) | `claude-seo:skills/seo-page/SKILL.md` |
 | [skills/programmatic-seo/references/claude-seo/technical-planning.md](../skills/programmatic-seo/references/claude-seo/technical-planning.md) | `claude-seo:skills/seo-programmatic/SKILL.md` |
 | [skills/schema/references/implementation/guide.md](../skills/schema/references/implementation/guide.md) | `seomachine:.claude/skills/schema-markup/SKILL.md` |

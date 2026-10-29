@@ -23,7 +23,7 @@ If no topic is given, ask for one before proceeding.
 
 Business context (audience, tone, language, brand voice, examples) shapes every article. In this Workbench, read the current project's `context/`, `strategy/`, existing content, and state before asking repeated questions. Save new business context only inside the current project after the user authorizes the content. Never write it to global agent instructions or another store's folder.
 
-Questions on first use:
+Fill only material gaps after reading existing project context. Useful questions when needed:
 - What does the business do, and who is it for?
 - What's the brand's tone of voice? (Professional / Casual / Technical / Authoritative / Conversational)
 - What language should content be written in?
@@ -40,23 +40,20 @@ Skip this phase entirely if a brief or prior conversation context already contai
 
 Based on what's ranking, pick a content type: how-to, definition/explainer, comparison (X vs Y), listicle/roundup, product review, case study, pillar/ultimate guide, FAQ, landing page, service page, news/trend analysis.
 
-State it plainly:
-"The top results for [keyword] are all [format]. I'll write a [content type] with [key structural element]. Sound good, or did you have something else in mind?"
-
-Wait for confirmation.
+Use an approved brief or choose a format from the reader's task and available research. When the user requests a complete draft in one pass, proceed with a brief statement of any material assumption. Ask about format only when an unresolved choice materially changes the requested result; do not turn an already-decided format into a confirmation gate.
 
 Load `references/content-types-overview.md` for optional page patterns. Then load one relevant template when it helps. Template headings, lengths, CTA positions, and schema suggestions are starting points, not requirements. The `schema` skill and current Google documentation are authoritative for rich-result eligibility.
 
 ## Phase 3: Knowledge Extraction
 
-Ask 2-3 quick questions to extract unique knowledge the user has. Pick from:
+Reuse available interview answers, approved project facts and research. If first-party input is necessary and an interview fits the request, ask focused questions such as:
 
-- "What do most people get wrong about [topic]?"
+- "How do you handle [specific task] in practice?"
 - "Can you give me a specific example — a client, a project, a number?"
 - "What surprised you when you actually did this?"
 - "Who should NOT follow this advice, and why?"
 
-Ask one at a time. Keep it quick.
+Ask one at a time when conducting an interview. For a direct drafting request or a run without an available interview, continue from supported sources. Keep optional first-party gaps in the task/editorial artifact. If the requested result depends on missing test data, quotations or product facts, narrow the claim or ask for that essential input; do not invent it or repeat the missing-interview status in the article.
 
 **Adapt style**:
 - Newer/smaller site, less SEO-savvy user: conversational, explain why each question matters
@@ -140,3 +137,7 @@ Read the matching reference when it supports the current task:
 - [Research-to-article handoff](references/article-workflow.md): an article requires coordinating research, a brief and a draft.
 - [Draft production handoff](references/drafting-workflow.md): a writer-ready brief is being turned into an article.
 - [Draft delivery handoff](references/draft-handoff.md): an approved article needs metadata and CMS delivery preparation.
+
+## Research evidence
+
+Use [source verification](references/fact-checking.md) for factual claims and source currency. Keep evidence notes with the task artifact and reader-useful conditions with the relevant claim.

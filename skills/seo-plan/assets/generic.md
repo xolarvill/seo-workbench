@@ -50,8 +50,10 @@ This template applies to businesses that don't fit neatly into SaaS, local servi
 | About | Organization, AboutPage |
 | Contact | ContactPage |
 | Blog | Article, BlogPosting |
-| FAQ | (FAQPage only for gov/health) |
+| FAQ | WebPage; truthful FAQPage is a semantic choice, with no Google FAQ rich result for any site |
 | Product/Service | Product or Service |
+
+Use the [shared eligibility reference](../../schema/references/search-eligibility.md) for FAQ retirement, desktop-only breadcrumb appearance and Google Event requirements. Valid markup, eligibility and observed display are separate; schema does not guarantee AI citations.
 
 ## Content Quality Standards
 
@@ -135,7 +137,7 @@ Adjust this template based on:
 ## Generative Engine Optimization (GEO) Checklist
 
 - [ ] Include clear, quotable facts and statistics that AI systems can extract and cite
-- [ ] Use structured data (Schema.org) to help AI systems understand content
+- [ ] Use truthful structured data where relevant; verify provider eligibility separately and do not claim a general AI citation uplift
 - [ ] Build topical authority through comprehensive content clusters
 - [ ] Provide original data, research, or unique perspectives AI cannot find elsewhere
 - [ ] Maintain consistent entity information (brand, people, products) across the web

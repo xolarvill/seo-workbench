@@ -120,3 +120,7 @@ Load from `references` only when the step calls for them.
 Read the matching reference when it supports the current task:
 
 - [Competitor coverage gaps](references/research-gap-workflow.md): competitive evidence is being used to find missing useful coverage.
+
+## Research evidence
+
+Use [source verification](../write-content/references/fact-checking.md) for research claims: rely on sources actually read or supplied project facts, preserve failed fetches as gaps, and record material dates and scope in the task artifact.

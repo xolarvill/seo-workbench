@@ -297,3 +297,7 @@ Read the matching reference when it supports the current task:
 - [Content assessment](references/content-assessment.md): a completed page needs an evidence-based content assessment.
 - [Metadata options](references/metadata-writing.md): a page needs title or description options.
 - [Existing-page diagnosis](references/existing-page-review.md): an existing article needs diagnosis before a refresh decision.
+
+## Research evidence
+
+Use [source verification](../write-content/references/fact-checking.md) for research claims: rely on sources actually read or supplied project facts, preserve failed fetches as gaps, and record material dates and scope in the task artifact.

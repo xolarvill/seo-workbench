@@ -1,0 +1,213 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-29",
+  "scope": "Approved step 8; selected methods only. The source comparison refs do not imply a whole-pack import.",
+  "sources": {
+    "superseo": {
+      "repository": "inhouseseo/superseo-skills",
+      "verified_default_head": "9cf22cc065a294bf0077ea6af6b4ea0eb7f89cdc",
+      "checked_on": "2026-10-29"
+    },
+    "claude-seo": {
+      "repository": "AgriciDaniel/claude-seo",
+      "verified_default_head": "6be93f45064ffbadced572b5d5c95f55fd263af0",
+      "checked_on": "2026-10-29"
+    },
+    "seomachine": {
+      "repository": "TheCraigHewitt/seomachine",
+      "verified_default_head": "120e7b46dc07c98382cd4f68ac5b6515ab9f2604",
+      "checked_on": "2026-10-29"
+    }
+  },
+  "adopted": [
+    {
+      "id": "superseo-autonomous",
+      "source_id": "superseo",
+      "comparison_ref": "9cf22cc065a294bf0077ea6af6b4ea0eb7f89cdc",
+      "upstream_files": [
+        {
+          "url": "https://github.com/inhouseseo/superseo-skills/blob/9cf22cc065a294bf0077ea6af6b4ea0eb7f89cdc/skills/write-content/SKILL.md",
+          "blob_sha": "35c6c4041ba0a03de482ccc8e439183e6031d681"
+        },
+        {
+          "url": "https://github.com/inhouseseo/superseo-skills/blob/9cf22cc065a294bf0077ea6af6b4ea0eb7f89cdc/skills/improve-content/SKILL.md",
+          "blob_sha": "8f1ff6b0c8fca8e96e4b821773d296ebf5c70c21"
+        }
+      ],
+      "local_paths": [
+        "skills/write-content/SKILL.md",
+        "skills/improve-content/SKILL.md"
+      ],
+      "adopted_method": "Direct drafting and update requests can proceed without format confirmation or optional interviews.",
+      "local_adaptation": "Keep optional gaps in task artifacts; essential missing facts remain explicit inputs."
+    },
+    {
+      "id": "superseo-grounding",
+      "source_id": "superseo",
+      "comparison_ref": "9cf22cc065a294bf0077ea6af6b4ea0eb7f89cdc",
+      "upstream_files": [
+        {
+          "url": "https://github.com/inhouseseo/superseo-skills/blob/9cf22cc065a294bf0077ea6af6b4ea0eb7f89cdc/skills/write-content/SKILL.md",
+          "blob_sha": "35c6c4041ba0a03de482ccc8e439183e6031d681"
+        },
+        {
+          "url": "https://github.com/inhouseseo/superseo-skills/blob/9cf22cc065a294bf0077ea6af6b4ea0eb7f89cdc/skills/improve-content/SKILL.md",
+          "blob_sha": "8f1ff6b0c8fca8e96e4b821773d296ebf5c70c21"
+        }
+      ],
+      "local_paths": [
+        "skills/write-content/references/fact-checking.md",
+        "skills/improve-content/references/content-freshness.md",
+        "skills/content-brief/SKILL.md",
+        "skills/page-audit/SKILL.md",
+        "skills/keyword-deep-dive/SKILL.md",
+        "skills/semantic-gap-analysis/SKILL.md",
+        "skills/topic-cluster-planning/SKILL.md",
+        "skills/featured-snippet-optimizer/SKILL.md",
+        "skills/linkbuilding/SKILL.md",
+        "skills/eeat-audit/SKILL.md"
+      ],
+      "adopted_method": "Ground claims in read sources or supplied facts; failed fetches remain evidence gaps.",
+      "local_adaptation": "No blanket age cutoff, fabricated competitor reconstruction, ranking promises or public verification boilerplate."
+    },
+    {
+      "id": "claude-page-content",
+      "source_id": "claude-seo",
+      "comparison_ref": "6be93f45064ffbadced572b5d5c95f55fd263af0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/AgriciDaniel/claude-seo/blob/6be93f45064ffbadced572b5d5c95f55fd263af0/skills/seo-page/SKILL.md",
+          "blob_sha": "69eb6a19a82225bb39eea3b4e91f19e27cfd5da6"
+        },
+        {
+          "url": "https://github.com/AgriciDaniel/claude-seo/blob/6be93f45064ffbadced572b5d5c95f55fd263af0/skills/seo-content/SKILL.md",
+          "blob_sha": "be86bd23b85c7bffa157bacd8761caa45157d94d"
+        }
+      ],
+      "local_paths": [
+        "skills/page-audit/references/claude-seo/single-page-checks.md",
+        "skills/page-audit/references/metadata-writing.md",
+        "skills/seo-content/SKILL.md"
+      ],
+      "adopted_method": "Remove density quotas; review title and description together; evaluate authorship in page context.",
+      "local_adaptation": "No source scripts, numeric publication gates, or fake personal bylines."
+    },
+    {
+      "id": "claude-images",
+      "source_id": "claude-seo",
+      "comparison_ref": "6be93f45064ffbadced572b5d5c95f55fd263af0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/AgriciDaniel/claude-seo/blob/6be93f45064ffbadced572b5d5c95f55fd263af0/skills/seo-images/SKILL.md",
+          "blob_sha": "b4a584ac50628ded815c6418fb55d6b4da60a563"
+        },
+        {
+          "url": "https://github.com/AgriciDaniel/claude-seo/blob/6be93f45064ffbadced572b5d5c95f55fd263af0/skills/seo-page/SKILL.md",
+          "blob_sha": "69eb6a19a82225bb39eea3b4e91f19e27cfd5da6"
+        }
+      ],
+      "local_paths": [
+        "skills/images/SKILL.md",
+        "skills/page-audit/references/claude-seo/single-page-checks.md"
+      ],
+      "adopted_method": "Recognize JS lazy-load clues and descriptive alt text.",
+      "local_adaptation": "Existing collectors expose native-attribute counts only. No new lazy_method field or verified runtime behavior is claimed."
+    },
+    {
+      "id": "claude-brief",
+      "source_id": "claude-seo",
+      "comparison_ref": "6be93f45064ffbadced572b5d5c95f55fd263af0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/AgriciDaniel/claude-seo/blob/6be93f45064ffbadced572b5d5c95f55fd263af0/skills/seo-content-brief/SKILL.md",
+          "blob_sha": "53e6908bd25d4e532878993c7031f91682857372"
+        }
+      ],
+      "local_paths": [
+        "skills/content-brief/SKILL.md",
+        "skills/content-brief/references/existing-page-scope.md"
+      ],
+      "adopted_method": "Existing-page keep/strengthen/add and business relevance.",
+      "local_adaptation": "No new entrypoint; retain observed SERP result types, avoid invented offers, word quotas, fixed metadata lengths, competitor scores or wholesale domain exclusions."
+    },
+    {
+      "id": "claude-policy",
+      "source_id": "claude-seo",
+      "comparison_ref": "6be93f45064ffbadced572b5d5c95f55fd263af0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/AgriciDaniel/claude-seo/blob/6be93f45064ffbadced572b5d5c95f55fd263af0/skills/seo/references/schema-types.md",
+          "blob_sha": "b2e4d699663b6e29e3dbdafecaf77e6bc6aed96b"
+        }
+      ],
+      "local_paths": [
+        "skills/schema/SKILL.md",
+        "skills/schema/references/search-eligibility.md",
+        "skills/seo/references/schema-types.md",
+        "skills/write-content/references/structured-data-snippets.md",
+        "skills/write-content/references/content-types-overview.md",
+        "skills/write-content/references/geo-optimization.md",
+        "skills/featured-snippet-optimizer/references/structured-data-snippets.md",
+        "skills/featured-snippet-optimizer/references/aio-vs-snippet-decision.md",
+        "skills/write-content/references/content-types/faq-page.md",
+        "skills/improve-content/references/content-types/faq-page.md",
+        "skills/featured-snippet-optimizer/references/content-types/faq-page.md",
+        "skills/seo-plan/assets/generic.md"
+      ],
+      "adopted_method": "FAQ retirement, desktop Breadcrumb and public-bookable physical Event eligibility, checked against Google.",
+      "local_adaptation": "Vocabulary validity, eligibility and observed display stay distinct; do not adopt generic AI citation uplift."
+    }
+  ],
+  "primary_checks": [
+    {
+      "url": "https://developers.google.com/search/updates",
+      "claim": "FAQ rich results stopped appearing for all sites on 2026-05-07; documentation removed June 15."
+    },
+    {
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/breadcrumb",
+      "claim": "Breadcrumb feature available on desktop."
+    },
+    {
+      "url": "https://developers.google.com/search/docs/appearance/structured-data/event?hl=en",
+      "claim": "Event experience requires public booking and a physical location."
+    },
+    {
+      "url": "https://developers.google.com/search/docs/crawling-indexing/javascript/lazy-loading",
+      "claim": "Native, IntersectionObserver and JavaScript lazy loading methods; inspect rendered source and behavior."
+    },
+    {
+      "url": "https://developers.google.com/search/docs/appearance/google-images",
+      "claim": "Use descriptive alt text in image/page context rather than keyword quotas."
+    },
+    {
+      "url": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+      "claim": "Evaluate Who/How/Why; genuine authorship where readers expect it, no fabricated profiles."
+    }
+  ],
+  "deferred_or_rejected": [
+    {
+      "id": "seomachine-scrub",
+      "source_id": "seomachine",
+      "comparison_ref": "120e7b46dc07c98382cd4f68ac5b6515ab9f2604",
+      "upstream_path": ".claude/commands/repurpose.md",
+      "blob_sha": "b74d99ab52b256ceaab85ed0b1b0dbb84b155393",
+      "decision": "Rejected",
+      "reason": "Automatic scrub chain targets punctuation/watermark claims and is not installed; historical original and current repurposing method stay separate."
+    },
+    {
+      "id": "full-pack-import",
+      "decision": "Rejected",
+      "reason": "Preserve local execution, project isolation, evidence eligibility, reader standard and canonical namespace; no installer, credential store, scheduler or default scoring system added."
+    },
+    {
+      "id": "seo-agentic",
+      "decision": "Deferred",
+      "reason": "External website agent-readiness is a separate capability requiring a concrete task and evidence collector scope."
+    },
+    {
+      "id": "remaining-provider-and-policy-catalogs",
+      "decision": "Deferred",
+      "reason": "No complete refresh of remaining schema types, provider model/pricing tables, ranking studies or technology CVE detection is claimed."
+    }
+  ]
+}

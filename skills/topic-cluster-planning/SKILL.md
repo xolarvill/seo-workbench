@@ -138,3 +138,7 @@ Read the matching reference when it supports the current task:
 - [Internal-link review](references/internal-link-review.md): an article or cluster needs contextual link recommendations.
 - [Cluster strategy review](references/cluster-review.md): a proposed cluster needs an ownership and architecture check.
 - [Cluster planning handoff](references/cluster-workflow.md): a topic is moving from research to a hub/spoke production plan.
+
+## Research evidence
+
+Use [source verification](../write-content/references/fact-checking.md) for research claims: rely on sources actually read or supplied project facts, preserve failed fetches as gaps, and record material dates and scope in the task artifact.

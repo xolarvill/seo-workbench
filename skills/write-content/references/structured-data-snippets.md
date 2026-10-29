@@ -16,7 +16,7 @@ Do not reuse old vendor lift percentages or treat a patent, correlation, or case
 
 ## Current boundaries
 
-- `FAQPage` rich results are restricted to eligible authoritative government and health sites. A normal FAQ page can still be useful without FAQ rich results.
+- Google `FAQPage` rich results stopped appearing for all sites on 2026-05-07. Existing truthful FAQPage does not need automatic removal; ordinary FAQ content remains useful. No general AI citation uplift is established here. See the [shared eligibility reference](../../schema/references/search-eligibility.md).
 - Google removed HowTo rich results. Do not add `HowTo` solely for Google visibility.
 - Deprecated or retired rich-result types must not be recommended as active search features.
 - Product, Offer, Review, AggregateRating, Article, LocalBusiness, Event, JobPosting, VideoObject, and other types have specific eligibility and policy requirements.
@@ -49,9 +49,9 @@ Do not force every answer into 40 to 60 words. Do not add a fixed number of PAA 
 | First-party or permitted review | Review, AggregateRating | visible review text, source, count, policy compliance |
 | Software product | SoftwareApplication | operating system, category, offer or pricing facts |
 | Video | VideoObject | watch page, thumbnail, upload date, duration, access |
-| Event | Event | real dates, location, status, offer, cancellation updates |
+| Event | Event | real dates, location, status and offers; Google appearance requires public booking and physical location, excluding purely online events without a real-world component |
 | Job | JobPosting | genuine opening, location, employer, valid through date |
-| Navigation trail | BreadcrumbList | matches visible or logical site hierarchy |
+| Navigation trail | BreadcrumbList | matches site hierarchy; Google breadcrumb appearance is desktop-only |
 
 Use the most specific truthful type. More markup is not automatically better.
 

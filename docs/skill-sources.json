@@ -2,38 +2,38 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "50719b14adc80235b11784675c613578d8539287",
+  "local_snapshot_commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
   "summary": {
-    "tracked_files": 406,
+    "tracked_files": 408,
     "by_source": {
-      "claude-seo": 140,
+      "claude-seo": 141,
       "seomachine": 93,
       "superseo": 125,
-      "workbench": 48
+      "workbench": 49
     },
     "by_kind": {
       "agent_metadata": 1,
       "asset": 9,
       "index": 2,
       "license": 19,
-      "reference": 280,
+      "reference": 282,
       "skill": 60,
       "specialist_reference": 11,
       "workflow_reference": 24
     },
     "by_comparison_status": {
-      "different": 133,
-      "identical": 225,
-      "workbench_native": 48
+      "different": 137,
+      "identical": 222,
+      "workbench_native": 49
     },
-    "dependency_occurrences": 737,
+    "dependency_occurrences": 776,
     "dependencies_by_status": {
       "example_reference": 4,
       "project_context_reference": 91,
-      "resolved_local": 628,
+      "resolved_local": 667,
       "route_or_example": 1,
       "template_reference": 3,
       "upstream_runtime_reference": 10
@@ -78,8 +78,7 @@
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
       "upstream_skill_entrypoints_not_mapped": [
-        "skills/seo-agentic/SKILL.md",
-        "skills/seo-content-brief/SKILL.md"
+        "skills/seo-agentic/SKILL.md"
       ]
     },
     "seomachine": {
@@ -710,8 +709,8 @@
       "upstream_path": "skills/content-brief/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "9c6260407965e2e328fa8b47686a7f60744b421e91e148b9aae87cca3c505bf0",
-      "local_git_blob_sha": "9684ef54699247df3dc399ff03f8da7638dc5a6d",
+      "local_sha256": "ca94032f6089da5402e1c55aeb19aff3727d9a5ae0a23eb62cdf36e34b679671",
+      "local_git_blob_sha": "3aab3bf3f8f64f714964eabf6beba2c30d4fa4c1",
       "comparison_upstream_blob_sha": "6431da427cbbedd7107a13fed67f2703e11a1ae4",
       "comparison_status": "different",
       "first_local_record": {
@@ -737,7 +736,46 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
+    },
+    {
+      "id": "claude-seo:skills/seo-content-brief/SKILL.md",
+      "local_path": "skills/content-brief/references/existing-page-scope.md",
+      "path_history": [
+        "skills/content-brief/references/existing-page-scope.md"
+      ],
+      "kind": "reference",
+      "original_kind": "skill",
+      "capability": "content-brief",
+      "current_owner_path": "skills/content-brief/SKILL.md",
+      "source_id": "claude-seo",
+      "upstream_path": "skills/seo-content-brief/SKILL.md",
+      "baseline_status": "selected_adaptation_from_pinned_source",
+      "imported_upstream_commit": "6be93f45064ffbadced572b5d5c95f55fd263af0",
+      "comparison_upstream_blob_sha": "53e6908bd25d4e532878993c7031f91682857372",
+      "comparison_status": "different",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-10-29",
+        "path": "skills/content-brief/references/existing-page-scope.md",
+        "subject": "Selected upstream brief method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-10-29",
+        "path": "skills/content-brief/references/existing-page-scope.md",
+        "subject": "Selected upstream brief method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "selected_existing_page_and_business_relevance_methods",
+      "declared_attribution": [],
+      "adoption_record": "docs/skill-upstream-adoptions.json#claude-brief",
+      "workingtree_modified": true,
+      "local_sha256": "199a549a82460892cfff2c4fa39ff9710de44a849a920e97f81a8c9d8ae62cba",
+      "local_git_blob_sha": "bb705d3b97c0043b47e8270525f92d62af0e717b",
+      "maintenance_status": "active"
     },
     {
       "id": "seomachine:.claude/skills/content-strategy/SKILL.md",
@@ -764,9 +802,9 @@
         "path": "skills/seo-machine-pipeline/skills/content-strategy/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/content-strategy/SKILL.md",
         "record_status": "committed"
       },
@@ -780,7 +818,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/content-strategy/references/calendar-planning.md",
@@ -956,8 +994,8 @@
       "upstream_path": ".claude/skills/copy-editing/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "baffd5152ba9b890abab99818367c65b32bd15581d4fb90e7235e41ff067ebf8",
-      "local_git_blob_sha": "eb53f895d92efd7e9e1f6ecb22c57b1052138267",
+      "local_sha256": "c96280031f24a7674402886b218306e0101f81c7c98fbab565b78ed8bbf39ca8",
+      "local_git_blob_sha": "71b7cb782184e0a26a0c2735bae96fa13504ee9f",
       "comparison_upstream_blob_sha": "6d6227f7f5243512d6f06c14c3db8372a84cb92e",
       "comparison_status": "different",
       "first_local_record": {
@@ -967,9 +1005,9 @@
         "path": "skills/seo-machine-pipeline/skills/copy-editing/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/copy-editing/SKILL.md",
         "record_status": "committed"
       },
@@ -1008,9 +1046,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "refactor: adapt preserved specialist methods to canonical skills",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/copy-editing/references/article-editing.md",
         "record_status": "committed"
       },
@@ -1023,7 +1061,7 @@
       "local_sha256": "e3ba68afd52c2d69a929c09dce991fb8d47c49e43f22ec8fb4a247db883999e6",
       "local_git_blob_sha": "e7df603f1d14ea766c9fa1abf29f9d8aff695408",
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/copy-editing/references/plain-english-alternatives.md",
@@ -1093,9 +1131,9 @@
         "path": "skills/seo-machine-pipeline/skills/copywriting/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/copywriting/SKILL.md",
         "record_status": "committed"
       },
@@ -1109,7 +1147,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/copywriting/references/copy-frameworks.md",
@@ -1136,9 +1174,9 @@
         "path": "skills/seo-machine-pipeline/skills/copywriting/references/copy-frameworks.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "refactor: unify local skills under canonical capability entrypoints",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/copywriting/references/copy-frameworks.md",
         "record_status": "committed"
       },
@@ -1152,7 +1190,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/copywriting/references/headline-options.md",
@@ -1299,9 +1337,9 @@
         "path": "skills/seo-machine-pipeline/skills/copywriting/references/natural-transitions.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/copywriting/references/natural-transitions.md",
         "record_status": "committed"
       },
@@ -1315,7 +1353,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "claude-seo:skills/seo-drift/SKILL.md",
@@ -1534,8 +1572,8 @@
       "upstream_path": "skills/eeat-audit/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "c1db1ee07a806d33e0a4e1344b0fe2be942e5ce525978a20b123ccfcdc77bc8a",
-      "local_git_blob_sha": "b440be4e3e57800a1fc46f12cb4afa32d28565e2",
+      "local_sha256": "561a281e0c0a7ec2711c63354715cce4e455c95997a6bd31a9daa4ece1543d25",
+      "local_git_blob_sha": "e9d788e3cabd35b461b92f4c1c124cca5a583169",
       "comparison_upstream_blob_sha": "ad16083eeffd617a5a3fd6265e6e9ca927f15d80",
       "comparison_status": "different",
       "first_local_record": {
@@ -1561,7 +1599,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/eeat-audit/references/author-schema-templates.md",
@@ -2259,9 +2297,9 @@
         "path": "skills/expert-interview/SKILL.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "refactor: unify local skills under canonical capability entrypoints",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/expert-interview/SKILL.md",
         "record_status": "committed"
       },
@@ -2275,7 +2313,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/expert-interview/references/eeat-signal-embedding.md",
@@ -2427,9 +2465,9 @@
         "path": "skills/expert-interview/references/knowledge-doc-template.md"
       },
       "last_local_change": {
-        "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
-        "date": "2026-06-26",
-        "subject": "Preserve original SEO tool capabilities",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/expert-interview/references/knowledge-doc-template.md",
         "record_status": "committed"
       },
@@ -2443,7 +2481,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/expert-interview/references/question-bank-by-topic.md",
@@ -2511,9 +2549,9 @@
         "path": "skills/expert-interview/references/voice-injection-playbook.md"
       },
       "last_local_change": {
-        "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
-        "date": "2026-06-26",
-        "subject": "Preserve original SEO tool capabilities",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/expert-interview/references/voice-injection-playbook.md",
         "record_status": "committed"
       },
@@ -2527,7 +2565,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/featured-snippet-optimizer/SKILL.md",
@@ -2542,8 +2580,8 @@
       "upstream_path": "skills/featured-snippet-optimizer/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "a289633c4b49849bccd6951702c7379e458fe4ea25d544af04182f31652c17d1",
-      "local_git_blob_sha": "70b8b91de3c69706d06d70eb4a101f4bf193d2a3",
+      "local_sha256": "0e8cec2fcafdbab2a4f390f49c15a5463fd806719c52ff686d135ce874b73286",
+      "local_git_blob_sha": "463a4717273fe95422447292e6ef9e7306fa8d2b",
       "comparison_upstream_blob_sha": "5db11d23ca8eea0e478a2cacc9b7afd379f2eba5",
       "comparison_status": "different",
       "first_local_record": {
@@ -2569,7 +2607,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/featured-snippet-optimizer/references/aio-vs-snippet-decision.md",
@@ -2584,10 +2622,10 @@
       "upstream_path": "skills/featured-snippet-optimizer/references/aio-vs-snippet-decision.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "25b3081aaaff57f73b3d889d3588201a7e7ea2322ddcfd7627d0403cccff4d9b",
-      "local_git_blob_sha": "f3c20c5ded94683d54510672fea0e456e09591e1",
+      "local_sha256": "89bf574d9260974ba74399b6e4de69e77de1a9a595d9ff43cce77be1d495a1f4",
+      "local_git_blob_sha": "cc78256b14609f30fe4ba46ed65d85915235af1e",
       "comparison_upstream_blob_sha": "f3c20c5ded94683d54510672fea0e456e09591e1",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
         "date": "2026-06-26",
@@ -2601,7 +2639,7 @@
         "path": "skills/featured-snippet-optimizer/references/aio-vs-snippet-decision.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -2611,7 +2649,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/featured-snippet-optimizer/references/content-types/comparison.md",
@@ -2668,8 +2706,8 @@
       "upstream_path": "skills/featured-snippet-optimizer/references/content-types/faq-page.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "8aa68bebe6b0c1bb590560e6d645728f9de3c86eb541b7c46e969879414bed22",
-      "local_git_blob_sha": "d3219aee6d40fc12a9aab0977f1bae96015eb565",
+      "local_sha256": "5d1d8959f69cdbf97b2ae6e51d0ae58128680c0f3fd811b639e691babca4ac46",
+      "local_git_blob_sha": "266fe8be6137a35bec81b6a1cc669784fb0b577c",
       "comparison_upstream_blob_sha": "620b34133240aaecdc00cb280ba0908e1c2b755e",
       "comparison_status": "different",
       "first_local_record": {
@@ -2685,7 +2723,7 @@
         "path": "skills/featured-snippet-optimizer/references/content-types/faq-page.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -2695,7 +2733,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/featured-snippet-optimizer/references/content-types/how-to.md",
@@ -2836,8 +2874,8 @@
       "upstream_path": "skills/featured-snippet-optimizer/references/structured-data-snippets.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "90df7a479ca7f14703c47305c8717ce4fe1a4c7cd9f2ffd8d6e2364df1ee2e39",
-      "local_git_blob_sha": "ffb9ee1e2456922347ed6784196276824759b715",
+      "local_sha256": "5862655f96c9e4c31ee90ca69e94509181ee6fd49564c8963e9ff10ac2d67570",
+      "local_git_blob_sha": "e9232cba96c92865bfbc4b0ff51cb7096c6a9268",
       "comparison_upstream_blob_sha": "61daa20afecb939d8ae19d585cbe0c1b3957eee5",
       "comparison_status": "different",
       "first_local_record": {
@@ -2853,7 +2891,7 @@
         "path": "skills/featured-snippet-optimizer/references/structured-data-snippets.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -2863,7 +2901,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/form-cro/SKILL.md",
@@ -3134,8 +3172,8 @@
       "upstream_path": "skills/seo-images/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "27fc235747270157174872125ca887a1511f7b4994b3c8ab85d897f5b444ea9d",
-      "local_git_blob_sha": "78072ab5e12813a3a848d6b351f583578e504ede",
+      "local_sha256": "e08f8fb0eaef68c75e4e8528e9ae0bb93141d037b538d52ccb1a92994ff31737",
+      "local_git_blob_sha": "0622a9f7a4df3c6778e208372963d24dcab447b6",
       "comparison_upstream_blob_sha": "b4a584ac50628ded815c6418fb55d6b4da60a563",
       "comparison_status": "different",
       "first_local_record": {
@@ -3161,7 +3199,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/improve-content/SKILL.md",
@@ -3176,8 +3214,8 @@
       "upstream_path": "skills/improve-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "3e5939beddc07b40cf856e7b5f713e24fdfbe062163a209bb30b1d7255499cd6",
-      "local_git_blob_sha": "3fc9ce59bfea8cebcdf6930bcefde134b6a81ff0",
+      "local_sha256": "29acf08efabf2e84eb0a17e5a2fdaa83356e27351f32b808e6c72c13f696fb81",
+      "local_git_blob_sha": "25fca6a61322a6267b8667ef4d52da19c17bea43",
       "comparison_upstream_blob_sha": "8f1ff6b0c8fca8e96e4b821773d296ebf5c70c21",
       "comparison_status": "different",
       "first_local_record": {
@@ -3187,9 +3225,9 @@
         "path": "skills/improve-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "refactor: adapt preserved specialist methods to canonical skills",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/improve-content/SKILL.md",
         "record_status": "committed"
       },
@@ -3229,9 +3267,9 @@
         "path": "skills/improve-content/references/anti-slop-ruleset.md"
       },
       "last_local_change": {
-        "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
-        "date": "2026-06-26",
-        "subject": "Preserve original SEO tool capabilities",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/improve-content/references/anti-slop-ruleset.md",
         "record_status": "committed"
       },
@@ -3245,7 +3283,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/improve-content/references/content-freshness.md",
@@ -3260,10 +3298,10 @@
       "upstream_path": "skills/improve-content/references/content-freshness.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "2e3f7b297d10550b07a9636dfbd5c88997ef7d30e294b6250a86c59505fb1008",
-      "local_git_blob_sha": "8c107c881922dc51de62667de923b3a2f7b1d6de",
+      "local_sha256": "de493042add693e4b406bd82ce375465be21d1f613b7953fc9017df6a3bf0e39",
+      "local_git_blob_sha": "42430a2c0364e0968531ef03b299b6f1583fc7ee",
       "comparison_upstream_blob_sha": "8c107c881922dc51de62667de923b3a2f7b1d6de",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
         "date": "2026-06-26",
@@ -3277,7 +3315,7 @@
         "path": "skills/improve-content/references/content-freshness.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -3287,7 +3325,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/improve-content/references/content-types-overview.md",
@@ -3313,9 +3351,9 @@
         "path": "skills/improve-content/references/content-types-overview.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/improve-content/references/content-types-overview.md",
         "record_status": "committed"
       },
@@ -3329,7 +3367,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/improve-content/references/content-types/alternatives-page.md",
@@ -3596,8 +3634,8 @@
       "upstream_path": "skills/improve-content/references/content-types/faq-page.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "8aa68bebe6b0c1bb590560e6d645728f9de3c86eb541b7c46e969879414bed22",
-      "local_git_blob_sha": "d3219aee6d40fc12a9aab0977f1bae96015eb565",
+      "local_sha256": "5d1d8959f69cdbf97b2ae6e51d0ae58128680c0f3fd811b639e691babca4ac46",
+      "local_git_blob_sha": "266fe8be6137a35bec81b6a1cc669784fb0b577c",
       "comparison_upstream_blob_sha": "620b34133240aaecdc00cb280ba0908e1c2b755e",
       "comparison_status": "different",
       "first_local_record": {
@@ -3613,7 +3651,7 @@
         "path": "skills/improve-content/references/content-types/faq-page.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -3623,7 +3661,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/improve-content/references/content-types/glossary-page.md",
@@ -4193,9 +4231,9 @@
         "path": "skills/improve-content/references/quality-scoring.md"
       },
       "last_local_change": {
-        "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
-        "date": "2026-06-26",
-        "subject": "Preserve original SEO tool capabilities",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/improve-content/references/quality-scoring.md",
         "record_status": "committed"
       },
@@ -4209,7 +4247,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/improve-content/references/refresh-workflow.md",
@@ -4315,9 +4353,9 @@
         "path": "skills/improve-content/references/voice-injection-playbook.md"
       },
       "last_local_change": {
-        "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
-        "date": "2026-06-26",
-        "subject": "Preserve original SEO tool capabilities",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/improve-content/references/voice-injection-playbook.md",
         "record_status": "committed"
       },
@@ -4331,7 +4369,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/improve-content/references/writing-pipeline.md",
@@ -4357,9 +4395,9 @@
         "path": "skills/improve-content/references/writing-pipeline.md"
       },
       "last_local_change": {
-        "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
-        "date": "2026-06-26",
-        "subject": "Preserve original SEO tool capabilities",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/improve-content/references/writing-pipeline.md",
         "record_status": "committed"
       },
@@ -4373,7 +4411,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/keyword-deep-dive/SKILL.md",
@@ -4388,8 +4426,8 @@
       "upstream_path": "skills/keyword-deep-dive/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "8ee0e3aafbd32187569264b7c6383bebffc8d2696e2af04923a36a111e48760a",
-      "local_git_blob_sha": "ee1e6d9c7916e48d85f91bce41cd7895e4ee8383",
+      "local_sha256": "6997c6c0d14b33864ee62ab11a5a7c304f9042ef650158e4a16edd21a1d43a76",
+      "local_git_blob_sha": "3d0b8edc6bb343c7bdbfe25dddaa21c1d43443a9",
       "comparison_upstream_blob_sha": "03d0e665ec8c70a4f622703f2eb3ecf2c1ff9239",
       "comparison_status": "different",
       "first_local_record": {
@@ -4415,7 +4453,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/keyword-deep-dive/references/ctr-benchmarks-by-position.md",
@@ -4845,8 +4883,8 @@
       "upstream_path": "skills/linkbuilding/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "4bd9588e321ddb93e6fd4999d10af827892d2955193fd1a2caba1c19fbb2fb71",
-      "local_git_blob_sha": "8e523c360c5b0d61c02b43c4efb12c822507a53c",
+      "local_sha256": "58fc067b869a2b773dd309acd704e1e6c710f1f4c0250ff0512f2532c301b4d0",
+      "local_git_blob_sha": "56deaafa9432ec8197c1ee3ec370046efede32a2",
       "comparison_upstream_blob_sha": "849210a3092ee2078ee6ef5e8afebcc01f23c3d3",
       "comparison_status": "different",
       "first_local_record": {
@@ -4872,7 +4910,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/linkbuilding/references/anchor-text-safety-guide.md",
@@ -5606,8 +5644,8 @@
       "upstream_path": "skills/page-audit/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "2a08878ec3747614044ad04f502aabe37ba4ad77abc1c7841f2bb0bec7e150e5",
-      "local_git_blob_sha": "009cff0ef4c1832b64b22689762f55542f7076b1",
+      "local_sha256": "0913ee3ae2d131cfdc5fa1a2fda0185a1ce0afc1d318984267fca1105b334e9e",
+      "local_git_blob_sha": "6bc25a11a58abd2b5965905f88222ca113bd3dd6",
       "comparison_upstream_blob_sha": "36cb5361f578eeccc5559e9d4fb15a30ba7fe231",
       "comparison_status": "different",
       "first_local_record": {
@@ -5633,7 +5671,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-page/LICENSE.txt",
@@ -5692,8 +5730,8 @@
       "upstream_path": "skills/seo-page/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "99b189c3aaac1b6261350df2757276d099bdae1c05a26e8fc152185a7dcb8f76",
-      "local_git_blob_sha": "6de9c9b6e802ac689b6c8ab4248dee12ee315eb8",
+      "local_sha256": "c72e65a4a61c693e76e4b15460f5114b39359bcad74cf91eccf6af06d6d100a1",
+      "local_git_blob_sha": "1d04b59304601b6d75aec89bad4ec274c126c7b9",
       "comparison_upstream_blob_sha": "69eb6a19a82225bb39eea3b4e91f19e27cfd5da6",
       "comparison_status": "different",
       "first_local_record": {
@@ -5719,7 +5757,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/page-audit/references/content-assessment.md",
@@ -5914,16 +5952,16 @@
         "path": "skills/page-audit/references/metadata-writing.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
         "seomachine:.claude/agents/meta-creator.md"
       ],
-      "local_sha256": "5d2e9f7621ef1e1c61df4fbb8237d144672f4f7e7d583d0079cb8919da20680b",
-      "local_git_blob_sha": "60d43e51872cc443e37eea501de318586fa49943",
+      "local_sha256": "b09e38614f688d9bfce7d879244abdf9fda81a77e127516d4628ef1012c86dcf",
+      "local_git_blob_sha": "b2f90a524d1e5722b624750e6b6aceb9a005fa53",
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/page-audit/references/pop-test-hierarchy.md",
@@ -6917,9 +6955,9 @@
         "path": "skills/claude-seo-extra/seo-programmatic/SKILL.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "refactor: unify local skills under canonical capability entrypoints",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/programmatic-seo/references/claude-seo/technical-planning.md",
         "record_status": "committed"
       },
@@ -6933,7 +6971,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/programmatic-seo/references/playbooks.md",
@@ -7368,8 +7406,8 @@
       "upstream_path": "skills/seo-schema/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "29e325596368a9b023980c16c6211c27b374db07a733a83915fdc25ef59a18cd",
-      "local_git_blob_sha": "580b4ba26c7ab71f9f247213bff98f202659c205",
+      "local_sha256": "98562842a0db3d73b2cc2786df02a93982d42dca0f2d5678c41a7fb91b83b258",
+      "local_git_blob_sha": "32870962b913d35717538222206c85621be5a172",
       "comparison_upstream_blob_sha": "ce2747efaa221516e4bca54587c510fae33f70ca",
       "comparison_status": "different",
       "first_local_record": {
@@ -7395,7 +7433,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/schema-markup/SKILL.md",
@@ -7484,6 +7522,44 @@
       "workingtree_modified": false
     },
     {
+      "id": "workbench:skills/schema/references/search-eligibility.md",
+      "local_path": "skills/schema/references/search-eligibility.md",
+      "path_history": [
+        "skills/schema/references/search-eligibility.md"
+      ],
+      "kind": "reference",
+      "capability": "schema",
+      "current_owner_path": "skills/schema/SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-10-29",
+        "path": "skills/schema/references/search-eligibility.md",
+        "subject": "Workbench method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-10-29",
+        "path": "skills/schema/references/search-eligibility.md",
+        "subject": "Workbench method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [],
+      "workingtree_modified": true,
+      "local_sha256": "c12bc721cb085cb0cdaccb402c0f04cf59d6dce5f842b3348c7963e2cf8935bf",
+      "local_git_blob_sha": "303d030ffffea862277508cc476ec4951119bb67",
+      "maintenance_status": "active"
+    },
+    {
       "id": "superseo:skills/semantic-gap-analysis/SKILL.md",
       "local_path": "skills/semantic-gap-analysis/SKILL.md",
       "path_history": [
@@ -7496,8 +7572,8 @@
       "upstream_path": "skills/semantic-gap-analysis/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "5767954b3cc75f352332c04b8c8ee5ea85e350c5390018ad1d24faa6c70bdaa1",
-      "local_git_blob_sha": "766f4040d1c8e761094f40e94f17187ceaa268e6",
+      "local_sha256": "160985c355e2e6d90ddb24a13f9b313b3e182df608a0e2d6639fe8dcdfa04e9e",
+      "local_git_blob_sha": "aed33c0e9fb59d079e11de7192a365d71d2bf800",
       "comparison_upstream_blob_sha": "6aff13e3312b15213472d7bd5e59cc94861fcb20",
       "comparison_status": "different",
       "first_local_record": {
@@ -7523,7 +7599,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/semantic-gap-analysis/references/eav-triple-worked-examples.md",
@@ -7758,9 +7834,9 @@
         "path": "skills/claude-seo-extra/seo-cluster/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/seo-cluster/SKILL.md",
         "record_status": "committed"
       },
@@ -7774,7 +7850,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "claude-seo:skills/seo-cluster/references/execution-workflow.md",
@@ -7801,9 +7877,9 @@
         "path": "skills/claude-seo-extra/seo-cluster/references/execution-workflow.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/seo-cluster/references/execution-workflow.md",
         "record_status": "committed"
       },
@@ -7817,7 +7893,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "claude-seo:skills/seo-cluster/references/hub-spoke-architecture.md",
@@ -8048,8 +8124,8 @@
       "upstream_path": "skills/seo-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "d395e37da6aed8184367d931e10fd39624ffe3b9171ac97674077eb6bc457d15",
-      "local_git_blob_sha": "95c06acf91ecc301929aff922795a20f3e47a024",
+      "local_sha256": "ffd167d3e71250cfe32c64ecb77a951557a667fe686146e385a7423bdf1ab92d",
+      "local_git_blob_sha": "6058d09ca580d232678322b0a984dbcf869379ca",
       "comparison_upstream_blob_sha": "be86bd23b85c7bffa157bacd8761caa45157d94d",
       "comparison_status": "different",
       "first_local_record": {
@@ -8075,7 +8151,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-dataforseo/LICENSE.txt",
@@ -12055,9 +12131,9 @@
         "path": "skills/claude-seo-extra/seo-local/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/seo-local/SKILL.md",
         "record_status": "committed"
       },
@@ -12071,7 +12147,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "claude-seo:skills/seo-maps/LICENSE.txt",
@@ -12345,8 +12421,8 @@
       "upstream_path": "skills/seo-plan/assets/generic.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "5a9ec766875e67c7de3e9301388a6b19d38c0195ac38db06205a88051ea8a259",
-      "local_git_blob_sha": "a02cb96f7a0247b3df8975bda39a04762bf089e5",
+      "local_sha256": "471a9bcae835441785c519e3650e19298c575bcaaa01a4bd6fc2113a9a05b454",
+      "local_git_blob_sha": "3f34cd35543531489317fcfc409e2f6acb201f5c",
       "comparison_upstream_blob_sha": "8ca27708830eee7b26e16be8c9e9373339e8e213",
       "comparison_status": "different",
       "first_local_record": {
@@ -12362,7 +12438,7 @@
         "path": "skills/seo-plan/assets/generic.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "asset",
@@ -12372,7 +12448,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-plan/assets/local-service.md",
@@ -13288,8 +13364,8 @@
       "upstream_path": "skills/seo/references/schema-types.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "72d056256cbb7272a40cf8b75281210fb5cb303a4d812abf32d17c039c30da22",
-      "local_git_blob_sha": "5674e2234c2ae944056a38e9c58558434864cb10",
+      "local_sha256": "917b57a5189697fcf356f71df5b97cdabaab0e37ecfe5aac1e0a6b9e2ea1d699",
+      "local_git_blob_sha": "2a4e25bcedf41c69c6bda43b05e9cd46603da8a3",
       "comparison_upstream_blob_sha": "b2e4d699663b6e29e3dbdafecaf77e6bc6aed96b",
       "comparison_status": "different",
       "first_local_record": {
@@ -13305,7 +13381,7 @@
         "path": "skills/seo/references/schema-types.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -13315,7 +13391,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo/SKILL.md",
@@ -13636,9 +13712,9 @@
         "path": "skills/seo-machine-pipeline/skills/seo-audit/references/ai-writing-detection.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "refactor: unify local skills under canonical capability entrypoints",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/site-audit/references/references/ai-writing-detection.md",
         "record_status": "committed"
       },
@@ -13652,7 +13728,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/seo-audit/SKILL.md",
@@ -14090,8 +14166,8 @@
       "upstream_path": "skills/topic-cluster-planning/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "c6796b2852c61b4f0507adedec391f67868690561a187b4bf41bb024569e9283",
-      "local_git_blob_sha": "ccd619554fbef52086e4f1305d417d6ca1041539",
+      "local_sha256": "f32b0e3062805756b01640dfefa2a3b1126f39da12610477039f51bdce203c6f",
+      "local_git_blob_sha": "aa349b4f2fcda7be54a0f46b0f47fdae7e22d418",
       "comparison_upstream_blob_sha": "6d6997f7289ff4fd03332f63e4b4000671217402",
       "comparison_status": "different",
       "first_local_record": {
@@ -14117,7 +14193,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/topic-cluster-planning/references/cluster-review.md",
@@ -14462,8 +14538,8 @@
       "upstream_path": "skills/write-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "22f9d8ef1d9ab32e84520f806ddbe69f828eecee166567513c5019001a690b27",
-      "local_git_blob_sha": "1d7f980f997410c369e0016647c95d5ea1f0ab96",
+      "local_sha256": "48cf66f484b4bab098bb789e5c9b045505b553f6ce2040ceb575a19a68a86b7d",
+      "local_git_blob_sha": "751c0384d25808f18b1257e1ee6176ca728118bf",
       "comparison_upstream_blob_sha": "35c6c4041ba0a03de482ccc8e439183e6031d681",
       "comparison_status": "different",
       "first_local_record": {
@@ -14473,9 +14549,9 @@
         "path": "skills/write-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
         "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/SKILL.md",
         "record_status": "committed"
       },
@@ -14515,9 +14591,9 @@
         "path": "skills/write-content/references/anti-slop-ruleset.md"
       },
       "last_local_change": {
-        "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
-        "date": "2026-06-25",
-        "subject": "Extract production audit and schema skills",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/anti-slop-ruleset.md",
         "record_status": "committed"
       },
@@ -14531,7 +14607,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/write-content/references/article-workflow.md",
@@ -14586,8 +14662,8 @@
       "upstream_path": "skills/write-content/references/content-types-overview.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "bc463a356bb7d1455cf8ce9cdb5e61241e15562c49f5096aef8d0aef9eee6e9a",
-      "local_git_blob_sha": "bfcda7951081a18f70283a8e5f0c63b1c95113ac",
+      "local_sha256": "0ff4c050eb3d14f51c134515251f2992355896381246ddd696fd1e4a1178be0b",
+      "local_git_blob_sha": "42cf2977337a1a0131d450044ae3f1795a924ed2",
       "comparison_upstream_blob_sha": "737abfd4e92d7db3ea3793ed480f3295f715751a",
       "comparison_status": "different",
       "first_local_record": {
@@ -14613,7 +14689,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/content-types/alternatives-page.md",
@@ -14880,8 +14956,8 @@
       "upstream_path": "skills/write-content/references/content-types/faq-page.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "8aa68bebe6b0c1bb590560e6d645728f9de3c86eb541b7c46e969879414bed22",
-      "local_git_blob_sha": "d3219aee6d40fc12a9aab0977f1bae96015eb565",
+      "local_sha256": "5d1d8959f69cdbf97b2ae6e51d0ae58128680c0f3fd811b639e691babca4ac46",
+      "local_git_blob_sha": "266fe8be6137a35bec81b6a1cc669784fb0b577c",
       "comparison_upstream_blob_sha": "620b34133240aaecdc00cb280ba0908e1c2b755e",
       "comparison_status": "different",
       "first_local_record": {
@@ -14897,7 +14973,7 @@
         "path": "skills/write-content/references/content-types/faq-page.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -14907,7 +14983,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/content-types/glossary-page.md",
@@ -15517,10 +15593,52 @@
         "path": "skills/write-content/references/eeat-signal-embedding.md"
       },
       "last_local_change": {
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
+        "path": "skills/write-content/references/eeat-signal-embedding.md",
+        "record_status": "committed"
+      },
+      "content_changed_since_first_local_record": true,
+      "semantic_review": "not_assessed_by_inventory",
+      "declared_attribution": [],
+      "original_kind": "reference",
+      "layout_change": {
+        "id": "flat-skill-layout-v1",
+        "base_commit": "f80ef1f66cee68cbfe6867acbafcb945dcdce6a4",
+        "on": "2026-10-29"
+      },
+      "maintenance_status": "active",
+      "workingtree_modified": false
+    },
+    {
+      "id": "superseo:skills/write-content/references/fact-checking.md",
+      "local_path": "skills/write-content/references/fact-checking.md",
+      "path_history": [
+        "skills/write-content/references/fact-checking.md"
+      ],
+      "kind": "reference",
+      "capability": "write-content",
+      "current_owner_path": "skills/write-content/SKILL.md",
+      "source_id": "superseo",
+      "upstream_path": "skills/write-content/references/fact-checking.md",
+      "baseline_status": "baseline_unknown",
+      "imported_upstream_commit": null,
+      "local_sha256": "f3ade9dd0dc957e08141a3fc134d69b02c7a8a2b137faf3799477bc6181cf6a8",
+      "local_git_blob_sha": "2707432b68a80845d732e1396e1505cd615c444b",
+      "comparison_upstream_blob_sha": "680fa319e2e491941633bc9425778a7225a35746",
+      "comparison_status": "different",
+      "first_local_record": {
         "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
         "date": "2026-06-25",
         "subject": "Extract production audit and schema skills",
-        "path": "skills/write-content/references/eeat-signal-embedding.md",
+        "path": "skills/write-content/references/fact-checking.md"
+      },
+      "last_local_change": {
+        "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
+        "date": "2026-06-25",
+        "subject": "Extract production audit and schema skills",
+        "path": "skills/write-content/references/fact-checking.md",
         "record_status": "committed"
       },
       "content_changed_since_first_local_record": true,
@@ -15536,48 +15654,6 @@
       "workingtree_modified": true
     },
     {
-      "id": "superseo:skills/write-content/references/fact-checking.md",
-      "local_path": "skills/write-content/references/fact-checking.md",
-      "path_history": [
-        "skills/write-content/references/fact-checking.md"
-      ],
-      "kind": "reference",
-      "capability": "write-content",
-      "current_owner_path": "skills/write-content/SKILL.md",
-      "source_id": "superseo",
-      "upstream_path": "skills/write-content/references/fact-checking.md",
-      "baseline_status": "baseline_unknown",
-      "imported_upstream_commit": null,
-      "local_sha256": "d479b6f67729a03b3544f3931449885da769fc0e3c0267a452efdcdc915b60a7",
-      "local_git_blob_sha": "680fa319e2e491941633bc9425778a7225a35746",
-      "comparison_upstream_blob_sha": "680fa319e2e491941633bc9425778a7225a35746",
-      "comparison_status": "identical",
-      "first_local_record": {
-        "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
-        "date": "2026-06-25",
-        "subject": "Extract production audit and schema skills",
-        "path": "skills/write-content/references/fact-checking.md"
-      },
-      "last_local_change": {
-        "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
-        "date": "2026-06-25",
-        "subject": "Extract production audit and schema skills",
-        "path": "skills/write-content/references/fact-checking.md",
-        "record_status": "committed"
-      },
-      "content_changed_since_first_local_record": false,
-      "semantic_review": "not_assessed_by_inventory",
-      "declared_attribution": [],
-      "original_kind": "reference",
-      "layout_change": {
-        "id": "flat-skill-layout-v1",
-        "base_commit": "f80ef1f66cee68cbfe6867acbafcb945dcdce6a4",
-        "on": "2026-10-29"
-      },
-      "maintenance_status": "active",
-      "workingtree_modified": false
-    },
-    {
       "id": "superseo:skills/write-content/references/geo-optimization.md",
       "local_path": "skills/write-content/references/geo-optimization.md",
       "path_history": [
@@ -15590,8 +15666,8 @@
       "upstream_path": "skills/write-content/references/geo-optimization.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "bccf0c0bf32d0aea8d5f95e6124fa1ad8439f311805fddb057ff502afe09871b",
-      "local_git_blob_sha": "c0aaed78384651e5766dc5c8fe8aba348e7d6d27",
+      "local_sha256": "a946213f0c62f49ef119708693b8775b87ebc8e9a2a1b91e8e3b1509d51660cd",
+      "local_git_blob_sha": "1396182647748ef95cfdcdb93416fae75d2328fe",
       "comparison_upstream_blob_sha": "25f828f7fba577fe4fed42d4e19a5057fedcb240",
       "comparison_status": "different",
       "first_local_record": {
@@ -15607,7 +15683,7 @@
         "path": "skills/write-content/references/geo-optimization.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -15617,7 +15693,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/human-input-framework.md",
@@ -15643,9 +15719,9 @@
         "path": "skills/write-content/references/human-input-framework.md"
       },
       "last_local_change": {
-        "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
-        "date": "2026-06-25",
-        "subject": "Extract production audit and schema skills",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/human-input-framework.md",
         "record_status": "committed"
       },
@@ -15659,7 +15735,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/write-content/references/information-gain-writing.md",
@@ -15685,9 +15761,9 @@
         "path": "skills/write-content/references/information-gain-writing.md"
       },
       "last_local_change": {
-        "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
-        "date": "2026-06-25",
-        "subject": "Extract production audit and schema skills",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/information-gain-writing.md",
         "record_status": "committed"
       },
@@ -15701,7 +15777,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/write-content/references/intent-matching.md",
@@ -15811,9 +15887,9 @@
         "path": "skills/write-content/references/quality-scoring.md"
       },
       "last_local_change": {
-        "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
-        "date": "2026-06-25",
-        "subject": "Extract production audit and schema skills",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/quality-scoring.md",
         "record_status": "committed"
       },
@@ -15827,7 +15903,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/write-content/references/seo-optimization-layer.md",
@@ -15853,9 +15929,9 @@
         "path": "skills/write-content/references/seo-optimization-layer.md"
       },
       "last_local_change": {
-        "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
-        "date": "2026-06-25",
-        "subject": "Extract production audit and schema skills",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/seo-optimization-layer.md",
         "record_status": "committed"
       },
@@ -15869,7 +15945,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/write-content/references/serp-driven-writing.md",
@@ -15895,9 +15971,9 @@
         "path": "skills/write-content/references/serp-driven-writing.md"
       },
       "last_local_change": {
-        "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
-        "date": "2026-06-25",
-        "subject": "Extract production audit and schema skills",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/serp-driven-writing.md",
         "record_status": "committed"
       },
@@ -15911,7 +15987,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/write-content/references/structured-data-snippets.md",
@@ -15926,8 +16002,8 @@
       "upstream_path": "skills/write-content/references/structured-data-snippets.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "9b3e410704aee103af21e855f23a0fe273422d96406d75ae302831abda9d3708",
-      "local_git_blob_sha": "2bbeaa3404df7e5f1c217fc58dc8011ae7145831",
+      "local_sha256": "5de2a4f63ff4f333de3d6e842f2f117c84f0b6dcaece3327f346c781b0851a71",
+      "local_git_blob_sha": "232e4210ef9a6dd6e577360f756caa438252f4aa",
       "comparison_upstream_blob_sha": "61daa20afecb939d8ae19d585cbe0c1b3957eee5",
       "comparison_status": "different",
       "first_local_record": {
@@ -15953,7 +16029,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/voice-injection-playbook.md",
@@ -15979,9 +16055,9 @@
         "path": "skills/write-content/references/voice-injection-playbook.md"
       },
       "last_local_change": {
-        "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
-        "date": "2026-06-25",
-        "subject": "Extract production audit and schema skills",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/voice-injection-playbook.md",
         "record_status": "committed"
       },
@@ -15995,7 +16071,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/write-content/references/writing-pipeline.md",
@@ -16021,9 +16097,9 @@
         "path": "skills/write-content/references/writing-pipeline.md"
       },
       "last_local_change": {
-        "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
-        "date": "2026-06-25",
-        "subject": "Extract production audit and schema skills",
+        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "date": "2026-10-29",
+        "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/writing-pipeline.md",
         "record_status": "committed"
       },
@@ -16037,7 +16113,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:third_party/skill-history/seomachine/README.md",
@@ -18548,7 +18624,23 @@
     },
     {
       "from_path": "skills/content-brief/SKILL.md",
-      "line": 44,
+      "line": 12,
+      "syntax": "markdown_link",
+      "target": "references/existing-page-scope.md",
+      "resolved_path": "skills/content-brief/references/existing-page-scope.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/content-brief/SKILL.md",
+      "line": 26,
+      "syntax": "markdown_link",
+      "target": "../write-content/references/fact-checking.md",
+      "resolved_path": "skills/write-content/references/fact-checking.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/content-brief/SKILL.md",
+      "line": 50,
       "syntax": "backtick_path",
       "target": "../write-content/references/content-types-overview.md",
       "resolved_path": "skills/write-content/references/content-types-overview.md",
@@ -18556,7 +18648,7 @@
     },
     {
       "from_path": "skills/content-brief/SKILL.md",
-      "line": 103,
+      "line": 111,
       "syntax": "backtick_path",
       "target": "../write-content/references/content-types-overview.md",
       "resolved_path": "skills/write-content/references/content-types-overview.md",
@@ -18564,7 +18656,7 @@
     },
     {
       "from_path": "skills/content-brief/SKILL.md",
-      "line": 104,
+      "line": 112,
       "syntax": "backtick_path",
       "target": "../write-content/references/structured-data-snippets.md",
       "resolved_path": "skills/write-content/references/structured-data-snippets.md",
@@ -18572,7 +18664,7 @@
     },
     {
       "from_path": "skills/content-brief/SKILL.md",
-      "line": 105,
+      "line": 113,
       "syntax": "backtick_path",
       "target": "../write-content/references/human-input-framework.md",
       "resolved_path": "skills/write-content/references/human-input-framework.md",
@@ -18580,10 +18672,18 @@
     },
     {
       "from_path": "skills/content-brief/SKILL.md",
-      "line": 106,
+      "line": 114,
       "syntax": "backtick_path",
       "target": "../write-content/references/fact-checking.md",
       "resolved_path": "skills/write-content/references/fact-checking.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/content-brief/references/existing-page-scope.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../SKILL.md",
+      "resolved_path": "skills/content-brief/SKILL.md",
       "status": "resolved_local"
     },
     {
@@ -18716,7 +18816,7 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 421,
+      "line": 415,
       "syntax": "markdown_link",
       "target": "references/plain-english-alternatives.md",
       "resolved_path": "skills/copy-editing/references/plain-english-alternatives.md",
@@ -18724,7 +18824,7 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 456,
+      "line": 450,
       "syntax": "markdown_link",
       "target": "references/article-editing.md",
       "resolved_path": "skills/copy-editing/references/article-editing.md",
@@ -18732,7 +18832,7 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 460,
+      "line": 454,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -18740,7 +18840,7 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 460,
+      "line": 454,
       "syntax": "backtick_path",
       "target": "projects/<id>/",
       "resolved_path": null,
@@ -19115,6 +19215,14 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/eeat-audit/SKILL.md",
+      "line": 181,
+      "syntax": "markdown_link",
+      "target": "../write-content/references/fact-checking.md",
+      "resolved_path": "skills/write-content/references/fact-checking.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/email-sequence/SKILL.md",
       "line": 14,
       "syntax": "backtick_path",
@@ -19187,19 +19295,75 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/featured-snippet-optimizer/SKILL.md",
+      "line": 159,
+      "syntax": "markdown_link",
+      "target": "../write-content/references/fact-checking.md",
+      "resolved_path": "skills/write-content/references/fact-checking.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/featured-snippet-optimizer/references/aio-vs-snippet-decision.md",
-      "line": 54,
-      "syntax": "backtick_path",
-      "target": "skills/write-content/references/geo-optimization.md",
+      "line": 24,
+      "syntax": "markdown_link",
+      "target": "structured-data-snippets.md",
+      "resolved_path": "skills/featured-snippet-optimizer/references/structured-data-snippets.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/featured-snippet-optimizer/references/aio-vs-snippet-decision.md",
+      "line": 24,
+      "syntax": "markdown_link",
+      "target": "../../schema/references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/featured-snippet-optimizer/references/aio-vs-snippet-decision.md",
+      "line": 26,
+      "syntax": "markdown_link",
+      "target": "../../write-content/references/geo-optimization.md",
       "resolved_path": "skills/write-content/references/geo-optimization.md",
       "status": "resolved_local"
     },
     {
       "from_path": "skills/featured-snippet-optimizer/references/aio-vs-snippet-decision.md",
-      "line": 64,
-      "syntax": "backtick_path",
-      "target": "skills/keyword-deep-dive/references/zero-click-and-aio-impact.md",
+      "line": 30,
+      "syntax": "markdown_link",
+      "target": "../../keyword-deep-dive/references/zero-click-and-aio-impact.md",
       "resolved_path": "skills/keyword-deep-dive/references/zero-click-and-aio-impact.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/featured-snippet-optimizer/references/content-types/faq-page.md",
+      "line": 29,
+      "syntax": "markdown_link",
+      "target": "../../../schema/SKILL.md",
+      "resolved_path": "skills/schema/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/featured-snippet-optimizer/references/content-types/faq-page.md",
+      "line": 29,
+      "syntax": "markdown_link",
+      "target": "../../../schema/references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/featured-snippet-optimizer/references/structured-data-snippets.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../write-content/references/structured-data-snippets.md",
+      "resolved_path": "skills/write-content/references/structured-data-snippets.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/featured-snippet-optimizer/references/structured-data-snippets.md",
+      "line": 5,
+      "syntax": "markdown_link",
+      "target": "../../schema/references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
       "status": "resolved_local"
     },
     {
@@ -19268,7 +19432,15 @@
     },
     {
       "from_path": "skills/images/SKILL.md",
-      "line": 206,
+      "line": 23,
+      "syntax": "markdown_link",
+      "target": "../seo/references/workbench-operations.md",
+      "resolved_path": "skills/seo/references/workbench-operations.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/images/SKILL.md",
+      "line": 218,
       "syntax": "markdown_link",
       "target": "../seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
@@ -19276,7 +19448,23 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 48,
+      "line": 14,
+      "syntax": "markdown_link",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/SKILL.md",
+      "line": 41,
+      "syntax": "markdown_link",
+      "target": "references/content-freshness.md",
+      "resolved_path": "skills/improve-content/references/content-freshness.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/SKILL.md",
+      "line": 52,
       "syntax": "backtick_path",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -19284,7 +19472,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 58,
+      "line": 62,
       "syntax": "backtick_path",
       "target": "references/content-types-overview.md",
       "resolved_path": "skills/improve-content/references/content-types-overview.md",
@@ -19292,7 +19480,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 58,
+      "line": 62,
       "syntax": "backtick_path",
       "target": "references/content-types/<type>.md",
       "resolved_path": null,
@@ -19300,7 +19488,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 68,
+      "line": 72,
       "syntax": "backtick_path",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -19308,7 +19496,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 80,
+      "line": 84,
       "syntax": "backtick_path",
       "target": "references/content-types",
       "resolved_path": "skills/improve-content/references/content-types",
@@ -19316,7 +19504,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 84,
+      "line": 88,
       "syntax": "backtick_path",
       "target": "references/content-types-overview.md",
       "resolved_path": "skills/improve-content/references/content-types-overview.md",
@@ -19324,7 +19512,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 99,
+      "line": 103,
       "syntax": "markdown_link",
       "target": "references/seo-editing.md",
       "resolved_path": "skills/improve-content/references/seo-editing.md",
@@ -19332,7 +19520,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 100,
+      "line": 104,
       "syntax": "markdown_link",
       "target": "references/refresh-workflow.md",
       "resolved_path": "skills/improve-content/references/refresh-workflow.md",
@@ -19340,10 +19528,18 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 101,
+      "line": 105,
       "syntax": "markdown_link",
       "target": "references/optimization-workflow.md",
       "resolved_path": "skills/improve-content/references/optimization-workflow.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/SKILL.md",
+      "line": 109,
+      "syntax": "markdown_link",
+      "target": "../write-content/references/fact-checking.md",
+      "resolved_path": "skills/write-content/references/fact-checking.md",
       "status": "resolved_local"
     },
     {
@@ -19352,6 +19548,14 @@
       "syntax": "markdown_link",
       "target": "../../write-content/references/anti-slop-ruleset.md",
       "resolved_path": "skills/write-content/references/anti-slop-ruleset.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/references/content-freshness.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../write-content/references/fact-checking.md",
+      "resolved_path": "skills/write-content/references/fact-checking.md",
       "status": "resolved_local"
     },
     {
@@ -19368,6 +19572,22 @@
       "syntax": "markdown_link",
       "target": "../../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/references/content-types/faq-page.md",
+      "line": 29,
+      "syntax": "markdown_link",
+      "target": "../../../schema/SKILL.md",
+      "resolved_path": "skills/schema/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/references/content-types/faq-page.md",
+      "line": 29,
+      "syntax": "markdown_link",
+      "target": "../../../schema/references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
       "status": "resolved_local"
     },
     {
@@ -19464,6 +19684,14 @@
       "syntax": "markdown_link",
       "target": "references/serp-review.md",
       "resolved_path": "skills/keyword-deep-dive/references/serp-review.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/keyword-deep-dive/SKILL.md",
+      "line": 144,
+      "syntax": "markdown_link",
+      "target": "../write-content/references/fact-checking.md",
+      "resolved_path": "skills/write-content/references/fact-checking.md",
       "status": "resolved_local"
     },
     {
@@ -19584,6 +19812,14 @@
       "syntax": "backtick_path",
       "target": "references/tactics",
       "resolved_path": "skills/linkbuilding/references/tactics",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/linkbuilding/SKILL.md",
+      "line": 121,
+      "syntax": "markdown_link",
+      "target": "../write-content/references/fact-checking.md",
+      "resolved_path": "skills/write-content/references/fact-checking.md",
       "status": "resolved_local"
     },
     {
@@ -19723,11 +19959,43 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/page-audit/SKILL.md",
+      "line": 303,
+      "syntax": "markdown_link",
+      "target": "../write-content/references/fact-checking.md",
+      "resolved_path": "skills/write-content/references/fact-checking.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/page-audit/references/claude-seo/single-page-checks.md",
-      "line": 19,
+      "line": 18,
       "syntax": "markdown_link",
       "target": "../../SKILL.md",
       "resolved_path": "skills/page-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/page-audit/references/claude-seo/single-page-checks.md",
+      "line": 26,
+      "syntax": "markdown_link",
+      "target": "../metadata-writing.md",
+      "resolved_path": "skills/page-audit/references/metadata-writing.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/page-audit/references/claude-seo/single-page-checks.md",
+      "line": 51,
+      "syntax": "markdown_link",
+      "target": "../../../schema/SKILL.md",
+      "resolved_path": "skills/schema/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/page-audit/references/claude-seo/single-page-checks.md",
+      "line": 58,
+      "syntax": "markdown_link",
+      "target": "../../../images/SKILL.md",
+      "resolved_path": "skills/images/SKILL.md",
       "status": "resolved_local"
     },
     {
@@ -19772,7 +20040,7 @@
     },
     {
       "from_path": "skills/page-audit/references/metadata-writing.md",
-      "line": 18,
+      "line": 19,
       "syntax": "markdown_link",
       "target": "../../../third_party/skill-history/seomachine/agents/meta-creator.md",
       "resolved_path": "third_party/skill-history/seomachine/agents/meta-creator.md",
@@ -20292,10 +20560,18 @@
     },
     {
       "from_path": "skills/schema/SKILL.md",
-      "line": 57,
+      "line": 49,
       "syntax": "markdown_link",
-      "target": "references/implementation/references/schema-examples.md",
-      "resolved_path": "skills/schema/references/implementation/references/schema-examples.md",
+      "target": "references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/schema/SKILL.md",
+      "line": 51,
+      "syntax": "markdown_link",
+      "target": "../seo/references/schema-types.md",
+      "resolved_path": "skills/seo/references/schema-types.md",
       "status": "resolved_local"
     },
     {
@@ -20328,6 +20604,14 @@
       "syntax": "markdown_link",
       "target": "references/research-gap-workflow.md",
       "resolved_path": "skills/semantic-gap-analysis/references/research-gap-workflow.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/semantic-gap-analysis/SKILL.md",
+      "line": 126,
+      "syntax": "markdown_link",
+      "target": "../write-content/references/fact-checking.md",
+      "resolved_path": "skills/write-content/references/fact-checking.md",
       "status": "resolved_local"
     },
     {
@@ -20388,7 +20672,7 @@
     },
     {
       "from_path": "skills/seo-content/SKILL.md",
-      "line": 18,
+      "line": 19,
       "syntax": "markdown_link",
       "target": "../seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
@@ -20396,7 +20680,7 @@
     },
     {
       "from_path": "skills/seo-content/SKILL.md",
-      "line": 22,
+      "line": 35,
       "syntax": "markdown_link",
       "target": "../seo/references/eeat-framework.md",
       "resolved_path": "skills/seo/references/eeat-framework.md",
@@ -20404,7 +20688,31 @@
     },
     {
       "from_path": "skills/seo-content/SKILL.md",
-      "line": 170,
+      "line": 70,
+      "syntax": "markdown_link",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-content/SKILL.md",
+      "line": 133,
+      "syntax": "markdown_link",
+      "target": "../write-content/references/geo-optimization.md",
+      "resolved_path": "skills/write-content/references/geo-optimization.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-content/SKILL.md",
+      "line": 135,
+      "syntax": "markdown_link",
+      "target": "../schema/references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-content/SKILL.md",
+      "line": 164,
       "syntax": "markdown_link",
       "target": "../seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
@@ -20412,7 +20720,7 @@
     },
     {
       "from_path": "skills/seo-content/SKILL.md",
-      "line": 182,
+      "line": 176,
       "syntax": "markdown_link",
       "target": "../seo-flow/SKILL.md",
       "resolved_path": "skills/seo-flow/SKILL.md",
@@ -22123,6 +22431,14 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/seo-plan/assets/generic.md",
+      "line": 56,
+      "syntax": "markdown_link",
+      "target": "../../schema/references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/seo-sxo/SKILL.md",
       "line": 37,
       "syntax": "markdown_link",
@@ -22281,6 +22597,14 @@
       "target": "SOUTH,WEST,NORTH,EAST",
       "resolved_path": null,
       "status": "example_reference"
+    },
+    {
+      "from_path": "skills/seo/references/schema-types.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../schema/references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
+      "status": "resolved_local"
     },
     {
       "from_path": "skills/seo/references/upstream-orchestration.md",
@@ -22723,6 +23047,14 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/topic-cluster-planning/SKILL.md",
+      "line": 144,
+      "syntax": "markdown_link",
+      "target": "../write-content/references/fact-checking.md",
+      "resolved_path": "skills/write-content/references/fact-checking.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/topic-cluster-planning/references/cluster-review.md",
       "line": 3,
       "syntax": "markdown_link",
@@ -22820,7 +23152,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 48,
+      "line": 45,
       "syntax": "backtick_path",
       "target": "references/content-types-overview.md",
       "resolved_path": "skills/write-content/references/content-types-overview.md",
@@ -22828,7 +23160,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 77,
+      "line": 74,
       "syntax": "backtick_path",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -22836,7 +23168,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 106,
+      "line": 103,
       "syntax": "backtick_path",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -22844,7 +23176,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 120,
+      "line": 117,
       "syntax": "backtick_path",
       "target": "references/content-types",
       "resolved_path": "skills/write-content/references/content-types",
@@ -22852,7 +23184,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 124,
+      "line": 121,
       "syntax": "backtick_path",
       "target": "references/content-types-overview.md",
       "resolved_path": "skills/write-content/references/content-types-overview.md",
@@ -22860,7 +23192,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 140,
+      "line": 137,
       "syntax": "markdown_link",
       "target": "references/article-workflow.md",
       "resolved_path": "skills/write-content/references/article-workflow.md",
@@ -22868,7 +23200,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 141,
+      "line": 138,
       "syntax": "markdown_link",
       "target": "references/drafting-workflow.md",
       "resolved_path": "skills/write-content/references/drafting-workflow.md",
@@ -22876,10 +23208,18 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 142,
+      "line": 139,
       "syntax": "markdown_link",
       "target": "references/draft-handoff.md",
       "resolved_path": "skills/write-content/references/draft-handoff.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/SKILL.md",
+      "line": 143,
+      "syntax": "markdown_link",
+      "target": "references/fact-checking.md",
+      "resolved_path": "skills/write-content/references/fact-checking.md",
       "status": "resolved_local"
     },
     {
@@ -22896,6 +23236,30 @@
       "syntax": "markdown_link",
       "target": "../../../third_party/skill-history/seomachine/commands/article.md",
       "resolved_path": "third_party/skill-history/seomachine/commands/article.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/content-types-overview.md",
+      "line": 11,
+      "syntax": "markdown_link",
+      "target": "../../schema/references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/content-types/faq-page.md",
+      "line": 29,
+      "syntax": "markdown_link",
+      "target": "../../../schema/SKILL.md",
+      "resolved_path": "skills/schema/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/content-types/faq-page.md",
+      "line": 29,
+      "syntax": "markdown_link",
+      "target": "../../../schema/references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
       "status": "resolved_local"
     },
     {
@@ -22928,6 +23292,30 @@
       "syntax": "markdown_link",
       "target": "../../../third_party/skill-history/seomachine/commands/write.md",
       "resolved_path": "third_party/skill-history/seomachine/commands/write.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/geo-optimization.md",
+      "line": 23,
+      "syntax": "markdown_link",
+      "target": "../../schema/SKILL.md",
+      "resolved_path": "skills/schema/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/geo-optimization.md",
+      "line": 23,
+      "syntax": "markdown_link",
+      "target": "../../schema/references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/structured-data-snippets.md",
+      "line": 19,
+      "syntax": "markdown_link",
+      "target": "../../schema/references/search-eligibility.md",
+      "resolved_path": "skills/schema/references/search-eligibility.md",
       "status": "resolved_local"
     },
     {
@@ -23618,5 +24006,6 @@
       "resolved_path": "data_sources/modules/content_scrubber.py",
       "status": "upstream_runtime_reference"
     }
-  ]
+  ],
+  "upstream_adoptions": "docs/skill-upstream-adoptions.json"
 }

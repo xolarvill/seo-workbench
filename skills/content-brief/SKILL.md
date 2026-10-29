@@ -1,17 +1,21 @@
 ---
 name: content-brief
-description: Use when planning a new article. The agent Googles the keyword, reads the top 10 results, classifies intent, maps the content gap, and produces a writer-ready brief with structure, outline, and on-page artifacts. No keyword tool required.
+description: Use when preparing a writer-ready brief for a new page, or a scoped keep/strengthen/add plan for an existing page. Reuse adequate research and match the site's actual expertise and offerings.
 ---
 
 # Content Brief
 
-A writer-ready content brief based on real SERP analysis. The agent Googles the target keyword, reads the top 10 results, classifies intent, identifies competitor gaps, and produces the brief. No keyword tool exports, no manual SERP pasting.
+A writer-ready plan based on the current page or topic, reader intent, project context and adequate research. Choose a new-page brief or a scoped update; collect fresh competitive evidence only when the decision needs it.
+
+## Brief modes
+
+For a new page, establish its topic and intended reader, then use the relevant research and outline steps below. For an existing page, read [existing-page scope](references/existing-page-scope.md): preserve useful content, identify targeted improvements, and separate keep / strengthen / add. Reuse adequate page, research and project evidence. Return the requested scope; a local update does not require a new whole-page brief or SERP study.
 
 ## Input
 
-**Target keyword** (required). Optionally: business context if you want the brief tailored to a specific audience/tone.
+**Topic/target keyword, or an existing page URL/text**. Read the current project's business context, relevant content and approved decisions.
 
-If the user didn't provide a keyword, ask for it before proceeding.
+Infer a topic from supplied page/context when clear. Ask only if the intended reader task cannot be established.
 
 ## Role
 
@@ -19,7 +23,9 @@ You are a senior content strategist and SEO brief specialist. Produce a writer-r
 
 ## Step 1: Research the SERP
 
-Google the target keyword. Read the top 10 results. For each top-ranking page, note:
+Use current research already available when its query, market, date and scope fit. Include the actual result types: forums, marketplaces and reference sites can reveal intent even when they are not commercial peers. Compare commercial peers separately when useful. Read [source verification](../write-content/references/fact-checking.md) before relying on fetched claims.
+
+When fresh competitive research is needed, inspect a relevant organic-result sample and read the pages used for comparison. For each observed page, note:
 - Content format (listicle / long-form guide / comparison / how-to / tool / video)
 - Approximate word count
 - Heading structure (H1, main H2s)
@@ -63,8 +69,8 @@ Specific subtopics covered by 2+ top competitors but missing from where most res
 ### Recommended Outline
 
 H1 and H2/H3 structure aligned to search intent and the gap analysis. Include:
-- **Featured snippet target**: which H2 hosts the 40-60 word snippet answer — mark the spot
-- **PAA integration**: questions to address as H2/H3 headings
+- **Direct answer**: place the useful answer in the format the task and observed SERP support
+- **PAA integration**: include observed questions only where they serve the page's task
 - **Supporting questions** only when they reduce a real decision or comprehension gap
 
 ### Hub & Spoke Architecture
@@ -72,6 +78,8 @@ H1 and H2/H3 structure aligned to search intent and the gap analysis. Include:
 - Internal linking pattern recommended
 
 ### Technical Optimization
+
+Check that proposed content reflects the site's documented expertise and actual offers. Informational coverage can explain adjacent products or tasks; do not imply the business sells a product, performs a service or ran a test that it does not. Link relevant observed categories and pages rather than borrowing a competitor's whole commercial scope.
 - **Title tag**: distinctive and accurate; include the primary topic naturally and preview likely truncation without treating character count as a ranking rule
 - **Meta description**: accurate click preview; report likely truncation without imposing a fixed length
 - **Schema**: only a currently supported type whose required facts are visible on the page; validate through the `schema` skill

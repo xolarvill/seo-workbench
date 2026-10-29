@@ -115,3 +115,7 @@ Load from `references` only when the step or situation calls for them.
 - `phase-classification-tree.md` — decision tree when Step 1 signals are ambiguous
 - `anchor-text-safety-guide.md` — full anchor safety framework and penalty recovery (Step 3)
 - `link-velocity-redflags.md` — velocity red flags and SpamBrain patterns (diagnosing a traffic drop that looks link-related)
+
+## Research evidence
+
+Use [source verification](../write-content/references/fact-checking.md) for research claims: rely on sources actually read or supplied project facts, preserve failed fetches as gaps, and record material dates and scope in the task artifact.

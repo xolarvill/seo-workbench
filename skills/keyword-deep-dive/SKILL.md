@@ -138,3 +138,7 @@ Read the matching reference when it supports the current task:
 - [Keyword placement review](references/keyword-placement-review.md): a draft needs its main topic and supporting terms mapped to page sections.
 - [Topic research handoff](references/research-workflow.md): a topic needs research before a brief is prepared.
 - [SERP review](references/serp-review.md): a query needs a closer result-format and intent analysis.
+
+## Research evidence
+
+Use [source verification](../write-content/references/fact-checking.md) for research claims: rely on sources actually read or supplied project facts, preserve failed fetches as gaps, and record material dates and scope in the task artifact.

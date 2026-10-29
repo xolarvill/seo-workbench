@@ -42,34 +42,21 @@ Consult [implementation patterns](references/implementation/guide.md) for static
   - Placeholder text
   - Relative URLs (should be absolute)
   - Invalid date formats
-- Flag deprecated types (see below)
+- Distinguish invalid vocabulary, retired Google appearances and unmet feature requirements; see the eligibility reference.
 
-## Schema Type Status (as of Feb 2026)
+## Type selection and search eligibility
 
-Key rules:
+Use the [targeted search eligibility reference](references/search-eligibility.md) for the checked FAQPage, BreadcrumbList and Event policies and the distinction between vocabulary validity, eligibility and observed display. Its check date does not refresh every type in this directory.
 
-### ACTIVE (recommend freely):
-Organization, LocalBusiness, SoftwareApplication, WebApplication, Product (with Certification markup as of April 2025), ProductGroup, Offer, Service, Article, BlogPosting, NewsArticle, Review, AggregateRating, BreadcrumbList, WebSite, WebPage, Person, ProfilePage, ContactPage, VideoObject, ImageObject, Event, JobPosting, Course, DiscussionForumPosting
+Use the [type reference](../seo/references/schema-types.md) to identify semantic candidates, then verify the relevant current Google feature guide before promising a search appearance. A type is not invalid merely because Google retired its rich result.
 
-### VIDEO & SPECIALIZED (recommend freely):
-BroadcastEvent, Clip, SeekToAction, SoftwareSourceCode
+- FAQ rich results stopped appearing for every site on 2026-05-07; government and health sites are no exception. Do not promise Google FAQ appearance or general AI-citation gains.
+- Existing accurate FAQPage is not automatically an error or a removal task. Assess actual content and consumers.
+- Breadcrumb appearance is a desktop feature; mobile non-display alone is not a schema defect.
+- Google Event eligibility requires a public-bookable event at a physical location. A purely online event without a real-world component does not qualify, even when its semantic markup is valid.
+- Google HowTo rich results are retired. Do not prescribe HowTo cards as a visibility tactic.
 
-Choose a relevant [JSON-LD example](references/implementation/references/schema-examples.md) and populate it with verified page facts.
-
-> **JSON-LD and JavaScript rendering:** Per Google's December 2025 JS SEO guidance, structured data injected via JavaScript may face delayed processing. For time-sensitive markup (especially Product, Offer), include JSON-LD in the initial server-rendered HTML.
-
-### RESTRICTED (only for specific sites):
-- **FAQ**: ONLY for government and healthcare authority sites (restricted Aug 2023)
-
-### DEPRECATED (never recommend):
-- **HowTo**: Rich results removed September 2023
-- **SpecialAnnouncement**: Deprecated July 31, 2025
-- **CourseInfo, EstimatedSalary, LearningVideo**: Retired June 2025
-- **ClaimReview**: Retired from rich results June 2025
-- **VehicleListing**: Retired from rich results June 2025
-- **Practice Problem**: Retired from rich results late 2025
-- **Dataset**: Retired from rich results late 2025
-- **Book Actions**: Deprecated then reversed, still functional as of Feb 2026 (historical note)
+Select truthful entities and preserve stable identifiers when combining markup from templates, apps or components. For JavaScript-generated markup, inspect rendered output and indexed evidence when available rather than assuming discovery or processing from source presence alone.
 
 ## Generation
 
@@ -77,7 +64,7 @@ When generating schema for a page:
 1. Identify page type from content analysis
 2. Select appropriate schema type(s)
 3. Generate valid JSON-LD with all required + recommended properties
-4. Include only truthful, verifiable data. Use placeholders clearly marked for user to fill
+4. Include only truthful, verifiable data. Clearly label any example placeholders and never publish them.
 5. Validate output before presenting
 
 ## Common Schema Templates
@@ -154,12 +141,12 @@ When generating schema for a page:
 ## Output
 
 - `SCHEMA-REPORT.md`: detection and validation results
-- `generated-schema.json`: ready-to-use JSON-LD snippets
+- `generated-schema.json`: verified implementation snippets, or clearly labeled examples with unresolved inputs
 
 ### Validation Results
-| Schema | Type | Status | Issues |
-|--------|------|--------|--------|
-| ... | ... | ✅/⚠️/❌ | ... |
+| Schema | Type | Vocabulary / syntax | Visible facts | Google eligibility | Observed display | Issues |
+|--------|------|---------------------|---------------|--------------------|------------------|--------|
+| ... | ... | ... | ... | ... | not observed / observed | ... |
 
 ### Recommendations
 - Missing schema opportunities
@@ -173,4 +160,4 @@ When generating schema for a page:
 | URL unreachable | Report connection error with status code. Suggest verifying URL and checking if the page requires authentication. |
 | No schema markup found | Report that no JSON-LD, Microdata, or RDFa was detected. Recommend appropriate schema types based on page content analysis. |
 | Invalid JSON-LD syntax | Parse and report specific syntax errors (missing brackets, trailing commas, unquoted keys). Provide corrected JSON-LD output. |
-| Deprecated schema type detected | Flag the deprecated type with its retirement date. Recommend the current replacement type or advise removal if no replacement exists. |
+| Retired Google appearance or invalid type detected | Determine which applies. A retired appearance does not invalidate the vocabulary or authorize removal. Check current consumers and recommend changes supported by the facts. |

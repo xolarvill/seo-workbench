@@ -153,3 +153,7 @@ Load from `references` only when the step calls for them.
 - `how-to.md` — for ordered list snippets
 - `faq-page.md` — for paragraph snippet stacks from PAA
 - `comparison.md` — for table snippets
+
+## Research evidence
+
+Use [source verification](../write-content/references/fact-checking.md) for research claims: rely on sources actually read or supplied project facts, preserve failed fetches as gaps, and record material dates and scope in the task artifact.

@@ -76,6 +76,28 @@ def test_index_links_every_canonical_skill_directly():
     assert expected <= targets
 
 
+def test_selected_upstream_methods_retain_pinned_sources_and_current_targets():
+    inventory = load_inventory()
+    records = {row['id']: row for row in inventory['files']}
+    material = {row['local_path'] for row in records.values()}
+    ledger = json.loads((ROOT / 'docs/skill-upstream-adoptions.json').read_text())
+    assert len({row['id'] for row in ledger['adopted']}) == len(ledger['adopted'])
+    for adoption in ledger['adopted']:
+        source = ledger['sources'][adoption['source_id']]
+        ref = adoption['comparison_ref']
+        assert re.fullmatch(r'[0-9a-f]{40}', ref)
+        prefix = f"https://github.com/{source['repository']}/blob/{ref}/"
+        for upstream in adoption['upstream_files']:
+            assert upstream['url'].startswith(prefix)
+            assert re.fullmatch(r'[0-9a-f]{40}', upstream['blob_sha'])
+            record = records[adoption['source_id'] + ':' + upstream['url'][len(prefix):]]
+            # Later comparisons may advance while this adoption stays pinned.
+            if inventory['sources'][adoption['source_id']]['comparison_ref'] == ref:
+                assert record['comparison_upstream_blob_sha'] == upstream['blob_sha']
+        assert adoption['local_paths']
+        assert set(adoption['local_paths']) <= material
+
+
 def test_inventory_files_are_not_hidden_by_gitignore():
     paths = [row['local_path'] for row in load_inventory()['files']]
     result = subprocess.run(

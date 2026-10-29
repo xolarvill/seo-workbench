@@ -8,7 +8,7 @@ Use this reference to choose a page pattern after reviewing business context, cu
 - A ranking competitor's length is an observation, not a target. Never use “top five average plus 10%.”
 - Headings are optional patterns. Preserve a logical outline instead of forcing every section into every page.
 - Schema.org vocabulary and Google rich-result eligibility are different things. Before implementation, use the `schema` skill and verify current Google documentation.
-- FAQ rich results are restricted to eligible authoritative health and government sites. HowTo rich results are no longer available in Google Search. Do not prescribe either as a general SEO tactic.
+- Google FAQ rich results stopped appearing for every site on 2026-05-07. HowTo rich results are also retired. Existing accurate FAQPage is not automatically a defect or removal task. See the [shared eligibility reference](../../schema/references/search-eligibility.md); do not prescribe markup for retired appearances or unsupported AI-citation benefits.
 - A page can rank without structured data. Markup must describe visible, truthful page facts.
 
 ## Decision table
@@ -18,7 +18,7 @@ Use this reference to choose a page pattern after reviewing business context, cu
 | how-to | Complete a task | Outcome / prerequisites / ordered steps / failure handling | Article, VideoObject when applicable |
 | definition | Understand a term | Direct definition / mechanics / examples / boundaries | Article, DefinedTerm |
 | pillar page | Navigate a broad subject | Scope / topic map / concise sections / deep-dive links | Article, CollectionPage |
-| FAQ page | Resolve recurring questions | Real questions grouped by task / concise sourced answers | WebPage; FAQPage only when eligible |
+| FAQ page | Resolve recurring questions | Real questions grouped by task / concise sourced answers | WebPage; truthful FAQPage is a semantic choice, without Google FAQ rich results |
 | statistics page | Find and reuse data | Method / key findings / tables / sources / update history | Article; Dataset only as semantic markup when accurate |
 | news | Understand a current event | What happened / evidence / impact / update log | NewsArticle |
 | thought leadership | Evaluate an argument | Thesis / evidence / counterargument / implications | Article, Person |

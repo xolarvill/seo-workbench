@@ -175,3 +175,7 @@ Load from `references` only when the step calls for them.
 
 **YMYL content-type templates** (`references/content-types`) — load when auditing one of these types for the type-specific E-E-A-T bar:
 - `thought-leadership.md`, `product-reviews.md`, `pricing-pages.md`, `service-pages.md`, `case-studies.md`, `about-pages.md`
+
+## Research evidence
+
+Use [source verification](../write-content/references/fact-checking.md) for research claims: rely on sources actually read or supplied project facts, preserve failed fetches as gaps, and record material dates and scope in the task artifact.

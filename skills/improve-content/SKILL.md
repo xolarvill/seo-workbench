@@ -5,11 +5,13 @@ description: Use when rewriting or refreshing an existing page that's underperfo
 
 # Improve Content
 
-Improves an existing page's usefulness and search relevance through supported explanations, appropriate structure and the shared reader-experience review. A rewrite does not guarantee rankings.
+Improves an existing page's usefulness and search relevance through supported explanations, appropriate structure and the shared reader-experience review.
 
 ## Input
 
-**URL of the page to improve**. If the fetch fails, ask the user to paste the page content directly.
+**Existing page URL or supplied content**, with the requested outcome. Retrieve available project copies, approved update notes and adequate evidence before asking for missing text. A failed fetch leaves that observation unavailable; it does not invalidate a sufficient supplied copy.
+
+For a full refresh, use the relevant steps below. For an approved local change, edit the affected passage and preserve the rest; skip research and interview steps that the decision does not need. Review-only requests use [reader-experience-review](../reader-experience-review/SKILL.md).
 
 ## Role
 
@@ -17,11 +19,11 @@ You are a senior content writer and SEO specialist with 10+ years improving unde
 
 ## Step 1: Read the Current Content
 
-Fetch the URL and read the full rendered page. Note title, meta, H1/H2s, word count, internal links, schema. Identify the apparent primary keyword from the content.
+Read the current supplied page or eligible project evidence. Collect fresh page evidence only when needed. Note relevant title, metadata, headings, links and markup; identify the page's topic and reader task.
 
 ## Step 2: Research the SERP
 
-Google the primary keyword. Read the top 5 results. Note:
+For a competitive refresh, reuse adequate research or inspect current results when needed. Note:
 - What formats are ranking
 - Content gaps where the current page falls short
 - Angles competitors take that this page doesn't
@@ -31,14 +33,16 @@ This is a lightweight check, not a full page audit. Just enough to know what's m
 
 ## Step 3: Update Interview
 
-Ask 2-3 quick questions adapted for content updates, one at a time:
+Reuse the current page, approved update notes and available evidence. When a focused interview is useful and fits the request, ask one question at a time:
 - "What's changed since you published this? New data, new experience, market shifts?"
 - "What results did this content get? Traffic, leads, feedback?"
 - "Knowing what you know now, what would you add or cut?"
 
+When the user requests the revision directly, skips an interview or supplied sufficient update notes, proceed with supported material. Keep optional first-party gaps in the task/editorial artifact. Ask only for a missing fact essential to the requested result; do not fabricate fresh experience or insert a missing-interview disclaimer into otherwise supported prose. Use [freshness review](references/content-freshness.md) to choose what needs changing.
+
 ## Step 4: Rewrite
 
-Produce the complete rewritten article in clean markdown. Apply ALL writing rules:
+Produce the requested revision in clean markdown: a complete article for a full refresh, or the affected passages for a scoped edit. Apply relevant writing rules below:
 
 ### Evidence and Expression
 - Preserve accurate facts, useful explanations and the page's requested tone. Choose person, register, sentence length and paragraph structure for comprehension in the original language, including plain Chinese or English.
@@ -68,7 +72,7 @@ Detect from the existing page + SERP. Load `references/content-types-overview.md
 3. Use `../reader-experience-review/SKILL.md` to check the revised prose in context. Prioritize confusion, instruction leakage, invisible arguments and broken transitions. Keep factual limitations, correct terms and useful source or example labels. Adequate plain prose can pass with zero edits; do not manufacture changes to satisfy a style pattern or imply AI authorship. Review-only requests belong to that skill and do not require this full SERP/rewrite workflow.
 
 ### Output
-Clean markdown. Title + rewritten article content. Nothing else.
+Clean markdown: title and revised article for a full refresh, or the requested passages for a scoped edit. Keep editorial evidence notes in the task artifact.
 
 ### Language
 Write in the same language as the existing page content.
@@ -99,3 +103,7 @@ Read the matching reference when it supports the current task:
 - [SEO editing review](references/seo-editing.md): a researched article needs focused on-page improvements.
 - [Existing-page refresh](references/refresh-workflow.md): an existing article needs a scoped refresh rather than a new unrelated page.
 - [Targeted optimization](references/optimization-workflow.md): a draft or page needs specific SEO improvements.
+
+## Research evidence
+
+Use [source verification](../write-content/references/fact-checking.md) for factual claims and source currency. Keep evidence notes with the task artifact and reader-useful conditions with the relevant claim.

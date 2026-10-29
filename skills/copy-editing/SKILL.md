@@ -404,15 +404,9 @@ Use these for faster reviews when a full seven-sweep process isn't needed.
 
 ## Working with Copy Sweeps
 
-When editing collaboratively:
+For review-only work or an explicitly collaborative round, present the relevant findings and specific proposals; let the author supply the next version if that is the agreed workflow. Recheck affected passages after their changes.
 
-1. **Run a sweep and present findings** - Show what you found, why it's an issue
-2. **Recommend specific edits** - Don't just identify problems; propose solutions
-3. **Request the updated copy** - Let the author make final decisions
-4. **Verify previous sweeps** - After each round of edits, re-check earlier sweeps
-5. **Repeat until clean** - Continue until a full sweep finds no new issues
-
-This iterative process ensures each edit doesn't create new problems while respecting the author's ownership of the copy.
+For already-authorized editing, apply the necessary changes directly and verify meaning, facts and surrounding flow. Do not request another copy or require an author round before completing the edit. Stop when the requested passage works; a selected sweep need not produce a change.
 
 ---
 
