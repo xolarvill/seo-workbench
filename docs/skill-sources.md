@@ -2,7 +2,7 @@
 
 本文件是技能来源维护入口，配套的 [skill-sources.json](skill-sources.json) 保存完整文件映射、内容指纹、本地历史和引用关系。最后核查：**2026-10-29（Asia/Shanghai）**。第 1 步建立来源基线；第 2、3 步已按[能力归属与目录迁移记录](20261029-skill-layout-migration.md)更新为 60 个一级入口。
 
-第 4、5 步的[方法与运行适配记录](20261029-skill-methods-runtime-adaptation.md)保存了专业参考归属、失效执行引用的处理与验证。第 6、7、8 步见[写作与上游适配](20261029-skill-writing-upstream-adaptation.md)。第 9 步见[主动发现入口](20261029-skill-discovery-entrypoints.md)。
+第 4、5 步的[方法与运行适配记录](20261029-skill-methods-runtime-adaptation.md)保存了专业参考归属、失效执行引用的处理与验证。第 6、7、8 步见[写作与上游适配](20261029-skill-writing-upstream-adaptation.md)。第 9 步见[主动发现入口](20261029-skill-discovery-entrypoints.md)。第 10 步见[验收与维护](20261029-skills-acceptance-and-maintenance.md)。
 
 ## 快速查询
 

@@ -35,3 +35,5 @@ Verification completed:
 An initial regression run overlapped the inventory refresh and read the old hash/reference snapshot, producing three inventory-related failures. After refresh completion, the strict check and all 39 regressions passed; future verification should follow refresh sequentially.
 
 These structural checks establish complete, usable navigation; actual unprompted method selection and delivery tests remain part of approved step 10. Skill bodies and provenance source identities remain intact.
+
+Step 10 is now recorded in [acceptance and maintenance](20261029-skills-acceptance-and-maintenance.md), including actual outputs, follow-up corrections and retests.

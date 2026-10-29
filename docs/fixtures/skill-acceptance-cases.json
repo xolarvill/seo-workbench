@@ -1,0 +1,174 @@
+{
+  "schema_version": 1,
+  "purpose": "Constructed acceptance cases; semantic decisions require reading actual output, not regex or an AI-authorship score.",
+  "cases": [
+    {
+      "id": "absent-opponent",
+      "task": "Review a practical desk guide; no prior discussion",
+      "material": "先把每天要用的物品放进顺手的位置，再决定要添什么。这不是为了追求社交媒体上完美的桌面，也不是说所有人都需要添置配件。我们不主张所有桌面都应遵循同一种布局，也不对使用这些建议后的效率提升作任何承诺。把充电线引到桌后，在桌沿留出连接电脑的长度。这里的建议不应被理解为对工作习惯的普遍判断。",
+      "expected": "Required edit: retain placement and cable routing, remove invented motive/promise debate; do not add a fresh shopping reassurance.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "real-compatibility",
+      "task": "Review display connection instructions",
+      "material": "USB-C 接口的外形不能说明它是否支持视频。连接显示器前，查看电脑规格中的视频输出协议。",
+      "expected": "Accept unchanged; the distinction and check affect the connection decision.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "clean-maintenance",
+      "task": "Review manufacturer-verified maintenance steps",
+      "material": "关机后拔掉电源线，等待设备冷却。用干燥软布擦拭外壳。清洁时不要让液体流进接口。",
+      "expected": "Accept unchanged; keep the safety instruction; no invented tests, anecdotes, voice quirks or mandatory edits.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "requested-comparison",
+      "task": "Reader asks whether organizing this desk requires buying accessories; existing items fit within reach",
+      "material": "先使用现有收纳盒，把每天要用的物品放在顺手的位置。暂时不用添置配件。",
+      "expected": "Accept; purchasing is a real reader question in this context.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "caption-and-repetition",
+      "task": "Illustrative layout with a clear caption",
+      "material": "概念布局，尺寸仅作示意。把常用物品放在顺手的位置。我们没有测试这个配置。把充电线引到桌后。我们没有测试这个配置。",
+      "expected": "Keep the conceptual label, remove repeated editorial defense, preserve useful actions.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "one-go-draft",
+      "task": "Write directly from an approved brief, 100-180 Chinese characters, no interview, plain tone",
+      "material": "电脑USB-C须支持视频输出，线缆也须支持视频；先查电脑规格，再查线缆规格，连接后选择输入源。研究与context已完成，没有第一手测试或案例。",
+      "expected": "Deliver from the supplied facts without confirmation/interview, invented experience, contrarian preamble or fixed rhythm quotas.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "english-defense",
+      "task": "Edit a guide to organizing a desk; no prior debate",
+      "material": "Keep daily-use items within reach. This is not a promise of higher productivity, nor an endorsement of a particular lifestyle. Route the charging cable behind the desk.",
+      "expected": "Required edit: preserve the actions and remove the unsolicited promise/lifestyle defense.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "editorial-record-is-not-copy",
+      "task": "Write body-only cable-routing advice from approved practical steps",
+      "material": "Internal record: no productivity trial, electrical verification or load rating; the requested article makes none of those claims. Approved steps: put daily-use items within reach; route the charging cable behind the desk; retain enough cable for plugging in; keep cables out of moving joints; move the desk through its full height range and check slack.",
+      "expected": "Use supported practical steps; no test-gap preface or universal disclaimer. Preserve the actual moving-desk slack check.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "marketing-finished-copy",
+      "task": "Use copywriting to return two finished trial sentences only",
+      "material": "Approved offer: 14-day free trial, no credit card, cancel during trial; reader asks about a card. Internal records have no conversion-uplift data or security certificate.",
+      "expected": "Answer the actual trial/card question using those facts. No unrequested rationale, options, certification promise or evidence-gap disclaimer.",
+      "selection_mode": "named-skill"
+    },
+    {
+      "id": "useful-attribution-limit",
+      "task": "Two-sentence effect assessment for a manager asking whether growth is attributable to a redesign",
+      "material": "Post 28-day organic clicks grew 12% versus preceding 28 days; a brand campaign began in the same window; controls cannot separate their contributions.",
+      "expected": "Keep both windows, observed growth and the attribution limit. Answer the question without claiming a causal redesign effect or repeating the same disclaimer.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "existing-brief",
+      "task": "Existing USB-C article needs only keep/strengthen/add; page and adequate research supplied; store sells arms, not cables",
+      "material": "The actual SERP includes forums and merchants. Preserve the video-output explanation and improve the specification check. Supplied page: USB-C connector shape does not establish video support. Check the computer video-output specification before connecting. Supplied research: readers need to check cable video support and select the monitor input after connecting. Return keep/strengthen/add only.",
+      "expected": "Use existing-page mode, keep relevant explanations, add only evidenced gaps, retain actual result types; no invented cable offer, whole-page rewrite or renewed research gate.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "js-lazy-evidence",
+      "task": "Review a below-fold image from raw data and a native-attribute summary",
+      "material": "img has data-src and lazysizes, no loading attribute; only without_lazy_loading count is available.",
+      "expected": "Report JS loader clues and unverified behavior; no missing-lazy finding from native counts, no fabricated lazy_method field.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "metadata-information",
+      "task": "Review title and description with supplied page facts",
+      "material": "Title: Monitor arm installation guide. Description: Monitor arm installation guide. Learn more. Page covers mounting preparation and adjustment steps.",
+      "expected": "Evaluate the title and description as a pair. Supply a supported page-specific preview; no arbitrary length gate, default count report or unsolicited penalty/duplication denial.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "schema-display",
+      "task": "Review current search feature eligibility with the checked local policy reference",
+      "material": "Existing accurate FAQPage; mobile Breadcrumb non-display; online-only event.",
+      "expected": "Keep useful FAQ content and assess consumers; no Google FAQ rich result; desktop Breadcrumb scope; online-only not eligible for Google Event. Do not equate semantic validity with display.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "failed-source",
+      "task": "A competitor fetch failed during a supported partial brief",
+      "material": "Only title/snippet available; no page body or supplied copy.",
+      "expected": "Do not infer missing sections, author or tests from the failed fetch. Continue supported work with exact gaps in task artifact; no public self-defense boilerplate.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "one-expression-authority",
+      "task": "Review this already approved maintenance paragraph for clarity. Return the final paragraph only.",
+      "material": "关机后拔掉电源线，等待设备冷却。用干燥软布擦拭外壳。清洁时不要让液体流进接口。The task has sufficient facts and no requested SEO change.",
+      "expected": "Return the already clear approved paragraph unchanged, with no extra review report or new SEO/research work.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "local-paragraph",
+      "task": "这段桌面指南读起来绕，帮我改顺，只给改后的文字。",
+      "material": "把每天要用的物品放在顺手的位置。这不是鼓励你追求一种生活方式，也不是在承诺提高生产力。把充电线引到桌后。",
+      "expected": "Deliver only the local edit, preserving useful actions and removing unsolicited motive/productivity defenses; select the reader method.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "resume-brief",
+      "task": "接着上一位同事的工作，把已批准的局部更新写成两句正文。材料都在下面，只交正文。",
+      "material": "Existing task artifact: current goal is a two-sentence update to the USB-C connection guide. Approved facts: the computer port must support video output; the cable must support video; after connecting select the monitor input. Market and audience unchanged; research from this same editorial task is sufficient; no new claims needed. Legacy phase=RESEARCH; legacy step=interview pending; an old note says draft a new full article. Latest decision supersedes that note and approves this local update. No first-party test or interview is available.",
+      "expected": "Follow the latest approved local update; reuse sufficient facts despite legacy phase/step and old notes. Return exactly two useful sentences; no new interview, research or testing disclaimer.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "signup-friction",
+      "task": "用户从试用按钮进入创建账号页后流失严重。请根据材料诊断，并给出三项按优先级排序的改动建议。",
+      "material": "Synthetic funnel, same 28-day window, no measurement change: 1000 trial-button clicks; 800 signup page loads; 240 account creations; 200 email verifications. Signup asks name, work email, password, phone, company size and department before submission. Required phone field has 160 validation errors; department dropdown has 120 observed abandonments. Users have not seen the product yet. Landing page already says no card required. No controlled experiment has run.",
+      "expected": "Select signup-flow-cro; locate account-creation friction using compatible funnel denominators, retain uncertainty about overlapping error observations, and rank three supported changes without a routine gain-guarantee denial.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "pricing-page",
+      "task": "价格页访问量稳定，但很少点选方案。暂时不改定价，请诊断页面并给三条建议。",
+      "material": "Synthetic page: three prices and a feature table. The headline says Powerful infrastructure for modern teams. No examples identify who each tier suits. CTA buttons all say Learn more and lead back to the same page. Approved plan entitlements are available; no current evidence about price sensitivity. No in-app paywall is involved.",
+      "expected": "Select page-cro for public pricing-page persuasion; prioritize CTA routing and useful tier information, preserve prices, invent no price-sensitivity evidence, and omit repeated generic caution closers.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "approved-draft-resume",
+      "task": "继续交接已批准的文章，检查它是否具备草稿交接所需材料，列出缺项即可。不要重写或实际导入。",
+      "material": "Synthetic task: body approved; title, slug, description and markdown body supplied. Hero not selected; internal-link targets pending. Legacy phase=KEYWORDS. Latest decision approves CMS draft preparation only; no publication authorization. No CMS/provider tool is attached; no project-specific ledger should be changed.",
+      "expected": "Use approved-draft handoff mode, list missing delivery inputs only, ignore legacy KEYWORDS as a scheduler, and perform no rewrite/import/publication.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "new-recommendation",
+      "task": "根据这些观察，为询盘表单给两条建议，只交建议。",
+      "material": "Synthetic B2B inquiry form. Required fields: name, email, phone, company, estimated annual budget, free-text request. Product team only needs email and request to route a first response. Many visitors abandon at annual budget. No experiment or uplift estimate exists. Users are seeking an initial answer, not a final quote.",
+      "expected": "Select form-cro for a non-signup inquiry form, supply two actionable recommendations using known routing needs and budget friction; no unsupported numeric lift or routine no-guarantee closer.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "explicit-forecast",
+      "task": "去掉注册页的电话必填，转化率能保证提高20%吗？请直接回答，并说明怎么验证。",
+      "material": "Synthetic current signup conversion 30%, phone validation errors observed, no randomized test, no reliable uplift estimate, no sample-size calculation available.",
+      "expected": "Answer the actual 20-percent guarantee question honestly, retain effect uncertainty, and propose a meaningful controlled verification without inventing a sample size or uplift.",
+      "selection_mode": "task-only"
+    },
+    {
+      "id": "explicit-penalty-question",
+      "task": "标题和description出现同一个产品名，会被Google惩罚吗？请根据材料判断，并给一个description建议。",
+      "material": "Supplied single page: title Monitor arm installation guide. Description Monitor arm installation guide. Learn more. Page explains mounting preparation and adjustment. No sitewide or ranking-change evidence supplied.",
+      "expected": "Address the real penalty concern from supplied evidence, distinguish phrase overlap from an evidenced sitewide/ranking problem, and supply a factual description.",
+      "selection_mode": "task-only"
+    }
+  ]
+}

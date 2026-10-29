@@ -1,0 +1,523 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-29",
+  "evaluation": "Parent semantic review of actual artifacts; worker read paths are reported by workers, not a global invocation trace. Not blind preference grading or a causal improvement estimate.",
+  "runs": [
+    {
+      "batch": "prose",
+      "instruction_visibility": "Independent fresh worker, no parent conversation or expected answers; multiple cases share one worker context.",
+      "baseline_commit": "c7355de",
+      "results": [
+        {
+          "case_id": "absent-opponent",
+          "selected_methods": [
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md",
+            "skills/reader-experience-review/references/calibration.md"
+          ],
+          "final_answer": "必须修改：中间从“这不是为了追求社交媒体上完美的桌面”到“不作任何承诺”，以及末句“这里的建议不应被理解为对工作习惯的普遍判断”，回应了文中没有提出的争议，打断了摆放物品、整理线缆的操作顺序。建议删去这些解释，保留具体步骤：\n\n先把每天要用的物品放在顺手的位置，再决定要添什么。把充电线引到桌后，在桌沿留出连接电脑的长度。",
+          "worker_method_account": "Use a wording-only reader review. Retain the practical actions and remove passages answering objections absent from this guide. Review mode calls for a finding and proposed text rather than a claim of an applied edit.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "real-compatibility",
+          "selected_methods": [
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/calibration.md"
+          ],
+          "final_answer": "可保留原文，无需修改。“USB-C 接口的外形不能说明它是否支持视频”说明了实际的兼容性条件，随后明确指出连接前要查电脑规格中的视频输出协议，读者可以据此操作。",
+          "worker_method_account": "The negative statement supplies a real compatibility distinction and the next sentence supplies the check. Accept without polishing or adding technical specifications.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "clean-maintenance",
+          "selected_methods": [
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/calibration.md"
+          ],
+          "final_answer": "可保留原文，无需修改。关机、断电、冷却、擦拭的顺序清楚；“清洁时不要让液体流进接口”提醒了具体的操作风险，也应保留。",
+          "worker_method_account": "Accept clear manufacturer-verified steps. The liquid warning prevents a concrete mistake; no new anecdote, rhythm variation or testing disclaimer is needed.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "requested-comparison",
+          "selected_methods": [
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/calibration.md"
+          ],
+          "final_answer": "暂时不用添置配件。先用现有收纳盒，把每天要用的物品放在顺手的位置。",
+          "worker_method_account": "Buying accessories is the reader's actual question, and existing items fit. Answer directly with the supplied facts; retain the purchasing distinction.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "caption-and-repetition",
+          "selected_methods": [
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md",
+            "skills/reader-experience-review/references/calibration.md"
+          ],
+          "final_answer": "建议删除两处“我们没有测试这个配置”：开头的“概念布局，尺寸仅作示意”已说明图片性质，重复声明打断了操作说明。保留图注和步骤即可：\n\n概念布局，尺寸仅作示意。\n\n把常用物品放在顺手的位置。把充电线引到桌后。",
+          "worker_method_account": "The caption already identifies an illustration. Keep it once, remove repeated testing defenses that add no distinct condition, and preserve the actions.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "one-go-draft",
+          "selected_methods": [
+            "skills/write-content/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/write-content/SKILL.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "用 USB-C 连接显示器前，先查看电脑规格，确认所用接口支持视频输出。再查看线缆规格，确认线缆也支持视频传输。接口外形相同，并不代表视频功能相同，因此电脑和线缆都要分别核对。确认这两项后再连接设备，并在显示器上选择与连接接口对应的输入源。",
+          "worker_method_account": "Use the approved brief for a short how-to and skip new research and interviews. Compose directly in the requested length, preserve both video-support conditions and step order, and make no firsthand-test or case claims.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "english-defense",
+          "selected_methods": [
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "Keep daily-use items within reach. Route the charging cable behind the desk.",
+          "worker_method_account": "Authorized edit of an informational guide: remove the unsolicited defense and preserve both actions. Deliver the edited text alone.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "editorial-record-is-not-copy",
+          "selected_methods": [
+            "skills/write-content/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/write-content/SKILL.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "Put daily-use items within reach. Route the charging cable behind the desk, leaving enough length to plug it in. Keep cables out of moving joints. Move the desk through its full height range and check that the cables have enough slack throughout.",
+          "worker_method_account": "Compose body-only advice from the approved steps. Internal absent trials and ratings limit claims but do not belong in copy that makes no such claims. Keep the moving-joint and full-height slack checks because they affect the action.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "marketing-finished-copy",
+          "selected_methods": [
+            "skills/copywriting/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/copywriting/SKILL.md",
+            "skills/copy-editing/SKILL.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "Start your 14-day free trial with no credit card required. You can cancel during the trial.",
+          "worker_method_account": "Use copywriting for the approved trial offer and the actual card concern. State the 14-day term, no-card requirement and trial cancellation; omit unsupported uplift and security claims, with no editorial annotations in the final copy.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "useful-attribution-limit",
+          "selected_methods": [
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "Organic clicks rose 12% in the 28 days after the redesign compared with the preceding 28 days. A brand campaign began in the same window, and the available controls cannot separate its contribution from the redesign's, so this growth cannot be attributed to the redesign.",
+          "worker_method_account": "This is a two-sentence evidence assessment, so the attribution limit directly answers the reader's question. Preserve the 28-day comparison and 12% observation, identify the simultaneous campaign, and withhold attribution.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        }
+      ]
+    },
+    {
+      "batch": "specialist",
+      "instruction_visibility": "Independent fresh worker, no parent conversation or expected answers; multiple cases share one worker context.",
+      "baseline_commit": "c7355de",
+      "results": [
+        {
+          "case_id": "existing-brief",
+          "selected_methods": [
+            "skills/content-brief/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/content-brief/SKILL.md",
+            "skills/content-brief/references/existing-page-scope.md",
+            "skills/write-content/references/fact-checking.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "- **Keep:** The explanation that USB-C connector shape does not establish video support, and the instruction to check the computer’s video-output specification before connecting.\n- **Strengthen:** Make the specification check actionable: confirm that the computer’s USB-C port supports video output and that the chosen cable supports video. Keep the explanation focused on connecting a display; the store’s monitor-arm offering does not support a cable-sales recommendation.\n- **Add:** After connecting, select the corresponding input on the monitor. Use the supplied research to support the cable check and input-selection step; retain both forum and merchant results as relevant search-intent evidence.",
+          "worker_method_account": "The user requested a bounded existing-page update and supplied adequate research. Content-brief’s existing-page method gives keep/strengthen/add without reopening SERP collection; reader-experience-review governs wording and necessary connection conditions.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "js-lazy-evidence",
+          "selected_methods": [
+            "skills/images/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/images/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "final_answer": "The image lacks a native `loading` attribute. Its `data-src` and lazysizes markup suggest JavaScript lazy loading, but do not confirm that the loader works. The `without_lazy_loading` count measures missing native attributes; it cannot establish how many images actually load eagerly.\n\nBefore recommending a change, inspect the rendered DOM and network requests as the image approaches the viewport. Confirm that its real URL reaches `src` or `currentSrc` and loads without a click. JavaScript loading behavior remains unconfirmed from the supplied evidence, and this markup alone does not establish a performance problem.",
+          "worker_method_account": "The images method directly distinguishes native attributes, JavaScript loader clues and observed loading behavior. No broader site audit or collection was necessary for the supplied evidence review.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "metadata-information",
+          "selected_methods": [
+            "skills/page-audit/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/page-audit/SKILL.md",
+            "skills/page-audit/references/metadata-writing.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "final_answer": "The title identifies the topic clearly. The description repeats it and adds only “Learn more,” so it offers little information about what the guide covers.\n\nSuggested pair:\n\n- **Title:** Monitor arm installation guide\n- **Description:** Review mounting preparation and adjustment steps for your monitor arm.\n\nThis preserves the accurate title and gives readers a page-specific preview supported by the supplied facts. The title is 30 characters and the description is 70; neither is unusually long, though actual display can vary. Phrase overlap alone does not establish a ranking penalty or site-wide duplication.",
+          "worker_method_account": "Page-audit’s metadata-only mode and metadata-writing reference address whether the pair adds useful information. A full competitive audit would exceed this request; the reader method supports a minimal description revision.",
+          "review_verdict": "needs_refinement",
+          "review_reason": "Useful pair proposed, but output reported unrequested character counts and denied an unraised penalty/sitewide-duplication allegation."
+        },
+        {
+          "case_id": "schema-display",
+          "selected_methods": [
+            "skills/schema/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/schema/SKILL.md",
+            "skills/schema/references/search-eligibility.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "final_answer": "Using the local policy reference checked on October 29, 2026:\n\n| Item | Assessment | Action |\n|---|---|---|\n| Existing accurate FAQPage | Google FAQ rich results stopped appearing for all sites on May 7, 2026. Accurate Schema.org markup can remain valid. | No automatic removal is warranted. Review actual consumers and maintenance needs; do not promise FAQ display or AI-citation gains. |\n| Breadcrumb absent on mobile | Google’s breadcrumb appearance is a desktop feature. | Mobile non-display alone is not a markup defect. Retain truthful markup and useful site navigation. |\n| Online-only event | An event with no physical component is ineligible for Google’s Event search experience. | Represent the event truthfully if using Schema.org. Do not invent a venue to pursue eligibility. |\n\nVocabulary validity, Google feature eligibility and observed search display are separate judgments. No markup validation or additional search-display observation was supplied.",
+          "worker_method_account": "Schema’s targeted checked eligibility reference covers all three supplied cases and separates truthful vocabulary from provider eligibility and observed display. The task explicitly asks to use that local reference, with no network action.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "failed-source",
+          "selected_methods": [
+            "skills/content-brief/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/content-brief/SKILL.md",
+            "skills/write-content/references/fact-checking.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "Continue the brief with the evidence that supports it. Record this competitor’s failed fetch as a coverage gap; its title and snippet support only limited search-result observations. Exclude it from page-body comparisons, quotations, section inventories and claims about missing coverage.\n\nIf a decision depends on that competitor’s actual content, leave that comparison unresolved until the body is available or another adequate source supports it. Do not reconstruct the page from its snippet.",
+          "worker_method_account": "The brief is already supported in part, so content-brief and its source-verification reference permit useful progress while preserving the failed source as a gap. No new competitor facts can be inferred from the fetch failure.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "one-expression-authority",
+          "selected_methods": [
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "关机后拔掉电源线，等待设备冷却。用干燥软布擦拭外壳。清洁时不要让液体流进接口。",
+          "worker_method_account": "This is a wording-only review with sufficient approved facts. The reader method accepts clear prose unchanged and preserves the useful safety condition; no SEO research or second expression pass is needed.",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        }
+      ]
+    },
+    {
+      "batch": "routing",
+      "instruction_visibility": "Independent fresh worker, no parent conversation or expected answers; multiple cases share one worker context.",
+      "baseline_commit": "c7355de",
+      "results": [
+        {
+          "case_id": "local-paragraph",
+          "selected_methods": [
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "final_answer": "把每天要用的物品放在顺手的位置，再把充电线引到桌后。",
+          "worker_method_account": "局部措辞修改由 reader-experience-review 处理；删除与读者动作无关的生活方式和生产力辩解，连接两个具体动作。按要求只交改后文字，不扩大为文章更新或研究。",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "resume-brief",
+          "selected_methods": [
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "连接前，确认电脑的 USB-C 接口支持视频输出，并使用支持视频传输的线缆。连接电脑与显示器后，在显示器上选择对应的输入源。",
+          "worker_method_account": "最新批准范围是已有指南的两句局部更新，事实和研究已经足够，因此使用 reader-experience-review 及 evidence-to-prose，将兼容条件放到连接动作前。旧阶段、待访谈记录和旧全文计划不调度当前工作；不虚构实测，也不把内部缺访谈状态写进正文。",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        },
+        {
+          "case_id": "signup-friction",
+          "selected_methods": [
+            "skills/signup-flow-cro/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/signup-flow-cro/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "final_answer": "按注册流程摩擦来诊断，先看同一 28 天内各环节：按钮点击到页面加载为 80%；页面加载到账号创建为 30%，损失 560 次；账号创建到邮箱验证为 83.3%。最大可见流失出现在创建账号前。电话字段的 160 次校验错误、部门下拉框处的 120 次弃填提供了具体排查方向，但两者可能重叠，也不能直接解释全部流失。\n\n1. 优先取消电话必填，延后到确实需要联系或验证时收集。如果业务必须保留，说明用途，支持国家区号和常见输入格式，报错时保留已填内容。观察电话错误率及页面加载到账号创建的转化率。\n2. 把部门和公司规模移到用户开始使用产品之后收集；姓名若没有即时用途，也设为可选。注册先保留必要的认证字段，重点观察部门位置的弃填及账号创建率。\n3. 在注册前提供可查看的产品示例或短演示，并在表单旁明确创建账号后的下一步，让用户先理解试用能做什么。观察试用按钮点击到账号创建的整体转化，避免仅提高表单完成率却降低试用意愿。\n\n另有 20% 的按钮点击未对应页面加载，需要检查跳转和加载事件。以上排序依据现有摩擦证据；尚无对照实验，不能承诺改动带来的增幅。",
+          "worker_method_account": "问题发生在试用账号创建，使用 signup-flow-cro 而不是非注册表单或注册后激活方法。用漏斗和字段观察排序，不把错误次数当作独立用户损失，不重复已有无需信用卡信息，也不凭空承诺效果。reader-experience-review 用于组织用户可读的诊断与建议。",
+          "review_verdict": "needs_refinement",
+          "review_reason": "Correct signup method, funnel math and overlap caution; the final cannot-promise-uplift sentence added routine self-protection after concrete metrics."
+        },
+        {
+          "case_id": "pricing-page",
+          "selected_methods": [
+            "skills/page-cro/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/page-cro/SKILL.md",
+            "skills/page-cro/references/conversion-analysis.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "final_answer": "按价格页的选择与行动路径来检查，最明确的问题是所有 CTA 都回到当前页，用户选中方案后无法继续；同时，抽象标题和缺少适用场景增加了比较成本。访问量稳定只能说明流量规模没有明显变化，现有材料还不能判断用户是否嫌贵。\n\n1. 先修复 CTA 的去向。为每档设置能进入下一步的独立链接，并保留所选方案；根据真实流程写成“选择此方案”“开始试用”或“联系销售”。检查每个按钮是否能完成对应动作，并记录各档的点击及后续到达率。\n2. 用已批准的权益补齐“谁适合这一档”。在每档价格旁写明适用团队或使用场景、关键权益和升级条件，将最影响选择的差异放在功能表前；有明确适配依据时再标注推荐档。观察各档选择分布及后续完成率。\n3. 重写首屏价值说明。用产品实际解决的任务和可核实的收益替换“Powerful infrastructure for modern teams”，让访客先理解买到什么，再比较三档方案。具体文案应从已批准权益提炼，观察首屏到方案选择的转化。\n\n先保持价格和权益不变，修复路径并降低选择成本；这些是基于页面观察的改进假设，效果仍需验证。",
+          "worker_method_account": "公开价格页的说服和方案选择属于 page-cro；未涉及改价、套餐重构或应用内付费墙。采用 conversion-analysis 区分已观察到的 CTA 回环和信息缺失，以及尚待验证的选择成本机制；reader-experience-review 组织表达，不虚构产品收益。",
+          "review_verdict": "needs_refinement",
+          "review_reason": "Correct public-page method and CTA diagnosis; an additional generic effect-needs-verification closer repeated the proposal status without guiding another action."
+        },
+        {
+          "case_id": "approved-draft-resume",
+          "selected_methods": [
+            "skills/write-content/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "AGENTS.md",
+            "skills/README.md",
+            "skills/write-content/SKILL.md",
+            "skills/write-content/references/draft-handoff.md",
+            "skills/seo/references/workbench-operations.md"
+          ],
+          "final_answer": "- 目标 CMS、文章资源类型及对应项目/站点绑定。\n- 作者和分类或博客归属。\n- 已选定的首图及其素材、替代文本。\n- 正文内链的目标 URL 和对应链接位置。\n- 实际导入所需的 CMS 连接或接手操作人。",
+          "worker_method_account": "已批准文章等待草稿准备，使用 write-content 的 delivery mode，并读取 draft-handoff 与 Workbench operations 进行材料检查。按清单核对已提供正文和元数据，仅列交接缺项；旧 KEYWORDS 阶段不触发研究。当前授权仅检查草稿交接，不导入、不重写、不修改项目账本，也不要求发布授权。",
+          "review_verdict": "accepted",
+          "review_reason": "Method choice and actual answer satisfy the scoped case; see expected criteria in the case corpus."
+        }
+      ]
+    },
+    {
+      "batch": "retest",
+      "instruction_visibility": "Independent fresh worker, no parent conversation or expected answers; multiple cases share one worker context.",
+      "baseline_commit": null,
+      "results": [
+        {
+          "case_id": "metadata-information",
+          "selected_methods": [
+            "skills/page-audit/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "skills/README.md",
+            "skills/page-audit/SKILL.md",
+            "skills/page-audit/references/metadata-writing.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "The title clearly identifies the guide and can stay. The description repeats the title and adds only ‘Learn more’, so it misses the chance to explain what readers will find.\n\nRecommended pair:\n\n- **Title:** Monitor arm installation guide\n- **Description:** Learn how to prepare for mounting a monitor arm and follow the adjustment steps.\n\nThe revised description adds the two topics confirmed by the supplied page facts: mounting preparation and adjustment.",
+          "worker_method_account": "Used page-audit's metadata-only scope and metadata-writing reference to assess the title-description pair against supplied page facts. Used reader-experience-review as the single expression method, retaining the useful title and making the smallest informative description edit. No full-page audit or search research was needed.",
+          "review_verdict": "accepted",
+          "review_reason": "Preserves useful title and adds factual page preview without unrequested character counts, truncation boilerplate or penalty denial."
+        },
+        {
+          "case_id": "signup-friction",
+          "selected_methods": [
+            "skills/signup-flow-cro/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "skills/README.md",
+            "skills/signup-flow-cro/SKILL.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "主要瓶颈在创建账号前：同一28天内，1000次试用点击带来800次注册页加载，随后只有240次账号创建，加载到创建的转化率为30%，这一段流失560次。创建后有200次邮箱验证，验证完成率为83.3%。点击到页面加载还损失了200次，需要另查跳转与加载情况。\n\n按优先级建议：\n\n1. **优先取消注册时必填电话。** 电话字段已有160次校验错误，是明确的操作障碍。若电话确实承担必要验证，先说明用途、支持国家区号与常见格式，并在出错时保留其他输入；否则延后收集。观察电话错误次数、注册页到账号创建率及必要验证的完成情况。\n2. **把部门、公司规模等资料移到用户体验产品之后。** 部门下拉框有120次观察到的放弃；当前注册应优先保留创建账号真正必需的信息，例如邮箱和密码，姓名按实际用途决定是否必填。观察表单完成率、完成耗时，以及后续资料补全是否影响必要业务流程。\n3. **在注册前展示一次具体产品体验，并明确注册后的下一步。** 用户尚未见过产品，就要先提交多项资料。可在试用入口提供简短交互演示或真实产品预览，再引导创建账号；注册页说明创建后会进入什么功能。观察试用入口到账号创建率，并以首次完成核心产品操作的比例作为质量指标。\n\n电话错误和部门放弃可能涉及同一批访问，也可能重复发生，不能相加当作可挽回用户数。前两项有直接字段证据支持优先处理；第三项是基于体验顺序的改进假设，后续用上述指标判断效果。",
+          "worker_method_account": "The friction occurs during account creation, so signup-flow-cro directly fits the task. Applied required-field reduction, progressive profiling and value-before-commitment principles, prioritizing supplied field evidence and funnel losses. Reader-experience-review governed the explanation and kept recommendations concrete. No live project context was consulted because the task supplies synthetic facts and forbids real project evidence.",
+          "review_verdict": "accepted",
+          "review_reason": "Correct signup routing and denominator math; concrete ranked changes and metrics; preserves non-additivity of error counts without a generic guarantee denial."
+        },
+        {
+          "case_id": "pricing-page",
+          "selected_methods": [
+            "skills/page-cro/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "skills/README.md",
+            "skills/page-cro/SKILL.md",
+            "skills/page-cro/references/conversion-analysis.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "页面最明确的问题是选方案的路径没有前进：所有“Learn more”按钮都回到当前页。与此同时，标题“Powerful infrastructure for modern teams”没有说清具体用途，三档方案也缺少适用场景，访客需要自己从功能表推断该选哪档。\n\n建议按以下顺序改：\n\n1. **修通方案按钮。** 每档按钮写明下一步，例如“选择此方案”；连接到对应的注册或购买流程，并携带所选方案。若实际流程是销售咨询，就使用“咨询此方案”并带入方案信息。验收每档链接能继续流程，记录方案选择及下一步完成率。\n2. **给每档增加一句适用场景和关键边界。** 依据已批准的权益，为每档解释“适合谁、能完成什么、何时需要下一档”，把最影响选择的差异放在价格附近。默认推荐档应有实际适用依据。观察各档选择率和进入下一步后改选方案的比例。\n3. **把首屏标题改成具体用途与选择指引。** 用产品真实能力说明团队能完成什么，再用副标题点出三档最关键的选择维度，例如已批准权益中的用量、协作或控制能力。把完整功能表作为进一步比较入口。观察访问到方案选择率，并关注后续注册或购买完成情况。\n\n访问稳定而选择少，还不足以判断价格敏感度；现有页面证据支持先修复行动路径、补足选择信息，再评估剩余流失。",
+          "worker_method_account": "This is a public pricing page with persuasion and navigation friction, so page-cro and its conversion-analysis reference fit directly. Applied CTA path review, plan-selection clarity and value-proposition diagnosis using supplied observations and approved-entitlement boundaries. Pricing-strategy and paywall-upgrade-cro were unnecessary because the task excludes price changes and an in-product paywall. Reader-experience-review governed the final wording.",
+          "review_verdict": "accepted",
+          "review_reason": "Correct public pricing-page scope and CTA-loop priority; no price change or generic effect-validation closer. Concrete price-sensitivity boundary informs sequencing."
+        }
+      ],
+      "method_commit": "99c2f56"
+    },
+    {
+      "batch": "holdout",
+      "instruction_visibility": "Independent fresh worker, no parent conversation or expected answers; multiple cases share one worker context.",
+      "baseline_commit": null,
+      "results": [
+        {
+          "case_id": "new-recommendation",
+          "selected_methods": [
+            "skills/form-cro/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "skills/README.md",
+            "skills/form-cro/SKILL.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "1. 首次询盘只保留邮箱和需求描述为必填，移除姓名、电话、公司和年度预算；需要补充的信息留到首次回复后再问，优先消除预算字段的流失点。\n2. 在表单上方说明‘留下邮箱和需求，我们会通过邮件回复’，按钮使用‘发送咨询’，让访客清楚提交后能获得什么。调整后关注表单完成率和可有效回复的询盘占比。",
+          "worker_method_account": "这是首次联系的 B2B 询盘表单，使用 form-cro 按首轮回复实际所需信息精简字段，并明确提交价值。reader-experience-review 按只交两条建议的格式组织表达；没有效果预测请求，因此不加入保证提升与否的额外声明，也不强行附带实验方案。仅使用提供的合成材料。",
+          "review_verdict": "accepted",
+          "review_reason": "Non-signup inquiry routed to form-cro; two actionable recommendations only, with useful completion/lead-quality metrics and no effect promise/denial."
+        },
+        {
+          "case_id": "explicit-forecast",
+          "selected_methods": [
+            "skills/signup-flow-cro/SKILL.md",
+            "skills/ab-test-setup/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "skills/README.md",
+            "skills/signup-flow-cro/SKILL.md",
+            "skills/ab-test-setup/SKILL.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "不能保证提高20%。电话校验错误说明这里存在摩擦，但现有材料无法估计取消必填后的提升幅度。\n\n若‘提高20%’指相对提升，当前30%的转化率对应目标36%，即增加6个百分点。验证时：\n\n1. 将符合条件的访客随机分为两组，并保持同一访客的版本一致：原版电话必填，新版电话选填，其余条件相同。\n2. 预先约定主指标为成功注册人数／分组访客人数，同时观察校验错误、有效账号率及后续激活率。\n3. 按30%基线、6个百分点的待检测差异，以及预设的显著性水平和统计功效计算样本量，再结合流量确定周期；当前材料不足以给出所需天数。\n4. 达到预设样本量与周期后，报告两组转化率、相对提升和置信区间，避免看到短期上涨就提前结束。若要支持‘至少提高20%’，提升幅度的置信区间下限也需达到20%；点估计达到20%还不够。",
+          "worker_method_account": "用户明确询问效果保证并要求验证，需使用 signup-flow-cro 解释注册字段摩擦，用 ab-test-setup 给出可识别效果的随机实验和预设分析条件。reader-experience-review 将不确定性放在直接回答处，并明确相对百分比与百分点的区别，不虚构提升或样本量。",
+          "review_verdict": "accepted",
+          "review_reason": "Answers actual guarantee question, distinguishes relative lift from percentage points, and gives controlled verification without inventing a sample size."
+        },
+        {
+          "case_id": "explicit-penalty-question",
+          "selected_methods": [
+            "skills/page-audit/SKILL.md",
+            "skills/reader-experience-review/SKILL.md"
+          ],
+          "reported_read_paths": [
+            "skills/README.md",
+            "skills/page-audit/SKILL.md",
+            "skills/page-audit/references/metadata-writing.md",
+            "skills/reader-experience-review/SKILL.md",
+            "skills/reader-experience-review/references/evidence-to-prose.md"
+          ],
+          "final_answer": "不会仅因标题和 description 出现同一个产品名而受到惩罚；自然重复主题名称很正常。这里的问题是 description 基本复述标题，‘Learn more’也没有补充页面内容，读者难以判断这篇指南能提供什么。\n\n建议 description：\n\nPrepare for mounting your monitor arm and learn how to adjust it with this installation guide.",
+          "worker_method_account": "这是单页元数据判断及一条 description 建议，使用 page-audit 的 metadata-writing 范围模式，无需扩展为整站审计或竞争研究。材料支持安装准备和调整两个具体内容点；用户主动提出惩罚疑问，因此正面回答该疑问，避免从一个页面推断全站重复或排名原因。reader-experience-review 负责简洁表达和事实边界。",
+          "review_verdict": "accepted",
+          "review_reason": "Addresses the actual penalty question and supplies a description from page facts; does not create a broader audit."
+        }
+      ],
+      "method_commit": "99c2f56"
+    }
+  ],
+  "case_corpus": "skill-acceptance-cases.json",
+  "case_corpus_sha256": "403b1b3923404ab21b9c081ad1ca34cdd28f820a0e562344542b60c784d58c4e",
+  "structural_verification": {
+    "python_tests_passed": 126,
+    "inventory_files": 409,
+    "canonical_skill_entrypoints": 60,
+    "preserved_migration_records": 364,
+    "strict_active_references": "passed",
+    "index_links_and_anchors": "passed",
+    "validate_ok": true,
+    "existing_optional_warning": "project_dir.missing: optional browser evidence directory"
+  }
+}
