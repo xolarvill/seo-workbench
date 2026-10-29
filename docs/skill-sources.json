@@ -2,7 +2,7 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "166260fb14d1fdb252c4c411ec85fabb29de8008",
+  "local_snapshot_commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
@@ -29,11 +29,11 @@
       "identical": 222,
       "workbench_native": 50
     },
-    "dependency_occurrences": 798,
+    "dependency_occurrences": 794,
     "dependencies_by_status": {
       "example_reference": 4,
       "project_context_reference": 91,
-      "resolved_local": 689,
+      "resolved_local": 685,
       "route_or_example": 1,
       "template_reference": 3,
       "upstream_runtime_reference": 10
@@ -115,8 +115,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "fcf1ae5e9bc5b7b7d5b64de144d1bdb8f8bd09150f2e1a290f31e2d4edbad3b4",
-      "local_git_blob_sha": "6a284f9f421d15330075d670e2638a7db8a8f6c5",
+      "local_sha256": "b3d624b7917ac9dc916a3b7693a970da54c0019c59259fd405de111712592c23",
+      "local_git_blob_sha": "d87836b234e8f53268709d8a4f995f26bec1e480",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -126,9 +126,9 @@
         "path": "skills/README.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/README.md",
         "record_status": "committed"
       },
@@ -720,9 +720,9 @@
         "path": "skills/content-brief/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "feat: adopt selected upstream skill methods and policy corrections",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/content-brief/SKILL.md",
         "record_status": "committed"
       },
@@ -736,7 +736,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "claude-seo:skills/seo-content-brief/SKILL.md",
@@ -802,9 +802,9 @@
         "path": "skills/seo-machine-pipeline/skills/content-strategy/SKILL.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "refactor: unify writing methods around reader tasks and evidence",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/content-strategy/SKILL.md",
         "record_status": "committed"
       },
@@ -818,7 +818,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/content-strategy/references/calendar-planning.md",
@@ -1005,9 +1005,9 @@
         "path": "skills/seo-machine-pipeline/skills/copy-editing/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "feat: adopt selected upstream skill methods and policy corrections",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/copy-editing/SKILL.md",
         "record_status": "committed"
       },
@@ -1021,7 +1021,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/copy-editing/references/article-editing.md",
@@ -1046,9 +1046,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "refactor: unify writing methods around reader tasks and evidence",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/copy-editing/references/article-editing.md",
         "record_status": "committed"
       },
@@ -1061,7 +1061,7 @@
       "local_sha256": "dbec309fb37a606babd43451dfac56e639257fa91b17de38570a73543df19e60",
       "local_git_blob_sha": "2d532356bc185acb079a8453e076f4e761f0b53b",
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/copy-editing/references/plain-english-alternatives.md",
@@ -1131,9 +1131,9 @@
         "path": "skills/seo-machine-pipeline/skills/copywriting/SKILL.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "refactor: unify writing methods around reader tasks and evidence",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/copywriting/SKILL.md",
         "record_status": "committed"
       },
@@ -1147,7 +1147,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/copywriting/references/copy-frameworks.md",
@@ -2088,9 +2088,9 @@
         "path": "skills/seo-machine-pipeline/skills/email-sequence/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/email-sequence/SKILL.md",
         "record_status": "committed"
       },
@@ -2104,7 +2104,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/email-sequence/references/copy-guidelines.md",
@@ -3225,9 +3225,9 @@
         "path": "skills/improve-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "feat: adopt selected upstream skill methods and policy corrections",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/improve-content/SKILL.md",
         "record_status": "committed"
       },
@@ -3241,7 +3241,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/improve-content/references/anti-slop-ruleset.md",
@@ -4272,9 +4272,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "refactor: adapt preserved specialist methods to canonical skills",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/improve-content/references/refresh-workflow.md",
         "record_status": "committed"
       },
@@ -4287,7 +4287,7 @@
       "local_sha256": "7be04734dc383d6debab3d2b4380cb644628376fd4afaa78aa6605ccb839dbb6",
       "local_git_blob_sha": "b7eac50f98623e7dc2ad4e6602288bf05cf851fa",
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/improve-content/references/seo-editing.md",
@@ -7124,9 +7124,9 @@
         "path": "skills/reader-experience-review/SKILL.md"
       },
       "last_local_change": {
-        "commit": "166260fb14d1fdb252c4c411ec85fabb29de8008",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "fix: separate editorial evidence from reader-facing prose",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/reader-experience-review/SKILL.md",
         "record_status": "committed"
       },
@@ -7140,7 +7140,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/reader-experience-review/references/calibration.md",
@@ -8173,9 +8173,9 @@
         "path": "skills/claude-seo-extra/seo-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "feat: adopt selected upstream skill methods and policy corrections",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/seo-content/SKILL.md",
         "record_status": "committed"
       },
@@ -8189,7 +8189,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "claude-seo:skills/seo-dataforseo/LICENSE.txt",
@@ -13920,9 +13920,9 @@
         "path": "skills/seo-machine-pipeline/skills/social-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/social-content/SKILL.md",
         "record_status": "committed"
       },
@@ -13936,7 +13936,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/social-content/references/content-repurposing.md",
@@ -14587,9 +14587,9 @@
         "path": "skills/write-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "feat: adopt selected upstream skill methods and policy corrections",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/write-content/SKILL.md",
         "record_status": "committed"
       },
@@ -14603,7 +14603,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/write-content/references/anti-slop-ruleset.md",
@@ -14629,9 +14629,9 @@
         "path": "skills/write-content/references/anti-slop-ruleset.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "refactor: unify writing methods around reader tasks and evidence",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/write-content/references/anti-slop-ruleset.md",
         "record_status": "committed"
       },
@@ -14645,7 +14645,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/write-content/references/article-workflow.md",
@@ -14670,9 +14670,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "refactor: adapt preserved specialist methods to canonical skills",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/write-content/references/article-workflow.md",
         "record_status": "committed"
       },
@@ -14685,7 +14685,7 @@
       "local_sha256": "061bbc770cbb6797a74d0091543965f7e76f1e39e38ba6d2a5d7d7f7b3069492",
       "local_git_blob_sha": "4103f079ed2ab07d0d88a6d14e238e5b8d592178",
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/write-content/references/content-types-overview.md",
@@ -15925,9 +15925,9 @@
         "path": "skills/write-content/references/quality-scoring.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "refactor: unify writing methods around reader tasks and evidence",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/write-content/references/quality-scoring.md",
         "record_status": "committed"
       },
@@ -15941,7 +15941,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/write-content/references/seo-optimization-layer.md",
@@ -16093,9 +16093,9 @@
         "path": "skills/write-content/references/voice-injection-playbook.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "refactor: unify writing methods around reader tasks and evidence",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/write-content/references/voice-injection-playbook.md",
         "record_status": "committed"
       },
@@ -16109,7 +16109,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/write-content/references/writing-pipeline.md",
@@ -16135,9 +16135,9 @@
         "path": "skills/write-content/references/writing-pipeline.md"
       },
       "last_local_change": {
-        "commit": "166260fb14d1fdb252c4c411ec85fabb29de8008",
+        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
         "date": "2026-10-29",
-        "subject": "fix: separate editorial evidence from reader-facing prose",
+        "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/write-content/references/writing-pipeline.md",
         "record_status": "committed"
       },
@@ -16151,7 +16151,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:third_party/skill-history/seomachine/README.md",
@@ -17838,106 +17838,10 @@
   "dependencies": [
     {
       "from_path": "skills/README.md",
-      "line": 9,
+      "line": 3,
       "syntax": "markdown_link",
-      "target": "reader-experience-review/SKILL.md",
-      "resolved_path": "skills/reader-experience-review/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 9,
-      "syntax": "markdown_link",
-      "target": "reader-experience-review/references/evidence-to-prose.md",
-      "resolved_path": "skills/reader-experience-review/references/evidence-to-prose.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 13,
-      "syntax": "markdown_link",
-      "target": "site-audit/SKILL.md",
-      "resolved_path": "skills/site-audit/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 14,
-      "syntax": "markdown_link",
-      "target": "project-context/SKILL.md",
-      "resolved_path": "skills/project-context/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 15,
-      "syntax": "markdown_link",
-      "target": "keyword-deep-dive/SKILL.md",
-      "resolved_path": "skills/keyword-deep-dive/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 15,
-      "syntax": "markdown_link",
-      "target": "semantic-gap-analysis/SKILL.md",
-      "resolved_path": "skills/semantic-gap-analysis/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 16,
-      "syntax": "markdown_link",
-      "target": "topic-cluster-planning/SKILL.md",
-      "resolved_path": "skills/topic-cluster-planning/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 17,
-      "syntax": "markdown_link",
-      "target": "content-brief/SKILL.md",
-      "resolved_path": "skills/content-brief/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 17,
-      "syntax": "markdown_link",
-      "target": "expert-interview/SKILL.md",
-      "resolved_path": "skills/expert-interview/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 18,
-      "syntax": "markdown_link",
-      "target": "write-content/SKILL.md",
-      "resolved_path": "skills/write-content/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 18,
-      "syntax": "markdown_link",
-      "target": "reader-experience-review/SKILL.md",
-      "resolved_path": "skills/reader-experience-review/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 19,
-      "syntax": "markdown_link",
-      "target": "improve-content/SKILL.md",
-      "resolved_path": "skills/improve-content/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 19,
-      "syntax": "markdown_link",
-      "target": "page-audit/SKILL.md",
-      "resolved_path": "skills/page-audit/SKILL.md",
+      "target": "seo/SKILL.md",
+      "resolved_path": "skills/seo/SKILL.md",
       "status": "resolved_local"
     },
     {
@@ -17950,135 +17854,31 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 21,
+      "line": 20,
       "syntax": "markdown_link",
-      "target": "page-audit/SKILL.md",
-      "resolved_path": "skills/page-audit/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 21,
-      "syntax": "markdown_link",
-      "target": "eeat-audit/SKILL.md",
-      "resolved_path": "skills/eeat-audit/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 21,
-      "syntax": "markdown_link",
-      "target": "semantic-gap-analysis/SKILL.md",
-      "resolved_path": "skills/semantic-gap-analysis/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 22,
-      "syntax": "markdown_link",
-      "target": "featured-snippet-optimizer/SKILL.md",
-      "resolved_path": "skills/featured-snippet-optimizer/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 23,
-      "syntax": "markdown_link",
-      "target": "technical-audit/SKILL.md",
-      "resolved_path": "skills/technical-audit/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 23,
-      "syntax": "markdown_link",
-      "target": "headless-precheck/SKILL.md",
-      "resolved_path": "skills/headless-precheck/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 24,
-      "syntax": "markdown_link",
-      "target": "schema/SKILL.md",
-      "resolved_path": "skills/schema/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 24,
-      "syntax": "markdown_link",
-      "target": "sitemap/SKILL.md",
-      "resolved_path": "skills/sitemap/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 24,
-      "syntax": "markdown_link",
-      "target": "images/SKILL.md",
-      "resolved_path": "skills/images/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 25,
-      "syntax": "markdown_link",
-      "target": "drift/SKILL.md",
-      "resolved_path": "skills/drift/SKILL.md",
+      "target": "reader-experience-review/references/evidence-to-prose.md",
+      "resolved_path": "skills/reader-experience-review/references/evidence-to-prose.md",
       "status": "resolved_local"
     },
     {
       "from_path": "skills/README.md",
       "line": 26,
       "syntax": "markdown_link",
-      "target": "backlinks/SKILL.md",
-      "resolved_path": "skills/backlinks/SKILL.md",
+      "target": "project-context/SKILL.md",
+      "resolved_path": "skills/project-context/SKILL.md",
       "status": "resolved_local"
     },
     {
       "from_path": "skills/README.md",
-      "line": 26,
+      "line": 27,
       "syntax": "markdown_link",
-      "target": "linkbuilding/SKILL.md",
-      "resolved_path": "skills/linkbuilding/SKILL.md",
+      "target": "product-marketing-context/SKILL.md",
+      "resolved_path": "skills/product-marketing-context/SKILL.md",
       "status": "resolved_local"
     },
     {
       "from_path": "skills/README.md",
-      "line": 32,
-      "syntax": "markdown_link",
-      "target": "../docs/skill-sources.md",
-      "resolved_path": "docs/skill-sources.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 32,
-      "syntax": "markdown_link",
-      "target": "../third_party/NOTICE.md",
-      "resolved_path": "third_party/NOTICE.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 32,
-      "syntax": "markdown_link",
-      "target": "../docs/20261029-skill-layout-migration.md",
-      "resolved_path": "docs/20261029-skill-layout-migration.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 32,
-      "syntax": "backtick_path",
-      "target": "skills/<capability>/SKILL.md",
-      "resolved_path": null,
-      "status": "template_reference"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 38,
+      "line": 28,
       "syntax": "markdown_link",
       "target": "seo/SKILL.md",
       "resolved_path": "skills/seo/SKILL.md",
@@ -18086,7 +17886,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 38,
+      "line": 29,
       "syntax": "markdown_link",
       "target": "seo-plan/SKILL.md",
       "resolved_path": "skills/seo-plan/SKILL.md",
@@ -18094,7 +17894,15 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 38,
+      "line": 30,
+      "syntax": "markdown_link",
+      "target": "content-strategy/SKILL.md",
+      "resolved_path": "skills/content-strategy/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 31,
       "syntax": "markdown_link",
       "target": "seo-flow/SKILL.md",
       "resolved_path": "skills/seo-flow/SKILL.md",
@@ -18102,7 +17910,23 @@
     },
     {
       "from_path": "skills/README.md",
+      "line": 37,
+      "syntax": "markdown_link",
+      "target": "keyword-deep-dive/SKILL.md",
+      "resolved_path": "skills/keyword-deep-dive/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
       "line": 38,
+      "syntax": "markdown_link",
+      "target": "topic-cluster-planning/SKILL.md",
+      "resolved_path": "skills/topic-cluster-planning/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 39,
       "syntax": "markdown_link",
       "target": "seo-cluster/SKILL.md",
       "resolved_path": "skills/seo-cluster/SKILL.md",
@@ -18110,90 +17934,18 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 39,
-      "syntax": "markdown_link",
-      "target": "seo-content/SKILL.md",
-      "resolved_path": "skills/seo-content/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 39,
-      "syntax": "markdown_link",
-      "target": "seo-sxo/SKILL.md",
-      "resolved_path": "skills/seo-sxo/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 39,
-      "syntax": "markdown_link",
-      "target": "seo-competitor-pages/SKILL.md",
-      "resolved_path": "skills/seo-competitor-pages/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 39,
-      "syntax": "markdown_link",
-      "target": "seo-geo/SKILL.md",
-      "resolved_path": "skills/seo-geo/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
       "line": 40,
       "syntax": "markdown_link",
-      "target": "seo-ecommerce/SKILL.md",
-      "resolved_path": "skills/seo-ecommerce/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 40,
-      "syntax": "markdown_link",
-      "target": "seo-hreflang/SKILL.md",
-      "resolved_path": "skills/seo-hreflang/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 40,
-      "syntax": "markdown_link",
-      "target": "seo-local/SKILL.md",
-      "resolved_path": "skills/seo-local/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 40,
-      "syntax": "markdown_link",
-      "target": "seo-maps/SKILL.md",
-      "resolved_path": "skills/seo-maps/SKILL.md",
+      "target": "semantic-gap-analysis/SKILL.md",
+      "resolved_path": "skills/semantic-gap-analysis/SKILL.md",
       "status": "resolved_local"
     },
     {
       "from_path": "skills/README.md",
       "line": 41,
       "syntax": "markdown_link",
-      "target": "seo-google/SKILL.md",
-      "resolved_path": "skills/seo-google/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 41,
-      "syntax": "markdown_link",
-      "target": "seo-dataforseo/SKILL.md",
-      "resolved_path": "skills/seo-dataforseo/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 41,
-      "syntax": "markdown_link",
-      "target": "seo-image-gen/SKILL.md",
-      "resolved_path": "skills/seo-image-gen/SKILL.md",
+      "target": "content-brief/SKILL.md",
+      "resolved_path": "skills/content-brief/SKILL.md",
       "status": "resolved_local"
     },
     {
@@ -18206,255 +17958,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 43,
-      "syntax": "markdown_link",
-      "target": "product-marketing-context/SKILL.md",
-      "resolved_path": "skills/product-marketing-context/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 43,
-      "syntax": "markdown_link",
-      "target": "content-strategy/SKILL.md",
-      "resolved_path": "skills/content-strategy/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 43,
-      "syntax": "markdown_link",
-      "target": "copywriting/SKILL.md",
-      "resolved_path": "skills/copywriting/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 43,
-      "syntax": "markdown_link",
-      "target": "copy-editing/SKILL.md",
-      "resolved_path": "skills/copy-editing/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 43,
-      "syntax": "markdown_link",
-      "target": "competitor-alternatives/SKILL.md",
-      "resolved_path": "skills/competitor-alternatives/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "page-cro/SKILL.md",
-      "resolved_path": "skills/page-cro/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "form-cro/SKILL.md",
-      "resolved_path": "skills/form-cro/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "popup-cro/SKILL.md",
-      "resolved_path": "skills/popup-cro/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "signup-flow-cro/SKILL.md",
-      "resolved_path": "skills/signup-flow-cro/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "onboarding-cro/SKILL.md",
-      "resolved_path": "skills/onboarding-cro/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "paywall-upgrade-cro/SKILL.md",
-      "resolved_path": "skills/paywall-upgrade-cro/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 44,
-      "syntax": "markdown_link",
-      "target": "ab-test-setup/SKILL.md",
-      "resolved_path": "skills/ab-test-setup/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 45,
-      "syntax": "markdown_link",
-      "target": "analytics-tracking/SKILL.md",
-      "resolved_path": "skills/analytics-tracking/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 45,
-      "syntax": "markdown_link",
-      "target": "email-sequence/SKILL.md",
-      "resolved_path": "skills/email-sequence/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 45,
-      "syntax": "markdown_link",
-      "target": "social-content/SKILL.md",
-      "resolved_path": "skills/social-content/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 45,
-      "syntax": "markdown_link",
-      "target": "paid-ads/SKILL.md",
-      "resolved_path": "skills/paid-ads/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "growth-lead/SKILL.md",
-      "resolved_path": "skills/growth-lead/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "launch-strategy/SKILL.md",
-      "resolved_path": "skills/launch-strategy/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "pricing-strategy/SKILL.md",
-      "resolved_path": "skills/pricing-strategy/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "referral-program/SKILL.md",
-      "resolved_path": "skills/referral-program/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "free-tool-strategy/SKILL.md",
-      "resolved_path": "skills/free-tool-strategy/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "marketing-ideas/SKILL.md",
-      "resolved_path": "skills/marketing-ideas/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 46,
-      "syntax": "markdown_link",
-      "target": "marketing-psychology/SKILL.md",
-      "resolved_path": "skills/marketing-psychology/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
       "line": 48,
-      "syntax": "markdown_link",
-      "target": "copy-editing/references/article-editing.md",
-      "resolved_path": "skills/copy-editing/references/article-editing.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 48,
-      "syntax": "markdown_link",
-      "target": "topic-cluster-planning/references/internal-link-review.md",
-      "resolved_path": "skills/topic-cluster-planning/references/internal-link-review.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 48,
-      "syntax": "markdown_link",
-      "target": "page-audit/references/metadata-writing.md",
-      "resolved_path": "skills/page-audit/references/metadata-writing.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 48,
-      "syntax": "markdown_link",
-      "target": "improve-content/references/seo-editing.md",
-      "resolved_path": "skills/improve-content/references/seo-editing.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 48,
-      "syntax": "markdown_link",
-      "target": "page-cro/references/conversion-analysis.md",
-      "resolved_path": "skills/page-cro/references/conversion-analysis.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 48,
-      "syntax": "markdown_link",
-      "target": "../docs/skill-method-adaptations.json",
-      "resolved_path": "docs/skill-method-adaptations.json",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 48,
-      "syntax": "markdown_link",
-      "target": "../third_party/skill-history/seomachine/README.md",
-      "resolved_path": "third_party/skill-history/seomachine/README.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 52,
-      "syntax": "markdown_link",
-      "target": "reader-experience-review/SKILL.md",
-      "resolved_path": "skills/reader-experience-review/SKILL.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/README.md",
-      "line": 52,
       "syntax": "markdown_link",
       "target": "write-content/SKILL.md",
       "resolved_path": "skills/write-content/SKILL.md",
@@ -18462,11 +17966,475 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 56,
+      "line": 49,
+      "syntax": "markdown_link",
+      "target": "improve-content/SKILL.md",
+      "resolved_path": "skills/improve-content/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 50,
+      "syntax": "markdown_link",
+      "target": "reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 51,
+      "syntax": "markdown_link",
+      "target": "copywriting/SKILL.md",
+      "resolved_path": "skills/copywriting/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 52,
+      "syntax": "markdown_link",
+      "target": "copy-editing/SKILL.md",
+      "resolved_path": "skills/copy-editing/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 53,
+      "syntax": "markdown_link",
+      "target": "expert-interview/SKILL.md",
+      "resolved_path": "skills/expert-interview/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 61,
+      "syntax": "markdown_link",
+      "target": "site-audit/SKILL.md",
+      "resolved_path": "skills/site-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 62,
+      "syntax": "markdown_link",
+      "target": "page-audit/SKILL.md",
+      "resolved_path": "skills/page-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 63,
+      "syntax": "markdown_link",
+      "target": "seo-content/SKILL.md",
+      "resolved_path": "skills/seo-content/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 64,
+      "syntax": "markdown_link",
+      "target": "eeat-audit/SKILL.md",
+      "resolved_path": "skills/eeat-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 65,
+      "syntax": "markdown_link",
+      "target": "seo-sxo/SKILL.md",
+      "resolved_path": "skills/seo-sxo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 66,
+      "syntax": "markdown_link",
+      "target": "featured-snippet-optimizer/SKILL.md",
+      "resolved_path": "skills/featured-snippet-optimizer/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 67,
+      "syntax": "markdown_link",
+      "target": "competitor-alternatives/SKILL.md",
+      "resolved_path": "skills/competitor-alternatives/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 68,
+      "syntax": "markdown_link",
+      "target": "seo-competitor-pages/SKILL.md",
+      "resolved_path": "skills/seo-competitor-pages/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 69,
+      "syntax": "markdown_link",
+      "target": "seo-geo/SKILL.md",
+      "resolved_path": "skills/seo-geo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 77,
+      "syntax": "markdown_link",
+      "target": "technical-audit/SKILL.md",
+      "resolved_path": "skills/technical-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 78,
+      "syntax": "markdown_link",
+      "target": "headless-precheck/SKILL.md",
+      "resolved_path": "skills/headless-precheck/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 79,
+      "syntax": "markdown_link",
+      "target": "schema/SKILL.md",
+      "resolved_path": "skills/schema/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 80,
+      "syntax": "markdown_link",
+      "target": "sitemap/SKILL.md",
+      "resolved_path": "skills/sitemap/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 81,
+      "syntax": "markdown_link",
+      "target": "images/SKILL.md",
+      "resolved_path": "skills/images/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 82,
+      "syntax": "markdown_link",
+      "target": "seo-image-gen/SKILL.md",
+      "resolved_path": "skills/seo-image-gen/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 83,
+      "syntax": "markdown_link",
+      "target": "seo-ecommerce/SKILL.md",
+      "resolved_path": "skills/seo-ecommerce/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 84,
+      "syntax": "markdown_link",
+      "target": "seo-hreflang/SKILL.md",
+      "resolved_path": "skills/seo-hreflang/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 85,
+      "syntax": "markdown_link",
+      "target": "seo-local/SKILL.md",
+      "resolved_path": "skills/seo-local/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 86,
+      "syntax": "markdown_link",
+      "target": "seo-maps/SKILL.md",
+      "resolved_path": "skills/seo-maps/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 92,
+      "syntax": "markdown_link",
+      "target": "seo-google/SKILL.md",
+      "resolved_path": "skills/seo-google/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 93,
+      "syntax": "markdown_link",
+      "target": "seo-dataforseo/SKILL.md",
+      "resolved_path": "skills/seo-dataforseo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 94,
+      "syntax": "markdown_link",
+      "target": "drift/SKILL.md",
+      "resolved_path": "skills/drift/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 95,
+      "syntax": "markdown_link",
+      "target": "analytics-tracking/SKILL.md",
+      "resolved_path": "skills/analytics-tracking/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 96,
+      "syntax": "markdown_link",
+      "target": "backlinks/SKILL.md",
+      "resolved_path": "skills/backlinks/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 97,
+      "syntax": "markdown_link",
+      "target": "linkbuilding/SKILL.md",
+      "resolved_path": "skills/linkbuilding/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 105,
+      "syntax": "markdown_link",
+      "target": "page-cro/SKILL.md",
+      "resolved_path": "skills/page-cro/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 106,
+      "syntax": "markdown_link",
+      "target": "form-cro/SKILL.md",
+      "resolved_path": "skills/form-cro/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 107,
+      "syntax": "markdown_link",
+      "target": "popup-cro/SKILL.md",
+      "resolved_path": "skills/popup-cro/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 108,
+      "syntax": "markdown_link",
+      "target": "signup-flow-cro/SKILL.md",
+      "resolved_path": "skills/signup-flow-cro/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 109,
+      "syntax": "markdown_link",
+      "target": "onboarding-cro/SKILL.md",
+      "resolved_path": "skills/onboarding-cro/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 110,
+      "syntax": "markdown_link",
+      "target": "paywall-upgrade-cro/SKILL.md",
+      "resolved_path": "skills/paywall-upgrade-cro/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 111,
+      "syntax": "markdown_link",
+      "target": "ab-test-setup/SKILL.md",
+      "resolved_path": "skills/ab-test-setup/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 119,
+      "syntax": "markdown_link",
+      "target": "email-sequence/SKILL.md",
+      "resolved_path": "skills/email-sequence/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 120,
+      "syntax": "markdown_link",
+      "target": "social-content/SKILL.md",
+      "resolved_path": "skills/social-content/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 121,
+      "syntax": "markdown_link",
+      "target": "paid-ads/SKILL.md",
+      "resolved_path": "skills/paid-ads/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 122,
+      "syntax": "markdown_link",
+      "target": "launch-strategy/SKILL.md",
+      "resolved_path": "skills/launch-strategy/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 128,
+      "syntax": "markdown_link",
+      "target": "growth-lead/SKILL.md",
+      "resolved_path": "skills/growth-lead/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 129,
+      "syntax": "markdown_link",
+      "target": "pricing-strategy/SKILL.md",
+      "resolved_path": "skills/pricing-strategy/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 130,
+      "syntax": "markdown_link",
+      "target": "referral-program/SKILL.md",
+      "resolved_path": "skills/referral-program/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 131,
+      "syntax": "markdown_link",
+      "target": "free-tool-strategy/SKILL.md",
+      "resolved_path": "skills/free-tool-strategy/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 132,
+      "syntax": "markdown_link",
+      "target": "marketing-ideas/SKILL.md",
+      "resolved_path": "skills/marketing-ideas/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 133,
+      "syntax": "markdown_link",
+      "target": "marketing-psychology/SKILL.md",
+      "resolved_path": "skills/marketing-psychology/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 139,
       "syntax": "markdown_link",
       "target": "seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
       "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 141,
+      "syntax": "markdown_link",
+      "target": "copy-editing/references/article-editing.md",
+      "resolved_path": "skills/copy-editing/references/article-editing.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 141,
+      "syntax": "markdown_link",
+      "target": "topic-cluster-planning/references/internal-link-review.md",
+      "resolved_path": "skills/topic-cluster-planning/references/internal-link-review.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 141,
+      "syntax": "markdown_link",
+      "target": "page-audit/references/metadata-writing.md",
+      "resolved_path": "skills/page-audit/references/metadata-writing.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 141,
+      "syntax": "markdown_link",
+      "target": "improve-content/references/seo-editing.md",
+      "resolved_path": "skills/improve-content/references/seo-editing.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 141,
+      "syntax": "markdown_link",
+      "target": "page-cro/references/conversion-analysis.md",
+      "resolved_path": "skills/page-cro/references/conversion-analysis.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 145,
+      "syntax": "markdown_link",
+      "target": "../docs/skill-sources.md",
+      "resolved_path": "docs/skill-sources.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 145,
+      "syntax": "markdown_link",
+      "target": "../third_party/NOTICE.md",
+      "resolved_path": "third_party/NOTICE.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 145,
+      "syntax": "markdown_link",
+      "target": "../docs/20261029-skill-layout-migration.md",
+      "resolved_path": "docs/20261029-skill-layout-migration.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 145,
+      "syntax": "markdown_link",
+      "target": "../docs/skill-method-adaptations.json",
+      "resolved_path": "docs/skill-method-adaptations.json",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 145,
+      "syntax": "markdown_link",
+      "target": "../third_party/skill-history/seomachine/README.md",
+      "resolved_path": "third_party/skill-history/seomachine/README.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 145,
+      "syntax": "backtick_path",
+      "target": "skills/<capability>/SKILL.md",
+      "resolved_path": null,
+      "status": "template_reference"
     },
     {
       "from_path": "skills/ab-test-setup/SKILL.md",
