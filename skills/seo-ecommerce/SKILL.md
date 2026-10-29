@@ -24,14 +24,12 @@ Comprehensive product page optimization, marketplace intelligence, and
 competitive pricing analysis. Works standalone (on-page + schema) and with
 DataForSEO Merchant API for live Google Shopping and Amazon data.
 
-## Commands
+## Inputs and Capability
 
-| Command | Purpose | DataForSEO? |
-|---------|---------|-------------|
-| `/seo ecommerce <url>` | Full e-commerce SEO analysis of a product page or store | Optional |
-| `/seo ecommerce products <keyword>` | Google Shopping competitive analysis | Required |
-| `/seo ecommerce gaps <domain>` | Keyword gap: organic vs Shopping visibility | Required |
-| `/seo ecommerce schema <url>` | Product schema validation and enhancement | No |
+Use current project product pages, eligible raw/rendered evidence, and supplied
+marketplace exports. Discover any connected marketplace provider and read its
+actual tool contract before using it. Workbench does not bundle a generic Merchant
+API executor. See [Workbench operations](../seo/references/workbench-operations.md).
 
 ---
 
@@ -41,11 +39,11 @@ Fetch and parse any product page for on-page SEO quality.
 
 ### Workflow
 
-```
-1. python scripts/fetch_page.py <url>         → raw HTML
-2. python scripts/parse_html.py --url <url>   → SEO elements
-3. Analyze product-specific signals (below)
-```
+Reuse current eligible evidence first. When collection is needed and within scope,
+inspect `./seo evidence --help`; use the project-scoped collector against the bound project URL with bounded crawl options. Compare raw/rendered product content when needed.
+Extract title, headings, description, Product markup, images, canonical, and links
+from the returned evidence and inspect missing visual elements in a browser when
+available. Unavailable HTML cannot prove absent schema or metadata.
 
 ### Product SEO Checklist
 
@@ -103,34 +101,13 @@ Fetch and parse any product page for on-page SEO quality.
 
 Live competitive analysis from Google Shopping results.
 
-### Cost Guardrail (MANDATORY)
+### Data Acquisition
 
-Before EVERY Merchant API call:
-```bash
-python scripts/dataforseo_costs.py check merchant_google_products_search
-```
-
-- `"status": "approved"` -- proceed
-- `"status": "needs_approval"` -- show cost, ask user
-- `"status": "blocked"` -- stop, inform user
-
-After each call:
-```bash
-python scripts/dataforseo_costs.py log merchant_google_products_search <cost>
-```
-
-### Workflow
-
-```bash
-# Product search: who sells what at what price
-python scripts/dataforseo_merchant.py search "<keyword>" --marketplace google
-
-# Seller analysis: merchant ratings and dominance
-python scripts/dataforseo_merchant.py sellers "<keyword>"
-
-# Normalize results for analysis
-python scripts/dataforseo_normalize.py results.json --module merchant
-```
+Use a supplied Shopping result export or an available provider with verified
+parameters, schema, task status, and cost. Retain query, country, language, device,
+collection time, currency, depth, and completeness with each sample. The local
+paid backlink collector does not implement Merchant search. Follow the provider's
+actual billing and retry contract for any authorized request.
 
 ### Analysis Outputs
 
@@ -152,7 +129,7 @@ python scripts/dataforseo_normalize.py results.json --module merchant
 - Image count per listing
 - Availability status distribution
 
-Load `references/marketplace-endpoints.md` for full API parameter details.
+Read [marketplace inputs](references/marketplace-endpoints.md) for export fields and normalization.
 
 ---
 
@@ -160,23 +137,12 @@ Load `references/marketplace-endpoints.md` for full API parameter details.
 
 Cross-marketplace intelligence comparing Google Shopping and Amazon.
 
-### Cost Guardrail (MANDATORY)
+### Data Acquisition
 
-```bash
-python scripts/dataforseo_costs.py check merchant_amazon_products_search
-```
-
-Amazon endpoints are in the `warn_endpoints` set -- always requires user approval.
-
-### Workflow
-
-```bash
-# Amazon product search
-python scripts/dataforseo_merchant.py search "<keyword>" --marketplace amazon
-
-# Cross-marketplace comparison
-python scripts/dataforseo_merchant.py compare "<keyword>"
-```
+Obtain a comparable Amazon sample through a supplied export or verified available
+tool. Match query, locale, capture window, product variant, pack size, shipping,
+and currency before comparing prices. Keep missing marketplace observations
+explicitly unobserved. A provider listing sample is not total marketplace share.
 
 ### Cross-Marketplace Report
 
@@ -196,11 +162,9 @@ Identify mismatches between organic and Shopping visibility.
 
 ### Workflow
 
-1. Fetch organic rankings via seo-dataforseo:
-   `dataforseo_labs_google_ranked_keywords` for domain
-2. Fetch Google Shopping presence via Merchant API:
-   `merchant_google_products_search` for top organic keywords
-3. Cross-reference results
+1. Obtain observed organic query/page evidence from the current project or a verified provider/export.
+2. Obtain a comparable Shopping sample for selected queries.
+3. Cross-reference identities, capture windows, locale, and coverage before marking a gap. An unobserved result is not proven absent.
 
 ### Gap Types
 
@@ -294,21 +258,18 @@ Validate and generate Product schema following Google's current requirements.
 | **seo-content** | Product description E-E-A-T and uniqueness analysis |
 | **seo-dataforseo** | Organic keyword rankings for gap analysis |
 | **technical-audit** | Core Web Vitals for product pages (LCP on hero image) |
-| **seo-google** | Google Merchant Center feed validation via GSC |
+| **seo-google** | GSC search evidence; Merchant Center diagnostics require their own supplied or connected input |
 
 ---
 
-## Error Handling
+## Incomplete Evidence
 
-| Error | Cause | Response |
-|-------|-------|----------|
-| No Product schema found | Page lacks JSON-LD | Analyze page content, generate recommended schema |
-| DataForSEO credentials missing | Env vars not set | Run analysis without marketplace data, note limitation |
-| Cost check blocked | Daily budget exceeded | Inform user, offer free-only analysis |
-| Empty Shopping results | No products for keyword | Suggest broader keyword, check location settings |
-| Amazon API timeout | Network/rate limit | Retry with backoff, fall back to Google-only |
-| Invalid URL | Malformed input | Validate via `google_auth.validate_url()`, show error |
-| Non-product page | URL is category/homepage | Detect page type, suggest `/seo ecommerce schema` instead |
+Missing marketplace inputs leave the corresponding analysis unobserved. Empty
+results require query and scope validation before drawing a gap conclusion.
+Collector failures retain their status; use eligible page observations for the
+remaining analysis. For a category or home page, use `page-audit` with the actual
+page type. Product schema recommendations follow the local `schema` method and
+must reflect actual product facts.
 
 ---
 
@@ -329,7 +290,7 @@ Validate and generate Product schema following Google's current requirements.
 ### Marketplace Intelligence (if DataForSEO available)
 - Google Shopping Listings: N products found
 - Price Range: $XX - $XX (median: $XX)
-- Top Seller: [name] (XX% market share)
+- Top Seller: [name] (XX% of sampled listings)
 - Amazon Comparison: [available/not checked]
 
 ### Top Recommendations
@@ -337,5 +298,5 @@ Validate and generate Product schema following Google's current requirements.
 2. [High] ...
 3. [Medium] ...
 
-Generate a PDF report? Use `/seo google report`
+Save the report in the existing project reporting workflow.
 ```

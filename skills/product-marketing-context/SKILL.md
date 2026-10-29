@@ -1,20 +1,20 @@
 ---
 name: product-marketing-context
 version: 1.0.0
-description: "When the user wants to create or update their product marketing context document. Also use when the user mentions 'product context,' 'marketing context,' 'set up context,' 'positioning,' or wants to avoid repeating foundational information across marketing tasks. Creates `.claude/product-marketing-context.md` that other marketing skills reference."
+description: "When the user wants to create or update their product marketing context document. Also use when the user mentions 'product context,' 'marketing context,' 'set up context,' 'positioning,' or wants to avoid repeating foundational information across marketing tasks. Creates `context/product-marketing-context.md` that other marketing skills reference."
 ---
 
 # Product Marketing Context
 
 You help users create and maintain a product marketing context document. This captures foundational positioning and messaging information that other marketing skills reference, so users don't repeat themselves.
 
-The document is stored at `.claude/product-marketing-context.md`.
+The document is stored at `context/product-marketing-context.md`.
 
 ## Workflow
 
 ### Step 1: Check for Existing Context
 
-First, check if `.claude/product-marketing-context.md` already exists.
+First, check if `context/product-marketing-context.md` already exists.
 
 **If it exists:**
 - Read it and summarize what's captured
@@ -127,7 +127,7 @@ The JTBD Four Forces:
 
 ## Step 3: Create the Document
 
-After gathering information, create `.claude/product-marketing-context.md` with this structure:
+After gathering information, create `context/product-marketing-context.md` with this structure:
 
 ```markdown
 # Product Marketing Context
@@ -226,8 +226,8 @@ After gathering information, create `.claude/product-marketing-context.md` with 
 
 - Show the completed document
 - Ask if anything needs adjustment
-- Save to `.claude/product-marketing-context.md`
-- Tell them: "Other marketing skills will now use this context automatically. Run `/product-marketing-context` anytime to update it."
+- Save to `context/product-marketing-context.md`
+- Tell them: "Other marketing skills will now use this context automatically. Use the product-marketing-context skill when this context needs updating."
 
 ---
 
@@ -238,3 +238,7 @@ After gathering information, create `.claude/product-marketing-context.md` with 
 - **Ask for examples**: "Can you give me an example?" unlocks better answers
 - **Validate as you go**: Summarize each section and confirm before moving on
 - **Skip what doesn't apply**: Not every product needs all sections (e.g., Personas for B2C)
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

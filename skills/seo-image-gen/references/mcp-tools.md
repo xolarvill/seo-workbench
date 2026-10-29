@@ -3,7 +3,12 @@
 > Package: `@ycse/nanobanana-mcp`
 > GitHub: https://github.com/YCSE/nanobanana-mcp
 
-## Tools
+The following names and parameters are preserved source examples, not installed
+Workbench interfaces. Discover the session's actual image tools and read their
+current schemas and applicable skills before calling them. Use the tool-returned
+asset path or a project-specific destination; do not assume a global output store.
+
+## Source Tool Examples
 
 ### gemini_generate_image
 Generate an image from a text prompt.
@@ -13,12 +18,12 @@ Generate an image from a text prompt.
 |-------|------|----------|-------------|
 | `prompt` | string | Yes | Text description of the image to generate |
 
-**Returns:** Image data + file path (saved to `~/Documents/nanobanana_generated/`)
+**Source return shape:** Image data and a file path. Inspect the actual tool response for its path and format.
 
-**Example usage in Claude Code:**
+**Source interaction example (verify against the actual tool):**
 ```
 User: "Generate a sunset over mountains in watercolor style"
-→ Claude calls gemini_generate_image with prompt
+→ The source integration calls gemini_generate_image with prompt
 → Returns image path and description
 ```
 
@@ -35,8 +40,8 @@ Edit an existing image with text instructions.
 
 **Example:**
 ```
-User: "Remove the background from ~/Documents/photo.png"
-→ Claude calls gemini_edit_image with path and instruction
+User: "Remove the background from the supplied project photo"
+→ The source integration calls gemini_edit_image with path and instruction
 ```
 
 ### gemini_chat
@@ -94,10 +99,13 @@ Reset session context and conversation history.
 | `GOOGLE_AI_API_KEY` | Yes | API key from https://aistudio.google.com/apikey |
 | `NANOBANANA_MODEL` | No | Override default model (default: `gemini-3.1-flash-image-preview`) |
 
-## Output Directory
-All generated images are saved to: `~/Documents/nanobanana_generated/`
+## Output Location
 
-Images are named with timestamps for easy identification.
+Use the actual path or asset object returned by the selected tool. If the task
+requires a local project copy, inspect that returned asset and save it to the
+current project's existing asset location with a distinct filename. Keep the
+original and record both paths when a converted derivative is created. A history
+API describes only the scope it actually returns; do not infer a global library.
 
 ## Feature Availability via MCP
 
@@ -112,4 +120,4 @@ Some newer Gemini API features depend on the MCP package version of `@ycse/nanob
 | Multi-image input (up to 14 refs) | Available | Via `gemini_chat` with image paths |
 | All 14 aspect ratios | Available | Via `set_aspect_ratio` |
 
-If a feature is not yet supported by the MCP package, you can still use it via direct API calls with `curl` or the Google AI SDK.
+If the actual tool does not support a feature, use an available supported method or retain it as an unmet brief requirement. A direct API route requires a verified current contract, configured credentials, and authorization for its operation; this reference does not install that route.

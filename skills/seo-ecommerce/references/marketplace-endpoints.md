@@ -1,119 +1,45 @@
-# DataForSEO Merchant API Reference
+# Marketplace Inputs and Normalization
 
-Endpoint details for Google Shopping and Amazon marketplace data.
+This reference retains the source method's Google Shopping product, seller, and
+Amazon comparison coverage. The repository does not install a Merchant search
+client. Endpoint names and schemas must come from an actually available provider;
+read its current tool contract before a request. See
+[Workbench operations](../../seo/references/workbench-operations.md).
 
-## Endpoints
+## Sample Identity
 
-### Google Shopping Products
+For each input retain provider/export source, query, country or location,
+language, device where relevant, collection date, pagination/depth, completeness,
+and currency. Record sponsored versus organic listing type when available. Price
+comparisons need the same product variant, pack size, tax/shipping treatment,
+and capture window. An incomplete listing sample cannot establish absence.
 
-| Field | Value |
-|-------|-------|
-| Endpoint | `merchant_google_products_search` |
-| Method | POST (task) / GET (results) |
-| Cost | $0.02 per call |
-| Queue | Standard (60-80% savings vs live) |
+## Product and Seller Fields
 
-**Parameters:**
-- `keyword` (required) -- search query
-- `location_code` (default: 2840 = US) -- DataForSEO location ID
-- `language_code` (default: "en") -- language
-- `price_min` / `price_max` (optional) -- filter by price range
-- `sort_by` (optional) -- "relevance", "price_low_to_high", "price_high_to_low", "rating"
-- `depth` (optional, default: 100) -- number of results
+| Analysis | Required observed fields |
+|----------|--------------------------|
+| Product pricing | Product title/ID, listing URL, variant, price, currency, shipping/tax treatment, availability |
+| Listing quality | Title, image reference, rating, review count, seller, listing type |
+| Seller landscape | Seller identity, seller listing count within the sample, seller rating and rating count |
+| Amazon comparison | Product identity/ASIN where supplied, pack size/variant, price, currency, availability; Prime/badges only when observed |
+| Organic/Shopping gaps | Query, observed organic page/rank, Shopping listing/rank, matching collection scope |
 
-**Response fields:**
-- `title` -- product listing title
-- `price` -- numeric price value
-- `currency` -- currency code (USD, EUR, etc.)
-- `seller` -- merchant name
-- `rating` -- product rating (float, 0-5)
-- `reviews_count` -- number of reviews
-- `url` -- product listing URL
-- `image_url` -- product image URL
-- `availability` -- "in_stock", "out_of_stock", "preorder"
-- `delivery_info` -- shipping details text
-- `product_id` -- Google Shopping product ID
+Use source columns actually present. Keep omitted rating, shipping, or availability
+as unknown; do not fill them with zero or false. Deduplicate repeated products and
+sellers before computing listing shares. Label every share with its sample base.
 
-### Google Shopping Sellers
+## Normalization
 
-| Field | Value |
-|-------|-------|
-| Endpoint | `merchant_google_sellers_search` |
-| Method | POST (task) / GET (results) |
-| Cost | $0.02 per call |
+- Parse decimal prices without currency symbols and retain the original currency.
+- Convert currencies only with a dated exchange-rate input and retain original values.
+- Map observed availability to in_stock, out_of_stock, preorder, or unknown.
+- Preserve a rating's scale and its review count; compare ratings on a common scale.
+- Retain raw aggregate source values alongside normalized analytical values.
 
-**Parameters:** Same as products search.
+## Provider Operations
 
-**Response fields:**
-- `seller_name` -- merchant name
-- `seller_rating` -- merchant rating (float)
-- `seller_reviews_count` -- merchant review count
-- `price` -- price offered by this seller
-- `delivery_info` -- shipping and delivery text
-- `url` -- seller listing URL
-
-### Amazon Products
-
-| Field | Value |
-|-------|-------|
-| Endpoint | `merchant_amazon_products_search` |
-| Method | POST (task) / GET (results) |
-| Cost | $0.02 per call |
-| Note | In `warn_endpoints` -- always requires user approval |
-
-**Parameters:**
-- `keyword` (required) -- search query
-- `location_code` (default: 2840 = US)
-- `language_code` (default: "en")
-- `depth` (optional, default: 100)
-- `sort_by` (optional) -- "relevance", "price_low_to_high", "price_high_to_low", "avg_customer_review"
-
-**Response fields:**
-- `title` -- product title
-- `price` -- numeric price
-- `currency` -- currency code
-- `seller` -- seller/brand name
-- `rating` -- star rating (float, 0-5)
-- `reviews_count` -- review count
-- `url` -- Amazon product URL
-- `image_url` -- product image
-- `availability` -- stock status
-- `asin` -- Amazon Standard Identification Number
-- `is_prime` -- Prime eligibility (boolean)
-- `is_best_seller` -- Best Seller badge (boolean)
-
-## Task/Poll Pattern
-
-All Merchant endpoints use the standard DataForSEO queue pattern:
-
-1. **POST** task with parameters to create endpoint
-2. **Poll** for results with exponential backoff (2s, 4s, 8s, max 60s)
-3. **GET** completed results by task ID
-
-This saves 60-80% compared to live endpoints.
-
-## Rate Limits
-
-- Max 2000 tasks per minute (across all endpoints)
-- Max 30,000 tasks per day on standard plans
-- Backoff on HTTP 429: wait 60 seconds, then retry
-
-## Data Normalization
-
-When consuming responses, normalize:
-
-| Field | Raw | Normalized |
-|-------|-----|-----------|
-| Price | String "$29.99" or float | Float `29.99` |
-| Currency | Mixed formats | ISO 4217 code (USD, EUR, GBP) |
-| Availability | Various strings | Enum: `in_stock`, `out_of_stock`, `preorder`, `unknown` |
-| Rating | Integer or float | Float rounded to 1 decimal |
-| Reviews | String or int | Integer |
-
-Use `scripts/dataforseo_normalize.py --module merchant` for automatic normalization.
-
-## Cost Reference
-
-See `skills/seo-dataforseo/references/cost-tiers.md` for the full pricing table,
-budget presets, and cost reduction tips. All Merchant endpoints are $0.02/call
-on standard queue.
+Use an available tool's task/poll and pagination contract. Record returned status,
+errors, completeness, and charged usage when exposed. Respect its retry guidance;
+no local Merchant budget-check, normalization, or task-poll script is bundled.
+Current pricing and rate limits require provider evidence for the planned request.
+A supplied export supports the same analysis without an API request.

@@ -2,10 +2,12 @@
 
 本文件是技能来源维护入口，配套的 [skill-sources.json](skill-sources.json) 保存完整文件映射、内容指纹、本地历史和引用关系。最后核查：**2026-10-29（Asia/Shanghai）**。第 1 步建立来源基线；第 2、3 步已按[能力归属与目录迁移记录](20261029-skill-layout-migration.md)更新为 60 个一级入口。
 
+第 4、5 步的[方法与运行适配记录](20261029-skill-methods-runtime-adaptation.md)保存了专业参考归属、失效执行引用的处理与验证。
+
 ## 快速查询
 
 - 查某个技能来自哪里：在下方入口表中找名称，打开固定版本的上游链接。
-- 查 references、assets、许可证等配套文件：在 JSON 的 `files` 中按 `local_path` 查找。当前 401 个受维护文件均有记录；原材料与派生方法保持独立来源身份。
+- 查 references、assets、许可证等配套文件：在 JSON 的 `files` 中按 `local_path` 查找。当前 406 个受维护文件均有记录；原材料与派生方法保持独立来源身份。
 - 查本地何时修改：查看 `first_local_record`、`last_local_change`，再用 Git 读取对应文件差异。
 - 查旧工具路径和断开的引用：在 JSON 的 `dependencies` 中按 `from_path` 或 `target` 查询。后续修复应更新这里的状态。
 - 查升级范围：比较同一来源的 `comparison_ref` 与新提交，按本文后面的步骤审阅。
@@ -31,11 +33,11 @@
 
 | 来源 | 全部文件 | 活跃技能 | 专家原文 | 流程原文 | 与上游相同 | 与上游有差异 |
 |---|---:|---:|---:|---:|---:|---:|
-| superseo | 125 | 11 | 0 | 0 | 106 | 19 |
-| claude-seo | 140 | 20 | 0 | 0 | 40 | 100 |
-| seomachine | 93 | 24 | 11 | 24 | 81 | 12 |
-| workbench | 43 | 5 | 0 | 0 | 不适用 | 不适用 |
-| 合计 | **401** | **60** | **11** | **24** | **227** | **131** |
+| superseo | 125 | 11 | 0 | 0 | 105 | 20 |
+| claude-seo | 140 | 20 | 0 | 0 | 71 | 69 |
+| seomachine | 93 | 24 | 11 | 24 | 66 | 27 |
+| workbench | 48 | 5 | 0 | 0 | 不适用 | 不适用 |
+| 合计 | **406** | **60** | **11** | **24** | **242** | **116** |
 
 原有 364 个文件的来源 ID 全部保留。新增组合入口和适配参考分别登记为 Workbench 文件，并通过 composed_from 或 derived_from 关联原记录；历史专家与流程原文保留在 third_party/skill-history。
 
@@ -54,8 +56,9 @@ JSON 覆盖 skills/ 和 third_party/skill-history/ 的受维护文件，不含�
 | `baseline_status` / `imported_upstream_commit` | 区分原生文件和未知原始导入基线；只有找到明确证据才能补原始版本 |
 | `local_sha256` / `local_git_blob_sha` | 本次本地内容指纹；前者便于文件核对，后者便于与 GitHub 树比较 |
 | `comparison_upstream_blob_sha` / `comparison_status` | 固定上游的文件指纹与相同／不同状态；原生文件使用 workbench_native |
-| `first_local_record` / `last_local_change` | 当前路径在本分支历史中最早和最新的变更记录，包含 commit、日期与标题；同时保留该 commit 对应的旧 path，格式或文件模式变更也可能产生记录 |
-| `content_changed_since_first_local_record` | 当前内容与最早本地记录的内容是否不同；false 不代表导入时未经适配 |
+| `first_local_record` / `last_local_change` | 保留首次来源记录，并结合 path_history 刷新最新已提交变更的 commit、日期、标题和当时路径 |
+| `content_changed_since_first_local_record` | 当前内容与首次已提交内容是否不同；恢复首次内容后回到 false。null 表示尚无已提交基线；false 不代表导入时未经适配 |
+| `workingtree_modified` | 当前文件内容是否不同于清点时 HEAD 中该路径的内容；未提交新增文件为 true，与最近已提交历史分开记录 |
 | `semantic_review` | 原材料保留 not_assessed_by_inventory；新入口记录本轮范围路由适配。内容指纹不代替方法质量审阅 |
 | `original_kind` / `composed_from` | 原文件迁移前的类型，以及新组合入口引用的原记录 ID；保留正文的来源记录不被新入口覆盖 |
 | `derived_from` / `adapted_by` | Workbench 适配参考与保留原文之间的双向来源关联；专业方法整理的逐项决定见 skill-method-adaptations.json |
@@ -68,7 +71,7 @@ JSON 覆盖 skills/ 和 third_party/skill-history/ 的受维护文件，不含�
 
 ## 引用关系与适配线索
 
-当前登记 656 处字面路径引用：Markdown 链接目标，以及指定前缀的无空白反引号路径。每条保存来源文件、行号、原始目标、解析位置和状态。它用于后续修复定位，不执行其中的命令。
+当前登记 723 处字面路径引用：Markdown 链接目标，以及指定前缀的无空白反引号路径。每条保存来源文件、行号、原始目标、解析位置和状态。它用于后续修复定位，不执行其中的命令。
 
 | 状态 | 解释 |
 |---|---|
@@ -79,9 +82,9 @@ JSON 覆盖 skills/ 和 third_party/skill-history/ 的受维护文件，不含�
 | template_reference | 含占位符或通配符，需要具体任务参数 |
 | route_or_example | 以 `/` 开头的站内路由或示例，未当作磁盘路径 |
 
-完整数量保存在 JSON 的 `summary.dependencies_by_status`。`missing_literal_target` 是候选清单，不能把总数当作已确认故障数。先前确认的 4 个营销技能、25 处 `../../tools/...` 引用可以直接在这里定位。
+完整数量保存在 JSON 的 `summary.dependencies_by_status`。第 5 步已将活跃技能里的失效工具指南、旧脚本和来源布局引用适配为本地方法；历史原文保持原样。使用 `check --strict-active` 检查活跃材料，历史原文中的旧环境引用留作来源证据。
 
-扫描器不解析完整 Markdown AST、裸写路径、所有 shell 命令或跨段落语义；这次清点不承诺完整执行依赖图。后续引用修复仍需阅读正文上下文，尤其是 FLOW 的原来源路径和 Claude SEO 共享参考文件。
+扫描器检查字面 Markdown／行内路径，并补查脚本、代理和模板文件引用，包括 fenced 命令中的路径；不解析完整 Markdown AST 或任意 shell。运行指令的可用性另经正文审阅、本地 CLI help 核对和按需调用抽样。FLOW 许可声明及固定上游来源保留；本地 lock 记录适配后的文件指纹。
 
 已知本地适配线索可从以下位置恢复：
 
@@ -199,29 +202,29 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 
 | 当前文件 | 固定版本中的上游路径／派生来源 | 内容比对 | 本地首次记录 |
 |---|---|---|---|
-| [skills/ab-test-setup/SKILL.md](../skills/ab-test-setup/SKILL.md) | [.claude/skills/ab-test-setup/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/ab-test-setup/SKILL.md) | 相同 | `f0116d2` |
+| [skills/ab-test-setup/SKILL.md](../skills/ab-test-setup/SKILL.md) | [.claude/skills/ab-test-setup/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/ab-test-setup/SKILL.md) | 有差异 | `f0116d2` |
 | [skills/analytics-tracking/SKILL.md](../skills/analytics-tracking/SKILL.md) | [.claude/skills/analytics-tracking/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/analytics-tracking/SKILL.md) | 有差异 | `f0116d2` |
 | [skills/competitor-alternatives/SKILL.md](../skills/competitor-alternatives/SKILL.md) | [.claude/skills/competitor-alternatives/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/competitor-alternatives/SKILL.md) | 有差异 | `f0116d2` |
 | [skills/content-strategy/SKILL.md](../skills/content-strategy/SKILL.md) | [.claude/skills/content-strategy/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/content-strategy/SKILL.md) | 有差异 | `f0116d2` |
 | [skills/copy-editing/SKILL.md](../skills/copy-editing/SKILL.md) | [.claude/skills/copy-editing/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/copy-editing/SKILL.md) | 有差异 | `f0116d2` |
 | [skills/copywriting/SKILL.md](../skills/copywriting/SKILL.md) | [.claude/skills/copywriting/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/copywriting/SKILL.md) | 有差异 | `f0116d2` |
-| [skills/email-sequence/SKILL.md](../skills/email-sequence/SKILL.md) | [.claude/skills/email-sequence/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/email-sequence/SKILL.md) | 相同 | `f0116d2` |
-| [skills/form-cro/SKILL.md](../skills/form-cro/SKILL.md) | [.claude/skills/form-cro/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/form-cro/SKILL.md) | 相同 | `f0116d2` |
+| [skills/email-sequence/SKILL.md](../skills/email-sequence/SKILL.md) | [.claude/skills/email-sequence/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/email-sequence/SKILL.md) | 有差异 | `f0116d2` |
+| [skills/form-cro/SKILL.md](../skills/form-cro/SKILL.md) | [.claude/skills/form-cro/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/form-cro/SKILL.md) | 有差异 | `f0116d2` |
 | [skills/free-tool-strategy/SKILL.md](../skills/free-tool-strategy/SKILL.md) | [.claude/skills/free-tool-strategy/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/free-tool-strategy/SKILL.md) | 有差异 | `f0116d2` |
 | [skills/growth-lead/SKILL.md](../skills/growth-lead/SKILL.md) | [.claude/skills/growth-lead/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/growth-lead/SKILL.md) | 相同 | `f0116d2` |
-| [skills/launch-strategy/SKILL.md](../skills/launch-strategy/SKILL.md) | [.claude/skills/launch-strategy/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/launch-strategy/SKILL.md) | 相同 | `f0116d2` |
-| [skills/marketing-ideas/SKILL.md](../skills/marketing-ideas/SKILL.md) | [.claude/skills/marketing-ideas/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/marketing-ideas/SKILL.md) | 相同 | `f0116d2` |
-| [skills/marketing-psychology/SKILL.md](../skills/marketing-psychology/SKILL.md) | [.claude/skills/marketing-psychology/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/marketing-psychology/SKILL.md) | 相同 | `f0116d2` |
-| [skills/onboarding-cro/SKILL.md](../skills/onboarding-cro/SKILL.md) | [.claude/skills/onboarding-cro/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/onboarding-cro/SKILL.md) | 相同 | `f0116d2` |
+| [skills/launch-strategy/SKILL.md](../skills/launch-strategy/SKILL.md) | [.claude/skills/launch-strategy/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/launch-strategy/SKILL.md) | 有差异 | `f0116d2` |
+| [skills/marketing-ideas/SKILL.md](../skills/marketing-ideas/SKILL.md) | [.claude/skills/marketing-ideas/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/marketing-ideas/SKILL.md) | 有差异 | `f0116d2` |
+| [skills/marketing-psychology/SKILL.md](../skills/marketing-psychology/SKILL.md) | [.claude/skills/marketing-psychology/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/marketing-psychology/SKILL.md) | 有差异 | `f0116d2` |
+| [skills/onboarding-cro/SKILL.md](../skills/onboarding-cro/SKILL.md) | [.claude/skills/onboarding-cro/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/onboarding-cro/SKILL.md) | 有差异 | `f0116d2` |
 | [skills/page-cro/SKILL.md](../skills/page-cro/SKILL.md) | [.claude/skills/page-cro/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/page-cro/SKILL.md) | 有差异 | `f0116d2` |
-| [skills/paid-ads/SKILL.md](../skills/paid-ads/SKILL.md) | [.claude/skills/paid-ads/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/paid-ads/SKILL.md) | 相同 | `f0116d2` |
-| [skills/paywall-upgrade-cro/SKILL.md](../skills/paywall-upgrade-cro/SKILL.md) | [.claude/skills/paywall-upgrade-cro/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/paywall-upgrade-cro/SKILL.md) | 相同 | `f0116d2` |
-| [skills/popup-cro/SKILL.md](../skills/popup-cro/SKILL.md) | [.claude/skills/popup-cro/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/popup-cro/SKILL.md) | 相同 | `f0116d2` |
-| [skills/pricing-strategy/SKILL.md](../skills/pricing-strategy/SKILL.md) | [.claude/skills/pricing-strategy/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/pricing-strategy/SKILL.md) | 相同 | `f0116d2` |
-| [skills/product-marketing-context/SKILL.md](../skills/product-marketing-context/SKILL.md) | [.claude/skills/product-marketing-context/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/product-marketing-context/SKILL.md) | 相同 | `f0116d2` |
+| [skills/paid-ads/SKILL.md](../skills/paid-ads/SKILL.md) | [.claude/skills/paid-ads/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/paid-ads/SKILL.md) | 有差异 | `f0116d2` |
+| [skills/paywall-upgrade-cro/SKILL.md](../skills/paywall-upgrade-cro/SKILL.md) | [.claude/skills/paywall-upgrade-cro/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/paywall-upgrade-cro/SKILL.md) | 有差异 | `f0116d2` |
+| [skills/popup-cro/SKILL.md](../skills/popup-cro/SKILL.md) | [.claude/skills/popup-cro/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/popup-cro/SKILL.md) | 有差异 | `f0116d2` |
+| [skills/pricing-strategy/SKILL.md](../skills/pricing-strategy/SKILL.md) | [.claude/skills/pricing-strategy/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/pricing-strategy/SKILL.md) | 有差异 | `f0116d2` |
+| [skills/product-marketing-context/SKILL.md](../skills/product-marketing-context/SKILL.md) | [.claude/skills/product-marketing-context/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/product-marketing-context/SKILL.md) | 有差异 | `f0116d2` |
 | [skills/programmatic-seo/SKILL.md](../skills/programmatic-seo/SKILL.md) | [.claude/skills/programmatic-seo/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/programmatic-seo/SKILL.md) | 有差异 | `f0116d2` |
-| [skills/referral-program/SKILL.md](../skills/referral-program/SKILL.md) | [.claude/skills/referral-program/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/referral-program/SKILL.md) | 相同 | `f0116d2` |
-| [skills/signup-flow-cro/SKILL.md](../skills/signup-flow-cro/SKILL.md) | [.claude/skills/signup-flow-cro/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/signup-flow-cro/SKILL.md) | 相同 | `f0116d2` |
+| [skills/referral-program/SKILL.md](../skills/referral-program/SKILL.md) | [.claude/skills/referral-program/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/referral-program/SKILL.md) | 有差异 | `f0116d2` |
+| [skills/signup-flow-cro/SKILL.md](../skills/signup-flow-cro/SKILL.md) | [.claude/skills/signup-flow-cro/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/signup-flow-cro/SKILL.md) | 有差异 | `f0116d2` |
 | [skills/social-content/SKILL.md](../skills/social-content/SKILL.md) | [.claude/skills/social-content/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/social-content/SKILL.md) | 有差异 | `f0116d2` |
 
 ### workbench / skill（5）
@@ -279,45 +282,50 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [third_party/skill-history/seomachine/commands/scrub.md](../third_party/skill-history/seomachine/commands/scrub.md) | [.claude/commands/scrub.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/commands/scrub.md) | 相同 | `f0116d2` |
 | [third_party/skill-history/seomachine/commands/write.md](../third_party/skill-history/seomachine/commands/write.md) | [.claude/commands/write.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/commands/write.md) | 相同 | `f0116d2` |
 
-### workbench / reference（35）
+### workbench / reference（40）
 
 | 当前文件 | 固定版本中的上游路径／派生来源 | 内容比对 | 本地首次记录 |
 |---|---|---|---|
-| [skills/content-strategy/references/calendar-planning.md](../skills/content-strategy/references/calendar-planning.md) | seomachine:.claude/commands/content-calendar.md | 本地方法 | 本轮新增 |
-| [skills/content-strategy/references/topic-opportunities.md](../skills/content-strategy/references/topic-opportunities.md) | seomachine:.claude/commands/research-topics.md | 本地方法 | 本轮新增 |
-| [skills/content-strategy/references/trend-research.md](../skills/content-strategy/references/trend-research.md) | seomachine:.claude/commands/research-trending.md | 本地方法 | 本轮新增 |
-| [skills/content-strategy/references/work-priorities.md](../skills/content-strategy/references/work-priorities.md) | seomachine:.claude/commands/priorities.md | 本地方法 | 本轮新增 |
-| [skills/copy-editing/references/article-editing.md](../skills/copy-editing/references/article-editing.md) | seomachine:.claude/agents/editor.md | 本地方法 | 本轮新增 |
-| [skills/copywriting/references/headline-options.md](../skills/copywriting/references/headline-options.md) | seomachine:.claude/agents/headline-generator.md | 本地方法 | 本轮新增 |
-| [skills/copywriting/references/landing-page-draft.md](../skills/copywriting/references/landing-page-draft.md) | seomachine:.claude/commands/landing-write.md | 本地方法 | 本轮新增 |
-| [skills/copywriting/references/landing-page-handoff.md](../skills/copywriting/references/landing-page-handoff.md) | seomachine:.claude/commands/landing-publish.md | 本地方法 | 本轮新增 |
-| [skills/drift/references/content-performance-review.md](../skills/drift/references/content-performance-review.md) | seomachine:.claude/agents/performance.md | 本地方法 | 本轮新增 |
-| [skills/drift/references/content-performance-workflow.md](../skills/drift/references/content-performance-workflow.md) | seomachine:.claude/commands/performance-review.md | 本地方法 | 本轮新增 |
-| [skills/drift/references/performance-priorities.md](../skills/drift/references/performance-priorities.md) | seomachine:.claude/commands/research-performance.md | 本地方法 | 本轮新增 |
-| [skills/improve-content/references/optimization-workflow.md](../skills/improve-content/references/optimization-workflow.md) | seomachine:.claude/commands/optimize.md | 本地方法 | 本轮新增 |
-| [skills/improve-content/references/refresh-workflow.md](../skills/improve-content/references/refresh-workflow.md) | seomachine:.claude/commands/rewrite.md | 本地方法 | 本轮新增 |
-| [skills/improve-content/references/seo-editing.md](../skills/improve-content/references/seo-editing.md) | seomachine:.claude/agents/seo-optimizer.md | 本地方法 | 本轮新增 |
-| [skills/keyword-deep-dive/references/keyword-placement-review.md](../skills/keyword-deep-dive/references/keyword-placement-review.md) | seomachine:.claude/agents/keyword-mapper.md | 本地方法 | 本轮新增 |
-| [skills/keyword-deep-dive/references/research-workflow.md](../skills/keyword-deep-dive/references/research-workflow.md) | seomachine:.claude/commands/research.md | 本地方法 | 本轮新增 |
-| [skills/keyword-deep-dive/references/serp-review.md](../skills/keyword-deep-dive/references/serp-review.md) | seomachine:.claude/commands/research-serp.md | 本地方法 | 本轮新增 |
-| [skills/page-audit/references/content-assessment.md](../skills/page-audit/references/content-assessment.md) | seomachine:.claude/agents/content-analyzer.md | 本地方法 | 本轮新增 |
-| [skills/page-audit/references/existing-page-review.md](../skills/page-audit/references/existing-page-review.md) | seomachine:.claude/commands/analyze-existing.md | 本地方法 | 本轮新增 |
-| [skills/page-audit/references/metadata-writing.md](../skills/page-audit/references/metadata-writing.md) | seomachine:.claude/agents/meta-creator.md | 本地方法 | 本轮新增 |
-| [skills/page-cro/references/conversion-analysis.md](../skills/page-cro/references/conversion-analysis.md) | seomachine:.claude/agents/cro-analyst.md | 本地方法 | 本轮新增 |
-| [skills/page-cro/references/landing-audit.md](../skills/page-cro/references/landing-audit.md) | seomachine:.claude/commands/landing-audit.md | 本地方法 | 本轮新增 |
-| [skills/page-cro/references/landing-competitor-review.md](../skills/page-cro/references/landing-competitor-review.md) | seomachine:.claude/commands/landing-competitor.md | 本地方法 | 本轮新增 |
-| [skills/page-cro/references/landing-page-review.md](../skills/page-cro/references/landing-page-review.md) | seomachine:.claude/agents/landing-page-optimizer.md | 本地方法 | 本轮新增 |
-| [skills/page-cro/references/landing-research.md](../skills/page-cro/references/landing-research.md) | seomachine:.claude/commands/landing-research.md | 本地方法 | 本轮新增 |
+| [skills/analytics-tracking/references/provider-inputs.md](../skills/analytics-tracking/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/content-strategy/references/calendar-planning.md](../skills/content-strategy/references/calendar-planning.md) | seomachine:.claude/commands/content-calendar.md | 本地方法 | `08d0679` |
+| [skills/content-strategy/references/topic-opportunities.md](../skills/content-strategy/references/topic-opportunities.md) | seomachine:.claude/commands/research-topics.md | 本地方法 | `08d0679` |
+| [skills/content-strategy/references/trend-research.md](../skills/content-strategy/references/trend-research.md) | seomachine:.claude/commands/research-trending.md | 本地方法 | `08d0679` |
+| [skills/content-strategy/references/work-priorities.md](../skills/content-strategy/references/work-priorities.md) | seomachine:.claude/commands/priorities.md | 本地方法 | `08d0679` |
+| [skills/copy-editing/references/article-editing.md](../skills/copy-editing/references/article-editing.md) | seomachine:.claude/agents/editor.md | 本地方法 | `08d0679` |
+| [skills/copywriting/references/headline-options.md](../skills/copywriting/references/headline-options.md) | seomachine:.claude/agents/headline-generator.md | 本地方法 | `08d0679` |
+| [skills/copywriting/references/landing-page-draft.md](../skills/copywriting/references/landing-page-draft.md) | seomachine:.claude/commands/landing-write.md | 本地方法 | `08d0679` |
+| [skills/copywriting/references/landing-page-handoff.md](../skills/copywriting/references/landing-page-handoff.md) | seomachine:.claude/commands/landing-publish.md | 本地方法 | `08d0679` |
+| [skills/drift/references/content-performance-review.md](../skills/drift/references/content-performance-review.md) | seomachine:.claude/agents/performance.md | 本地方法 | `08d0679` |
+| [skills/drift/references/content-performance-workflow.md](../skills/drift/references/content-performance-workflow.md) | seomachine:.claude/commands/performance-review.md | 本地方法 | `08d0679` |
+| [skills/drift/references/performance-priorities.md](../skills/drift/references/performance-priorities.md) | seomachine:.claude/commands/research-performance.md | 本地方法 | `08d0679` |
+| [skills/email-sequence/references/provider-inputs.md](../skills/email-sequence/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/improve-content/references/optimization-workflow.md](../skills/improve-content/references/optimization-workflow.md) | seomachine:.claude/commands/optimize.md | 本地方法 | `08d0679` |
+| [skills/improve-content/references/refresh-workflow.md](../skills/improve-content/references/refresh-workflow.md) | seomachine:.claude/commands/rewrite.md | 本地方法 | `08d0679` |
+| [skills/improve-content/references/seo-editing.md](../skills/improve-content/references/seo-editing.md) | seomachine:.claude/agents/seo-optimizer.md | 本地方法 | `08d0679` |
+| [skills/keyword-deep-dive/references/keyword-placement-review.md](../skills/keyword-deep-dive/references/keyword-placement-review.md) | seomachine:.claude/agents/keyword-mapper.md | 本地方法 | `08d0679` |
+| [skills/keyword-deep-dive/references/research-workflow.md](../skills/keyword-deep-dive/references/research-workflow.md) | seomachine:.claude/commands/research.md | 本地方法 | `08d0679` |
+| [skills/keyword-deep-dive/references/serp-review.md](../skills/keyword-deep-dive/references/serp-review.md) | seomachine:.claude/commands/research-serp.md | 本地方法 | `08d0679` |
+| [skills/page-audit/references/content-assessment.md](../skills/page-audit/references/content-assessment.md) | seomachine:.claude/agents/content-analyzer.md | 本地方法 | `08d0679` |
+| [skills/page-audit/references/existing-page-review.md](../skills/page-audit/references/existing-page-review.md) | seomachine:.claude/commands/analyze-existing.md | 本地方法 | `08d0679` |
+| [skills/page-audit/references/metadata-writing.md](../skills/page-audit/references/metadata-writing.md) | seomachine:.claude/agents/meta-creator.md | 本地方法 | `08d0679` |
+| [skills/page-cro/references/conversion-analysis.md](../skills/page-cro/references/conversion-analysis.md) | seomachine:.claude/agents/cro-analyst.md | 本地方法 | `08d0679` |
+| [skills/page-cro/references/landing-audit.md](../skills/page-cro/references/landing-audit.md) | seomachine:.claude/commands/landing-audit.md | 本地方法 | `08d0679` |
+| [skills/page-cro/references/landing-competitor-review.md](../skills/page-cro/references/landing-competitor-review.md) | seomachine:.claude/commands/landing-competitor.md | 本地方法 | `08d0679` |
+| [skills/page-cro/references/landing-page-review.md](../skills/page-cro/references/landing-page-review.md) | seomachine:.claude/agents/landing-page-optimizer.md | 本地方法 | `08d0679` |
+| [skills/page-cro/references/landing-research.md](../skills/page-cro/references/landing-research.md) | seomachine:.claude/commands/landing-research.md | 本地方法 | `08d0679` |
+| [skills/paid-ads/references/provider-inputs.md](../skills/paid-ads/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
 | [skills/reader-experience-review/references/calibration.md](../skills/reader-experience-review/references/calibration.md) | Workbench 本地方法 | 本地方法 | `aff4dea` |
-| [skills/semantic-gap-analysis/references/research-gap-workflow.md](../skills/semantic-gap-analysis/references/research-gap-workflow.md) | seomachine:.claude/commands/research-gaps.md | 本地方法 | 本轮新增 |
-| [skills/seo-geo/references/citation-research.md](../skills/seo-geo/references/citation-research.md) | seomachine:.claude/commands/research-ai-citations.md | 本地方法 | 本轮新增 |
-| [skills/social-content/references/content-repurposing.md](../skills/social-content/references/content-repurposing.md) | seomachine:.claude/commands/repurpose.md | 本地方法 | 本轮新增 |
-| [skills/topic-cluster-planning/references/cluster-review.md](../skills/topic-cluster-planning/references/cluster-review.md) | seomachine:.claude/agents/cluster-strategist.md | 本地方法 | 本轮新增 |
-| [skills/topic-cluster-planning/references/cluster-workflow.md](../skills/topic-cluster-planning/references/cluster-workflow.md) | seomachine:.claude/commands/cluster.md | 本地方法 | 本轮新增 |
-| [skills/topic-cluster-planning/references/internal-link-review.md](../skills/topic-cluster-planning/references/internal-link-review.md) | seomachine:.claude/agents/internal-linker.md | 本地方法 | 本轮新增 |
-| [skills/write-content/references/article-workflow.md](../skills/write-content/references/article-workflow.md) | seomachine:.claude/commands/article.md | 本地方法 | 本轮新增 |
-| [skills/write-content/references/draft-handoff.md](../skills/write-content/references/draft-handoff.md) | seomachine:.claude/commands/publish-draft.md | 本地方法 | 本轮新增 |
-| [skills/write-content/references/drafting-workflow.md](../skills/write-content/references/drafting-workflow.md) | seomachine:.claude/commands/write.md | 本地方法 | 本轮新增 |
+| [skills/referral-program/references/provider-inputs.md](../skills/referral-program/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/semantic-gap-analysis/references/research-gap-workflow.md](../skills/semantic-gap-analysis/references/research-gap-workflow.md) | seomachine:.claude/commands/research-gaps.md | 本地方法 | `08d0679` |
+| [skills/seo-geo/references/citation-research.md](../skills/seo-geo/references/citation-research.md) | seomachine:.claude/commands/research-ai-citations.md | 本地方法 | `08d0679` |
+| [skills/seo/references/workbench-operations.md](../skills/seo/references/workbench-operations.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/social-content/references/content-repurposing.md](../skills/social-content/references/content-repurposing.md) | seomachine:.claude/commands/repurpose.md | 本地方法 | `08d0679` |
+| [skills/topic-cluster-planning/references/cluster-review.md](../skills/topic-cluster-planning/references/cluster-review.md) | seomachine:.claude/agents/cluster-strategist.md | 本地方法 | `08d0679` |
+| [skills/topic-cluster-planning/references/cluster-workflow.md](../skills/topic-cluster-planning/references/cluster-workflow.md) | seomachine:.claude/commands/cluster.md | 本地方法 | `08d0679` |
+| [skills/topic-cluster-planning/references/internal-link-review.md](../skills/topic-cluster-planning/references/internal-link-review.md) | seomachine:.claude/agents/internal-linker.md | 本地方法 | `08d0679` |
+| [skills/write-content/references/article-workflow.md](../skills/write-content/references/article-workflow.md) | seomachine:.claude/commands/article.md | 本地方法 | `08d0679` |
+| [skills/write-content/references/draft-handoff.md](../skills/write-content/references/draft-handoff.md) | seomachine:.claude/commands/publish-draft.md | 本地方法 | `08d0679` |
+| [skills/write-content/references/drafting-workflow.md](../skills/write-content/references/drafting-workflow.md) | seomachine:.claude/commands/write.md | 本地方法 | `08d0679` |
 
 ### 合并后保留的来源正文
 

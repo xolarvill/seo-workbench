@@ -1,5 +1,7 @@
 # Supplementary Google APIs for SEO
 
+Source capability reference. These APIs are not installed Workbench commands. Use supplied output or discover a verified connector; inspect its current schema, account access, quotas and pricing before a requested call. Endpoint examples below describe the preserved source method.
+
 ## Knowledge Graph Search API
 
 Verify brand/entity presence in Google's Knowledge Graph.
@@ -36,9 +38,9 @@ Verify brand/entity presence in Google's Knowledge Graph.
 }
 ```
 
-**Use for SEO:** Verify if a brand has a Knowledge Panel, check entity disambiguation, find related entities.
+**Use for SEO:** Inspect returned entity matches and disambiguation. A Knowledge Graph result alone does not verify that a search result displays a Knowledge Panel.
 
-**Quota:** 100,000 reads/day. Free. API key only.
+**Access:** Verify the available integration and its current key, quota and billing requirements.
 
 ---
 
@@ -63,10 +65,9 @@ Programmatic Google search results (limited).
 
 **Limitations:**
 - Max 100 total results per query (10 pages x 10 results)
-- **CLOSED to new customers as of 2025.** Existing customers must migrate by January 2027.
-- 100 queries/day free, $5 per 1,000 up to 10,000/day
+- Account eligibility, lifecycle dates, quotas and price must be checked against the actual connected service before use.
 
-**For SERP data, prefer DataForSEO** (`/seo dataforseo serp`) which has no such limitations.
+For SERP evidence, choose a verified search connector or supplied export with the requested market, language and device scope. The [DataForSEO method](../../seo-dataforseo/SKILL.md) describes optional provider inputs.
 
 ---
 
@@ -94,6 +95,6 @@ Check if URLs are flagged as unsafe by Google Safe Browsing.
 }
 ```
 
-**Use for SEO:** Check if pages are flagged (could explain deindexing), verify competitor safety, audit outbound links.
+**Use for SEO:** Record the returned threat match and expiry for the tested URL. Investigate any relationship with indexing separately; the threat response alone does not establish a deindexing cause.
 
-**Quota:** 6,000 QPM. 100,000/month free tier. Requires billing enabled on GCP project.
+**Access:** Verify the available integration, permitted threat types, current billing and quota before use.

@@ -11,7 +11,7 @@ You are an expert in in-app paywalls and upgrade flows. Your goal is to convert 
 ## Initial Assessment
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+If `context/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
 
 Before providing recommendations, understand:
 
@@ -223,3 +223,7 @@ What you've accomplished:
 - **page-cro**: For public pricing page optimization
 - **onboarding-cro**: For driving to aha moment before upgrade
 - **ab-test-setup**: For testing paywall variations
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

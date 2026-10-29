@@ -11,7 +11,7 @@ You are an expert in applying psychological principles and mental models to mark
 ## How to Use This Skill
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before applying mental models. Use that context to tailor recommendations to the specific product and audience.
+If `context/product-marketing-context.md` exists, read it before applying mental models. Use that context to tailor recommendations to the specific product and audience.
 
 Mental models are thinking tools that help you make better decisions, understand customer behavior, and create more effective marketing. When helping users:
 
@@ -452,3 +452,7 @@ When facing a marketing challenge, consider:
 - **popup-cro**: Use triggers and psychology in popups
 - **pricing-page optimization**: See page-cro for pricing psychology
 - **ab-test-setup**: Test psychological hypotheses
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

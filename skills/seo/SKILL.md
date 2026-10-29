@@ -19,4 +19,4 @@ Read [the task index](../README.md), the current project's guidance and relevant
 
 Use only the relevant methods; a small review does not require the full audit or production pipeline. Continue from current decisions and evidence rather than legacy phase status.
 
-The Workbench CLI executes explicit operations. Upstream slash commands, agents and scripts are not installed executors. [Original orchestration notes](references/upstream-orchestration.md) preserve source coverage and shared references; read a relevant section only when needed.
+The Workbench CLI executes explicit operations. Upstream slash commands, agents and scripts are not installed executors. [Adapted orchestration coverage](references/upstream-orchestration.md) preserve source coverage and shared references; read a relevant section only when needed.

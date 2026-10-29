@@ -4,7 +4,7 @@
 
 ## Preset Schema
 
-Each preset is stored as `~/.banana/presets/NAME.json`:
+Use these fields as a brand/style brief in the selected project’s existing asset or task artifact. The JSON is a source format example; an available provider must explicitly support it before treating it as an API payload:
 
 ```json
 {
@@ -42,7 +42,7 @@ Each preset is stored as `~/.banana/presets/NAME.json`:
 
 ## How Presets Merge into Reasoning Brief
 
-When a preset is active, Claude uses its values as defaults for the Reasoning Brief:
+When an existing project preset is selected, use its values as defaults for the image brief:
 1. **Colors** → inform palette descriptions in Context and Style components
 2. **Style** → becomes the base for the Style component
 3. **Typography** → used for any text rendering
@@ -54,16 +54,8 @@ but the preset has bright lighting, follow the user's instruction.
 
 ## Managing Presets
 
-```bash
-# List presets
-presets.py list
-
-# Show details
-presets.py show tech-saas
-
-# Create interactively (Claude fills in details from conversation)
-presets.py create NAME --colors "#hex,#hex" --style "..." --mood "..."
-
-# Delete
-presets.py delete NAME --confirm
-```
+Read the current project's existing brand and asset guidance first. Store a new
+reusable brief in that project only when the task calls for it, and record its
+path with the task artifact. No preset-management executable or global preset
+store is supplied here. For a connected provider's preset API, discover and
+verify its actual supported operations before using them.

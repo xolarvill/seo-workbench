@@ -97,6 +97,9 @@ def unavailable_runtime_paths(files: list[dict]) -> list[str]:
         for number, line in enumerate(local_path(path).read_text().splitlines(), 1):
             # A link to an upstream source file is attribution, not a local dependency.
             line = re.sub(r'https?://[^\s)>]+', '', line)
+            # Markdown destinations are resolved by dependencies(), including
+            # legitimate relative links into the preserved historical archive.
+            line = re.sub(r'\[[^\]]*\]\([^)]+\)', '', line)
             for match in pattern.finditer(line):
                 target = match[0]
                 candidates = [ROOT / target, local_path(path).parent / target]
@@ -148,6 +151,57 @@ def render_summary(inventory: dict) -> str:
     return '\n'.join(rows) + '\n'
 
 
+def committed_blob(commit: str, path: str) -> bytes | None:
+    """Read a Git blob as bytes; a new/untracked path has no committed blob."""
+    result = subprocess.run(['git', 'show', f'{commit}:{path}'], cwd=ROOT,
+                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    return result.stdout if result.returncode == 0 else None
+
+
+def history_record(paths: list[str], *, first: bool = False) -> dict | None:
+    options = ['--reverse', '--diff-filter=A'] if first else ['-1']
+    process = subprocess.run(['git', 'log', *options, '--format=%H%x09%ad%x09%s',
+                              '--date=short', '--name-only', '--', *paths], cwd=ROOT,
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    if process.returncode:
+        head = subprocess.run(['git', 'rev-parse', '--verify', 'HEAD'], cwd=ROOT,
+                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        if head.returncode:
+            return None
+        process.check_returncode()
+    if not process.stdout.strip():
+        return None
+    lines = process.stdout.strip().splitlines()
+    commit, date, subject = lines[0].split('\t', 2)
+    changed = []
+    for line in lines[1:]:
+        if '\t' in line:
+            break
+        if line:
+            changed.append(line)
+    path = next((path for path in reversed(paths) if path in changed), paths[-1])
+    return {'commit': commit, 'date': date, 'subject': subject, 'path': path,
+            'record_status': 'committed'}
+
+
+def refresh_history(row: dict, data: bytes) -> None:
+    """Preserve source identity while deriving history fields from real Git data."""
+    path = row['local_path']
+    paths = list(dict.fromkeys([*row.get('path_history', []), path]))
+    first = row['first_local_record']
+    if first.get('commit') is None:
+        committed_first = history_record(paths, first=True)
+        if committed_first:
+            row['first_local_record'] = first = committed_first
+    latest = history_record(paths)
+    if latest:
+        row['last_local_change'] = latest
+    baseline = committed_blob(first['commit'], first.get('path', path)) if first.get('commit') else None
+    row['content_changed_since_first_local_record'] = data != baseline if baseline is not None else None
+    head = committed_blob('HEAD', path)
+    row['workingtree_modified'] = head is None or data != head
+
+
 def refresh(inventory: dict, register: list[str]) -> None:
     material = material_paths()
     known = {r['local_path'] for r in inventory['files']}
@@ -181,18 +235,11 @@ def refresh(inventory: dict, register: list[str]) -> None:
         path = row['local_path']
         data = local_path(path).read_bytes()
         digest = hashlib.sha256(data).hexdigest()
-        row['content_changed_since_first_local_record'] |= bool(row.get('local_sha256') and row['local_sha256'] != digest)
+        refresh_history(row, data)
         row['local_sha256'] = digest
         row['local_git_blob_sha'] = hashlib.sha1(b'blob ' + str(len(data)).encode() + b'\0' + data).hexdigest()
         row['comparison_status'] = 'workbench_native' if row['source_id'] == 'workbench' else 'identical' if row['local_git_blob_sha'] == row['comparison_upstream_blob_sha'] else 'different'
         row['maintenance_status'] = 'historical_source' if path.startswith('third_party/skill-history/') else 'active'
-        if row['first_local_record'].get('commit') is None:
-            first = git('log', '--diff-filter=A', '--format=%H', '--reverse', '--', path).splitlines()
-            if first:
-                row['first_local_record']['commit'] = first[0]
-                row['first_local_record']['record_status'] = 'committed'
-        if row['last_local_change'].get('commit') is None and row['first_local_record'].get('commit'):
-            row['last_local_change'] = row['first_local_record'].copy()
     for adapter in adaptations:
         row = records[adapter['source_id']]
         row['adapted_by'] = ['workbench:' + adapter['adapted_path']] if adapter.get('adapted_path') else []
@@ -214,7 +261,7 @@ def refresh(inventory: dict, register: list[str]) -> None:
     start = text.index('## 当前清点范围')
     end = text.index('当前上游而本地尚无对应入口的技能：')
     text = text[:start] + render_summary(inventory) + text[end:]
-    text = re.sub(r'当前 \d+ 个受维护文件均有记录：[^\n]+',
+    text = re.sub(r'当前 \d+ 个受维护文件均有记录[：；][^\n]+',
                   f"当前 {len(inventory['files'])} 个受维护文件均有记录；原材料与派生方法保持独立来源身份。", text)
     text = re.sub(r'当前登记 \d+ 处字面路径引用：', f"当前登记 {len(inventory['dependencies'])} 处字面路径引用：", text)
     doc.write_text(text.rstrip() + '\n\n' + render_tables(inventory))
@@ -232,14 +279,15 @@ def check(inventory: dict, strict: bool) -> list[str]:
         path = local_path(row['local_path'])
         if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != row['local_sha256']:
             errors.append('stale or missing file: ' + row['local_path'])
-    actual = dependencies(files)
+    available = [row for row in files if local_path(row['local_path']).is_file()]
+    actual = dependencies(available)
     if actual != inventory['dependencies']:
         errors.append('dependency inventory is stale')
     if strict:
         errors += [f"{r['from_path']}:{r['line']}: {r['status']}: {r['target']}" for r in actual
                    if r['from_path'].startswith('skills/') and r['status'] in
                    {'missing_literal_target', 'upstream_runtime_reference', 'outside_repository'}]
-        errors += unavailable_runtime_paths(files)
+        errors += unavailable_runtime_paths(available)
     return errors
 
 

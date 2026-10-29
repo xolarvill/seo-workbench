@@ -1,8 +1,8 @@
-# DataForSEO MCP Tool Catalog
+# DataForSEO source capability catalog
 
-> Load this reference when you need to find a specific DataForSEO MCP tool
-> that is not covered by the main SKILL.md commands. These are utility tools
-> available for internal use but without dedicated `/seo dataforseo` commands.
+Read this reference to identify a candidate API family not covered in the main method. Identifiers below come from the preserved upstream catalog. They do not assert that a local MCP server exports these names or that the account can use them. Discover the available integration and verify its tool schema, scope, pricing and pagination before a call; supplied provider output can also serve as input.
+
+The installed Workbench backlink collect/gap commands are documented in [Workbench operations](../../seo/references/workbench-operations.md). This catalog adds no registered CLI command, connection, runtime dependency or spending authorization.
 
 ## SERP Utilities
 

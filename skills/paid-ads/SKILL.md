@@ -11,7 +11,7 @@ You are an expert performance marketer with direct access to ad platform account
 ## Before Starting
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+If `context/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
 
 Gather this context (ask if not provided):
 
@@ -290,18 +290,9 @@ Before launching campaigns, ensure proper tracking and account setup.
 
 ---
 
-## Tool Integrations
+## Provider inputs and implementation
 
-For implementation, see the [tools registry](../../tools/REGISTRY.md). Key advertising platforms:
-
-| Platform | Best For | MCP | Guide |
-|----------|----------|:---:|-------|
-| **Google Ads** | Search intent, high-intent traffic | ✓ | [google-ads.md](../../tools/integrations/google-ads.md) |
-| **Meta Ads** | Demand gen, visual products, B2C | - | [meta-ads.md](../../tools/integrations/meta-ads.md) |
-| **LinkedIn Ads** | B2B, job title targeting | - | [linkedin-ads.md](../../tools/integrations/linkedin-ads.md) |
-| **TikTok Ads** | Younger demographics, video | - | [tiktok-ads.md](../../tools/integrations/tiktok-ads.md) |
-
-For tracking, see also: [ga4.md](../../tools/integrations/ga4.md), [segment.md](../../tools/integrations/segment.md)
+Read [provider inputs](references/provider-inputs.md) when this task needs account evidence or implementation. It lists the required inputs and how to establish which operations are available.
 
 ---
 
@@ -311,3 +302,7 @@ For tracking, see also: [ga4.md](../../tools/integrations/ga4.md), [segment.md](
 - **analytics-tracking**: For proper conversion tracking setup
 - **ab-test-setup**: For landing page testing to improve ROAS
 - **page-cro**: For optimizing post-click conversion rates
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

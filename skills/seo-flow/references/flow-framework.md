@@ -7,7 +7,7 @@ tags:
   - framework
 ---
 
-![FLOW Operating Loop](../../assets/diagrams/flow-v4-flow-loop.png)
+Operating loop: Find → Leverage → Optimize → Win → Find.
 
 # FLOW Framework
 
@@ -70,9 +70,9 @@ You are an SEO strategist using the FLOW model. For the asset named "FLOW Framew
 
 ## See Also
 
-- [Start Here](../00-START-HERE.md)
-- [AI Search Surface Map](ai-search-surface-map.md)
-- [Bibliography](../10-references/bibliography.md)
+- [Local FLOW entrypoint](../SKILL.md)
+- [Current search-surface method](../../seo-geo/SKILL.md)
+- [Bibliography](bibliography.md)
 
 ## Sources
 

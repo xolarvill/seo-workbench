@@ -83,7 +83,7 @@ When analyzing a locale without a pre-built profile above:
 
 ## How to Use in Analysis
 
-When running `/seo hreflang` on a multi-language site:
+When using the hreflang method on a multi-language site:
 1. Identify all language versions and their target markets
 2. Load the relevant cultural profile(s)
 3. Check that CTAs, trust signals, and legal pages match the cultural expectations

@@ -60,8 +60,8 @@ Input: paid search landing page with many calls but few booked appointments. Out
 ## See Also
 
 - [Prompt Library](../README.md)
-- [BOFU and Conversion Content](../../06-win/bofu-and-conversion-content.md)
-- [Dual-Surface Scorecard](../../06-win/dual-surface-scorecard.md)
+- [Current conversion method](../../../../page-cro/SKILL.md)
+- [Current search and citation review](../../../../seo-geo/SKILL.md)
 
 ## Source Note
 

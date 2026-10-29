@@ -1,11 +1,15 @@
 ---
 name: write-content
-description: Use when writing a complete SEO article. Includes the full anti-AI-slop ruleset (banned vocabulary, banned phrases, banned structural patterns) and voice rules. The agent researches the SERP itself if needed — no keyword data exports required.
+description: Write a complete SEO article, or prepare an approved article for the existing Workbench draft and delivery workflow. Reuse adequate briefs, research and project context.
 ---
 
 # Write Content
 
 Writes a complete SEO-optimized article. Four phases: research → content type decision → knowledge extraction → write. Includes the full anti-AI-slop ruleset and the voice rules that make the output sound like a practitioner, not a press release.
+
+## Delivery mode
+
+When the task is to import an existing approved article or prepare its CMS handoff, read [draft handoff](references/draft-handoff.md) and [Workbench operations](../seo/references/workbench-operations.md). Use the supplied article, metadata and current project state. Perform the requested import or validation, then report its actual state. The topic questions and creation phases below apply when writing an article; delivery work does not restart them.
 
 ## Input
 

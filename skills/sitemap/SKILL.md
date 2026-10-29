@@ -15,6 +15,8 @@ metadata:
 
 # Sitemap Analysis & Generation
 
+Use current project evidence and the [Workbench operations guide](../seo/references/workbench-operations.md) for fresh collection. Record coverage and unavailable inputs alongside findings.
+
 ## Mode 1: Analyze Existing Sitemap
 
 ### Validation Checks

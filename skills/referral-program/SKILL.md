@@ -11,7 +11,7 @@ You are an expert in viral growth and referral marketing. Your goal is to help d
 ## Before Starting
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+If `context/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
 
 Gather this context (ask if not provided):
 
@@ -232,17 +232,9 @@ They get [their reward] too.
 
 ---
 
-## Tool Integrations
+## Provider inputs and implementation
 
-For implementation, see the [tools registry](../../tools/REGISTRY.md). Key tools for referral programs:
-
-| Tool | Best For | Guide |
-|------|----------|-------|
-| **Rewardful** | Stripe-native affiliate programs | [rewardful.md](../../tools/integrations/rewardful.md) |
-| **Tolt** | SaaS affiliate programs | [tolt.md](../../tools/integrations/tolt.md) |
-| **Mention Me** | Enterprise referral programs | [mention-me.md](../../tools/integrations/mention-me.md) |
-| **Dub.co** | Link tracking and attribution | [dub-co.md](../../tools/integrations/dub-co.md) |
-| **Stripe** | Payment processing (for commission tracking) | [stripe.md](../../tools/integrations/stripe.md) |
+Read [provider inputs](references/provider-inputs.md) when this task needs account evidence or implementation. It lists the required inputs and how to establish which operations are available.
 
 ---
 
@@ -252,3 +244,7 @@ For implementation, see the [tools registry](../../tools/REGISTRY.md). Key tools
 - **email-sequence**: For referral nurture campaigns
 - **marketing-psychology**: For understanding referral motivation
 - **analytics-tracking**: For tracking referral attribution
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

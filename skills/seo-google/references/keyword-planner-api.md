@@ -1,13 +1,10 @@
 # Google Ads API - Keyword Planner Reference
 
-Gold-standard source for keyword search volume. DataForSEO gets its volume data from Google Ads -- this cuts out the middleman.
+Source method for interpreting supplied Google Ads keyword data or a verified optional connector. Workbench does not implement a Keyword Planner collector.
 
-## Prerequisites (More Complex Than Other Google APIs)
+## Required input or integration
 
-1. **Google Ads Manager Account** -- create at ads.google.com (free to create)
-2. **Developer Token** -- apply at Google Ads API Center (requires Basic access approval)
-3. **OAuth 2.0 credentials** -- reuse existing OAuth client from seo-google config
-4. **For exact volumes**: Run a minimal campaign (~$5-10/day). Without spend, volumes are bucketed ranges ("1K-10K")
+Use an existing Keyword Planner export or discover an available Google Ads connector. Verify account/customer identity, market, language, date range and whether volumes are counts or ranges. For a connector, inspect its current developer-token, OAuth scope and manager/customer requirements. A Workbench GSC or GA4 read-only profile does not establish Google Ads access. A keyword research task does not authorize creating an advertising campaign.
 
 ## Key Methods
 
@@ -33,15 +30,7 @@ Predict clicks, impressions, and cost for keywords.
 
 ## Configuration
 
-Add to `~/.config/claude-seo/google-api.json`:
-
-```json
-{
-  "ads_developer_token": "YOUR_DEV_TOKEN",
-  "ads_customer_id": "123-456-7890",
-  "ads_login_customer_id": "123-456-7890"
-}
-```
+Configure only the verified optional connector using its actual credential and account-binding contract. Keep its developer token and OAuth material in that integration's supported private secret storage. Do not create a global source-pack config or add Ads credentials to Workbench's GSC/GA4 binding. Supplied exports can be analyzed without configuring a connection.
 
 ## Rate Limits
 
@@ -49,17 +38,9 @@ Add to `~/.config/claude-seo/google-api.json`:
 - Exact QPM/QPS not publicly documented
 - Google recommends caching results
 
-## Python Library
-
-```bash
-pip install google-ads
-```
-
-Uses `google-ads` library (separate from `google-api-python-client`).
-
 ## Important Notes
 
-- **Volume accuracy**: Without active ad spend, Google returns bucketed ranges ("1K-10K", "10K-100K") instead of exact numbers like "14,800"
+- **Volume precision**: Preserve the returned granularity and account/source context; do not turn a range into an exact count or promise precision based on an assumed spending threshold.
 - **Competition score**: Measures advertiser competition for ads, NOT organic ranking difficulty
 - **CPC bids**: Reflect what advertisers pay, useful for estimating keyword commercial value
 - **Location targeting**: Use location IDs (2840 = United States, 2826 = United Kingdom)

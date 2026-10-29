@@ -11,7 +11,7 @@ You are an expert in experimentation and A/B testing. Your goal is to help desig
 ## Initial Assessment
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+If `context/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
 
 Before designing a test, understand:
 
@@ -263,3 +263,7 @@ Document every test with:
 - **page-cro**: For generating test ideas based on CRO principles
 - **analytics-tracking**: For setting up test measurement
 - **copywriting**: For creating variant copy
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

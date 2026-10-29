@@ -13,7 +13,7 @@ description: >
 user-invokable: true
 argument-hint: "[command] [url|keyword|location]"
 license: MIT
-compatibility: "DataForSEO MCP for Tier 1+, Google Maps API for Tier 2"
+compatibility: "Supplied listing data or verified available provider integrations"
 metadata:
   author: AgriciDaniel
   version: "1.9.6"
@@ -27,74 +27,73 @@ how a business appears on Google Maps, Bing Places, Apple Maps, and OpenStreetMa
 
 **Boundary with seo-local:** This skill analyzes the business on maps PLATFORMS
 (via APIs). seo-local analyzes local SEO signals on the WEBSITE (via HTML fetch).
-Do not duplicate seo-local on-page analysis. Recommend `/seo local <url>` for
-website-level checks.
+Use [seo-local](../seo-local/SKILL.md) for website-level checks alongside this maps analysis.
 
 ---
 
-## Quick Reference
+## Available analysis modes
 
-| Command | What it does | Tier |
-|---------|-------------|------|
-| `/seo maps <url>` | Full maps presence audit (auto-selects tier) | 0+ |
-| `/seo maps grid <keyword> <location>` | Geo-grid rank scan (7x7, 1 keyword default) | 1+ |
-| `/seo maps reviews <business> <location>` | Cross-platform review intelligence | 1+ |
-| `/seo maps competitors <keyword> <location>` | Competitor radius mapping | 0+ |
-| `/seo maps nap <business-name>` | Cross-platform NAP verification | 0+ |
-| `/seo maps schema <business-name>` | Generate LocalBusiness JSON-LD from data | 0+ |
-| `/seo maps gbp <business> <location>` | GBP completeness audit | 1+ |
+Choose the mode from the user's question and the evidence available:
 
----
+| Mode | Required inputs |
+|------|-----------------|
+| Maps presence | Business identity, location and observed listing URLs or exports |
+| Geo-grid rank scan | Keyword, center coordinates, radius and comparable point-level rank observations |
+| Review intelligence | Dated reviews, ratings, response fields and collection coverage |
+| Competitor radius mapping | Geocoded business records and a defined search radius |
+| Cross-platform NAP | Observed name, address and phone for each platform |
+| Schema generation | Verified visible business facts and the implementation page |
+| GBP completeness | Profile export or authorized profile observations |
 
-## Three-Tier Capability Detection
+## Evidence availability
 
-Before any analysis, detect the available capability tier:
+Workbench does not install the source project's Maps executors. Start from supplied
+exports, existing evidence and available connected tools. Discover and verify the
+specific provider operation, account scope and cost before requesting fresh data.
+Use the [Workbench operations guide](../seo/references/workbench-operations.md)
+for project evidence and current local command discovery.
 
-### Tier 0 (Free)
-**Detection:** DataForSEO MCP tools NOT available.
-**Capabilities:** Overpass API competitor discovery, Geoapify POI search, Nominatim geocoding, static GBP checklist, schema generation, cross-platform NAP guidance.
-**Load:** `references/maps-free-apis.md`
+The tier labels below describe evidence options:
 
-### Tier 1 (DataForSEO)
-**Detection:** `business_data_business_listings_search` MCP tool IS available.
-**Capabilities:** Everything in Tier 0 PLUS geo-grid rank tracking, live GBP profile audit, review intelligence (velocity, sentiment, distribution), GBP post activity, Q&A data, Tripadvisor/Trustpilot reviews.
-**Load:** `references/maps-api-endpoints.md`
+- **Tier 0:** Supplied records and public observations; website-only evidence leaves
+  unobserved GBP fields unknown. Public API access still requires an available
+  client and any provider prerequisites.
+- **Tier 1:** Verified available DataForSEO operations for the requested listing,
+  review or point-level rank fields. Availability of one operation does not imply
+  the others are available.
+- **Tier 2:** Verified available Google Maps Platform operations that add relevant
+  fields. Apply current provider storage and usage terms to those fields.
 
-### Tier 2 (DataForSEO + Google Maps Platform)
-**Detection:** Tier 1 available AND Google Maps API key in environment.
-**Capabilities:** Everything in Tier 1 PLUS Google Places details, real-time business status, AI-powered place summaries, photo analysis.
-**Note:** Google ToS restricts storage to `place_id` only. Lat/lng cached 30 days max.
-
-**Always communicate the detected tier to the user** at the start of analysis.
+Read [public API query patterns](../seo/references/maps-free-apis.md) or
+[provider endpoint references](../seo/references/maps-api-endpoints.md) only when
+that source is relevant. Record which source and fields were actually observed.
 
 ---
 
 ## Geo-Grid Rank Tracking (Tier 1+)
 
 Simulates Google Maps searches from multiple GPS coordinates to show ranking
-variation across a geographic area. Requires DataForSEO.
+variation across a geographic area. Requires point-level observations from a verified provider or a supplied comparable export.
 
-**Load:** `references/maps-geo-grid.md` for algorithm, SoLV formula, heatmap format.
-**Load:** `references/maps-api-endpoints.md` for Maps SERP endpoint details.
+**Load:** [maps-geo-grid](../seo/references/maps-geo-grid.md) for algorithm, SoLV formula, heatmap format.
+**Load:** [maps-api-endpoints](../seo/references/maps-api-endpoints.md) for Maps SERP endpoint details.
 
 ### Workflow
 
 1. Geocode business address to get center lat/lng
 2. Generate grid points (default: 7x7, 5km radius) using Haversine offset formula
-3. **Display cost estimate and ask for confirmation before proceeding**
-4. Fire DataForSEO Maps SERP API calls with `location_coordinate` per grid point
+3. Verify the operation and estimated total cost; obtain any spending authorization not already supplied by the user
+4. Collect the authorized point observations using the verified operation and its supported coordinate field, or validate the supplied export
 5. Find target business rank at each point
 6. Calculate SoLV: `(top_3_count / total_points) * 100`
 7. Render ASCII heatmap in output
 
-### Cost Warning (REQUIRED)
+### Scan scope and cost
 
-Before every geo-grid scan, display:
-```
-Geo-Grid Scan: [keyword] at [location]
-Grid: 7x7 (49 points) | Keywords: [N] | Est. cost: $[amount]
-DataForSEO credits will be consumed. Proceed?
-```
+Before a paid scan, state the keyword count, grid size, locations and estimated
+total cost using current provider evidence. Reuse any existing spending
+authorization that covers this scope. Record actual charges returned by the
+provider separately from estimates.
 
 ---
 
@@ -102,7 +101,7 @@ DataForSEO credits will be consumed. Proceed?
 
 Audits the 25 fields that affect Google Business Profile quality and ranking.
 
-**Load:** `references/maps-gbp-checklist.md` for full checklist and scoring.
+**Load:** [maps-gbp-checklist](../seo/references/maps-gbp-checklist.md) for full checklist and scoring.
 
 ### Tier 1 Workflow
 
@@ -114,10 +113,10 @@ Audits the 25 fields that affect Google Business Profile quality and ranking.
 
 ### Tier 0 Workflow
 
-1. Fetch the business website via WebFetch
+1. Inspect eligible collected website evidence or supplied page content
 2. Extract any visible GBP signals (Maps embed, place references, review widgets)
 3. Apply static checklist based on detectable signals
-4. Mark undetectable fields as "Unknown (requires DataForSEO for live data)"
+4. Mark undetectable fields as "Unknown" and name the profile input needed to assess them
 
 ---
 
@@ -125,7 +124,7 @@ Audits the 25 fields that affect Google Business Profile quality and ranking.
 
 Cross-platform review analysis: velocity, sentiment, rating distribution, fake detection.
 
-**Reference:** `references/local-seo-signals.md` for benchmarks (shared with seo-local).
+**Reference:** [local-seo-signals](../seo/references/local-seo-signals.md) for benchmarks (shared with seo-local).
 
 ### Workflow
 
@@ -155,7 +154,7 @@ Identify and analyze competitors within a defined radius.
 
 ### Tier 0 (Overpass API)
 
-**Load:** `references/maps-free-apis.md` for query templates.
+**Load:** [maps-free-apis](../seo/references/maps-free-apis.md) for query templates.
 
 1. Geocode business address
 2. Query Overpass API for businesses with same OSM tag within radius
@@ -179,7 +178,7 @@ Check business listing consistency across Google, Bing Places, Apple, and OSM.
 
 1. Search for business name on each platform:
    - Google: infer from GBP data or Maps SERP result
-   - Bing: `WebFetch https://www.bing.com/maps?q=BUSINESS+NAME+LOCATION`
+   - Bing: inspect an observed public listing or supplied Bing Places record
    - Apple: manual check (no public API -- recommend Apple Business Connect at businessconnect.apple.com)
    - OSM: Overpass or Nominatim search
 2. Extract NAP (Name, Address, Phone) from each source
@@ -193,7 +192,7 @@ Check business listing consistency across Google, Bing Places, Apple, and OSM.
 
 Generate LocalBusiness JSON-LD markup from collected data.
 
-**Reference:** `references/local-schema-types.md` for industry subtypes (shared with seo-local).
+**Reference:** [local-schema-types](../seo/references/local-schema-types.md) for industry subtypes (shared with seo-local).
 
 ### Workflow
 
@@ -211,12 +210,12 @@ Generate LocalBusiness JSON-LD markup from collected data.
 ## Reference Files
 
 Load on-demand as needed (do NOT load all at startup):
-- `references/maps-api-endpoints.md`: DataForSEO endpoint details, params, costs
-- `references/maps-free-apis.md`: Overpass, Geoapify, Nominatim query templates
-- `references/maps-geo-grid.md`: Grid algorithm, SoLV formula, heatmap rendering
-- `references/maps-gbp-checklist.md`: 25-field GBP audit with industry weights
-- `references/local-seo-signals.md`: Ranking factors, review benchmarks (shared)
-- `references/local-schema-types.md`: LocalBusiness subtypes by industry (shared)
+- [maps-api-endpoints](../seo/references/maps-api-endpoints.md): DataForSEO endpoint details, params, costs
+- [maps-free-apis](../seo/references/maps-free-apis.md): Overpass, Geoapify, Nominatim query templates
+- [maps-geo-grid](../seo/references/maps-geo-grid.md): Grid algorithm, SoLV formula, heatmap rendering
+- [maps-gbp-checklist](../seo/references/maps-gbp-checklist.md): 25-field GBP audit with industry weights
+- [local-seo-signals](../seo/references/local-seo-signals.md): Ranking factors, review benchmarks (shared)
+- [local-schema-types](../seo/references/local-schema-types.md): LocalBusiness subtypes by industry (shared)
 
 ---
 
@@ -238,12 +237,12 @@ Generate `MAPS-ANALYSIS-{domain}.md` with:
 
 ---
 
-## Cross-Skill Delegation
+## Related local methods
 
-- Website on-page local signals: recommend `/seo local <url>`
-- Full AI search visibility: recommend `/seo geo <url>`
-- Schema validation and fixes: recommend `/seo schema <url>`
-- Live SERP and keyword data: recommend `/seo dataforseo [command]`
+- Website on-page local signals: use [seo-local](../seo-local/SKILL.md)
+- Full AI search visibility: consult [seo-geo](../seo-geo/SKILL.md)
+- Schema validation and fixes: use [schema](../schema/SKILL.md)
+- Live SERP and keyword data: consult [seo-dataforseo](../seo-dataforseo/SKILL.md) for supported provider inputs
 
 ---
 
@@ -251,9 +250,9 @@ Generate `MAPS-ANALYSIS-{domain}.md` with:
 
 | Scenario | Action |
 |----------|--------|
-| DataForSEO MCP not available | Drop to Tier 0. Inform user: "DataForSEO not detected. Running free-tier analysis. For geo-grid tracking and review intelligence, install the DataForSEO extension." |
+| Requested provider operation unavailable | Continue with supplied records and supported public observations. Identify the specific fields still needed for the requested analysis. |
 | Business not found in Maps SERP | Try My Business Info with keyword. If still not found, report "Business not found in Google Maps for this location." |
 | Geocoding fails (Nominatim) | Ask user to provide coordinates or a more specific address. |
 | API rate limit hit | Report the limit. Suggest waiting or using standard (queued) method instead of live. |
-| No reviews found | Report zero review state. Recommend review generation strategy with 18-day cadence target. |
+| No reviews returned | Record the source and query coverage. Report zero reviews only when a successful complete response establishes that count; otherwise mark review evidence unavailable. |
 | Multi-location detected | Ask user which location to analyze, or offer batch mode with per-location cost estimate. |

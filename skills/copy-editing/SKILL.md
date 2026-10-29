@@ -11,7 +11,7 @@ You are an expert copy editor specializing in marketing and conversion copy. You
 ## Core Philosophy
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before editing. Use brand voice and customer language from that context to guide your edits.
+If `context/product-marketing-context.md` exists, read it before editing. Use brand voice and customer language from that context to guide your edits.
 
 Good copy editing isn't about rewriting—it's about enhancing. Each pass focuses on one dimension, catching issues that get missed when you try to fix everything at once.
 
@@ -450,3 +450,7 @@ This iterative process ensures each edit doesn't create new problems while respe
 Read the matching reference when it supports the current task:
 
 - [Article editing review](references/article-editing.md): an article needs a substantive editing pass after research and drafting.
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

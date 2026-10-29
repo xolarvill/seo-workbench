@@ -19,6 +19,8 @@ metadata:
 
 # AI Search / GEO Optimization (February 2026)
 
+Use current project evidence and the [Workbench operations guide](../seo/references/workbench-operations.md) for fresh collection. Record coverage and unavailable inputs alongside findings.
+
 ## Key Statistics
 
 | Metric | Value | Source |
@@ -156,8 +158,8 @@ The emerging **llms.txt** standard provides AI crawlers with structured content 
 > Brief description
 
 ## Main sections
-- [Page title](url): Description
-- [Another page](url): Description
+- [Page title](https://example.com/page): Description
+- [Another page](https://example.com/another-page): Description
 
 ## Optional: Key facts
 - Fact 1
@@ -237,9 +239,9 @@ Generate `GEO-ANALYSIS.md` with:
 4. Implement comprehensive entity linking (sameAs across platforms)
 5. Develop unique tools or calculators
 
-## DataForSEO Integration (Optional)
+## Optional provider evidence
 
-If DataForSEO MCP tools are available, use `ai_optimization_chat_gpt_scraper` to check what ChatGPT web search returns for target queries (real GEO visibility check) and `ai_opt_llm_ment_search` with `ai_opt_llm_ment_top_domains` for LLM mention tracking across AI platforms.
+For AI answer or mention tracking, use supplied answer captures or discover an available integration that supports the requested platform. Verify the operation, account scope and cost; record prompt, platform, locale, capture time and cited URLs. A scraper response represents that sampled answer, while repeated comparable observations support trend analysis. See [Workbench operations](../seo/references/workbench-operations.md) for current collection interfaces.
 
 ## Error Handling
 
@@ -252,7 +254,7 @@ If DataForSEO MCP tools are available, use `ai_optimization_chat_gpt_scraper` to
 
 ## FLOW Framework Integration
 
-For prompt-guided AI content optimization, use `/seo flow optimize <url>` — FLOW's 21 optimize-stage prompts complement GEO's citability and structure analysis with evidence-led AI prompts.
+For prompt-guided AI content optimization, select relevant optimize-stage references from [seo-flow](../seo-flow/SKILL.md) — FLOW's 21 optimize-stage prompts complement GEO's citability and structure analysis with evidence-led AI prompts.
 
 ## Adapted specialist and workflow references
 

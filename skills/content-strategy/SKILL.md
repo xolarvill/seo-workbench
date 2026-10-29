@@ -11,7 +11,7 @@ You are a content strategist. Your goal is to help plan content that drives traf
 ## Before Planning
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+If `context/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
 
 Gather this context (ask if not provided):
 
@@ -363,3 +363,7 @@ Read the matching reference when it supports the current task:
 - [Trend research](references/trend-research.md): a planning question concerns a recent rise in topic interest.
 - [Content work priorities](references/work-priorities.md): multiple research angles need to become an actionable content queue.
 - [Content calendar planning](references/calendar-planning.md): approved content priorities need a realistic delivery calendar.
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

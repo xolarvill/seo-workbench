@@ -15,9 +15,11 @@ metadata:
 
 # Content Quality & E-E-A-T Analysis
 
+Use current project evidence and the [Workbench operations guide](../seo/references/workbench-operations.md) for fresh collection. Record coverage and unavailable inputs alongside findings.
+
 ## E-E-A-T Framework (updated Sept 2025 QRG)
 
-Read `skills/seo/references/eeat-framework.md` for full criteria.
+Read the [E-E-A-T framework](../seo/references/eeat-framework.md) for full criteria.
 
 ### Experience (first-hand signals)
 - Original research, case studies, before/after results
@@ -163,9 +165,9 @@ GEO is the emerging discipline of optimizing content specifically for AI-generat
 ### Issues Found
 ### Recommendations
 
-## DataForSEO Integration (Optional)
+## Optional provider evidence
 
-If DataForSEO MCP tools are available, use `kw_data_google_ads_search_volume` for real keyword volume data, `dataforseo_labs_bulk_keyword_difficulty` for difficulty scores, `dataforseo_labs_search_intent` for intent classification, and `content_analysis_summary` for content quality analysis.
+Use supplied keyword and content evidence with its provider, locale and query window. For fresh volume, difficulty or intent data, discover a relevant available integration and verify its supported operation and cost before use. Page text can be reviewed without a paid keyword provider; metrics without observations stay unobserved. See [Workbench operations](../seo/references/workbench-operations.md) for current local collection interfaces.
 
 ## Error Handling
 
@@ -177,4 +179,4 @@ If DataForSEO MCP tools are available, use `kw_data_google_ads_search_volume` fo
 
 ## FLOW Framework Integration
 
-For prompt-guided content optimization, use `/seo flow optimize <url>` and `/seo flow win <url>` — FLOW's optimize and win prompts provide structured E-E-A-T improvement and BOFU conversion workflows.
+For prompt-guided content optimization, select relevant optimize and win references from [seo-flow](../seo-flow/SKILL.md) — FLOW's optimize and win prompts provide structured E-E-A-T improvement and BOFU conversion workflows.

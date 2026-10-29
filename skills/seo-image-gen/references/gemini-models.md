@@ -1,9 +1,14 @@
 # Gemini Image Generation Models
 
 > Last updated: 2026-03-13
-> Aligned with Google's March 2026 API state
+> Preserved upstream model snapshot; no current provider verification is implied.
 
-## Available Models
+Use the actual available image tool's current schema and supported models. The
+model IDs, capabilities, prices, rate limits, and direct API examples below are
+source reference material, not local defaults or a current quote. Verify those
+properties when choosing a live provider; this adaptation does not upgrade them.
+
+## Source Model Snapshot
 
 ### gemini-3.1-flash-image-preview (Recommended)
 | Property | Value |
@@ -146,7 +151,7 @@ Useful for character consistency, style transfer, and brand-aligned generation.
 | Pay-as-you-go | 30 | 10,000 | Production workloads |
 | Enterprise | Custom | Custom | Contact Google |
 
-## Pricing
+## Historical Source Pricing
 
 | Model | Resolution | Cost per Image | Notes |
 |-------|-----------|---------------|-------|

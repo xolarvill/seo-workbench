@@ -107,7 +107,7 @@ When the SERP has mixed formats (one pillar, three listicles, one FAQ), write fo
 
 ## Related reference files
 
-If you need the underlying methodologies rather than the content-type skeletons, load these from the same `references/` directory:
+If you need the underlying methodologies rather than the content-type skeletons, load these from the adjacent reference files:
 
 - `intent-matching.md`: the full intent-classification logic and SERP-reading playbook
 - `serp-driven-writing.md`: how to read the top 5 and extract the winning format

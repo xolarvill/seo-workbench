@@ -30,22 +30,19 @@ A page can score 95/100 on technical SEO and still fail to rank because it is th
 pages for your keyword, your blog post will never break through -- no matter how
 well-optimized it is.
 
-## Commands
+## Working Modes
 
-| Command | Purpose |
-|---------|---------|
-| `/seo sxo <url>` | Full SXO analysis (auto-detect keyword from page) |
-| `/seo sxo <url> <keyword>` | Full SXO analysis for a specific keyword |
-| `/seo sxo wireframe <url>` | Generate IST/SOLL wireframe with concrete placeholders |
-| `/seo sxo personas <url>` | Persona-only scoring (skip SERP analysis) |
+Select full page/SERP comparison, persona review of available evidence, or an
+optional current/proposed wireframe according to the user's task. Read
+[Workbench operations](../seo/references/workbench-operations.md) for existing
+collection contracts and use only actually available tools or supplied inputs.
 
 ## Execution Pipeline
 
 ### Step 1: Target Acquisition
 
-1. Fetch the target URL via `scripts/fetch_page.py` (SSRF-safe)
-2. Parse with `scripts/parse_html.py` to extract: title, H1, meta description,
-   headings hierarchy, word count, schema markup, CTAs, media elements
+1. Reuse current eligible page evidence; inspect `./seo evidence --help` before a needed project-scoped collection. Use rendered evidence when JavaScript affects the observed content.
+2. Extract title, H1, meta description, heading hierarchy, word count, schema, CTAs, and media from the actual returned observations; inspect layout in an available browser when needed.
 3. If no keyword provided, extract primary keyword from title tag + H1 overlap
 4. Validate keyword is non-empty before proceeding
 
@@ -53,7 +50,7 @@ well-optimized it is.
 
 Read `references/page-type-taxonomy.md` for classification rules.
 
-1. Search Google for the target keyword (WebSearch)
+1. Obtain a comparable SERP sample through an available search tool, verified provider, or supplied export. Record query, locale, device, date, and observed organic positions.
 2. For each of the top 10 organic results, record:
    - URL and domain authority tier (brand / niche authority / unknown)
    - Page type (classify using taxonomy)
@@ -151,7 +148,7 @@ Read `references/persona-scoring.md` for methodology.
 
 ### Step 7: Wireframe Generation (Optional)
 
-Only execute when `/seo sxo wireframe` is invoked.
+Create a wireframe when the requested scope includes layout recommendations.
 
 Read `references/wireframe-templates.md` for templates.
 
@@ -167,12 +164,11 @@ Read `references/wireframe-templates.md` for templates.
 
 ## DataForSEO Integration
 
-If DataForSEO MCP tools are available:
-
-1. **Before any API call**, run cost estimate and confirm with user
-2. Use `google_organic_serp` for precise SERP data (positions, features, snippets)
-3. Use `keyword_data` for search volume and competition metrics
-4. Fall back to WebSearch if DataForSEO unavailable -- note reduced precision in output
+Discover any connected provider and inspect its actual tool schemas, query scope,
+and costs before an authorized request. Do not assume named SERP or keyword tools
+are installed. Use observed SERP exports or available search results when suitable;
+if they omit ranks/features, keep those dimensions unobserved rather than deriving
+precise positions or scores from a partial snippet list.
 
 ## SXO Score vs SEO Health Score
 
@@ -187,12 +183,12 @@ The SXO score is **separate** from the main SEO Health Score.
 
 | Finding | Hand Off To |
 |---------|-------------|
-| E-E-A-T gaps in persona scoring | `/seo content` for deep E-E-A-T audit |
-| Missing schema types | `/seo schema` for generation |
-| Local intent detected in SERP | `/seo local` for GBP analysis |
-| Content depth gaps | `/seo page` for deep page analysis |
-| Technical issues found during fetch | `/seo technical` for full audit |
-| Image/media gaps | `/seo images` for optimization |
+| E-E-A-T gaps in persona scoring | `seo-content` for deep E-E-A-T audit |
+| Missing schema types | `schema` for generation |
+| Local intent detected in SERP | `seo-local` for GBP analysis |
+| Content depth gaps | `page-audit` for deep page analysis |
+| Technical issues found during fetch | `technical-audit` for full audit |
+| Image/media gaps | `images` for optimization |
 
 ## Output Format
 
@@ -238,13 +234,13 @@ The SXO score is **separate** from the main SEO Health Score.
 | No keyword provided or detected | Ask user to provide target keyword |
 | WebSearch returns <5 results | Proceed with available data, note limited sample |
 | SERP has no organic results (all ads) | Note highly commercial SERP, analyze ad copy only |
-| Target page is JavaScript-rendered | Note limitation, use available HTML content |
+| Target page is JavaScript-rendered | Use eligible rendered evidence; retain unavailable dimensions if rendering fails |
 | DataForSEO cost exceeds threshold | Fall back to WebSearch, notify user |
 
 ## Quality Checklist
 
 Before delivering results, verify:
-- [ ] Target URL was fetched via `scripts/fetch_page.py` (not raw curl/fetch)
+- [ ] Target observations came from eligible project evidence or an inspected supplied source
 - [ ] Page type classification uses taxonomy from references
 - [ ] At least 5 SERP results were analyzed
 - [ ] User stories cite specific SERP signals as evidence

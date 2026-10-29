@@ -98,7 +98,7 @@ Brief ready? Use the `write-content` skill with this brief as context to write t
 
 ## Bundled references
 
-Load these from `references/` only when the step calls for them — don't preload.
+Load the following shared references only when the step calls for them — don't preload.
 
 - **`../write-content/references/content-types-overview.md`** — decision patterns for picking a content type (Step 4)
 - **`../write-content/references/structured-data-snippets.md`** — current markup and eligibility boundaries (Step 5)

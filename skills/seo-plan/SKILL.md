@@ -113,9 +113,9 @@ Load from `assets` directory:
 - Dependencies identified
 - Risk mitigation strategies
 
-## DataForSEO Integration (Optional)
+## Optional provider evidence
 
-If DataForSEO MCP tools are available, use `dataforseo_labs_google_competitors_domain` and `dataforseo_labs_google_domain_intersection` for real competitive intelligence, `dataforseo_labs_bulk_traffic_estimation` for traffic estimates, `kw_data_google_ads_search_volume` and `dataforseo_labs_bulk_keyword_difficulty` for keyword research, and `business_data_business_listings_search` for local business data.
+Use existing project evidence and supplied competitor/keyword exports first. If fresh provider data is needed, discover the available integration and verify that it supports the required competitor, domain-intersection, keyword or business-listing operation. Preserve source, location, dates and whether traffic or difficulty is a provider estimate. See [Workbench operations](../seo/references/workbench-operations.md) for current collection interfaces.
 
 ## Error Handling
 

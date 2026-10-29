@@ -11,7 +11,9 @@ which convert   # ImageMagick 6 (fallback)
 which ffmpeg    # For video/animation
 ```
 
-Install ImageMagick if not present: `sudo apt install imagemagick` (Debian/Ubuntu) or `brew install imagemagick` (macOS).
+The recipes below require the named executable and format support. If unavailable, use an available image editor or deliver the requested conversion as an asset-handoff requirement. This reference does not require package installation.
+
+Resolve each input from the actual tool-returned asset or selected project file. Save derivatives to the current project asset location with distinct names; inspect dimensions, crop, transparency, and size after conversion. The filenames in these recipes are examples.
 
 ## Common Operations
 
@@ -112,17 +114,19 @@ magick input.png \( +clone -alpha extract -draw \
 
 ### Batch Processing
 
-```bash
-# Resize all PNGs in directory
-for f in ~/Documents/nanobanana_generated/*.png; do
-  magick "$f" -resize 800x800 "${f%.png}_thumb.png"
-done
+Select an explicit set of task assets first. Use the actual returned paths or
+project paths rather than scanning a global generation directory. For example,
+after replacing the example filenames with the approved project inputs:
 
-# Convert all to WebP
-for f in ~/Documents/nanobanana_generated/*.png; do
-  magick "$f" -quality 85 "${f%.png}.webp"
+```bash
+for image_asset in hero-source.png product-source.png; do
+  magick "$image_asset" -resize 800x800 "${image_asset%.png}_thumb.png"
 done
 ```
+
+Inspect every derivative and retain its source. For animation recipes below,
+work in a dedicated project asset directory containing only the selected frames
+or supply an explicit frame list; a broad glob can include unrelated images.
 
 ## Animation (GIF/Video from Multiple Frames)
 
@@ -144,7 +148,7 @@ and upscaling. This produces better detail and avoids upscaling artifacts.
 
 ## Green Screen Transparency Pipeline
 
-Gemini cannot generate transparent backgrounds. Use this workaround:
+Use the selected tool’s supported transparency or background-removal operation when available. The source chroma-key recipe below is a fallback example for a tool that cannot output transparency; it needs an inspected source image and an available editor.
 
 ### 1. Generate with green screen prompt
 

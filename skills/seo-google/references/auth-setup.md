@@ -1,154 +1,40 @@
-# Google API Authentication Setup
+# Google authentication and project binding
 
-## Overview
+The maintained setup contract is [Google integrations](../../../docs/google-integrations.md). Read it when creating or repairing a connection; use the current CLI help for arguments. Authentication profiles and per-project property bindings replace the source pack's global configuration.
 
-Three credential types serve different APIs:
+## Existing setup first
 
-| Type | Used By | Cost |
-|------|---------|------|
-| **API Key** | PageSpeed Insights, CrUX, CrUX History, Knowledge Graph | Free |
-| **Service Account** | Search Console, Indexing API, GA4 | Free |
-| **Both** | Full seo-google skill | Free |
+Inspect the local Connections workspace or current project status for the requested source. CrUX, GSC and GA4 have separate configuration and access scopes. A configured API key does not imply access to a GSC or GA4 property.
 
-## Step 1: Create a Google Cloud Project
+Credential material lives below ignored `.runtime/google/`; property bindings live below the selected project's ignored `.runtime/integrations/`. Files use private permissions. Use the Workbench credential flow and keep secrets out of skill documents, reports, command output and audit artifacts.
 
-1. Go to [console.cloud.google.com](https://console.cloud.google.com)
-2. Click **Select a project** > **New Project**
-3. Name it (e.g., "Claude SEO") and note the project ID
-4. Select the project after creation
+## Search Console
 
-## Step 2: Enable APIs
-
-Navigate to **APIs & Services > Library** and enable:
-
-| API | Required For |
-|-----|-------------|
-| Google Search Console API | GSC Search Analytics, URL Inspection, Sitemaps |
-| PageSpeed Insights API | PSI Lighthouse lab data |
-| Chrome UX Report API | CrUX field data + History |
-| Web Search Indexing API | Indexing API v3 |
-| Google Analytics Data API | GA4 organic traffic |
-| Knowledge Graph Search API | Entity verification (optional) |
-
-## Step 3: Create an API Key
-
-1. **APIs & Services > Credentials > Create Credentials > API key**
-2. Click **Restrict key**:
-   - Under **API restrictions**, select: PageSpeed Insights API, Chrome UX Report API, Knowledge Graph Search API
-3. Copy the key (starts with `AIzaSy...`)
-
-## Step 4: Create a Service Account
-
-1. **IAM & Admin > Service Accounts > Create Service Account**
-2. Name: `claude-seo` (or similar)
-3. Skip optional permissions steps
-4. Click on the created service account > **Keys > Add Key > Create new key > JSON**
-5. Download the JSON file and store it securely (e.g., `~/.config/claude-seo/service_account.json`)
-
-The JSON file looks like:
-```json
-{
-  "type": "service_account",
-  "project_id": "your-project-id",
-  "private_key_id": "...",
-  "private_key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n",
-  "client_email": "claude-seo@your-project.iam.gserviceaccount.com",
-  "client_id": "...",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token"
-}
-```
-
-The `client_email` field is what you add to GSC and GA4.
-
-## Step 5: Grant Search Console Access
-
-1. Go to [Google Search Console](https://search.google.com/search-console)
-2. Select your property
-3. **Settings > Users and permissions > Add user**
-4. Paste the service account `client_email`
-5. Set permission level:
-   - **Full** for read-only (Search Analytics, URL Inspection, Sitemaps)
-   - **Owner** if you also need the Indexing API
-
-## Step 6: Grant GA4 Access
-
-1. Go to [Google Analytics](https://analytics.google.com)
-2. **Admin > Property Access Management > Add users** (the + icon)
-3. Paste the service account `client_email`
-4. Set role: **Viewer** (minimum for read-only reporting)
-5. Note the numeric property ID from **Admin > Property Details** (e.g., `123456789`)
-
-## Step 7: Create Config File
+For Desktop OAuth, import a client JSON through Connections or use:
 
 ```bash
-mkdir -p ~/.config/claude-seo
+./seo --project example-store gsc auth --profile default --client-secret /path/to/client-secret.json
 ```
 
-Save to `~/.config/claude-seo/google-api.json`:
+The consent flow needs the user. For a service account already granted access to the relevant Search Console property, use the `--service-account` alternative shown by `gsc auth --help`.
 
-```json
-{
-  "service_account_path": "~/.config/claude-seo/service_account.json",
-  "api_key": "AIzaSy...",
-  "default_property": "sc-domain:example.com",
-  "ga4_property_id": "properties/123456789"
-}
-```
-
-### Property URL Formats
-
-| Format | Example | When to Use |
-|--------|---------|-------------|
-| Domain property | `sc-domain:example.com` | Covers all URLs on the domain (recommended) |
-| URL-prefix property | `https://example.com/` | Covers only that specific prefix |
-
-## Step 8: Verify Setup
+List visible properties, then bind the exact domain or URL-prefix property through the existing commands:
 
 ```bash
-python scripts/google_auth.py --check
+./seo --project example-store gsc properties --profile default --json
+./seo --project example-store gsc bind --profile default --property sc-domain:example.com --json
 ```
 
-Expected output at Tier 2 (full):
-```
-Credential Tier: 2 -- Full (API key + Service Account + GA4)
+Binding checks access and coverage of the project's URL. These commands use read-only Search Console scope. GSC collection and binding do not require ownership or a write scope for indexing or sitemap submission.
 
-  [OK] PageSpeed Insights v5
-  [OK] Chrome UX Report (CrUX) API
-  [OK] CrUX History API
-  [OK] Google Search Console API
-       Service account: claude-seo@your-project.iam.gserviceaccount.com
-  [OK] Google Indexing API v3
-  [OK] GA4 Data API v1beta
-```
+## GA4 and CrUX
 
-## Environment Variable Alternatives
+GA4 uses its separate `analytics.readonly` token and an explicit numeric property binding. Follow the Google integrations document and `ga4 properties`/`ga4 bind` help rather than reusing a Search Console token by assumption. A service account needs access to that GA4 property.
 
-Instead of (or in addition to) the config file:
+CrUX uses the Workbench key storage or supported environment setting documented in Google integrations. Its field records do not require a Search Console property binding. Local Connections stores, rotates and verifies supported credentials without returning secret values.
 
-| Variable | Purpose |
-|----------|---------|
-| `GOOGLE_API_KEY` | API key for PSI/CrUX |
-| `GOOGLE_APPLICATION_CREDENTIALS` | Path to service account JSON |
-| `GA4_PROPERTY_ID` | GA4 property (e.g., `properties/123456789`) |
-| `GSC_PROPERTY` | Default GSC property (e.g., `sc-domain:example.com`) |
+## Diagnose the actual result
 
-## OAuth Scopes Used
+`needs_auth` indicates a missing/invalid binding or authorization handoff; an access-denied response needs identity/property checks. `needs_config` indicates absent required configuration. CrUX `no_data` is an eligible-record coverage result, distinct from failed authentication. Preserve the collector's response when diagnosing quota or API-enable failures.
 
-| Scope | APIs |
-|-------|------|
-| `https://www.googleapis.com/auth/webmasters.readonly` | GSC (read) |
-| `https://www.googleapis.com/auth/webmasters` | GSC (read/write, needed for sitemap submission) |
-| `https://www.googleapis.com/auth/indexing` | Indexing API |
-| `https://www.googleapis.com/auth/analytics.readonly` | GA4 (read) |
-
-## Troubleshooting
-
-| Error | Fix |
-|-------|-----|
-| `403 Forbidden` on GSC | Service account email not added to GSC property, or wrong permission level |
-| `403 Forbidden` on GA4 | Service account email not added to GA4 property as Viewer |
-| `404 Not Found` on GSC | Wrong property URL format. Use `sc-domain:` or include trailing slash for URL-prefix |
-| `404 Not Found` on CrUX | Site has insufficient Chrome traffic. Not a credentials issue. |
-| `429 Rate Limit` | Wait and retry. See rate-limits-quotas.md for per-API limits |
-| `API not enabled` | Enable the specific API in GCP Console > APIs & Services > Library |
+Optional Google APIs require their own verified integration and scopes. Do not broaden an existing read-only profile to enable an unrelated API workflow.

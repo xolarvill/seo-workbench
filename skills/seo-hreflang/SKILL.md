@@ -20,6 +20,8 @@ Validate existing hreflang implementations or generate correct hreflang tags
 for multi-language and multi-region sites. Supports HTML, HTTP header, and
 XML sitemap implementations.
 
+Use current project evidence and the [Workbench operations guide](../seo/references/workbench-operations.md) for fresh collection. Record coverage and unavailable inputs alongside findings.
+
 ## Validation Checks
 
 ### 1. Self-Referencing Tags
@@ -210,7 +212,7 @@ Load `references/cultural-profiles.md` for pre-built profiles (DACH, Francophone
 
 ## Content Parity Audit
 
-**Command:** `/seo hreflang audit <directory-or-url>`
+**Inputs:** A local content directory or collected page evidence for the equivalent language URLs. Use the [Workbench operations guide](../seo/references/workbench-operations.md) when fresh site evidence is needed.
 
 Audit content parity across all language versions of a site or local content directory.
 

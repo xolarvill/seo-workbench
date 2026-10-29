@@ -21,6 +21,8 @@ metadata:
 
 # Local SEO Analysis (March 2026)
 
+Use current project evidence and the [Workbench operations guide](../seo/references/workbench-operations.md) for fresh collection. Record coverage and unavailable inputs alongside findings.
+
 ## Key Statistics
 
 | Metric | Value | Source |
@@ -63,7 +65,7 @@ Detect from page signals before analysis. This determines which checks apply.
 
 ## Industry Vertical Detection
 
-Detect from page signals and GBP category patterns. Routes to industry-specific checks from `references/local-schema-types.md`.
+Detect from page signals and GBP category patterns. Routes to industry-specific checks from [local-schema-types](../seo/references/local-schema-types.md).
 
 | Vertical | Detection Signals |
 |----------|------------------|
@@ -160,14 +162,14 @@ Citations declining for traditional pack rankings but **3 of top 5 AI visibility
   2. LocalBusiness JSON-LD schema
   3. Any visible GBP data
   - Flag any discrepancies between these three sources
-- Citation presence on Tier 1 directories (check via WebFetch or site: search patterns):
+- Citation presence on Tier 1 directories (check available public-page observations or site: search results):
   - Google Business Profile signals on page
   - Yelp: `site:yelp.com "Business Name"`
   - BBB: `site:bbb.org "Business Name"`
   - Facebook business page references
 - Apple Business Connect awareness (usage doubled to 27%, BrightLocal 2026 -- recommend claiming)
 - Bing Places awareness (powers ChatGPT, Copilot, Alexa -- recommend claiming and optimizing)
-- Industry-specific directory recommendations: load `references/local-schema-types.md` for per-vertical citation sources
+- Industry-specific directory recommendations: load [local-schema-types](../seo/references/local-schema-types.md) for per-vertical citation sources
 - Data aggregator awareness: Data Axle, Foursquare, Neustar/TransUnion (recommend submission for downstream distribution)
 
 **Scoring guide:**
@@ -183,14 +185,14 @@ Schema is NOT a direct ranking factor (John Mueller confirmed). But enables rich
 - LocalBusiness schema presence (extract JSON-LD blocks)
 - Required properties: `name`, `address` with PostalAddress sub-properties
 - Recommended properties: `geo` (minimum 5 decimal places, Confirmed), `openingHoursSpecification`, `telephone`, `url`, `priceRange` (<100 chars), `image`, `aggregateRating`
-- **Correct subtype for industry** -- load `references/local-schema-types.md`:
+- **Correct subtype for industry** -- load [local-schema-types](../seo/references/local-schema-types.md):
   - Restaurant using `Restaurant` not generic `LocalBusiness`
   - Legal using `LegalService` not deprecated `Attorney`
   - Auto dealer using `AutoDealer` not deprecated `VehicleListing`
   - Healthcare using `MedicalClinic`/`Hospital`/`Dentist` not generic `MedicalBusiness`
 - SAB-specific: `areaServed` with named cities (recommended, not in Google's official list but Schema.org supported)
 - Multi-location: each location page has own LocalBusiness with unique `@id`, linked via `branchOf` to Organization on homepage
-- Industry-specific schema patterns (per `references/local-schema-types.md`):
+- Industry-specific schema patterns (per [local-schema-types](../seo/references/local-schema-types.md)):
   - Restaurant: Menu + MenuSection + MenuItem + ReserveAction
   - Healthcare: Physician (Person) + MedicalSpecialty + sameAs to NPI
   - Legal: LegalService + Person + Service (practice areas)
@@ -227,7 +229,7 @@ Links declining for local pack but remain **~26% of local organic ranking** (Whi
 
 ## AI Search Impact on Local
 
-**Do not duplicate seo-geo analysis.** Provide local-specific AI context and recommend `/seo geo <url>` for full analysis.
+**Do not duplicate seo-geo analysis.** Provide local-specific AI context and consult [seo-geo](../seo-geo/SKILL.md) for full analysis.
 
 Key local AI facts:
 - AI Overviews appear on up to 68% of local searches (Whitespark Q2 2025)
@@ -237,15 +239,15 @@ Key local AI facts:
 - Bing Places is critical: powers ChatGPT, Copilot, Alexa
 - AI-powered local packs (mobile US) show only 1-2 businesses, 32% fewer shown (Sterling Sky)
 
-**Recommendation**: Run `/seo geo <url>` for comprehensive AI search visibility analysis including citability scoring, llms.txt check, and brand mention audit.
+**Recommendation**: Use [seo-geo](../seo-geo/SKILL.md) for comprehensive AI search visibility analysis including citability scoring, llms.txt check, and brand mention audit.
 
 ---
 
 ## Reference Files
 
 Load on-demand as needed:
-- `references/local-seo-signals.md`: Ranking factors, review benchmarks, citation tiers, GBP feature status, algorithm updates
-- `references/local-schema-types.md`: LocalBusiness subtypes by industry, schema patterns, citation sources per vertical
+- [local-seo-signals](../seo/references/local-seo-signals.md): Ranking factors, review benchmarks, citation tiers, GBP feature status, algorithm updates
+- [local-schema-types](../seo/references/local-schema-types.md): LocalBusiness subtypes by industry, schema patterns, citation sources per vertical
 
 ---
 
@@ -296,11 +298,9 @@ Generate `LOCAL-SEO-ANALYSIS-{domain}.md` with:
 
 ---
 
-## DataForSEO Integration (Optional)
+## Optional provider evidence
 
-If DataForSEO MCP tools are available, use `local_business_data` for live GBP data extraction, `google_local_pack_serp` for real-time local pack positions, and `business_listings` for automated citation auditing across directories.
-
----
+For live GBP, local-pack or citation comparisons, discover an available provider integration and verify its supported operations, account scope and cost before use. Otherwise use supplied listing/review exports or observed public profiles. Retain the business identity, location, observation time and coverage for each source. A missing provider response leaves the field unobserved. See [Workbench operations](../seo/references/workbench-operations.md) for local evidence collection.
 
 ## Error Handling
 
@@ -314,4 +314,4 @@ If DataForSEO MCP tools are available, use `local_business_data` for live GBP da
 
 ## FLOW Framework Integration
 
-For prompt-guided local optimization, use `/seo flow local <url>` — FLOW's 11 local-stage prompts cover GBP optimization, meta descriptions, title tags, and structured local audit workflows.
+For prompt-guided local optimization, select relevant local-stage references from [seo-flow](../seo-flow/SKILL.md) — FLOW's 11 local-stage prompts cover GBP optimization, meta descriptions, title tags, and structured local audit workflows.

@@ -2,27 +2,25 @@
 
 ## Overview
 
-The execution phase transforms a `cluster-plan.json` into actual content. It handles
+The execution method turns the existing project cluster plan into briefs and local drafts. It covers
 priority ordering, context injection for the blog writer, backward link updates,
 resume capability, and post-execution quality scoring.
 
 ## Priority Algorithm
 
-Content is created in this strict order:
+Choose the next approved draft from the project priorities. A useful default order is:
 
-1. **Pillar page first** -- The hub must exist before any spokes can link to it
+1. **Pillar page first** -- Establish the hub brief and proposed URL for the spokes
 2. **Spokes by search volume (descending)** -- Highest-volume spokes first for
    maximum early impact
 3. **Within same volume, by cluster index** -- Process Cluster 0 before Cluster 1
 4. **Within same cluster, by post index** -- Process Post 0 before Post 1
 
-Rationale: The pillar establishes the topical authority foundation. High-volume
-spokes generate the most organic traffic, so they should be published earliest
-for faster compounding returns.
+Reorder this default when existing coverage, evidence quality, business priority, or dependencies favor a spoke first. Draft order does not authorize publication.
 
 ## Cluster Context Injection
 
-When invoking `blog-write` for each post, pass a structured context block:
+Pass a structured context block to the local `content-brief` or `write-content` method for each approved item:
 
 ```json
 {
@@ -69,13 +67,13 @@ After each new post is written, update previously written posts to link to it:
 
 ### Process
 
-1. Read the link matrix from `cluster-plan.json`
+1. Read the link matrix from the current project cluster plan
 2. Identify all posts that should link TO the newly written post
 3. For each of those posts (that is already written):
    a. Open the post file
-   b. Search for the placeholder comment: `<!-- cluster-link:POST_ID -->`
+   b. In a local draft, search for the placeholder comment: `<!-- cluster-link:POST_ID -->`
    c. Replace the placeholder with an actual contextual link
-   d. If no placeholder found, append a contextual link in the most relevant section
+   d. If no placeholder is found, propose a contextual placement for review; never append an unrelated paragraph or update a live page automatically
 4. Log all backward links added
 
 ### Placeholder Format
@@ -97,12 +95,12 @@ Execution can be interrupted and resumed. The resume algorithm:
 
 ### Detection
 
-1. Read `cluster-plan.json` from the current directory
-2. Scan the output directory for existing post files
+1. Read the cluster plan linked from the current project task artifact
+2. Read existing content items, linked draft paths, and review records
 3. Match found files against the plan using:
    - Filename patterns (slug derived from title or keyword)
    - Content inspection (check for `primary_keyword` in frontmatter or first H1)
-4. Mark matched posts as `"status": "written"` in the plan
+4. Record actual draft and review state in the existing task artifact; use content IDs to disambiguate matches
 
 ### Resume Logic
 
@@ -117,9 +115,8 @@ Execution can be interrupted and resumed. The resume algorithm:
 
 - If the pillar is missing but spokes exist, write the pillar first and then
   inject backward links into existing spokes
-- If a spoke file exists but is incomplete (under 50% of target word count),
-  treat it as unwritten and recreate
-- If `cluster-plan.json` has been modified since last execution, re-validate
+- If a draft is incomplete, preserve its text and review state; continue or revise it against the brief
+- If the linked cluster plan has been modified since last execution, re-validate
   the plan before resuming
 
 ## Scorecard Metrics
@@ -178,3 +175,15 @@ Before marking execution as complete, verify:
 
 If any gate fails, flag it in the scorecard and provide specific remediation
 instructions. Do NOT silently pass a failing cluster.
+
+## Workbench Handoff
+
+See [Workbench operations](../../seo/references/workbench-operations.md). Inspect
+`./seo content cluster-brief --help`, `./seo content brief --help`, and
+`./seo content import-draft --help` before using their existing contracts. The
+cluster-brief command operates on current project keyword inputs; it does not
+execute an arbitrary plan JSON. Draft import uses `--from-file` and the accepted
+import schema. Link the resulting content IDs and draft paths from the plan.
+
+A scorecard covers the inspected local drafts. Confirm live URLs and eligible
+source-page links separately when evaluating publication or connectivity.

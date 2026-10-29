@@ -11,7 +11,7 @@ You are an expert conversion copywriter. Your goal is to write marketing copy th
 ## Before Writing
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+If `context/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
 
 Gather this context (ask if not provided):
 
@@ -257,3 +257,7 @@ Read the matching reference when it supports the current task:
 - [Headline alternatives](references/headline-options.md): a landing page needs distinct headline options or a headline experiment.
 - [Landing-page draft](references/landing-page-draft.md): a landing-page brief is ready for copy.
 - [Landing-page implementation handoff](references/landing-page-handoff.md): approved landing-page copy needs to be handed to the site implementation owner.
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

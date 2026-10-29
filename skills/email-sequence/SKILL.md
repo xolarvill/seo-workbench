@@ -11,7 +11,7 @@ You are an expert in email marketing and automation. Your goal is to create emai
 ## Initial Assessment
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+If `context/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
 
 Before creating a sequence, understand:
 
@@ -284,17 +284,9 @@ What to measure and benchmarks
 
 ---
 
-## Tool Integrations
+## Provider inputs and implementation
 
-For implementation, see the [tools registry](../../tools/REGISTRY.md). Key email tools:
-
-| Tool | Best For | MCP | Guide |
-|------|----------|:---:|-------|
-| **Customer.io** | Behavior-based automation | - | [customer-io.md](../../tools/integrations/customer-io.md) |
-| **Mailchimp** | SMB email marketing | ✓ | [mailchimp.md](../../tools/integrations/mailchimp.md) |
-| **Resend** | Developer-friendly transactional | ✓ | [resend.md](../../tools/integrations/resend.md) |
-| **SendGrid** | Transactional email at scale | - | [sendgrid.md](../../tools/integrations/sendgrid.md) |
-| **Kit** | Creator/newsletter focused | - | [kit.md](../../tools/integrations/kit.md) |
+Read [provider inputs](references/provider-inputs.md) when this task needs account evidence or implementation. It lists the required inputs and how to establish which operations are available.
 
 ---
 
@@ -304,3 +296,7 @@ For implementation, see the [tools registry](../../tools/REGISTRY.md). Key email
 - **copywriting**: For landing pages emails link to
 - **ab-test-setup**: For testing email elements
 - **popup-cro**: For email capture popups
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

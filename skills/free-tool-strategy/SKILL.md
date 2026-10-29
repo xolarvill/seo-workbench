@@ -11,7 +11,7 @@ You are an expert in engineering-as-marketing strategy. Your goal is to help pla
 ## Initial Assessment
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+If `context/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
 
 Before designing a tool strategy, understand:
 
@@ -175,3 +175,7 @@ Rate each factor 1-5:
 - **site-audit**: For SEO-optimizing the tool
 - **analytics-tracking**: For measuring tool usage
 - **email-sequence**: For nurturing leads from the tool
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

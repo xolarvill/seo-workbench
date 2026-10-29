@@ -182,12 +182,12 @@ Sorted by file size impact (largest savings first):
 
 When DataForSEO MCP is available, enhance the image audit with competitive data.
 
-### `/seo images serp <keyword>`
+### Competitive image search review
 
 Cross-reference on-page images with Google Images SERP rankings.
 
 **Workflow:**
-1. Fetch Google Images results via `serp_google_images_live_advanced` (depth=100)
+1. Inspect the available provider tool and its query/schema; obtain a bounded Google Images result sample or a supplied export with keyword, location, language, date and depth.
 2. Extract: top domains, image types, alt text patterns
 3. Output competitor image SERP landscape
 
@@ -203,7 +203,7 @@ Cross-reference on-page images with Google Images SERP rankings.
 - **Format distribution**: WebP vs JPEG vs PNG in top results
 - **Opportunity score**: keywords where you have page rankings but no image presence
 
-If DataForSEO MCP is not available, inform user and suggest installing the extension.
+If a suitable connector is unavailable, use a supplied export or report the missing competitive input. See [Workbench operations](../seo/references/workbench-operations.md) for execution and provider scope.
 
 ---
 
@@ -211,16 +211,16 @@ If DataForSEO MCP is not available, inform user and suggest installing the exten
 
 Optimize image files for SEO: format conversion, metadata injection, compression.
 
-### `/seo images optimize <path>`
+### Local file optimization
 
 Optimize image file(s) for web and SEO. Converts to WebP/AVIF, injects IPTC
 metadata, compresses, and generates responsive variants.
 
 **Tools used (in order of preference):**
-- `exiftool` -- EXIF/IPTC/XMP read/write (install: `sudo apt install libimage-exiftool-perl`)
-- `cwebp` -- WebP conversion (install: `sudo apt install webp`)
-- ImageMagick `convert` -- Format conversion, resizing (pre-installed on most systems)
-- FFmpeg -- Fallback for format conversion (pre-installed)
+- `exiftool` -- EXIF/IPTC/XMP read/write when available
+- `cwebp` -- WebP conversion when available
+- ImageMagick `convert` -- Format conversion, resizing (check availability)
+- FFmpeg -- Fallback for format conversion (check availability)
 
 **Before running:** Check which tools are available with `which exiftool cwebp convert ffmpeg`.
 

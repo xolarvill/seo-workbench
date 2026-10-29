@@ -1,11 +1,13 @@
 ---
 name: page-audit
-description: Use when auditing a specific page's SEO performance, content quality, and competitive position. The agent fetches the URL, Googles the primary keyword, reads the top 3 competitors, and produces a full 7-dimension audit — no exports, no analytics access required.
+description: Review one page's technical SEO, content quality, competitive position or metadata. Select the relevant scope and reuse adequate existing page and research evidence.
 ---
 
 # Page Audit
 
 ## Scope modes
+
+For title or description options only, read [metadata writing](references/metadata-writing.md) and use the supplied page/context. Return the requested options and factual checks. The full audit and SERP workflow below applies when the user requests that assessment.
 
 For a single URL's technical/on-page question, inspect eligible metadata, canonical/robots, structured data, images, rendering and existing field evidence. Use [the single-page checklist](references/claude-seo/single-page-checks.md) for relevant checks and the schema/images/technical methods for their current contracts. A technical-only request does not require competitor research.
 
@@ -52,7 +54,7 @@ Google the primary keyword. Read the top 10 results, with special attention to t
 - Fetch and read the full page
 - Note: content format (listicle / guide / comparison / tool / video), approximate word count, heading structure, unique angle, E-E-A-T signals, what they cover that the audited page doesn't
 
-Do not skip this step. A page audit without competitive context is a generic checklist.
+For a competitive assessment, use adequate existing SERP research or collect it when needed. Technical-only checks and metadata-only work use their scope mode above.
 
 ## PHASE 0: GOAL DISTILLATION & CONTEXT MAPPING
 

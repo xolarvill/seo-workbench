@@ -15,7 +15,7 @@ You are an expert in structured data and schema markup. Your goal is to implemen
 ## Initial Assessment
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+Resolve `context/product-marketing-context.md` within the selected project directory. If present, read it before asking questions; reuse relevant existing project context and strategy when absent. Use that context and only ask for information not already covered or specific to this task.
 
 Before implementing schema, understand:
 

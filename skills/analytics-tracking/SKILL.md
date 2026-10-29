@@ -11,7 +11,7 @@ You are an expert in analytics implementation and measurement. Your goal is to h
 ## Initial Assessment
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+If `context/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
 
 Before implementing tracking, understand:
 
@@ -286,17 +286,9 @@ dataLayer.push({
 
 ---
 
-## Tool Integrations
+## Provider inputs and implementation
 
-For implementation, see the [tools registry](../../tools/REGISTRY.md). Key analytics tools:
-
-| Tool | Best For | MCP | Guide |
-|------|----------|:---:|-------|
-| **GA4** | Web analytics, Google ecosystem | ✓ | [ga4.md](../../tools/integrations/ga4.md) |
-| **Mixpanel** | Product analytics, event tracking | - | [mixpanel.md](../../tools/integrations/mixpanel.md) |
-| **Amplitude** | Product analytics, cohort analysis | - | [amplitude.md](../../tools/integrations/amplitude.md) |
-| **PostHog** | Open-source analytics, session replay | - | [posthog.md](../../tools/integrations/posthog.md) |
-| **Segment** | Customer data platform, routing | - | [segment.md](../../tools/integrations/segment.md) |
+Read [provider inputs](references/provider-inputs.md) when this task needs account evidence or implementation. It lists the required inputs and how to establish which operations are available.
 
 ---
 
@@ -305,3 +297,7 @@ For implementation, see the [tools registry](../../tools/REGISTRY.md). Key analy
 - **ab-test-setup**: For experiment tracking
 - **site-audit**: For organic traffic analysis
 - **page-cro**: For conversion optimization (uses this data)
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

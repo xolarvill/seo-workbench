@@ -1,7 +1,8 @@
 # SEO Image Presets
 
-Pre-configured presets for common SEO image use cases. These map to banana's
-preset format (see `references/presets.md` for schema details).
+Composition briefs for common SEO image uses. These JSON examples describe
+creative intent; they are not a local executable preset format. Map relevant
+fields to an available tool and confirm its supported dimensions and parameters.
 
 ## Preset Templates
 
@@ -119,19 +120,16 @@ preset format (see `references/presets.md` for schema details).
 }
 ```
 
-## Creating Custom Presets
+## Custom Brand Briefs
 
-Users can create their own presets:
-```bash
-python3 ~/.claude/skills/seo-image-gen/scripts/presets.py create my-brand
-```
+Read existing brand and product guidance from the current project. Add placement,
+colors, mood, typography, reference assets, and desired output dimensions to the
+existing task brief. Reuse a named brand preset only when its file or connected
+provider record actually exists and the tool supports it.
 
-This creates `~/.banana/presets/my-brand.json` with the full schema.
-Custom presets override SEO defaults when specified.
-
-## Preset Selection Logic
-
-1. If user specifies a use case command (og, hero, product), load the matching preset
-2. If user mentions a brand preset name, load from `~/.banana/presets/`
-3. Brand presets override SEO presets for colors, mood, and typography
-4. SEO presets always provide aspect ratio and resolution defaults
+Brand facts and supplied references guide colors, mood, and product details; the
+placement determines composition and dimensions. JSON resolution/model hints and
+post-processing strings above are source examples. Conversion commands require
+an installed tool and actual file inspection before use. For transparent product
+cutouts, prefer the available editor's supported background-removal operation
+rather than deleting every white pixel in a product image.

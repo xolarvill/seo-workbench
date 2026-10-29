@@ -51,4 +51,6 @@ Some recipes still impose fixed article lengths, keyword density, invented autho
 
 ## Resuming work
 
+When a selected method needs collection, credentials or delivery, read [Workbench operations](seo/references/workbench-operations.md) for the current local interfaces and project artifact locations. Discover optional provider operations from the session's available tools.
+
 Read the relevant decision or brief, latest artifact, evidence pointers and remaining gaps. Reuse research only when its target, market, observation date and scope still apply. A stored stage or checked step cannot establish that the research is complete. Keep the method and its boundaries with the deliverable; do not create a second task database or a global skill-call counter.

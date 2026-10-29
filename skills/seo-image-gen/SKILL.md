@@ -1,57 +1,35 @@
 ---
 name: seo-image-gen
-description: "AI image generation for SEO assets: OG/social preview images, blog hero images, schema images, product photography, infographics. Powered by Gemini via nanobanana-mcp. Requires banana extension installed. Use when user says \"generate image\", \"OG image\", \"social preview\", \"hero image\", \"blog image\", \"product photo\", \"infographic\", \"seo image\", \"create visual\", \"image-gen\", \"favicon\", \"schema image\", \"pinterest pin\", \"generate visual\", \"banner\", or \"thumbnail\"."
+description: "AI image generation for SEO assets: OG/social preview images, blog hero images, schema images, product photography, infographics. Uses an actually available image generation tool. Use when user says \"generate image\", \"OG image\", \"social preview\", \"hero image\", \"blog image\", \"product photo\", \"infographic\", \"seo image\", \"create visual\", \"image-gen\", \"favicon\", \"schema image\", \"pinterest pin\", \"generate visual\", \"banner\", or \"thumbnail\"."
 argument-hint: "[og|hero|product|infographic|custom|batch] <description>"
 user-invokable: true
 license: MIT
-compatibility: "Requires nanobanana MCP server"
+compatibility: "Image generation requires an available tool; planning works from supplied assets"
 metadata:
   author: AgriciDaniel
   version: "1.9.6"
   category: seo
 ---
 
-# SEO Image Gen: AI Image Generation for SEO Assets (Extension)
+# SEO Image Generation
 
-Generate production-ready images for SEO use cases using Gemini's image generation
-via the banana Creative Director pipeline. Maps SEO needs to optimized domain modes,
-aspect ratios, and resolution defaults.
+Plan and generate OG previews, article heroes, product illustrations, infographics,
+and schema images with an available image tool. Read the tool's applicable skill
+and parameter contract before generating. This repository supplies the SEO brief
+and handoff method; image providers are discovered in the active environment.
 
-## Architecture Note
+## Inputs and Available Capability
 
-This extension is built on [Claude Banana](https://github.com/AgriciDaniel/banana-claude),
-the standalone AI image generation skill for Claude Code.
-
-This skill has two components with distinct roles:
-- **SKILL.md** (this file): Handles interactive `/seo image-gen` commands for generating images
-- **Agent** (`agents/seo-image-gen.md`): Audit-only analyst spawned during `/seo audit` to assess existing OG/social images and produce a generation plan (never auto-generates)
-
-## Prerequisites
-
-This skill requires the banana extension to be installed:
-```bash
-./extensions/banana/install.sh
-```
-
-**Check availability:** Before using any image generation tool, verify the MCP server
-is connected by checking if `gemini_generate_image` or `set_aspect_ratio` tools are
-available. If tools are not available, inform the user the extension is not installed
-and provide install instructions.
-
-## Quick Reference
-
-| Command | What it does |
-|---------|-------------|
-| `/seo image-gen og <description>` | Generate OG/social preview image (1200x630 feel) |
-| `/seo image-gen hero <description>` | Blog hero image (widescreen, dramatic) |
-| `/seo image-gen product <description>` | Product photography (clean, white BG) |
-| `/seo image-gen infographic <description>` | Infographic visual (vertical, data-heavy) |
-| `/seo image-gen custom <description>` | Custom image with full Creative Director pipeline |
-| `/seo image-gen batch <description> [N]` | Generate N variations (default: 3) |
+Start from the target placement, actual dimensions, brand guidance, and existing
+assets in the project. Inspect supplied reference images before editing. Verify
+which generation or editing tool is available and what file outputs it returns.
+If none is available, deliver a concrete image brief and asset requirements for a
+designer or later tool session. A missing provider does not trigger installation.
 
 ## SEO Image Use Cases
 
-Each use case maps to pre-configured banana parameters:
+These are brief starting points. Translate them into the selected tool's supported
+parameters and verify the actual output dimensions.
 
 | Use Case | Aspect Ratio | Resolution | Domain Mode | Notes |
 |----------|-------------|------------|-------------|-------|
@@ -64,113 +42,55 @@ Each use case maps to pre-configured banana parameters:
 | **Favicon/Icon** | `1:1` | `512` | Logo | Minimal, scalable, recognizable |
 | **Pinterest Pin** | `2:3` | `2K` | Editorial | Tall vertical card |
 
-## Generation Pipeline
+## Generation Method
 
-For every generation request:
+1. Identify the placement and reader purpose: preview, hero, product, diagram, or icon.
+2. Read [SEO image presets](references/seo-image-presets.md) for relevant composition ideas.
+3. Read [prompt engineering](references/prompt-engineering.md) for its six-component
+   brief method when helpful. Build a concrete brief: subject, setting, composition, style, brand colors, text,
+   required dimensions, source references, and output format. Keep product details
+   faithful to supplied product photography and specifications.
+4. Use the available generation/editing tool with supported arguments. For batches,
+   establish the requested number of variants and any actual provider charge.
+5. Inspect the result for accurate product details, text, cropping, and placement.
+6. Save or link the returned asset, then record the remaining production steps.
 
-1. **Identify use case** from command or context (og, hero, product, etc.)
-2. **Apply SEO defaults** from the use cases table above
-3. **Set aspect ratio** via `set_aspect_ratio` MCP tool
-4. **Construct Reasoning Brief** using the banana Creative Director pipeline:
-   - Load `references/prompt-engineering.md` for the 6-component system
-   - Apply domain mode emphasis (Subject 30%, Style 25%, Context 15%, etc.)
-   - Be SPECIFIC and VISCERAL: describe what the camera sees
-5. **Generate** via `gemini_generate_image` MCP tool
-6. **Post-generation SEO checklist** (see below)
+## Asset Handoff
 
-### Check for Presets
+- Supply the actual output path, dimensions, and brief used. State model/settings
+  only when the tool exposes them.
+- Write descriptive alt text for the image's role. Decorative images may need an
+  empty alt attribute; avoid adding keywords that the image does not depict.
+- Suggest a descriptive filename. Choose a web format and compression after
+  inspecting the returned file; run conversion only with an available supported
+  tool and retain the original.
+- For an OG image, include the intended crop, width, height, and alt text. A local
+  asset path is not a public `og:image` URL.
+- For ImageObject or Product markup, pass verified asset properties to `schema`.
+  Use a real hosted URL only after an authorized upload and readback.
+- Content asset operations use the existing project workflow described in
+  [Workbench operations](../seo/references/workbench-operations.md). Generation
+  alone does not upload, publish, or alter metadata.
 
-If the user mentions a brand or has SEO presets configured:
-```bash
-python3 scripts/presets.py list
-```
-Load matching preset and apply as defaults. Also check `references/seo-image-presets.md`
-for SEO-specific preset templates.
+## Provider and Cost Handling
 
-## Post-Generation SEO Checklist
+Use current tool responses or the verified provider contract for costs and limits.
+Record actual returned usage when available. Do not quote historical model prices
+as an estimate for a different provider, or invent a local usage ledger. On tool
+failure, retain the brief and returned error; use a supported retry or alternative
+only when actually available.
 
-After every successful generation, guide the user on:
+## Cross-Skill Use
 
-1. **Alt text**:Write descriptive, keyword-rich alt text for the generated image
-2. **File naming**:Rename to SEO-friendly format: `keyword-description-widthxheight.webp`
-3. **WebP conversion**:Convert to WebP for optimal page speed:
-   ```bash
-   magick output.png -quality 85 output.webp
-   ```
-4. **File size**:Target under 200KB for hero images, under 100KB for thumbnails
-5. **Schema markup**:Suggest `ImageObject` schema for the generated image:
-   ```json
-   {
-     "@type": "ImageObject",
-     "url": "https://example.com/images/keyword-description.webp",
-     "width": 1200,
-     "height": 630,
-     "caption": "Descriptive caption with target keyword"
-   }
-   ```
-6. **OG meta tags**:For social preview images, remind about:
-   ```html
-   <meta property="og:image" content="https://example.com/images/og-image.webp" />
-   <meta property="og:image:width" content="1200" />
-   <meta property="og:image:height" content="630" />
-   <meta property="og:image:alt" content="Descriptive alt text" />
-   ```
+Read `images` for analysis of existing assets, `schema` for structured data, and
+`write-content` for placement in a draft. A site audit may recommend generation;
+perform generation when the user's requested scope includes creating the asset.
 
-## Cost Awareness
+## Provider-Specific References
 
-Image generation costs money. Be transparent:
-- Show estimated cost before generating (especially for batch)
-- Log every generation: `python3 scripts/cost_tracker.py log --model MODEL --resolution RES --prompt "brief"`
-- Run `cost_tracker.py summary` if user asks about usage
-
-Approximate costs (gemini-3.1-flash):
-- 512: ~$0.02/image
-- 1K resolution: ~$0.04/image
-- 2K resolution: ~$0.08/image
-- 4K resolution: ~$0.16/image
-
-## Model Routing
-
-| Scenario | Model | Why |
-|----------|-------|-----|
-| OG images, social previews | `gemini-3.1-flash-image-preview` @ 1K | Fast, cost-effective |
-| Hero images, product photos | `gemini-3.1-flash-image-preview` @ 2K | Quality + detail |
-| Infographics with text | `gemini-3.1-flash-image-preview` @ 2K, thinking: high | Better text rendering |
-| Quick drafts | `gemini-2.5-flash-image` @ 512 | Rapid iteration |
-
-## Error Handling
-
-| Error | Resolution |
-|-------|-----------|
-| MCP not configured | Run `./extensions/banana/install.sh` |
-| API key invalid | New key at https://aistudio.google.com/apikey |
-| Rate limited (429) | Wait 60s, retry. Free tier: ~10 RPM / ~500 RPD |
-| `IMAGE_SAFETY` | Rephrase prompt - see `references/prompt-engineering.md` Safety section |
-| MCP unavailable | Fall back: `python3 scripts/generate.py --prompt "..." --aspect-ratio "16:9"` |
-| Extension not installed | Show install instructions: `./extensions/banana/install.sh` |
-
-## Cross-Skill Integration
-
-- **images** (analysis) feeds into **seo-image-gen** (generation): audit results from `/seo images` identify missing or low-quality images; use those findings to drive `/seo image-gen` commands
-- **site-audit** spawns the seo-image-gen **agent** (not this skill) to analyze OG/social images across the site and produce a prioritized generation plan
-- **schema** can consume generated images: after generation, suggest `ImageObject` schema markup pointing to the new assets
-
-## Reference Documentation
-
-Load on-demand. Do NOT load all at startup:
-- `references/prompt-engineering.md`:6-component system, domain modes, templates
-- `references/gemini-models.md`:Model specs, rate limits, capabilities
-- `references/mcp-tools.md`:MCP tool parameters and responses
-- `references/post-processing.md`:ImageMagick/FFmpeg pipeline recipes
-- `references/cost-tracking.md`:Pricing, usage tracking
-- `references/presets.md`:Brand preset management
-- `references/seo-image-presets.md`:SEO-specific preset templates
-
-## Response Format
-
-After generating, always provide:
-1. **Image path**:where it was saved
-2. **Crafted prompt**:show what was sent to the API (educational)
-3. **Settings**:model, aspect ratio, resolution
-4. **SEO checklist**:alt text suggestion, file naming, WebP conversion
-5. **Schema snippet**:ImageObject or og:image markup if applicable
+The preserved [Gemini model notes](references/gemini-models.md),
+[MCP examples](references/mcp-tools.md), [cost notes](references/cost-tracking.md),
+[preset format](references/presets.md), and
+[post-processing recipes](references/post-processing.md) describe the source
+integration. Use them only when the actual selected provider supports that
+contract; verify current tool parameters and installed conversion capabilities.

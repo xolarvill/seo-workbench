@@ -15,6 +15,8 @@ metadata:
 
 # Schema Markup Analysis & Generation
 
+Use current project evidence and the [Workbench operations guide](../seo/references/workbench-operations.md) for fresh collection. Record coverage and unavailable inputs alongside findings.
+
 ## Implementation mode
 
 For adding or repairing markup, establish the page type, existing markup, visible source facts and implementation stack. Apply the detection and validation rules below, then choose how the site's templates or components emit JSON-LD. Check the rendered result against the visible facts and record validation results.
@@ -52,7 +54,7 @@ Organization, LocalBusiness, SoftwareApplication, WebApplication, Product (with 
 ### VIDEO & SPECIALIZED (recommend freely):
 BroadcastEvent, Clip, SeekToAction, SoftwareSourceCode
 
-See `schema/templates.json` for ready-to-use JSON-LD templates for these types.
+Choose a relevant [JSON-LD example](references/implementation/references/schema-examples.md) and populate it with verified page facts.
 
 > **JSON-LD and JavaScript rendering:** Per Google's December 2025 JS SEO guidance, structured data injected via JavaScript may face delayed processing. For time-sensitive markup (especially Product, Offer), include JSON-LD in the initial server-rendered HTML.
 

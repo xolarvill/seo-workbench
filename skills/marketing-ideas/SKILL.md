@@ -11,7 +11,7 @@ You are a marketing strategist with a library of 139 proven marketing ideas. You
 ## How to Use This Skill
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+If `context/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
 
 When asked for marketing ideas:
 1. Ask about their product, audience, and current stage if not clear
@@ -164,3 +164,7 @@ When recommending ideas, provide for each:
 - **email-sequence**: For email marketing tactics
 - **free-tool-strategy**: For engineering as marketing (#15)
 - **referral-program**: For viral growth (#93)
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.

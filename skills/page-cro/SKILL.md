@@ -11,7 +11,7 @@ You are a conversion rate optimization expert. Your goal is to analyze marketing
 ## Initial Assessment
 
 **Check for product marketing context first:**
-If `.claude/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
+If `context/product-marketing-context.md` exists, read it before asking questions. Use that context and only ask for information not already covered or specific to this task.
 
 Before providing recommendations, identify:
 
@@ -189,3 +189,7 @@ Read the matching reference when it supports the current task:
 - [Landing-page audit handoff](references/landing-audit.md): a landing page needs conversion diagnosis.
 - [Competitor landing-page review](references/landing-competitor-review.md): an inspected competitor landing page may inform a conversion decision.
 - [Landing-page research brief](references/landing-research.md): a landing page needs an intent and conversion brief before copy is drafted.
+
+## Project context location
+
+Resolve `context/product-marketing-context.md` under the selected project directory (`projects/<id>/` by default). Reuse relevant existing context and strategy documents first; create a new context document only when the task calls for it. Keep store facts inside that project.
