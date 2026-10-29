@@ -1,14 +1,14 @@
 # Knowledge Document Template: Worked Example
 
-This is what a good interview output looks like. Use it to calibrate the final step of the skill: how to organize the user's answers into something `write-content` or `improve-content` can actually use. Pattern-match against this example, don't copy the topic.
+Use this structure to organize the expert's actual answers for `write-content` or `improve-content`. The worked example below is illustrative, not verified customer evidence; do not copy its claims or numbers into an article as facts. Match the structure to the available material, not the example's dramatic angle.
 
 ## The four-section structure
 
-Every knowledge document the skill produces should have these four sections, in this order:
+These four sections are useful defaults. Omit irrelevant sections or mark information unavailable; do not conduct extra questioning merely to fill every field:
 
-1. **Key insight / contrarian take**: the one thing the user knows that most people don't
-2. **Specific examples and data points**: named clients, real numbers, actual projects, dates
-3. **Experience details**: what worked, what failed, what surprised them
+1. **Main explanation or observation**: the expert's method or conclusion; a contrary view only if actually expressed and relevant
+2. **Examples and evidence**: available checks, observations, measurements or projects, with attribution
+3. **Experience details**: what happened, including failures or surprises only if reported
 4. **Scope and limitations**: who this applies to, who it doesn't, when it breaks down
 
 That's it. No executive summary, no intro, no "further reading" section, no fluff. This document gets fed to a writing skill; it's not published anywhere. Compression is the goal.
@@ -21,11 +21,11 @@ Topic: bootstrapping a B2B tool to $100K ARR. The user interviewed is a founder 
 
 **Expert Knowledge: bootstrapping a B2B tool to $100K ARR**
 
-### Key insight / contrarian take
+### Main explanation or observation
 
 Cold outbound works in year one and then stops working, but not because of deliverability. It stops because the founder runs out of interesting things to say. Most advice tells you to scale outbound to 500 emails a day. The real constraint after month six is that your own product usage doesn't produce enough new angles for a second email to the same prospect. The founders who plateau at $40-60K ARR are usually the ones still writing generic outbound. The ones who break past $100K started publishing case studies instead and letting warm inbound replace cold around month eight.
 
-*Why this section matters for downstream writing: this gives the article a thesis. The writer can now lead with "cold outbound works until it doesn't, and it stops working for a specific reason nobody talks about" instead of yet another generic "here's how I got to $100K" post. The contrarian take sets the angle for every other paragraph in the eventual article.*
+*Use a conclusion like this only when the actual expert provides it and evidence supports its scope. It need not set the angle for the whole article. A routine method or expected result can also be the main explanation; do not invent what most advice says to create a contrast.*
 
 ### Specific examples and data points
 
@@ -36,7 +36,7 @@ Cold outbound works in year one and then stops working, but not because of deliv
 - CAC in outbound phase: €118. CAC once content took over: €31
 - Biggest wasted spend: €3,400 on a Facebook ads experiment in summer 2023 that produced zero paying customers
 
-*Why this section matters for downstream writing: named subreddits, specific date ranges, euro amounts, and conversion percentages are Tier 1 information gain. A generic AI can't invent "€3,400 on Facebook ads in summer 2023" convincingly, and if it does, it's wrong. The writer should weave these numbers into arguments, not dump them into a "my results" box at the bottom. Every one of these data points can anchor a section.*
+*Use actual numbers only with their source, window and measurement limits. Interview recollection remains attributed recollection unless independently supported. Names, dates and numeric detail are useful when they explain the result, not a quota for every paragraph.*
 
 ### Experience details
 
@@ -46,7 +46,7 @@ Cold outbound works in year one and then stops working, but not because of deliv
 - Failure story: spent two months in mid-2024 trying to build an annual plan discount flow because a consultant said it would raise ACV. It did, by 18%, but also doubled the refund rate because customers signed up annually without understanding the product. Killed it in September.
 - Unexpected lesson: the founder's personal LinkedIn drove more demo requests than the company LinkedIn by a factor of roughly six, even at similar follower counts. Company pages are noise; personal pages are signal.
 
-*Why this section matters for downstream writing: the "failure story" and "unexpected lesson" bullets are exactly what the write-content skill will turn into the "what went wrong" paragraphs that build EEAT trust. A specific named tool (Lemlist) with a specific named problem (deliverability in month three, two blacklisted domains) is more believable and more rankable than "we tried a cold outreach tool and it didn't work out". The failure story about the annual plan consultant is gold because it has a direction nobody else writes about: "raising ACV made refunds worse."*
+*Keep reported experience distinct from general conclusions about tools or companies. Failures and unexpected lessons may help explain a decision, but routine successful practice is equally usable. Do not turn an ordinary observation into a failure story for persuasion or assume that narrative earns trust or rankings.*
 
 ### Scope and limitations
 
@@ -56,29 +56,29 @@ Cold outbound works in year one and then stops working, but not because of deliv
 - The Reddit launch trick is almost certainly dead by 2026. Worked in 2023 because r/smallbusiness was less aggressive about promotional posts. Don't replicate it literally. Replicate the principle (one high-signal organic post in the right community) in whichever community is currently viable.
 - Everything above is B2B only. B2C bootstrapping at this price point has different dynamics, especially around refunds and support volume.
 
-*Why this section matters for downstream writing: this is the "who should NOT follow this advice" section, and it's what turns a generic success story into actual thought leadership. Most $100K ARR posts leave readers thinking "will this work for me?" and never answer. The scope section answers that directly. The writer should not bury this at the end of the article; it should be near the top, so readers who aren't the right fit self-select out.*
+*Preserve actual applicability limits near the claim they qualify. Do not invent an excluded audience or an unrelated warning merely to fill this section. The illustrative price thresholds above would require support before publication.*
 
 ---
 
 ## What makes this document good vs bad
 
-**Good** means the document passes the 30% Rule: at least 30% of any article written from it could not be produced by a generic AI. The test is simple. Strip out the named tools, the euro amounts, the dated events, the specific failure stories, and the scope conditions. What's left? If what's left is an article, the human input wasn't doing any work. If what's left is obviously broken, the human input was doing the work.
+**Good** means the document faithfully captures useful expertise, its basis and its limits. There is no required percentage of proprietary material, named entities, numbers, surprises or personal stories. A concise explanation of a standard procedure can be complete.
 
 **Bad** looks like this:
 
 > Key insight: cold outbound is harder than people think. You need good copy, good targeting, and good follow-up. Many founders underestimate how much effort goes into it.
 
-This is the LinkedIn thought leader version. No numbers, no names, no dates, no scope. Every sentence could have been produced by an LLM, and probably has been, many times. If your interview output looks like this, the interview wasn't good enough. Go back and ask follow-ups. Ask for a number. Ask for a named tool. Ask for a date. Ask what broke.
+This answer may need a follow-up if the intended reader needs to know how to target or follow up. Ask for that missing explanation, rather than demanding numbers, names or a failure. If the answer already meets the reader's need, stop. Ordinary wording does not establish authorship or make an answer deficient.
 
 **The test you should run on the document before handing it off:**
 
-1. Pick any paragraph. Could the words "many", "some", "often", "usually" be deleted without loss? If yes, the paragraph is generic.
-2. Is there at least one proper noun per bullet (a tool, a client, a subreddit, a country, a month)?
-3. Are there numbers with units, or just vibes?
-4. Does the scope section answer "who is this wrong for?", and not just "here's who it's right for"?
+1. Does the explanation answer the intended reader's question?
+2. Are statements attributed accurately, with recollection, measurement and prediction distinguished?
+3. Are available numbers and examples preserved without invented precision or identifying details?
+4. Are relevant scope limits clear, without manufactured objections or exclusions?
 
-If all four answers are yes, hand it off. If any answer is no, you have one more follow-up question to ask before the interview is done.
+Follow up only on gaps material to the task. Unknown or unavailable evidence may remain a stated gap; it does not authorize fabrication or endless interviewing.
 
 ## Cross-reference
 
-See `information-gain-writing.md` in this references folder for the theory behind why specificity is what makes this document valuable. The short version: Google's Information Gain patent scores content against what the searcher has already seen on the same topic. Named tools, real dates, specific failures, scope limits: those are the things that by definition can't be on the other pages, because nobody else has them. Everything else in the article can be AI-generated. This document is the part that can't be.
+See `information-gain-writing.md` in this references folder for background. Apply the current `write-content` method when using interview material; a patent or editorial framework does not prove a ranking rule or require a fixed amount of novelty.

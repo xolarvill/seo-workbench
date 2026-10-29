@@ -2,6 +2,8 @@
 
 Headline formulas, page section types, and structural templates.
 
+These are optional marketing patterns, not a scoring checklist or a structure for every genre. Choose only what serves the current reader and available evidence. A concise technical explanation, notice or feature specification can be complete without a story, problem section, comparison or objection handling. Accept clear text unchanged. Sample numbers, guarantees and claims below are illustrations, never verified facts to copy into a draft.
+
 ## Headline Formulas
 
 ### Outcome-Focused
@@ -47,6 +49,8 @@ Headline formulas, page section types, and structural templates.
 ---
 
 ### Differentiation-Focused
+
+Use a reversal or comparison only when a real alternative or documented expectation makes it useful. Do not invent a conventional belief to contradict.
 
 **The {opposite of usual process} way to {achieve desirable outcome}**
 > The easiest way to turn your passion into income
@@ -157,12 +161,13 @@ Headline formulas, page section types, and structural templates.
 - Addresses "Is this for me?" question
 
 **FAQ Section**
-- Address common objections
-- Good for SEO
+- Answer documented customer questions and relevant decision uncertainties
+- Include only questions that add useful answers; no fixed count or automatic SEO benefit
 - Reduces support burden
-- 5-10 most common questions
+- Use as many questions as the reader needs, including none
 
 **Comparison Section**
+- Include only when a real alternative is relevant to the reader's decision and the comparison is supportable
 - vs. competitors (name them or don't)
 - vs. status quo (spreadsheets, manual processes)
 - Tables or side-by-side format
@@ -173,6 +178,7 @@ Headline formulas, page section types, and structural templates.
 - Builds credibility
 
 **Founder Story / Manifesto**
+- Optional when factual organizational history helps the reader; no story or manifesto is required
 - Why you built this
 - What you believe
 - Emotional connection
@@ -205,7 +211,7 @@ Headline formulas, page section types, and structural templates.
 
 ## Page Structure Templates
 
-### Feature-Heavy Page (Weak)
+### Feature-Focused Page
 
 ```
 1. Hero
@@ -216,11 +222,11 @@ Headline formulas, page section types, and structural templates.
 6. CTA
 ```
 
-This is a list, not a persuasive narrative.
+This compact structure can work when visitors need specifications or already understand the problem. Add context only where a concrete decision gap remains.
 
 ---
 
-### Varied, Engaging Page (Strong)
+### Extended Decision-Support Page
 
 ```
 1. Hero with clear value prop
@@ -236,7 +242,7 @@ This is a list, not a persuasive narrative.
 11. Final CTA with guarantee
 ```
 
-This tells a story and addresses objections.
+Use this longer structure when actual buyer questions and evidence justify it. Omit unsupported or unnecessary sections; length and narrative do not make a page inherently stronger.
 
 ---
 
@@ -294,16 +300,7 @@ Good for ProductHunt, launches, or announcements.
 
 ### Problem Section
 
-Start with phrases like:
-- "You know the feeling..."
-- "If you're like most [role]..."
-- "Every day, [audience] struggles with..."
-- "We've all been there..."
-
-Then describe:
-- The specific frustration
-- The time/money wasted
-- The impact on their work/life
+Include a problem section only when readers need help recognizing a relevant, evidenced problem. State the concrete situation and its supported consequence. Use customer language from the brief, interviews or support evidence without implying everyone shares the experience. Do not invent wasted time, emotional pain or a contrary belief to create a persuasive arc. When the problem is already clear, proceed to the useful explanation or action.
 
 ### Benefits Section
 

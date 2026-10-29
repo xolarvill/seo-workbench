@@ -1,124 +1,49 @@
-# Technique 04: EEAT Signal Embedding
+# Technique 04: Evidence, Expertise and Trust
 
-## What It Is
-Systematically embedding Experience, Expertise, Authoritativeness, and Trustworthiness signals into content — not as claims ("we're experts") but as demonstrated proof through content structure, source attribution, and writing patterns.
+## Purpose
 
-## Why It Works
-Google's algorithm leak confirmed that EEAT is evaluated through proxy signals. Google cannot independently verify if content is accurate — it uses structural indicators that correlate with knowledgeable sources. Content that SHOWS expertise through depth, specificity, and honest nuance outranks content that merely CLAIMS expertise.
+Make factual support, relevant knowledge and limitations visible to the reader. Experience, expertise, authoritativeness and trustworthiness are review lenses, not words or stylistic signals to inject. Do not infer a ranking mechanism or guarantee from pronouns, a source study, patent or algorithm commentary.
 
-The December 2025 Core Update specifically intensified EEAT evaluation, particularly the "Experience" component — first-hand involvement signals.
+## Experience
 
-## The Four EEAT Components — What They Actually Mean
+Use genuine involvement when the task calls for it and evidence is available: test conditions, tool versions, observed errors, project decisions or measured results. Attribute who did the work and distinguish the observation from the interpretation.
 
-### Experience (Most underrated)
-- **What Google says**: Content created by someone with first-hand experience
-- **What it actually means**: Specific details only someone who DID the thing would know
-- **Signal strength**: Very high since the "first E" was added in December 2022
+A hypothetical example is not personal experience. An author bio, first-person pronoun or precise-sounding number cannot substitute for evidence. Without tests or interviews, use accurately attributed source material and do not invent an author history.
 
-**Weak experience signals (don't work):**
-- "I have 15 years of experience in marketing"
-- "As an expert in this field..."
-- Author bio listing credentials
+## Expertise
 
-**Strong experience signals (actually work):**
-- "When we ran this campaign for [Client], the Facebook CPC averaged €2.40 — until we changed the creative on day 7 and it dropped to €0.85"
-- "The first time I set this up, I forgot to configure the DNS TXT record and spent 3 hours debugging. Save yourself the trouble: do it first."
-- Mentioning specific tool versions, error messages, unexpected results
-- Describing what DIDN'T work before finding what did
+Explain the detail the intended reader needs: prerequisites, mechanisms, appropriate terminology, conditions, exceptions and tradeoffs. Beginners may need fundamentals; an advanced audience may need narrower analysis. Do not add an advanced angle, edge-case quota or “when not to” section when it does not help the task.
 
-### Expertise (Depth over breadth)
-- **What it actually means**: Content that demonstrates understanding of nuance, edge cases, and tradeoffs — not surface-level coverage of everything
-- **The expertise paradox**: Real experts narrow their scope. Beginners try to cover everything. Content that says "this works for B2B SaaS with >€5K ACV but NOT for consumer apps" demonstrates more expertise than content covering all business types generically.
+A verified manufacturer sequence can demonstrate responsible technical instruction without personal anecdotes. Preserve terminology and order where these affect safe or correct use.
 
-**Expertise signals:**
-- Discussing when advice DOESN'T apply
-- Explaining the "why" behind each recommendation
-- Acknowledging tradeoffs ("this increases conversion but may increase support tickets")
-- Using precise terminology correctly (not keyword-stuffing but natural domain language)
-- Addressing edge cases and exceptions
+## Authoritativeness
 
-### Authoritativeness (Being cited, not claiming)
-- **What it actually means**: Other people and sites reference you as a source
-- **This is mostly a domain-level signal**, not a content-level one
-- Content can support it through: accurate citations of others (builds reciprocal authority), original research that others want to cite, named author with verifiable credentials
+Use accurate author attribution and verifiable, relevant credentials when supplied and appropriate to the format. Link to relevant prior work if it helps readers assess the author's basis. Do not invent titles, endorsements, publications or reciprocal authority benefits.
 
-### Trustworthiness (Transparency and accuracy)
-- **What it actually means**: The content is verifiable, transparent about limitations, and doesn't mislead
-- Every statistic has a named source with date
-- Affiliate relationships or biases are disclosed
-- Claims are hedged when appropriate ("in our experience" vs "always")
-- Errors are corrected (dated correction notes build trust)
+Being cited by other sources is an external observation; writing a byline or linking to an authority does not prove it has occurred.
 
-## Step-by-Step Process
+## Trustworthiness
 
-### Step 1: Experience Signal Planning
-1. Before writing, identify 3-5 experience markers to embed:
-   - A specific project/client/implementation story
-   - A mistake made and lesson learned
-   - A specific tool, metric, or process detail
-   - An unexpected result or counterintuitive finding
-   - A comparison between expected and actual outcome
-2. These CANNOT be generated by AI — they must come from the human author
+Make material claims verifiable. Attribute research to its author or organization, date and relevant method or population. Product guidance should identify the applicable product/version and source where needed. Group citations where they clearly support a passage rather than repeating a citation in every sentence.
 
-### Step 2: Expertise Signal Architecture
-3. Structure the article to demonstrate depth:
-   - Cover the "advanced" angle, not the "intro" angle (unless intent is beginner)
-   - Include "when NOT to do this" sections
-   - Discuss tradeoffs explicitly
-   - Address 2-3 edge cases or exceptions
-4. Use precise domain terminology naturally (not forced)
+Disclose relevant affiliations, sponsorships and evidence limits. Use qualified wording that reflects uncertainty rather than blanket assurances. Separate all-channel business observations from channel attribution and descriptive pre/post results from causal claims under project evidence rules.
 
-### Step 3: Source Attribution (Trustworthiness)
-5. Every factual claim must have a source:
-   - Academic papers → Author, year, journal
-   - Industry reports → Organization, year, specific finding
-   - Statistics → Source name, year, methodology note
-   - Expert opinions → Named person, credentials, context
-6. Replace ALL instances of:
-   - "Studies show..." → "[Organization]'s [year] study of [N] [subjects] found..."
-   - "Experts agree..." → "[Named expert], [credentials], argues that..."
-   - "Research suggests..." → "A [year] [journal] paper by [author] demonstrated..."
+## Practical workflow
 
-### Step 4: Author Authority Integration
-7. Include author byline with specific credentials relevant to THIS topic
-8. Link to author's other published work on the topic
-9. Reference personal involvement: "In my role as [specific title] at [company], I..."
-10. If applicable, reference speaking engagements, publications, or patents
+1. Read the brief and identify claims requiring evidence or expertise.
+2. Map claims to available documentation, direct observations, research, author input or analysis.
+3. Verify figures, quotes and instructions; note scope, date and version where material.
+4. Integrate necessary explanations and source references where the reader needs them.
+5. Identify any missing evidence for a promised first-party claim; omit, narrow or flag that claim instead of fabricating support.
+6. Check bylines, credentials, disclosures, verification dates and methodology only when relevant to the artifact.
+7. Correct substantive errors with a clear correction record when updating published work; do not imply freshness from a cosmetic date change.
 
-### Step 5: Trust Signals
-11. Date the content prominently
-12. Note when information was last verified
-13. Disclose any affiliations, sponsorships, or biases
-14. Include a methodology section for any original research/data
-15. Add a corrections section if updating previously published content
+## Evidence presentation
 
-## Tips
+Screenshots can illustrate an observation if their source, date and scope are clear. They can be altered or incomplete and do not independently prove an outcome; preserve privacy and underlying evidence pointers where available.
 
-- **The "screenshot proof" technique**: Including actual screenshots of dashboards, results, or tools is one of the strongest experience signals. It's nearly impossible to fake and instantly demonstrates first-hand involvement.
-- **Date your screenshots**: Screenshots with visible dates prove recency and experience
-- **Name specific dollar amounts**: "$2,400/month" is more trustworthy than "thousands per month." Real practitioners know exact numbers.
-- **Cite yourself**: If you've written about this topic before, reference your own earlier work with what you've learned since. This creates a trail of genuine expertise.
-- **Use first-person sparingly but specifically**: Not "I think" for opinions, but "I tested" for experience and "I found" for results.
+Use exact values when supported and useful, including units, window and comparison limits. Do not replace an honest general description with invented precision. A prior publication may supply relevant context, but cite its actual finding rather than implying it independently confirms a new result.
 
-## Common Mistakes
+## Review result
 
-1. **EEAT as a checklist**: Adding an author bio and citing 3 sources doesn't make content trustworthy. The EEAT signals must be woven through the content, not bolted on.
-2. **Fake experience markers**: "Imagine you're building a website..." is not an experience signal. "When I built [specific site]..." is. AI defaults to hypotheticals; real EEAT uses specifics.
-3. **Over-attributing to build trust**: Every sentence having a citation reads like an academic paper, not expert content. Cite where it matters; assert where you have authority.
-4. **Confusing EEAT with keywords**: Adding "expert" and "authoritative" into your content doesn't improve EEAT. Demonstrating expertise through depth and specificity does.
-
-## Research Evidence
-
-### Kyle Roof's Testing-Based Position
-E-E-A-T elements will NOT help you rank, but they help you KEEP your rank once evaluated. Roof's controlled experiments (ranking a Lorem Ipsum page for "Rhinoplasty Plano") proved on-page keyword signals alone can achieve rankings. E-E-A-T is defensive, not offensive.
-
-**The priority:** Trust > Expertise > Experience > Authoritativeness. Kyle Roof: "Who cares about the E or the A -- it's all about the T. Trust."
-
-### Cyrus Shepard's 50-Site Case Study (4,000+ Websites)
-Across 2023 Google updates:
-- **Winners:** Used first-person pronouns, demonstrated first-hand experience
-- **Losers:** Excessive ads (14.01 per page vs. 6.32 on winners), over-optimized anchor text
-- 17 on-page features showed statistically significant correlations with ranking gains/losses
-
-### December 2025 Core Update
-Specifically intensified EEAT evaluation, particularly the "Experience" component -- first-hand involvement signals became stronger ranking factors.
+Report what is supported, what is inferred and what remains unverified. Assess whether the reader can evaluate the advice and its limits. Do not score trust from a count of experience markers, citations, pronouns or author claims, and do not equate editorial completion with SEO impact.

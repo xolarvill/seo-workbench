@@ -185,10 +185,10 @@ Review the current plan and linked draft artifacts to report completion and link
 | Metric | Target | How Measured |
 |--------|--------|-------------|
 | Coverage | 100% | Posts written / posts planned |
-| Link Density | 3+ per post | Count internal links per post |
+| Relevant links | Planned useful relationships covered | Check destinations and reader purpose |
 | Orphan Pages | 0 | Posts with < 1 incoming link |
 | Cannibalization | 0 conflicts | Check for duplicate primary keywords |
-| Image Count | 1+ per post | Posts with at least one image |
+| Images | As needed to explain the topic | Check relevant assets and placement |
 | Pillar Links | 100% | All spokes link to pillar and vice versa |
 | Cross-Links | 80%+ | Recommended spoke-to-spoke links implemented |
 | Content Gaps | 0 | Planned posts that were skipped or incomplete |

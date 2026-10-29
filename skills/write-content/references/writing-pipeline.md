@@ -1,282 +1,81 @@
-# Technique 15: Writing Pipeline Architecture
-
-## What It Is
-
-A multi-phase, multi-agent pipeline for producing high-quality SEO content. Based on analysis of 15+ agentic writing systems, this architecture represents the consensus best approach: specialized phases with quality gates, not a single monolithic generation.
-
-## Why It Works
-
-Research consistently shows that multi-agent pipelines outperform single-prompt generation:
-- Section-by-section generation maintains quality over long articles
-- Specialized agents (writer vs. critic) produce better results than a generalist
-- One to two revision cycles capture 95% of improvement (Self-Refine research)
-- Quality gates prevent bad content from being output
-
-Human-written articles still generate 5.44x more traffic and hold attention 41% longer than pure AI. The pipeline must close this gap through specialization.
-
-Single-prompt content generation fails because one prompt can't simultaneously optimize for research depth, writing quality, SEO mechanics, anti-detection, and fact accuracy. Each agent focuses on ONE thing well, and each stage builds on verified output from the previous stage.
-
-## The 7-Agent Model
-
-The pipeline uses seven specialized agents, each with a distinct role and optimal configuration:
-
-| Agent | Role | Temperature | Tools |
-|-------|------|-------------|---------------|
-| Researcher | Analyze topic landscape, SERP competition, information gaps | Low (0.2-0.3) | keyword search, competitor data, SERP feature detection |
-| Outliner | Create SERP-optimized content structure | Low-Medium (0.3-0.4) | opportunity detection, keyword cluster data |
-| Writer | Generate first draft with anti-detection built in | Medium (0.5-0.7) | page content rendering (competitor analysis) |
-| Humanizer | Audit and fix surviving AI patterns | Low (0.2-0.3) | None |
-| Fact-Checker | Verify all claims, statistics, attributions | Low (0.1-0.2) | None |
-| SEO Optimizer | Keyword placement, meta elements, schema, linking | Low (0.2-0.3) | internal link data, SERP feature detection |
-| Quality Reviewer | Final holistic review and scoring | Low (0.2-0.3) | None |
+# Technique 15: Writing Workflow
 
-## Implementation Architecture
+## Purpose and scaling
 
-```
-+--------------+     +----------+     +--------+     +-----------+
-| RESEARCHER   | --> | OUTLINER | --> | WRITER | --> | HUMANIZER |
-+--------------+     +----------+     +--------+     +-----------+
-                                                          |
-+--------------+     +----------+     +----------------+  |
-| QUALITY      | <-- | SEO      | <-- | FACT-CHECKER   | <+
-| REVIEWER     |     | OPTIMIZER|     |                |
-+--------------+     +----------+     +----------------+
-      |
-      v
-  [FINAL OUTPUT]
-  - Article (markdown)
-  - Meta elements
-  - Quality scorecard
-  - SEO checklist
-  - Schema JSON-LD
-  - AI-detection risk score
-```
+Organize research, outlining, writing, editing, factual verification and SEO review around the current task. These are responsibilities, not a requirement to spawn agents, select temperatures or run every stage on every request. Use delegation only when authorized by the applicable instructions.
 
-## User Approval Workflow
+Reuse an approved brief, current research, genuine voice samples and available evidence. A local wording edit may need only the passage and its sources. A new competitive article may need the full method. Stored phases are historical context, not a scheduler or approval gate.
 
-The pipeline is NOT fully autonomous. Human checkpoints are mandatory:
+## 1. Prepare the evidence and brief
 
-1. User invokes "write content" -> triggers RESEARCHER
-2. RESEARCHER output presented to user for review/approval
-3. OUTLINER generates structure -> user approves or modifies
-4. Pipeline PAUSES to collect human input (experiences, data, opinions)
-5. WRITER generates with all context -> HUMANIZER audits
-6. FACT-CHECKER flags issues -> user verifies first-party claims
-7. SEO OPTIMIZER + QUALITY REVIEWER finalize
-8. Final output with scorecard presented to user
+Identify the reader, task, content format, intended outcome and authorized scope. Load the relevant project context and content brief. Check existing research for relevance and currency before collecting more.
 
-At every human checkpoint, the user can modify, reject, or redirect. This is not optional overhead -- it is the mechanism that prevents high-quality slop.
+For substantive new search content, use SERP research to clarify intent, competing coverage, relevant questions and opportunities for useful differentiation. Record query, market, date and source URLs. Treat ranking pages as observations, not proof that their structure causes rankings.
 
-## Pipeline Architecture (Detailed Phases)
+Gather applicable voice samples, content-type guidance and verified internal destinations. Keep evidence references with factual claims. Record material gaps in the task artifact.
 
-### Phase 1: Preparation (Context Loading)
+## 2. Plan the structure
 
-**Inputs loaded:**
-1. Content Brief (from Content Brief Generator)
-2. Voice Document (from your saved business context or user-provided)
-3. Content Type Template (selected based on intent/type from brief)
-4. Anti-Slop Rules (banned phrases, structural patterns)
-5. Internal Link Map (from internal link data)
-6. Competitor Content Analysis (from page content rendering on top competitor URLs)
+Build or reuse an outline that puts the answer where the reader needs it. Map sections to questions, supporting evidence, useful examples and relevant links. Allocate space according to necessary explanation rather than competitor length or equal section sizes.
 
-**Critical:** All context must be loaded BEFORE writing begins. Loading mid-article breaks voice consistency.
+Mark where promised original tests, interviews or first-party claims require evidence. Seek clarification only if a material unanswered choice or factual gap blocks the requested result. Do not repeat approval of an already approved brief or pause all writing for an optional interview.
 
-**The RESEARCHER agent performs:**
-1. Queries tools: keyword search, competitor data, SERP feature detection
-2. Analyzes top 10 SERP results for the target keyword
-3. Maps competitor content coverage (topics covered, depth, unique angles)
-4. Identifies information gaps (topics nobody covers)
-5. Notes SERP features present (PAA, featured snippets, video carousels)
-6. Recommends target word count based on competitor analysis
+## 3. Draft at the appropriate scale
 
-**Output:** Research brief with SERP gap analysis, competitor coverage map, information gain opportunities.
+For a long article, writing in sections can help maintain focus. Carry forward the outline, terminology and evidence ledger. A compact summary can track coverage and prevent repetition, but retain exact claims, quotes and source references; a summary cannot replace evidence.
 
-### Phase 2: Outline Generation
+Write directly for the reader using the relevant register. Integrate genuine author input at the points it explains. If none is available, produce accurately attributed synthesis or verified instructions within the brief's limits. Do not claim personal testing or invent an expert, opponent or anecdote.
 
-**The OUTLINER agent generates a detailed outline from the content brief:**
-1. SERP-derived H2/H3 structure (matching what ranks)
-2. Keywords mapped to specific sections
-3. Internal links planned for specific paragraphs
-4. Data points / examples planned per section
-5. Featured snippet target identified (format + section)
-6. PAA questions assigned to sections
-7. Word count allocation per section
-8. "Human input required" points marked (case studies, data, opinions)
+Use natural terms, clear actions and suitable paragraph shapes. Do not prescribe sentence-length variation, quirks, first-person language or an AI-detection target.
 
-**Human approval gate:** Present outline for approval before proceeding. In automated mode, validate against brief structure. The user can add, remove, or reorder sections.
+## 4. Edit for reader problems
 
-### Phase 3: Section-by-Section Writing
+Use [plain writing review](anti-slop-ruleset.md) to identify ambiguity, repetition, inflated wording, unsupported framing and misplaced answers. Every proposed edit needs a reader benefit. Preserve clear passages; zero edits can be the correct outcome.
 
-**Why section-by-section:** For articles over 1,500 words, full-article generation leads to quality drift, repetition, and context distraction. Section-by-section maintains focused context.
+Review the edited passage for factual drift and surrounding flow. Do not rewrite a percentage of the article or change rhythm simply to demonstrate editing activity.
 
-**The WRITER agent processes each section:**
-1. Load section brief (H2/H3 structure, assigned keywords, planned links, planned examples)
-2. Load voice document (reload for each section to maintain consistency)
-3. Apply content type template rules
-4. Inject human-provided content at designated points
-5. Write the section with anti-detection built in (varied sentence length 3-40 words, Tier 1 word avoidance)
-6. Place internal links at natural anchor points
-7. Update scratchpad with key points covered (prevents repetition)
-8. Compress section summary for context management
+## 5. Verify claims and attribution
 
-**Context management:** After each section, create a summary of what has been covered. Use the summary (not full text) as context for subsequent sections. This prevents the model from losing focus as context grows.
+Check material instructions, figures, dates, product claims and quotations against their sources. Distinguish direct evidence, attributed reports, first-party input, illustrative hypotheticals and inference.
 
-**Key finding from Anthropic:** Model performance drops around 32,000 tokens even with million-token windows due to context distraction. Use "just-in-time context" -- lightweight identifiers that dynamically load data at runtime, not monolithic context blocks.
+Verify links and whether their destinations support the associated claim. Remove, narrow or flag unsupported statements. Obtain required author verification for a claim of testing or personal involvement; if that claim is unnecessary, omit it and continue.
 
-**Section compression strategy:** Each completed section is reduced to a 2-3 sentence summary containing: key points made, data cited, keywords used, links placed. The full text is stored separately. The writer for the next section sees only these summaries plus the current section's brief.
+## 6. Review SEO when in scope
 
-### Phase 4: Anti-Slop Editing
+Use [SEO optimization](seo-optimization-layer.md) to review titles, headings, metadata, useful links, images, URLs and appropriate structured data. Match intent using natural terminology, without density targets or link quotas.
 
-**Separate from writing.** The writer agent should be "naive" about quality rules (DonAldente pattern) -- its job is to write naturally. The editor/critic is separate and ruthless.
+A direct answer may use a paragraph, steps or table depending on the question. Do not expand it to an arbitrary word count or create FAQs solely for markup. Verify current schema eligibility before implementation; valid markup does not guarantee a rich result.
 
-**The HUMANIZER agent runs two passes:**
+## 7. Review the result and deliver
 
-**Pass 1: Detection**
-- Scan for Tier 1 banned phrases (always remove)
-- Scan for Tier 2 clustering (flag if 3+)
-- Scan for Tier 3 density (flag clusters)
-- Check structural patterns (uniform sentence length, rule-of-three, etc.)
-- Check burstiness (sentence length standard deviation must be > 5 words per paragraph)
-- Check rhythm uniformity (flags sections where all sentences are 15-25 words)
-- Score total points
+Use [content quality review](quality-scoring.md) to assess task completion, accuracy, useful depth, clarity and applicable SEO requirements. Report concrete findings rather than a total score. Fix observed issues, verify the affected content and stop when the brief is fulfilled.
 
-**Rewrite:** For each flagged section, rewrite preserving meaning while eliminating the pattern. Do not just delete -- replace with human-sounding alternatives.
+Deliver the requested draft or edit, relevant evidence pointers and unresolved inputs. Include meta elements or schema only when requested or within scope. Record what is drafted, verified or still pending; writing completion does not authorize publication or prove SEO outcomes.
 
-**Pass 2: Surviving Pattern Check**
-- Re-scan the full text after Pass 1 rewrites
-- First-pass rewrites retain 15-20% of AI patterns
-- Specifically check for recycled transitions, lingering inflation, new uniformity
+## Working artifact
 
-**Horoscope Test:** For each paragraph, ask: "Could anyone have written this, for anyone?" If yes, flag for specificity injection.
+For substantial work keep the existing task artifact updated with:
 
-**Critical threshold:** If the Humanizer has to rewrite more than 20% of the content, the Writer prompt needs improvement. The Writer should produce mostly clean output; the Humanizer is a quality gate, not the primary fix.
+- Reader, brief and approved scope.
+- Research and source pointers, with dates and relevant limitations.
+- Outline, claim-to-source mapping and genuine voice guidance.
+- Decisions, applied edits and unresolved evidence.
+- Delivery status and any separate publishing or outcome-review step.
 
-### Phase 5: Fact-Checking
+For a small edit, do not create a full research package. Preserve enough context for another session to understand the decision.
 
-**The FACT-CHECKER agent verifies:**
-1. All factual claims in the content
-2. Statistics against named sources
-3. Fabricated or unverifiable claims (flag for removal)
-4. All "experts say" have named experts
-5. URLs and references are real and current
-6. Claims that need human verification (first-party data)
+## Common failure checks
 
-**Output:** Fact-checked draft + verification report with confidence levels per claim.
-
-### Phase 6: SEO Optimization
-
-**The SEO OPTIMIZER agent handles:**
-
-**Keyword checks:**
-- Primary keyword in meta title, H1, first paragraph, 2-3 H2s
-- ~2% body density (naturally distributed, not forced)
-- Keyword variations in H3s and image alt text
-
-**Internal link validation:**
-- Every internal link must point to a real, existing page
-- Validate against internal link data
-- Use descriptive anchor text (not "click here")
-- 3-5 contextual links per 1,000 words
-
-**Meta generation:**
-- Meta title: primary keyword + benefit/hook, under 60 characters
-- Meta description: value proposition + CTA, under 155 characters
-- 5 title variations, 3 description variations
-
-**Schema markup:**
-- Generate JSON-LD based on content type (HowTo, FAQ, Product, etc.)
-- Include FAQPage schema for all content with FAQ sections
-- Validate schema structure
-
-**Featured snippet targeting:**
-- Verify the target snippet section has a 40-60 word direct answer
-- Format matches expected snippet type (paragraph/list/table)
-
-### Phase 7: Quality Scoring
-
-**The QUALITY REVIEWER agent performs a holistic review and scores on a 100-point composite:**
-
-| Category | Points | Components |
-|----------|--------|------------|
-| Content Quality | 30 | Topical completeness (10), Depth/examples per section (10), Originality (10) |
-| SEO Optimization | 25 | Keyword placement (8), Internal links verified (5), Meta quality (4), Schema (4), Snippet targeting (4) |
-| E-E-A-T Signals | 15 | First-person experience (5), Specific data/examples (5), Source attribution (5) |
-| Anti-Slop Score | 15 | Zero Tier 1 phrases (5), Burstiness (3), Voice consistency (3), Horoscope Test (4) |
-| AI Citation Ready | 15 | Answer-first formatting (5), FAQ schema (3), Claim-evidence pairs (4), Entity richness (3) |
-
-**The reviewer also checks:**
-- Flow and logical progression across the full article
-- Voice consistency throughout (not just per-section)
-- Information gain elements are present and effective
-- EEAT signals are woven in (not bolted on)
-
-**Quality gates:**
-- Score < 60: Full rewrite (re-enter Phase 3)
-- Score 60-69: Auto-revise weak sections (re-enter Phase 4 for flagged sections)
-- Score 70-84: Flag issues for human review, output with annotations
-- Score 85+: Ready for publication
-
-**Auto-revision:** Target the weakest scoring category first. If Anti-Slop scored low, run additional editing passes. If E-E-A-T scored low, inject experience signals. Maximum 2 revision cycles (research shows quality degrades beyond this).
-
-## Key Design Decisions
-
-### Sequential, Not Parallel
-Each agent needs the previous agent's output. The Writer can't write without the Outline. The Humanizer can't audit without the draft. Parallel execution produces worse results because agents lack context. CrewAI and LangGraph implementations have confirmed that sequential pipelines produce higher quality.
-
-### Context Passing Is Full, Not Summarized
-Each agent receives the FULL output of the previous agent, not a summary. Summaries lose critical nuances (specific data points, exact quotes, structural decisions). The exception is section-to-section context within the Writer phase, where compression prevents context distraction.
-
-### Anti-Detection Is Built In, Not Bolted On
-The Writer already follows anti-detection guidelines. The Humanizer is a QUALITY GATE, not the primary fix. If the Humanizer has to rewrite more than 20% of the content, the Writer prompt needs improvement.
-
-### Human Input Is Required, Not Optional
-The pipeline HALTS at the Writer stage to request human input (case studies, data, opinions). Without this input, the pipeline produces content with zero information gain -- which defeats the entire purpose.
-
-## Output Format
-
-```markdown
----
-title: [Generated meta title]
-description: [Generated meta description]
-keywords: [Primary keyword, secondary keywords]
-schema_type: [HowTo | FAQ | Article | Product | etc.]
-word_count: [Actual word count]
-quality_score: [0-100]
-tarsnippet data: [paragraph | list | table | none]
----
-
-# [H1 with primary keyword]
-
-[Article content in Markdown]
-
----
-<!-- Internal links used: [list of URLs] -->
-<!-- Schema JSON-LD: [embedded or separate file] -->
-<!-- Quality breakdown: Content X/30, SEO X/25, E-E-A-T X/15, Anti-Slop X/15, GEO X/15 -->
-```
-
-## Systems Studied
-
-| System | Key Innovation | Adopted |
-|--------|---------------|---------|
-| SEO Machine | Editor agent targeting AI patterns | Yes -- Phase 4 |
-| DonAldente anti-slop | Naive drafter + ruthless critic | Yes -- Phase 3 vs 4 separation |
-| claude-blog | Dual Google + AI citation scoring | Yes -- Phase 7 scoring |
-| Agentic-SEO-Skill | Confidence labeling on claims | Adapted -- source attribution |
-| AutoGen Reflection | JSON-summarized multi-reviewer | Adapted -- structured quality scoring |
-| Self-Refine research | 1-2 revision cycles optimal | Yes -- max 2 revision cycles |
-| Anthropic context engineering | Just-in-time context loading | Yes -- section compression |
-
-## Common Mistakes
-
-1. **Running all agents with the same LLM temperature**: Researcher needs low temperature (factual), Writer needs medium (creative), Humanizer needs low (precise editing). See the agent table above for recommended values.
-2. **Skipping the Fact-Checker**: AI confidently fabricates statistics. One fake stat destroys the entire article's credibility.
-3. **Making the pipeline fully autonomous**: Without human input, the pipeline produces high-quality AI slop. Human input at the Writer stage is the critical differentiator.
-4. **Post-processing instead of pre-processing**: Anti-detection works 5x better when built into the writing prompt vs applied after.
-5. **Monolithic context loading**: Loading all context at once causes performance degradation past 32K tokens. Use section compression and just-in-time context instead.
-6. **Over-revising**: More than 2 revision cycles produces diminishing returns and can actually degrade quality. Fix the upstream prompt instead.
+- Re-running research without a changed task or stale evidence.
+- Imposing a mandatory interview or approval already covered by the session.
+- Treating derived synthesis as original testing.
+- Replacing exact evidence with a lossy summary.
+- Adding links, keywords, personality or sections to satisfy a quota.
+- Rewriting useful prose to improve a score instead of resolving a reader problem.
 
 ## Key Sources
+
+Preserved source attribution for the adapted method; source descriptions are not operational requirements or verified performance claims.
 
 - [TheCraigHewitt/seomachine](https://github.com/TheCraigHewitt/seomachine)
 - [DonAldente-AI/anti-slop-system](https://github.com/DonAldente-AI/anti-slop-system)

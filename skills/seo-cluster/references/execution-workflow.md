@@ -128,15 +128,15 @@ After execution completes (or on demand), generate `cluster-scorecard.md`:
 | Metric | Formula | Target |
 |--------|---------|--------|
 | Coverage | `written_posts / planned_posts * 100` | 100% |
-| Link Density | `total_internal_links / total_posts` | >= 3.0 per post |
+| Relevant links | Useful planned relationships implemented | Review each link purpose and destination |
 | Orphan Pages | Count of posts with 0 incoming internal links | 0 |
 | Pillar Connectivity | `spokes_linking_to_pillar / total_spokes * 100` | 100% |
 | Reverse Pillar Links | `spokes_linked_from_pillar / total_spokes * 100` | 100% |
 | Cross-Links | `implemented_cross_links / recommended_cross_links * 100` | >= 80% |
 | Cannibalization | Count of posts sharing a primary keyword | 0 |
-| Image Count | Posts with at least one image / total posts | >= 90% |
+| Images | Explanatory assets present where needed | Review against the approved brief |
 | Content Gaps | Planned posts not yet written | 0 |
-| Avg Word Count | Mean word count across all written posts | Within 10% of targets |
+| Reader coverage | Questions answered by each draft | Review against the approved brief |
 
 ### Scorecard Output Format
 
@@ -146,13 +146,13 @@ After execution completes (or on demand), generate `cluster-scorecard.md`:
 ## Summary
 - Posts: X/Y written (Z%)
 - Total words: N (estimated: M)
-- Internal links: L (density: L/Y per post)
+- Internal links: L; useful planned relationships covered: [observations]
 
 ## Metrics
 | Metric | Score | Status |
 |--------|-------|--------|
 | Coverage | 100% | PASS |
-| Link Density | 3.2/post | PASS |
+| Relevant links | [coverage and gaps] | [observed state] |
 | ...
 
 ## Issues Found

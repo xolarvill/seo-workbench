@@ -1,117 +1,59 @@
 # Technique 14: SEO Optimization Layer
 
-## What It Is
-The technical SEO optimization applied after content is written and humanized -- keyword placement, meta elements, structured data, internal linking, and readability scoring. This is the mechanical layer that ensures good content is actually FOUND by search engines.
+## Purpose and scope
 
-## Why It Works
-Quality content without SEO optimization is invisible. SEO optimization without quality content is empty. This layer bridges the gap -- it takes content that's already good (information gain, EEAT, anti-detection) and makes it technically discoverable.
+Review a page's discoverability after establishing its reader task, evidence and useful content. SEO review can reveal missing context or structure, but must not turn clear prose into a keyword template. A passage edit does not need whole-page metadata or schema checks.
 
-The key insight: SEO optimization should be the LAST step, not the first. Writing "for SEO" produces stiff, keyword-stuffed content. Writing for humans THEN optimizing for SEO produces content that ranks AND reads well.
+## 1. Intent and terminology
 
-## Step-by-Step Process
+Confirm the target query and intent from the approved brief and relevant research. Use the primary topic naturally in the title and main heading when accurate. Check that the opening identifies the subject and answers the reader's question promptly.
 
-### Step 1: Keyword Placement Verification
-1. **H1**: Contains primary keyword (naturally, not forced)
-2. **First 100 words**: Primary keyword appears at least once
-3. **H2 headings**: 2-3 of them include secondary keywords
-4. **Keyword density**: 1-2% for primary keyword (NOT higher)
-5. **LSI/related terms**: Naturally distributed throughout (topic coverage, not keyword stuffing)
-6. **Alt text**: If images are present, describe them with relevant keywords
+Use related terms because they explain the subject, not to meet a density or heading quota. Keep exact product and component names stable. Describe images accurately in alt text; do not insert keywords unrelated to what is shown.
 
-### Step 2: Meta Elements
-7. **Meta title** (50-60 characters):
-   - Contains primary keyword near the beginning
-   - Includes a value proposition or differentiator
-   - Uses power words for CTR (how, best, guide, [year])
-   - Format: `[Primary Keyword]: [Value Proposition] | [Brand]`
-   - Generate 3-5 options for A/B testing
-8. **Meta description** (150-160 characters):
-   - Summarizes the page's unique value
-   - Contains primary keyword (bolded in SERPs)
-   - Includes a call-to-action or hook
-   - Does NOT over-promise (reduces bounce rate)
-   - Generate 3 options
+## 2. Title and description
 
-### Step 3: Content Structure Optimization
-9. **Table of contents**: Add for articles > 1,500 words (jump links)
-10. **Header hierarchy**: H1 -> H2 -> H3 (no skipping levels)
-11. **Short paragraphs**: Max 3-4 sentences (improves mobile readability)
-12. **Scannable elements**: Bold key phrases, use bullet lists for quick-reference items
-13. **Above-the-fold content**: Primary keyword and value proposition visible without scrolling
+Draft a title that identifies the page and gives a truthful reason to read it. Review likely display length in the relevant language and layout; character counts are drafting aids, not universal limits or ranking guarantees.
 
-### Step 4: Internal Linking
-14. Query internal link data for link opportunities
-15. Add 3-5 internal links to related content:
-   - Link FROM the new page TO established pages (passes topic relevance)
-   - Link TO the new page FROM established pages (passes authority)
-16. Use descriptive anchor text (not "click here" or "read more")
-17. Link to cornerstone/pillar content where relevant
+Write a concise description reflecting the actual content. A CTA fits only when it helps the reader's next action. Offer variants when the user needs a choice or test, rather than producing a fixed number. Do not add “best,” a year or a numeric promise unless the page supports it.
 
-### Step 5: External Linking
-18. Include 2-3 external links to authoritative sources:
-   - Government sites, academic papers, industry reports
-   - These signal trust and support EEAT
-19. Avoid linking to direct competitors
-20. Use `rel="noopener"` for new-tab links (not nofollow for legitimate citations)
+## 3. Page structure
 
-### Step 6: Structured Data
-21. Select schema type based on content type:
-   - Blog post -> `Article` schema with `author`, `datePublished`, `dateModified`
-   - How-to guide -> `HowTo` schema with steps
-   - FAQ -> `FAQPage` schema
-   - Product page -> `Product` schema with `offers`, `review`
-   - Comparison -> `Article` + individual `Product` schemas
-   - Local content -> `LocalBusiness` schema
-22. Generate JSON-LD snippet for implementation
-23. Validate with Google's Rich Results Test
+Use a logical heading hierarchy and descriptive section names. Put prerequisites before dependent actions and the direct answer before optional background. Use paragraphs, lists, steps and tables according to the information.
 
-### Step 7: Readability Scoring
-24. Target metrics:
-   - Flesch Reading Ease: 60-70 (8th-10th grade level)
-   - Average sentence length: 15-20 words
-   - Average paragraph length: 3-4 sentences
-   - Passive voice: < 10% of sentences
-25. Flag sections that exceed complexity thresholds
+A table of contents helps long, navigable pages when it reduces reader effort. Review mobile reading, wide tables and large blocks of text in context. Do not impose sentence or paragraph word counts.
 
-### Step 8: Technical Checks
-26. URL slug: Short, contains primary keyword, no stop words
-27. Image optimization: Compressed, descriptive filenames, alt text
-28. Mobile readability: No wide tables that require horizontal scroll
-29. Page speed considerations: Recommend lazy loading for images below fold
+## 4. Internal and external links
 
-## Content Scoring Tools: Reality Check
+Inspect the site's internal link inventory for relevant destinations and incoming links. Validate each destination and use descriptive anchors. Link to a pillar page or a related next step where useful, without a link-count or density quota.
 
-Surfer SEO, Clearscope, Frase analyze top-ranking pages and identify patterns. Ahrefs tested correlation with actual rankings:
-- NeuronWriter + Ahrefs: Strongest (but modest) correlation
-- Clearscope: ~0.30
-- Surfer SEO: ~0.27
+Cite external sources when readers need to verify a claim, inspect evidence or follow authoritative instructions. Prefer the source that supports the claim; a competitor's primary documentation may be the appropriate citation. Do not add unrelated authoritative links to simulate trust. Use appropriate link attributes for the actual relationship and browsing behavior.
 
-**The fundamental limitation:** These tools measure FIRST-STAGE retrieval signals only (lexical matching, BM25-style). After that:
-1. RankEmbed adds candidates keyword matching missed
-2. Mustang applies ~100+ signals including NavBoost, quality scores
-3. DeepRank applies BERT-based understanding to final 20-30 results
+## 5. Structured data
 
-**Bottom line:** Use SERP-derived topical completeness as a baseline check, not a ranking guarantee. The writing skill should ensure all SERP-common topics are covered, but the real ranking signals come from engagement, uniqueness, and authority.
+Identify the page's actual content type and implementation surface. Consider Article, Product, LocalBusiness or other applicable vocabulary only when supported by visible content and current requirements. Do not assume every how-to or FAQ is eligible for a search feature.
 
-## Tips
+Verify current official documentation before implementation, generate only supported properties and validate the result. Separate syntactically valid JSON-LD, eligibility and observed rich-result appearance. Do not invent reviews, offers, author credentials or FAQ content for schema.
 
-- **Featured snippet optimization**: For informational queries with existing snippets, format your answer in the snippet's format (paragraph, list, or table) within the first 300 words. Target 40-60 words for paragraph snippets.
-- **PAA (People Also Ask) optimization**: Answer PAA questions within your content using the exact question as an H2, followed by a direct 40-60 word answer, then expanded content.
-- **Keyword cannibalization check**: Before publishing, verify no existing page targets the same primary keyword. If it does, either merge or differentiate clearly.
-- **Meta title CTR optimization**: Include brackets [2026], parentheses (with examples), or numbers (7 steps) -- these consistently increase CTR in A/B tests.
+## 6. Search features and answer formatting
 
-## Common Mistakes
+When current research shows a relevant snippet or People Also Ask question, use the format that best answers it: a definition, sequence, table or short explanation. Include questions only when they belong in the reader's task. Let answer length follow the necessary explanation rather than a prescribed word count.
 
-1. **Optimizing before writing**: Writing around keywords produces unnatural content. Write naturally, then optimize.
-2. **Keyword density > 2%**: Over-optimization triggers Google's keyword stuffing filter. 1-2% is the sweet spot.
-3. **Exact-match keyword forcing**: "Best SEO content writing tools 2026 guide" as a sentence is not natural. Partial matches and variations work fine.
-4. **Ignoring internal linking**: New content without internal links is an island. Google struggles to discover and contextualize it.
-5. **Skipping structured data**: Free SERP real estate (rich snippets, FAQ dropdowns) is left on the table.
+## 7. Technical and publication checks
+
+- Check the proposed URL against site conventions and existing ownership of the topic; evaluate cannibalization before creating a competing page.
+- Check image filenames, compression, dimensions and descriptive alternatives.
+- Review mobile readability and below-the-fold image loading when in implementation scope.
+- Distinguish technical or lab diagnostics from verified field performance under the project's evidence rules.
+- Record proposed changes and applicable evidence; publication requires the existing authorized workflow.
+
+## Interpretation and follow-up
+
+SERP-derived topic checks and commercial content scores can suggest omissions; they do not establish ranking causality or guarantee results. Keep useful omissions separate from irrelevant competitor topics. After an authorized release, evaluate observed indexing, impressions, clicks and reader outcomes with comparable evidence rather than claiming success from checklist completion.
 
 ## Tools Used
-- keyword search -- keyword targets and secondaries
-- internal link data -- existing internal link structure
-- page-level SEO data -- check for keyword cannibalization
-- SERP feature detection -- identify featured snippet / PAA opportunities
-- keyword cluster data -- ensure topic coverage completeness
-- opportunity detection -- find keywords where pages rank 4-20 for quick wins
+
+- keyword search and keyword cluster data: intent and topic vocabulary.
+- internal link data: existing destinations and incoming link opportunities.
+- page-level SEO data: topic ownership and observed performance.
+- SERP feature detection: current answer-format opportunities.
+- opportunity detection: candidate topics to investigate, not automatic writing instructions.

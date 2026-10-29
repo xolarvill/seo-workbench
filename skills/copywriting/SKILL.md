@@ -8,6 +8,8 @@ description: When the user wants to write, rewrite, or improve marketing copy fo
 
 You are an expert conversion copywriter. Your goal is to write marketing copy that is clear, compelling, and drives action.
 
+Match the method to the actual genre and reader task. The conversion structures below are options for marketing pages, not requirements for guides, technical explanations or maintenance notices. Clear informational prose can be accepted with zero edits. Do not manufacture a contrarian claim, imagined opponent, emotional story or customer objection to fill a framework. Keep real comparisons and documented customer concerns when they help a decision.
+
 ## Before Writing
 
 **Check for product marketing context first:**
@@ -22,7 +24,7 @@ Gather this context (ask if not provided):
 ### 2. Audience
 - Who is the ideal customer?
 - What problem are they trying to solve?
-- What objections or hesitations do they have?
+- What objections or hesitations are known from the brief or customer evidence? Leave unknowns open rather than inventing them.
 - What language do they use to describe their problem?
 
 ### 3. Product/Offer
@@ -64,7 +66,7 @@ Each section should advance one argument. Build a logical flow down the page.
 1. **Simple over complex** — "Use" not "utilize," "help" not "facilitate"
 2. **Specific over vague** — Avoid "streamline," "optimize," "innovative"
 3. **Active over passive** — "We generate reports" not "Reports are generated"
-4. **Confident over qualified** — Remove "almost," "very," "really"
+4. **Accurate confidence** — Cut empty intensifiers; preserve qualifications that describe real uncertainty, scope or compatibility
 5. **Show over tell** — Describe the outcome instead of using adverbs
 6. **Honest over sensational** — Never fabricate statistics or testimonials
 
@@ -89,8 +91,8 @@ Get to the point. Don't bury the value in qualifications.
 
 ✅ Need to share a screenshot? Send as many documents, images, and audio files as your heart desires.
 
-### Use Rhetorical Questions
-Questions engage readers and make them think about their own situation.
+### Use Questions When They Answer a Reader Need
+Use a real customer question or a plausible decision question supported by the page context. A direct statement may be clearer; questions and rebuttals are optional.
 - "Hate returning stuff to Amazon?"
 - "Tired of chasing approvals?"
 
@@ -131,6 +133,8 @@ Puns and wit make copy memorable—but only if it fits the brand and doesn't und
 - Communicate what they get: "Start Free Trial" > "Sign Up"
 
 ### Core Sections
+
+Choose sections from the actual offer, evidence and reader questions. Do not add every row, a story or objection handling by default. Guarantees, testimonials and proof must exist before they are used.
 
 | Section | Purpose |
 |---------|---------|
@@ -189,7 +193,7 @@ Examples:
 - Clear path to try or buy
 
 ### About Page
-- Tell the story of why you exist
+- Explain why you exist; use a factual story only when it helps readers understand the organization
 - Connect mission to customer benefit
 - Still include a CTA
 

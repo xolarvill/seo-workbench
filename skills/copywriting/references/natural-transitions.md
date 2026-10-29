@@ -2,6 +2,8 @@
 
 Transitional phrases to guide readers through your content. Good signposting improves readability, user engagement, and helps search engines understand content structure.
 
+Use these as optional examples when a logical connection needs expression. A direct continuation or no transition may work best. Do not add a question, rebuttal, summary or claim of shared understanding just to follow a conversational pattern. References back require a real earlier point; contrasts require a relevant distinction; evidence phrases require an actual source. Concise technical text can remain unchanged.
+
 Adapted from: University of Manchester Academic Phrasebank (2023), Plain English Campaign, web content best practices
 
 ---
@@ -66,7 +68,7 @@ Use to connect ideas and reinforce key points:
 - In addition,...
 - There's also...
 
-**Note:** Use "moreover" and "furthermore" sparingly. They can sound AI-generated when overused.
+**Note:** Repeated transitions can distract. Judge whether the connection helps this passage; the words do not establish authorship.
 
 ---
 
@@ -180,13 +182,13 @@ Use when citing sources, data, or expert opinions:
 - Ready to get started?...
 - Now it's your turn.
 
-**Note:** Avoid "In conclusion" at the start of a paragraph. It's overused and signals AI writing.
+**Note:** Add a conclusion label only when orientation helps. No phrase by itself identifies AI writing.
 
 ---
 
 ## Question-Based Transitions
 
-Useful for conversational tone and featured snippet optimization:
+Optional when they express a question the current reader has reason to ask; do not assume confusion or an objection merely to answer it:
 
 - So what does this mean for you?
 - But why does this matter?
@@ -237,9 +239,9 @@ For claims that need qualification or aren't absolute:
 
 ---
 
-## Transitions to Avoid (AI Tells)
+## Transitions to Inspect in Context
 
-These phrases are overused in AI-generated content:
+These phrases can be vague or repetitive. Check their local function rather than applying an authorship blacklist:
 
 - "That being said,..."
 - "It's worth noting that..."
@@ -249,4 +251,4 @@ These phrases are overused in AI-generated content:
 - "This begs the question..."
 - "Let's delve into..."
 
-See [AI writing detection](../../site-audit/references/references/ai-writing-detection.md) for a complete list of AI writing tells.
+For passage-level review, use [reader-experience-review](../../reader-experience-review/SKILL.md). Keep a transition when it makes the relationship clearer; remove or replace it only for a concrete reader benefit.

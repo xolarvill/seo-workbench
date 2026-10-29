@@ -59,12 +59,12 @@ Every piece of content must be searchable, shareable, or both. Prioritize in tha
 
 ### When Writing Shareable Content
 
-- Lead with a novel insight, original data, or counterintuitive take
-- Challenge conventional wisdom with well-reasoned arguments
-- Tell stories that make people feel something
-- Create content people want to share to look smart or help others
-- Connect to current trends or emerging problems
-- Share vulnerable, honest experiences others can learn from
+- Lead with information useful to the intended audience: a clear answer, practical resource, supported insight or original data
+- Challenge a specific conventional claim only when the evidence supports a relevant disagreement; a contrarian angle is optional
+- Use a factual story when it helps explain the topic; do not require emotion or a personal anecdote for every piece
+- Make the content useful enough to pass on: a concise checklist or technical explanation can be shareable without a novelty hook
+- Connect to trends or emerging problems only when they matter to the audience
+- Include genuine experiences when available and relevant, without manufacturing vulnerability or surprise
 
 ---
 
@@ -99,9 +99,9 @@ High-intent keywords + product adoption.
 ### Shareable Content Types
 
 **Thought Leadership**
-- Articulate concepts everyone feels but hasn't named
-- Challenge conventional wisdom with evidence
-- Share vulnerable, honest experiences
+- Explain the actual expert's position and reasoning
+- Challenge a relevant, identifiable claim when the expert's evidence warrants it
+- Share genuine observations or experiences when useful; neither novelty nor vulnerability is required
 
 **Data-Driven Content**
 - Product data analysis (anonymized insights)

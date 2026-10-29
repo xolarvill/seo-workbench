@@ -140,7 +140,7 @@ Dedicated service pages = **#1 local organic factor AND #2 AI visibility factor*
 - Embedded Google Map (geographic signal reinforcement, not direct ranking factor -- lazy-load to mitigate speed impact)
 - Click-to-call button (`tel:` link) and contact form above the fold
 - Internal linking architecture: hub-and-spoke, every critical page within 3 clicks of homepage
-- 2-5 contextual internal links per 1,000 words with descriptive anchor text
+- Contextual internal links to relevant services, locations or next steps, with descriptive anchor text
 
 **Multi-location specific:**
 - Store locator with individual crawlable URLs (SSR/SSG preferred over CSR)

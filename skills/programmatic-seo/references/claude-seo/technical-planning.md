@@ -71,7 +71,7 @@ Design templates that produce unique, valuable pages:
 - **Breadcrumbs**: Generate BreadcrumbList schema from URL hierarchy
 - **Cross-linking**: Link between programmatic pages sharing attributes (same category, same city, same feature)
 - **Anchor text**: Use descriptive, varied anchor text. Avoid exact-match keyword repetition
-- Link density: 3-5 internal links per 1000 words (match seo-content guidelines)
+- Link coverage: connect relevant related pages where they help the reader; check real destinations and avoid per-word quotas
 
 ## Thin Content Safeguards
 

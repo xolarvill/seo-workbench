@@ -1,126 +1,50 @@
-# Technique 17: Human Input Framework -- The Critical Differentiator
+# Technique 17: Author and Expert Input
 
-## What It Is
-A structured system for collecting and integrating human-provided content into AI-assisted articles -- because AI without human input produces high-quality slop. The human's experiences, data, opinions, and case studies are what transform generic AI content into genuinely valuable, ranking-worthy articles.
+## Purpose and scope
 
-## Why It Works
-Every technique in this research converges on one truth: **AI content that ranks is content that includes things only a human could provide.** Information Gain requires unique data. EEAT requires demonstrated experience. Anti-AI-detection requires genuine opinions and idiosyncratic phrasing. NavBoost requires content that actually satisfies users.
+Collect genuine knowledge when it materially improves the requested content or supports a promised first-party claim. Interviews are one evidence source alongside manufacturer documentation, verified research and existing project artifacts. They are not a mandatory gate for every article or wording edit.
 
-AI alone cannot provide:
-- First-party data from your business
-- Case studies with real clients, real numbers, real timelines
-- Genuine opinions and contrarian perspectives based on experience
-- Specific tool interactions, error messages, and unexpected results
-- The "what went wrong" stories that build trust
+Reuse already provided input and an approved brief. Do not ask the user to repeat known context. Without interviews or tests, write an accurately attributed explanation within the available evidence, and avoid claiming firsthand experience.
 
-## The Human Input Hierarchy
+## 1. Identify the missing input
 
-### Tier 1: Essential (Content won't rank without these)
-1. **First-party data**: Numbers from your own business, research, or analysis
-2. **Case study details**: Client name (or anonymized), problem, solution, specific results
-3. **Genuine opinion**: What the author actually thinks about the topic, including disagreements with conventional wisdom
+Map each evidence need to the claim or decision it supports. Distinguish:
 
-### Tier 2: High-Value (Significantly improves quality)
-4. **Specific experience details**: Tool versions, error messages, unexpected behaviors encountered
-5. **Process documentation**: The exact steps the author follows, with reasoning for each
-6. **Failure stories**: What was tried and didn't work, and why
-7. **Comparisons from actual usage**: "I used tool A and tool B for 3 months each. Here's what I found."
+- **Required:** Facts needed for a promised test, author opinion, customer story or proprietary result; permission needed to disclose private material.
+- **Useful:** A process detail or tradeoff that would materially improve a section but can be omitted without breaking the brief.
+- **Optional:** Anecdotes, analogies or stylistic preferences that add little to the current task.
 
-### Tier 3: Enhancing (Adds polish and authenticity)
-8. **Analogies and metaphors**: The author's unique way of explaining a concept
-9. **Predictions/opinions**: Where the author thinks the industry is heading
-10. **Behind-the-scenes context**: Why certain decisions were made, what alternatives were considered
-11. **Personal anecdotes**: Brief relevant stories that illustrate points
+Ask targeted questions about required gaps and continue independent work. Do not impose a fixed interview length or a percentage of human-sourced content.
 
-## Step-by-Step Process
+## 2. Choose relevant questions
 
-### Step 1: Pre-Writing Interview (5-10 questions)
-Before the AI pipeline starts, collect human input via structured questions:
+Use only questions that address the gap:
 
-**For blog posts / thought leadership:**
-1. "What's YOUR take on [topic]? What do you disagree with that most people believe?"
-2. "Can you share a specific example or case study related to [topic]?"
-3. "What numbers or data do you have from your own experience?"
-4. "What's the most common mistake you see people make with [topic]?"
-5. "If you had to give one piece of counterintuitive advice on [topic], what would it be?"
+- **Opinion or thought leadership:** What is the author's actual position, reasoning and evidence? Which specific claim do they disagree with, if any?
+- **How-to or tutorial:** What is the verified sequence? What prerequisites, versions, documented errors or limits matter? Is the source a manufacturer instruction, direct experience or inference?
+- **Product or comparison:** What was used or tested, under which conditions, against which criteria? What drawbacks and intended users are supported by that evidence?
+- **Data or case study:** What population, period, method and outcome do the numbers describe? What can be disclosed and how should it be attributed?
 
-**For how-to guides / tutorials:**
-1. "When you do [process], what's the exact sequence of steps?"
-2. "What usually goes wrong? What error messages do people see?"
-3. "What prerequisite do beginners always forget?"
-4. "Is there a shortcut or trick that makes this significantly easier?"
-5. "What tools/versions do you use, and does it matter?"
+Do not solicit a contrarian opinion or failure story merely because a template has a field for it. A documented ordinary procedure can be the right content.
 
-**For product/comparison content:**
-1. "Which option do you actually recommend and why?"
-2. "What's the biggest hidden drawback that nobody mentions?"
-3. "Who should NOT use this product/approach?"
-4. "What's changed about this product/market in the last 6 months?"
-5. "Can you share specific metrics from your usage?"
+## 3. Record and verify
 
-### Step 2: Input Integration
-6. Map each human input to a specific section of the outline
-7. Use direct quotes where the human's phrasing is distinctive
-8. Weave data points into arguments (don't dump them in a "data" section)
-9. Use case studies as section anchors (start sections with the story)
-10. Let opinions drive the article's angle, not just flavor paragraphs
+Keep source identity, date, context, exact quotations and disclosure limits with the claim. Verify whether numbers have supporting records rather than treating plausibility as verification. Check versions and current product details when they affect instructions.
 
-### Step 3: Input Verification
-11. If the human provides statistics, verify they're reasonable
-12. If the human names tools or products, verify they exist and are current
-13. If the human references clients, confirm disclosure is appropriate
-14. Flag any claims that need supporting evidence
+Confirm confidentiality and attribution before using a named client or personal material. Anonymization must not create fictitious precision or imply permission. Label unverified author input honestly; a confident speaker does not make a claim independently verified.
 
-### Step 4: Quality Gate
-15. Before finalizing, check: "What in this article could ONLY come from this specific human?"
-16. If the answer is "nothing" or "just the case study in paragraph 7," more human input is needed
-17. Target: at least 20% of the article's value should be human-sourced
+## 4. Integrate without distortion
 
-## The Input Collection Interface (MCP Skill Design)
+Place input where it answers a question or supports a decision. Preserve exact quotes and the author's actual meaning; prose outside quotations can be edited for clarity. Case studies may anchor a section when useful but do not need to begin it.
 
-A well-designed workflow should implement a structured input collection:
+Separate personal observations, measured results, expert interpretation and hypothetical examples. Use first person only for genuine involvement with appropriate author attribution. Do not turn manufacturer guidance into “we tested” or embellish ordinary input with invented quirks.
 
-```
-CONTENT WRITING REQUEST
-========================
-Topic: [user provides]
-Content Type: [user selects from 10 types]
-Target Keyword: [user provides]
+Audio or rough notes can be useful when the user supplies them; transcribe and confirm ambiguous details rather than simulating their voice. Existing genuine writing samples may guide register without requiring new anecdotes.
 
-HUMAN INPUT REQUIRED
-========================
-DATA: Do you have any data or numbers to include?
-   [text input -- first-party data, metrics, percentages]
+## 5. Close the review
 
-CASE STUDY: Can you share a specific case study or example?
-   [text input -- client story, project outcome, before/after]
+Check that each required claim has appropriate support and any unavailable material is omitted, narrowed or clearly pending. State the scope of verification. Do not penalize a useful guide for lacking proprietary data, and do not reuse one anecdote as supposed independent evidence across multiple articles.
 
-OPINION: What's YOUR opinion on this topic? Any disagreements with conventional wisdom?
-   [text input -- personal take, contrarian view]
+## Working record
 
-CONTRARIAN: What common advice on this topic do you think is WRONG?
-   [text input -- things that don't work, outdated advice]
-
-PROCESS: Any specific tools, processes, or methods you use?
-   [text input -- exact steps, tool names, configurations]
-
-FAILURES: What usually goes wrong with this? Any failure stories?
-   [text input -- mistakes, unexpected results, lessons learned]
-
-[Optional] Upload voice samples for brand voice matching
-[Optional] Paste 2-3 example articles in your style
-```
-
-## Tips
-
-- **Audio input is often better than text**: People share more detailed, natural-sounding experiences when speaking vs typing. If possible, accept voice memos and transcribe them.
-- **The "why" follow-up**: When the human says "we use tool X," follow up with "why did you choose X over alternatives?" -- the reasoning is the information gain, not the tool name.
-- **Anonymization template**: Provide a simple template for case studies that need anonymization: "A [industry] company with [X employees] in [region]..."
-- **Capture the messy version**: Raw, unpolished human input often sounds MORE authentic than cleaned-up versions. Preserve the original voice.
-
-## Common Mistakes
-
-1. **Making human input optional**: If the pipeline allows "skip" on all human input fields, users will skip everything -- and the content will be generic
-2. **Collecting input after writing**: Human input should shape the OUTLINE and WRITING, not be bolted on as quotes after the fact
-3. **Over-processing human input**: Don't AI-rewrite the human's case study. Their natural phrasing is an anti-detection signal.
-4. **One input, many articles**: Each article should have UNIQUE human input. Reusing the same case study across 10 articles weakens information gain.
+Keep a compact claim-to-input map in the existing artifact: claim, source, evidence type, verification status, disclosure limits and section destination. Avoid collecting personal or business material that the task does not need.

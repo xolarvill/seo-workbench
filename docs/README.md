@@ -37,6 +37,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 - [Skill sources and upstream comparison](skill-sources.md): pinned upstream versions, file-level provenance, local change history, and the update-review procedure.
 - [Canonical skill ownership and layout migration](20261029-skill-layout-migration.md): shared skill namespace, merged capabilities, old-path mapping, and migration verification.
 - [Specialist methods and runtime adaptation](20261029-skill-methods-runtime-adaptation.md): current method owners, preserved originals, local operation references, and verification.
+- [Writing standards and selected upstream methods](20261029-skill-writing-upstream-adaptation.md): reader-focused editing, shared writing rules, behavior cases, and the adopted/deferred upstream changes.
 - [Local skill integration diagnosis](20261026-local-skill-integration-diagnosis.md): discovery, routing, and execution gaps; prompted use is not evidence of autonomous selection.
 - [Agent-led workbench acceptance](20261026-agent-led-workbench-acceptance.md): next-command retirement, regression results, desktop/mobile QA, and bounded autonomous-selection evidence.
 - [Agent skill routing design](agent-skill-routing-design.md): agent-led method selection, retired next-step scheduling, compatibility boundaries, and acceptance evidence.

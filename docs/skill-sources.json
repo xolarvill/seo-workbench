@@ -2,7 +2,7 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+  "local_snapshot_commit": "50719b14adc80235b11784675c613578d8539287",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
@@ -25,15 +25,15 @@
       "workflow_reference": 24
     },
     "by_comparison_status": {
-      "different": 116,
-      "identical": 242,
+      "different": 133,
+      "identical": 225,
       "workbench_native": 48
     },
-    "dependency_occurrences": 723,
+    "dependency_occurrences": 737,
     "dependencies_by_status": {
       "example_reference": 4,
       "project_context_reference": 91,
-      "resolved_local": 614,
+      "resolved_local": 628,
       "route_or_example": 1,
       "template_reference": 3,
       "upstream_runtime_reference": 10
@@ -753,8 +753,8 @@
       "upstream_path": ".claude/skills/content-strategy/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "42f358db39ef3e2f59c1e15d5045a906c3d4a5470c7a2bf5d23924f52c1f8d20",
-      "local_git_blob_sha": "9b7f7ac0c4bea28333ade12a0d2da3e3bf79e1be",
+      "local_sha256": "d962ed30f85f5c00b6a827ffe795c5f1af5eee13291f672d2ddea12f49f85264",
+      "local_git_blob_sha": "ea88b32b268ac3eaa9ec524db056c725c74749a5",
       "comparison_upstream_blob_sha": "fc64f068383ef0f7c5989f6eadb9537dfe3b6332",
       "comparison_status": "different",
       "first_local_record": {
@@ -780,7 +780,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/content-strategy/references/calendar-planning.md",
@@ -956,8 +956,8 @@
       "upstream_path": ".claude/skills/copy-editing/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "7862d39e666d16bb8de5cf3c9789f51ffa0740f50a273bcaa9890e1bc766e02b",
-      "local_git_blob_sha": "85e566f7affb993a746bd902ca96f2940fb9c645",
+      "local_sha256": "baffd5152ba9b890abab99818367c65b32bd15581d4fb90e7235e41ff067ebf8",
+      "local_git_blob_sha": "eb53f895d92efd7e9e1f6ecb22c57b1052138267",
       "comparison_upstream_blob_sha": "6d6227f7f5243512d6f06c14c3db8372a84cb92e",
       "comparison_status": "different",
       "first_local_record": {
@@ -983,7 +983,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/copy-editing/references/article-editing.md",
@@ -1014,16 +1014,16 @@
         "path": "skills/copy-editing/references/article-editing.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
         "seomachine:.claude/agents/editor.md"
       ],
-      "local_sha256": "cd5bdfab1dfe2af8485b62d9532f4569a758e18c5f0c79e8eaf3f959756b193b",
-      "local_git_blob_sha": "51826bd2747815eca8a4130d7a9f33d4fd6c6922",
+      "local_sha256": "e3ba68afd52c2d69a929c09dce991fb8d47c49e43f22ec8fb4a247db883999e6",
+      "local_git_blob_sha": "e7df603f1d14ea766c9fa1abf29f9d8aff695408",
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/copy-editing/references/plain-english-alternatives.md",
@@ -1082,8 +1082,8 @@
       "upstream_path": ".claude/skills/copywriting/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "eb2fb31798516c869aae232b4f7dcdf3fc39bd24a9f2f419525a53946727e711",
-      "local_git_blob_sha": "17eb686c81bee5f26f07199948a89ff648599919",
+      "local_sha256": "0a82623894fc7cbc5f3050cbb7c05132fb0e17e23e6825e9d5e20ec33ca4ada6",
+      "local_git_blob_sha": "8f6b98bc4f871eafd89b302d7907f2802a3c580a",
       "comparison_upstream_blob_sha": "d49f6e3e8d90bee129978b59da9c9bbf9da34a21",
       "comparison_status": "different",
       "first_local_record": {
@@ -1109,7 +1109,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/copywriting/references/copy-frameworks.md",
@@ -1125,10 +1125,10 @@
       "upstream_path": ".claude/skills/copywriting/references/copy-frameworks.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "a96c5290cd5ec24b82b9ac1dfaebbcb7111cb9e6495d5b6d1b1a5daa6332f739",
-      "local_git_blob_sha": "9957b96f01d9a058cdc8cb0278278d75fff1f43e",
+      "local_sha256": "564e7046628c8f8a5e10d419f81eb3957ba3ae06a790e6ae7d4da3fd4b58b48e",
+      "local_git_blob_sha": "34fa26e8100d70ea1423f6f96c315e059055018c",
       "comparison_upstream_blob_sha": "9957b96f01d9a058cdc8cb0278278d75fff1f43e",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
         "date": "2026-06-26",
@@ -1142,7 +1142,7 @@
         "path": "skills/copywriting/references/copy-frameworks.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -1152,7 +1152,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/copywriting/references/headline-options.md",
@@ -1288,8 +1288,8 @@
       "upstream_path": ".claude/skills/copywriting/references/natural-transitions.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "da06b08315c3ed5a5b2912fb1a26415a2bd59e73a2b5fdf24416c392e4f7a28b",
-      "local_git_blob_sha": "071399a85374e870b49d60d9dfb17fc4c1e92ab8",
+      "local_sha256": "f7ca14007922fe805bb7900800b139153291d5489f11defd2598cd204065fd84",
+      "local_git_blob_sha": "b274f74cbd790983152ab32e53ecfabf240c7032",
       "comparison_upstream_blob_sha": "929116faa1e93d543df2ba87c6f6a256d3eadcef",
       "comparison_status": "different",
       "first_local_record": {
@@ -1315,7 +1315,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-drift/SKILL.md",
@@ -2248,8 +2248,8 @@
       "upstream_path": "skills/expert-interview/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "3d091ce694c527fd244887613fb16b1e3df7d71aa7d30c9627905c090e8a8e39",
-      "local_git_blob_sha": "d403003e3cc34e06d89ef2670a96081b6fcc4e66",
+      "local_sha256": "6b9858500e4a54a6efd7d6cc241d9cd977a073c45cb362cf93b5e8f5058def68",
+      "local_git_blob_sha": "0b11a9a5cb7d931622927194c4ef0e54150d30ab",
       "comparison_upstream_blob_sha": "d86293893eceb9e4d2ebb72ffb5436be3ca6afbf",
       "comparison_status": "different",
       "first_local_record": {
@@ -2275,7 +2275,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/expert-interview/references/eeat-signal-embedding.md",
@@ -2416,10 +2416,10 @@
       "upstream_path": "skills/expert-interview/references/knowledge-doc-template.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "75286e71da2eb853c459b376402a683840ff867484329ee87948124b61bbeb11",
-      "local_git_blob_sha": "ff3c1730e613ab7003289e6471fc4ae7002b92aa",
+      "local_sha256": "16f25c00b34a8136883fa38b34895ca48edeae35f270c7f0053f6d8cbaa491d1",
+      "local_git_blob_sha": "a92264b6d21feda1f16840fafebfc75cac48187e",
       "comparison_upstream_blob_sha": "ff3c1730e613ab7003289e6471fc4ae7002b92aa",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
         "date": "2026-06-26",
@@ -2433,7 +2433,7 @@
         "path": "skills/expert-interview/references/knowledge-doc-template.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -2443,7 +2443,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/expert-interview/references/question-bank-by-topic.md",
@@ -2500,10 +2500,10 @@
       "upstream_path": "skills/expert-interview/references/voice-injection-playbook.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "8d2e38c9474344e2376571b7719dbec4d0a7836a576cda939bf34fc3dfab806e",
-      "local_git_blob_sha": "e207293e40a6c6f0a91133a4d3a87d2e99e05d83",
+      "local_sha256": "f17a91c937fadcdd99f1e79e47f2f5ee7d914ecee1c8bae758a1e2badedff8ab",
+      "local_git_blob_sha": "430cb87f5c94104058bdff0ea541b8033949654e",
       "comparison_upstream_blob_sha": "e207293e40a6c6f0a91133a4d3a87d2e99e05d83",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
         "date": "2026-06-26",
@@ -2517,7 +2517,7 @@
         "path": "skills/expert-interview/references/voice-injection-playbook.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -2527,7 +2527,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/featured-snippet-optimizer/SKILL.md",
@@ -3176,8 +3176,8 @@
       "upstream_path": "skills/improve-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "808151a9c26db374447034f21467eda515502e7e85a682c27377a6ecfc398829",
-      "local_git_blob_sha": "f6ac246467c2e71e823553ef9572330d2bb5ab88",
+      "local_sha256": "3e5939beddc07b40cf856e7b5f713e24fdfbe062163a209bb30b1d7255499cd6",
+      "local_git_blob_sha": "3fc9ce59bfea8cebcdf6930bcefde134b6a81ff0",
       "comparison_upstream_blob_sha": "8f1ff6b0c8fca8e96e4b821773d296ebf5c70c21",
       "comparison_status": "different",
       "first_local_record": {
@@ -3203,7 +3203,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/improve-content/references/anti-slop-ruleset.md",
@@ -3218,10 +3218,10 @@
       "upstream_path": "skills/improve-content/references/anti-slop-ruleset.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "6e3b5723f47eb08896d9dbb1fbd286a82f832f71b58e7abdb066772b9cfbf7e3",
-      "local_git_blob_sha": "21b48bfa3d45a89e00e7c13b9096d085e18f9bea",
+      "local_sha256": "6ee1577898bc2d13d7a3ca2a288be4768130b8d8d3dd84a0f3d4dae583ad2d7b",
+      "local_git_blob_sha": "6649a89e81c9dd4faffda330c83c24dc1ea300b0",
       "comparison_upstream_blob_sha": "21b48bfa3d45a89e00e7c13b9096d085e18f9bea",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
         "date": "2026-06-26",
@@ -3235,7 +3235,7 @@
         "path": "skills/improve-content/references/anti-slop-ruleset.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -3245,7 +3245,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/improve-content/references/content-freshness.md",
@@ -3302,8 +3302,8 @@
       "upstream_path": "skills/improve-content/references/content-types-overview.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "4d3de9d9e9a4c8499d6c70abe976792312b493fe87f60ace26ab1448145ff425",
-      "local_git_blob_sha": "f6c40327a4e0a72f653643807e25a1f9658899fc",
+      "local_sha256": "75a735ec92117392d4d015e9937e2861d526eb39bd128a9cef16ed8243b1d4df",
+      "local_git_blob_sha": "6327bf5cb9f816be025e656dd28e8fdab9c82a83",
       "comparison_upstream_blob_sha": "737abfd4e92d7db3ea3793ed480f3295f715751a",
       "comparison_status": "different",
       "first_local_record": {
@@ -3329,7 +3329,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/improve-content/references/content-types/alternatives-page.md",
@@ -4182,10 +4182,10 @@
       "upstream_path": "skills/improve-content/references/quality-scoring.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "9ddb407f0857887a9dc5ea4da3af4a1d285cbfda8794c8ec88217e581a96f8cd",
-      "local_git_blob_sha": "5d3a3ad5559e4c6f587b1a3a0adda4e175a2bb63",
+      "local_sha256": "9351ace686c57b4c3047acacb23afd129a29873555a6786369ca6056f09ff823",
+      "local_git_blob_sha": "d9f2ecc97216d29664e810e0710ba56443f64629",
       "comparison_upstream_blob_sha": "5d3a3ad5559e4c6f587b1a3a0adda4e175a2bb63",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
         "date": "2026-06-26",
@@ -4199,7 +4199,7 @@
         "path": "skills/improve-content/references/quality-scoring.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -4209,7 +4209,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/improve-content/references/refresh-workflow.md",
@@ -4304,10 +4304,10 @@
       "upstream_path": "skills/improve-content/references/voice-injection-playbook.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "8d2e38c9474344e2376571b7719dbec4d0a7836a576cda939bf34fc3dfab806e",
-      "local_git_blob_sha": "e207293e40a6c6f0a91133a4d3a87d2e99e05d83",
+      "local_sha256": "b7750273786b12cdca112308a6cff34783a1c83649ad5b91750176ef5c3d256d",
+      "local_git_blob_sha": "416cd939a192b10c50476586b3629591fb2da7de",
       "comparison_upstream_blob_sha": "e207293e40a6c6f0a91133a4d3a87d2e99e05d83",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
         "date": "2026-06-26",
@@ -4321,7 +4321,7 @@
         "path": "skills/improve-content/references/voice-injection-playbook.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -4331,7 +4331,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/improve-content/references/writing-pipeline.md",
@@ -4346,10 +4346,10 @@
       "upstream_path": "skills/improve-content/references/writing-pipeline.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "2fe4d6887539bdfd6159c22e9faa26eac55d5ac84a179fa257ad77064312c155",
-      "local_git_blob_sha": "c8a4c3c70a9526389f1cbf3eacf9f10c9ae4d0c2",
+      "local_sha256": "5b7dcc2859a50cb08a246042a4250483b0d019f870a5b78f94f9b566f6b404b9",
+      "local_git_blob_sha": "2987a319f6f46a92477bb76c3dfa1b39fe99ad03",
       "comparison_upstream_blob_sha": "c8a4c3c70a9526389f1cbf3eacf9f10c9ae4d0c2",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
         "date": "2026-06-26",
@@ -4363,7 +4363,7 @@
         "path": "skills/improve-content/references/writing-pipeline.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -4373,7 +4373,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/keyword-deep-dive/SKILL.md",
@@ -6906,8 +6906,8 @@
       "upstream_path": "skills/seo-programmatic/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "7ae512f31cf641e41405c105e449791cd6985f435d771b54919bbc733287e781",
-      "local_git_blob_sha": "f062a9455c22c5d0b36ef58f3ebf7f965b77a6d9",
+      "local_sha256": "a2498a1d7a2b8e05accdf650a828e90a4ad60074c8322429a6e32c97e1676c06",
+      "local_git_blob_sha": "85e8404d7497b19ff3ddddbf72a950173de5ed3b",
       "comparison_upstream_blob_sha": "c2791a5ccd4a6cc0b47fd13f40a4f5cb8f3381bb",
       "comparison_status": "different",
       "first_local_record": {
@@ -6933,7 +6933,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/programmatic-seo/references/playbooks.md",
@@ -7086,9 +7086,9 @@
         "path": "skills/reader-experience-review/SKILL.md"
       },
       "last_local_change": {
-        "commit": "aff4dea87b17ed124be3bf23f8a8710fac6d1be5",
-        "date": "2026-10-21",
-        "subject": "docs: add contextual reader experience review skill",
+        "commit": "50719b14adc80235b11784675c613578d8539287",
+        "date": "2026-10-29",
+        "subject": "fix: prioritize reader needs over defensive writing",
         "path": "skills/reader-experience-review/SKILL.md",
         "record_status": "committed"
       },
@@ -7102,7 +7102,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/reader-experience-review/references/calibration.md",
@@ -7128,9 +7128,9 @@
         "path": "skills/reader-experience-review/references/calibration.md"
       },
       "last_local_change": {
-        "commit": "aff4dea87b17ed124be3bf23f8a8710fac6d1be5",
-        "date": "2026-10-21",
-        "subject": "docs: add contextual reader experience review skill",
+        "commit": "50719b14adc80235b11784675c613578d8539287",
+        "date": "2026-10-29",
+        "subject": "fix: prioritize reader needs over defensive writing",
         "path": "skills/reader-experience-review/references/calibration.md",
         "record_status": "committed"
       },
@@ -7144,7 +7144,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/referral-program/SKILL.md",
@@ -7747,8 +7747,8 @@
       "upstream_path": "skills/seo-cluster/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "49e4f28ecd4a6aaf4eeae2f7ccff30d7ce76b2e735230609331459c4327cbb42",
-      "local_git_blob_sha": "4afb1bb6d7590a8871d7a0a27732174fbc3711ef",
+      "local_sha256": "cb8f7dc2e12df66befdb51688bc2c1ad8d4fb655d5a1827320fdda8a13ab20aa",
+      "local_git_blob_sha": "14594bd1e82517bbb3c182c98388d345e5f01ac9",
       "comparison_upstream_blob_sha": "7286d5054bb3443c0da39f412f805b089e9429bf",
       "comparison_status": "different",
       "first_local_record": {
@@ -7774,7 +7774,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-cluster/references/execution-workflow.md",
@@ -7790,8 +7790,8 @@
       "upstream_path": "skills/seo-cluster/references/execution-workflow.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "70244040712b0ca47539911d0f8a4fac2da0dde1fe1a7dc13bb0824d3c52fb53",
-      "local_git_blob_sha": "bb9592fcdfb8438481d7cd38ad62e21b219b4f13",
+      "local_sha256": "21468d423685c2079ae2e7f1c45bd5d95c53986756e42835c0fcbfe76590dcc9",
+      "local_git_blob_sha": "d1a366242dcbd9d9adebff014d4b33339360edcd",
       "comparison_upstream_blob_sha": "c98382fce3d11735fdff6cabf7c65850baeeecb9",
       "comparison_status": "different",
       "first_local_record": {
@@ -7817,7 +7817,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-cluster/references/hub-spoke-architecture.md",
@@ -12044,8 +12044,8 @@
       "upstream_path": "skills/seo-local/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "18f708d605c3f9704240389f9bcaf578ffee56cbc7e5e4054980e04250e4927c",
-      "local_git_blob_sha": "76a83be14816d116620753f9946178bba0b28816",
+      "local_sha256": "1ca6a05dfbaaf7f439db8f90e930bf333455f607a96825d21a3a161e0f08ae3a",
+      "local_git_blob_sha": "675e26b02de9e6c0a99b4d7f75974d68c14d606f",
       "comparison_upstream_blob_sha": "2bbd3e88a0f2770c1d94f8c488f39723eac73250",
       "comparison_status": "different",
       "first_local_record": {
@@ -12071,7 +12071,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-maps/LICENSE.txt",
@@ -13625,10 +13625,10 @@
       "upstream_path": ".claude/skills/seo-audit/references/ai-writing-detection.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "586226f9b7ccdba3ad07a1d025442d294a8f0c43117b655c7231e97ed5720351",
-      "local_git_blob_sha": "ffa5dce80b93004e38c0fcd7f72bf856028364d6",
+      "local_sha256": "618c4e7bb637a786d0b0376a3ffaeb1aad189f6e26eb4c4e038d5703788f3ff5",
+      "local_git_blob_sha": "a88da3c3c4071978af37959c53243c9221a7be42",
       "comparison_upstream_blob_sha": "ffa5dce80b93004e38c0fcd7f72bf856028364d6",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
         "date": "2026-06-26",
@@ -13642,7 +13642,7 @@
         "path": "skills/site-audit/references/references/ai-writing-detection.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -13652,7 +13652,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/seo-audit/SKILL.md",
@@ -14462,8 +14462,8 @@
       "upstream_path": "skills/write-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "a34f858bcf9f0f2fc69aee6e8eb6b4af4d35227e77218269d307aa5d507878fd",
-      "local_git_blob_sha": "f25e1e7557b966084d87f7026191abc7d43c2dd3",
+      "local_sha256": "22f9d8ef1d9ab32e84520f806ddbe69f828eecee166567513c5019001a690b27",
+      "local_git_blob_sha": "1d7f980f997410c369e0016647c95d5ea1f0ab96",
       "comparison_upstream_blob_sha": "35c6c4041ba0a03de482ccc8e439183e6031d681",
       "comparison_status": "different",
       "first_local_record": {
@@ -14489,7 +14489,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/anti-slop-ruleset.md",
@@ -14504,10 +14504,10 @@
       "upstream_path": "skills/write-content/references/anti-slop-ruleset.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "6e3b5723f47eb08896d9dbb1fbd286a82f832f71b58e7abdb066772b9cfbf7e3",
-      "local_git_blob_sha": "21b48bfa3d45a89e00e7c13b9096d085e18f9bea",
+      "local_sha256": "a512e6213f743b6836950c6236b1fc32811dde34eda6ee73ce978f307ced3633",
+      "local_git_blob_sha": "d9efacccdf84e2a8fc380ff197a19243329d8d79",
       "comparison_upstream_blob_sha": "21b48bfa3d45a89e00e7c13b9096d085e18f9bea",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
         "date": "2026-06-25",
@@ -14521,7 +14521,7 @@
         "path": "skills/write-content/references/anti-slop-ruleset.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -14531,7 +14531,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/write-content/references/article-workflow.md",
@@ -15506,10 +15506,10 @@
       "upstream_path": "skills/write-content/references/eeat-signal-embedding.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "8ea09d0262fa602df97088de6b08958c78cc94eeeacd5822d45fae39a1ec164b",
-      "local_git_blob_sha": "d40ab1f1d6d8c7b48c6b5ca721c28c11876efa79",
+      "local_sha256": "9566b354f4711be6088a562b5bca2fc7db9ad29e30ac7541641168b7a378afbc",
+      "local_git_blob_sha": "f088ec0bf9edb680709826448887b3adc30347c0",
       "comparison_upstream_blob_sha": "d40ab1f1d6d8c7b48c6b5ca721c28c11876efa79",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
         "date": "2026-06-25",
@@ -15523,7 +15523,7 @@
         "path": "skills/write-content/references/eeat-signal-embedding.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -15533,7 +15533,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/fact-checking.md",
@@ -15632,10 +15632,10 @@
       "upstream_path": "skills/write-content/references/human-input-framework.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "b2a3935b185e45d423448c0587f26bc762d04563cb899a8c8c35c1f9ff209f30",
-      "local_git_blob_sha": "667b0988992746e61355749b0f410e16f78f2ff7",
+      "local_sha256": "39d851df92434c9d432cc7cc42711dd63b544e9920987e09d9771b053bbb08ed",
+      "local_git_blob_sha": "3c90ce3482677b78d817d6e2de88e304010aaefc",
       "comparison_upstream_blob_sha": "667b0988992746e61355749b0f410e16f78f2ff7",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
         "date": "2026-06-25",
@@ -15649,7 +15649,7 @@
         "path": "skills/write-content/references/human-input-framework.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -15659,7 +15659,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/information-gain-writing.md",
@@ -15674,10 +15674,10 @@
       "upstream_path": "skills/write-content/references/information-gain-writing.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "31d9ad2054f61c7bf7fa1ac03037e90e96f1c5fd682836b0e43d973f5b58c048",
-      "local_git_blob_sha": "6fa8c03df7f431475ded02938c68bf9c19e8af80",
+      "local_sha256": "16bdb5332b02b194a9064bb34935e5da62767bcd996cf17f4d6b42b2035c9b8c",
+      "local_git_blob_sha": "9a7a378a84a96eaec400895ecd818880882dd355",
       "comparison_upstream_blob_sha": "6fa8c03df7f431475ded02938c68bf9c19e8af80",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
         "date": "2026-06-25",
@@ -15691,7 +15691,7 @@
         "path": "skills/write-content/references/information-gain-writing.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -15701,7 +15701,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/intent-matching.md",
@@ -15800,10 +15800,10 @@
       "upstream_path": "skills/write-content/references/quality-scoring.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "9ddb407f0857887a9dc5ea4da3af4a1d285cbfda8794c8ec88217e581a96f8cd",
-      "local_git_blob_sha": "5d3a3ad5559e4c6f587b1a3a0adda4e175a2bb63",
+      "local_sha256": "b30c60450e533cab1ac3ab71d1f4e0915dbe8496b3d4e891879ff809c8e8cd85",
+      "local_git_blob_sha": "333b6690fb74019704db8b44ce13db889995b53e",
       "comparison_upstream_blob_sha": "5d3a3ad5559e4c6f587b1a3a0adda4e175a2bb63",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
         "date": "2026-06-25",
@@ -15817,7 +15817,7 @@
         "path": "skills/write-content/references/quality-scoring.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -15827,7 +15827,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/seo-optimization-layer.md",
@@ -15842,10 +15842,10 @@
       "upstream_path": "skills/write-content/references/seo-optimization-layer.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "88ea93605875203fbf0ddd77790a597ea85f9957591312ffcad049df81d58b92",
-      "local_git_blob_sha": "d2fbae1a76183ce15df2388d798adc294340fdda",
+      "local_sha256": "28f718ae22f051a5ca3fcc1629ab11ed3502bf1fe3ce9d46cbb41525c8ea4faa",
+      "local_git_blob_sha": "f1d0d6935c3b3e39235be691e9ca10098f7c75b1",
       "comparison_upstream_blob_sha": "d2fbae1a76183ce15df2388d798adc294340fdda",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
         "date": "2026-06-25",
@@ -15859,7 +15859,7 @@
         "path": "skills/write-content/references/seo-optimization-layer.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -15869,7 +15869,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/serp-driven-writing.md",
@@ -15884,10 +15884,10 @@
       "upstream_path": "skills/write-content/references/serp-driven-writing.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "e57e0dc532868fcfe84891b97a9f7355ee1bed4c15fcef34fc25d98be70a724c",
-      "local_git_blob_sha": "236a354268117fd31e84624666d31f22d6608e30",
+      "local_sha256": "de9020a32c16016457021e1694701612b126a9ebd91ffd4971e850f5e9914f7a",
+      "local_git_blob_sha": "0f5b2258de984487eff998ba3f7b7b1d705ff9f1",
       "comparison_upstream_blob_sha": "236a354268117fd31e84624666d31f22d6608e30",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
         "date": "2026-06-25",
@@ -15901,7 +15901,7 @@
         "path": "skills/write-content/references/serp-driven-writing.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -15911,7 +15911,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/structured-data-snippets.md",
@@ -15968,10 +15968,10 @@
       "upstream_path": "skills/write-content/references/voice-injection-playbook.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "8d2e38c9474344e2376571b7719dbec4d0a7836a576cda939bf34fc3dfab806e",
-      "local_git_blob_sha": "e207293e40a6c6f0a91133a4d3a87d2e99e05d83",
+      "local_sha256": "56494711a26f58317dee5fc95717fea3d9c9f4eaf6afba3e763346cbac5013eb",
+      "local_git_blob_sha": "af3804258767e100566686d495be68c871e6ae77",
       "comparison_upstream_blob_sha": "e207293e40a6c6f0a91133a4d3a87d2e99e05d83",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
         "date": "2026-06-25",
@@ -15985,7 +15985,7 @@
         "path": "skills/write-content/references/voice-injection-playbook.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -15995,7 +15995,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/writing-pipeline.md",
@@ -16010,10 +16010,10 @@
       "upstream_path": "skills/write-content/references/writing-pipeline.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "2fe4d6887539bdfd6159c22e9faa26eac55d5ac84a179fa257ad77064312c155",
-      "local_git_blob_sha": "c8a4c3c70a9526389f1cbf3eacf9f10c9ae4d0c2",
+      "local_sha256": "e53b1ea1b39d3d24073dcf98c7a8162fe798b9914c8641c157b21eb694bd0c74",
+      "local_git_blob_sha": "b75ccb6306a3c434565c2e462f59ab48e5dd3438",
       "comparison_upstream_blob_sha": "c8a4c3c70a9526389f1cbf3eacf9f10c9ae4d0c2",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "d08f066aefb217e99c65b6a467a665d4df8bb184",
         "date": "2026-06-25",
@@ -16027,7 +16027,7 @@
         "path": "skills/write-content/references/writing-pipeline.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "not_assessed_by_inventory",
       "declared_attribution": [],
       "original_kind": "reference",
@@ -16037,7 +16037,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:third_party/skill-history/seomachine/README.md",
@@ -18716,7 +18716,7 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 417,
+      "line": 421,
       "syntax": "markdown_link",
       "target": "references/plain-english-alternatives.md",
       "resolved_path": "skills/copy-editing/references/plain-english-alternatives.md",
@@ -18724,7 +18724,7 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 452,
+      "line": 456,
       "syntax": "markdown_link",
       "target": "references/article-editing.md",
       "resolved_path": "skills/copy-editing/references/article-editing.md",
@@ -18732,7 +18732,7 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 456,
+      "line": 460,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -18740,7 +18740,7 @@
     },
     {
       "from_path": "skills/copy-editing/SKILL.md",
-      "line": 456,
+      "line": 460,
       "syntax": "backtick_path",
       "target": "projects/<id>/",
       "resolved_path": null,
@@ -18756,7 +18756,7 @@
     },
     {
       "from_path": "skills/copy-editing/references/article-editing.md",
-      "line": 18,
+      "line": 19,
       "syntax": "markdown_link",
       "target": "../../../third_party/skill-history/seomachine/agents/editor.md",
       "resolved_path": "third_party/skill-history/seomachine/agents/editor.md",
@@ -18764,7 +18764,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 14,
+      "line": 16,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -18772,7 +18772,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 120,
+      "line": 122,
       "syntax": "markdown_link",
       "target": "references/copy-frameworks.md",
       "resolved_path": "skills/copywriting/references/copy-frameworks.md",
@@ -18780,7 +18780,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 122,
+      "line": 124,
       "syntax": "markdown_link",
       "target": "references/natural-transitions.md",
       "resolved_path": "skills/copywriting/references/natural-transitions.md",
@@ -18788,7 +18788,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 144,
+      "line": 148,
       "syntax": "markdown_link",
       "target": "references/copy-frameworks.md",
       "resolved_path": "skills/copywriting/references/copy-frameworks.md",
@@ -18796,7 +18796,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 257,
+      "line": 261,
       "syntax": "markdown_link",
       "target": "references/headline-options.md",
       "resolved_path": "skills/copywriting/references/headline-options.md",
@@ -18804,7 +18804,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 258,
+      "line": 262,
       "syntax": "markdown_link",
       "target": "references/landing-page-draft.md",
       "resolved_path": "skills/copywriting/references/landing-page-draft.md",
@@ -18812,7 +18812,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 259,
+      "line": 263,
       "syntax": "markdown_link",
       "target": "references/landing-page-handoff.md",
       "resolved_path": "skills/copywriting/references/landing-page-handoff.md",
@@ -18820,7 +18820,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 263,
+      "line": 267,
       "syntax": "backtick_path",
       "target": "context/product-marketing-context.md",
       "resolved_path": null,
@@ -18828,7 +18828,7 @@
     },
     {
       "from_path": "skills/copywriting/SKILL.md",
-      "line": 263,
+      "line": 267,
       "syntax": "backtick_path",
       "target": "projects/<id>/",
       "resolved_path": null,
@@ -18884,10 +18884,10 @@
     },
     {
       "from_path": "skills/copywriting/references/natural-transitions.md",
-      "line": 252,
+      "line": 254,
       "syntax": "markdown_link",
-      "target": "../../site-audit/references/references/ai-writing-detection.md",
-      "resolved_path": "skills/site-audit/references/references/ai-writing-detection.md",
+      "target": "../../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
       "status": "resolved_local"
     },
     {
@@ -19171,6 +19171,14 @@
       "status": "project_context_reference"
     },
     {
+      "from_path": "skills/expert-interview/references/voice-injection-playbook.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../write-content/references/voice-injection-playbook.md",
+      "resolved_path": "skills/write-content/references/voice-injection-playbook.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/featured-snippet-optimizer/SKILL.md",
       "line": 152,
       "syntax": "backtick_path",
@@ -19268,23 +19276,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 65,
-      "syntax": "backtick_path",
-      "target": "references/content-types-overview.md",
-      "resolved_path": "skills/improve-content/references/content-types-overview.md",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/improve-content/SKILL.md",
-      "line": 65,
-      "syntax": "backtick_path",
-      "target": "references/content-types/<type>.md",
-      "resolved_path": null,
-      "status": "template_reference"
-    },
-    {
-      "from_path": "skills/improve-content/SKILL.md",
-      "line": 75,
+      "line": 48,
       "syntax": "backtick_path",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -19292,15 +19284,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 87,
-      "syntax": "backtick_path",
-      "target": "references/content-types",
-      "resolved_path": "skills/improve-content/references/content-types",
-      "status": "resolved_local"
-    },
-    {
-      "from_path": "skills/improve-content/SKILL.md",
-      "line": 91,
+      "line": 58,
       "syntax": "backtick_path",
       "target": "references/content-types-overview.md",
       "resolved_path": "skills/improve-content/references/content-types-overview.md",
@@ -19308,7 +19292,39 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 104,
+      "line": 58,
+      "syntax": "backtick_path",
+      "target": "references/content-types/<type>.md",
+      "resolved_path": null,
+      "status": "template_reference"
+    },
+    {
+      "from_path": "skills/improve-content/SKILL.md",
+      "line": 68,
+      "syntax": "backtick_path",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/SKILL.md",
+      "line": 80,
+      "syntax": "backtick_path",
+      "target": "references/content-types",
+      "resolved_path": "skills/improve-content/references/content-types",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/SKILL.md",
+      "line": 84,
+      "syntax": "backtick_path",
+      "target": "references/content-types-overview.md",
+      "resolved_path": "skills/improve-content/references/content-types-overview.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/SKILL.md",
+      "line": 99,
       "syntax": "markdown_link",
       "target": "references/seo-editing.md",
       "resolved_path": "skills/improve-content/references/seo-editing.md",
@@ -19316,7 +19332,7 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 105,
+      "line": 100,
       "syntax": "markdown_link",
       "target": "references/refresh-workflow.md",
       "resolved_path": "skills/improve-content/references/refresh-workflow.md",
@@ -19324,10 +19340,34 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
-      "line": 106,
+      "line": 101,
       "syntax": "markdown_link",
       "target": "references/optimization-workflow.md",
       "resolved_path": "skills/improve-content/references/optimization-workflow.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/references/anti-slop-ruleset.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../write-content/references/anti-slop-ruleset.md",
+      "resolved_path": "skills/write-content/references/anti-slop-ruleset.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/references/content-types-overview.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../write-content/references/content-types-overview.md",
+      "resolved_path": "skills/write-content/references/content-types-overview.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/references/content-types-overview.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
       "status": "resolved_local"
     },
     {
@@ -19344,6 +19384,14 @@
       "syntax": "markdown_link",
       "target": "../../../third_party/skill-history/seomachine/commands/optimize.md",
       "resolved_path": "third_party/skill-history/seomachine/commands/optimize.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/references/quality-scoring.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../write-content/references/quality-scoring.md",
+      "resolved_path": "skills/write-content/references/quality-scoring.md",
       "status": "resolved_local"
     },
     {
@@ -19376,6 +19424,22 @@
       "syntax": "markdown_link",
       "target": "../../../third_party/skill-history/seomachine/agents/seo-optimizer.md",
       "resolved_path": "third_party/skill-history/seomachine/agents/seo-optimizer.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/references/voice-injection-playbook.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../write-content/references/voice-injection-playbook.md",
+      "resolved_path": "skills/write-content/references/voice-injection-playbook.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/references/writing-pipeline.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../write-content/references/writing-pipeline.md",
+      "resolved_path": "skills/write-content/references/writing-pipeline.md",
       "status": "resolved_local"
     },
     {
@@ -22451,6 +22515,22 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/site-audit/references/references/ai-writing-detection.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/site-audit/references/references/ai-writing-detection.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../../write-content/references/anti-slop-ruleset.md",
+      "resolved_path": "skills/write-content/references/anti-slop-ruleset.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/site-audit/references/seo-machine-audit.md",
       "line": 9,
       "syntax": "markdown_link",
@@ -22748,7 +22828,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 137,
+      "line": 77,
       "syntax": "backtick_path",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -22756,7 +22836,15 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 151,
+      "line": 106,
+      "syntax": "backtick_path",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/SKILL.md",
+      "line": 120,
       "syntax": "backtick_path",
       "target": "references/content-types",
       "resolved_path": "skills/write-content/references/content-types",
@@ -22764,7 +22852,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 155,
+      "line": 124,
       "syntax": "backtick_path",
       "target": "references/content-types-overview.md",
       "resolved_path": "skills/write-content/references/content-types-overview.md",
@@ -22772,7 +22860,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 171,
+      "line": 140,
       "syntax": "markdown_link",
       "target": "references/article-workflow.md",
       "resolved_path": "skills/write-content/references/article-workflow.md",
@@ -22780,7 +22868,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 172,
+      "line": 141,
       "syntax": "markdown_link",
       "target": "references/drafting-workflow.md",
       "resolved_path": "skills/write-content/references/drafting-workflow.md",
@@ -22788,7 +22876,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 173,
+      "line": 142,
       "syntax": "markdown_link",
       "target": "references/draft-handoff.md",
       "resolved_path": "skills/write-content/references/draft-handoff.md",
@@ -22840,6 +22928,30 @@
       "syntax": "markdown_link",
       "target": "../../../third_party/skill-history/seomachine/commands/write.md",
       "resolved_path": "third_party/skill-history/seomachine/commands/write.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/writing-pipeline.md",
+      "line": 33,
+      "syntax": "markdown_link",
+      "target": "anti-slop-ruleset.md",
+      "resolved_path": "skills/write-content/references/anti-slop-ruleset.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/writing-pipeline.md",
+      "line": 45,
+      "syntax": "markdown_link",
+      "target": "seo-optimization-layer.md",
+      "resolved_path": "skills/write-content/references/seo-optimization-layer.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/writing-pipeline.md",
+      "line": 51,
+      "syntax": "markdown_link",
+      "target": "quality-scoring.md",
+      "resolved_path": "skills/write-content/references/quality-scoring.md",
       "status": "resolved_local"
     },
     {

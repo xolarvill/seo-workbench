@@ -21,11 +21,13 @@ Good copy editing isn't about rewriting—it's about enhancing. Each pass focuse
 - Each edit should have a clear reason
 - Preserve the author's voice while improving clarity
 
+Start with the current reader's task and the genre. A concise technical explanation or maintenance notice can be accepted with zero edits. Information does not need a story, emotional hook, sales benefit or objection section to earn its place. Use conversion techniques only for a relevant offer and decision; do not invent an opponent, customer hesitation or shared experience to justify them. Preserve useful limitations and accurate technical terms.
+
 ---
 
 ## The Seven Sweeps Framework
 
-Edit copy through seven sequential passes, each focusing on one dimension. After each sweep, loop back to check previous sweeps aren't compromised.
+Select the useful sweeps for this task; these are review lenses, not seven required changes. Recheck affected earlier decisions after an edit. For short informational prose, clarity and accuracy may be sufficient.
 
 ### Sweep 1: Clarity
 
@@ -82,7 +84,7 @@ Edit copy through seven sequential passes, each focusing on one dimension. After
 
 ### Sweep 3: So What
 
-**Focus:** Does every claim answer "why should I care?"
+**Focus:** Does the reader have the context needed to understand a claim's relevance?
 
 **What to check:**
 - Features without benefits
@@ -91,11 +93,11 @@ Edit copy through seven sequential passes, each focusing on one dimension. After
 - Missing "which means..." bridges
 
 **The So What test:**
-For every statement, ask "Okay, so what?" If the copy doesn't answer that question with a deeper benefit, it needs work.
+Ask what reader question or decision a statement serves. A specification, instruction or necessary qualification may already answer it. Add a benefit bridge only when the connection is missing and supported; do not append a sales outcome to every fact.
 
 ❌ "Our platform uses AI-powered analytics"
 *So what?*
-✅ "Our AI-powered analytics surface insights you'd miss manually—so you can make better decisions in half the time"
+✅ "Filter the analytics report by channel to compare where visits came from."
 
 **Common So What failures:**
 - Feature lists without benefit connections
@@ -106,7 +108,7 @@ For every statement, ask "Okay, so what?" If the copy doesn't answer that questi
 **Process:**
 1. Read each claim and literally ask "so what?"
 2. Highlight claims missing the answer
-3. Add the benefit bridge or deeper meaning
+3. Add a supported benefit bridge only where it helps the reader
 4. Ensure benefits connect to real reader desires
 
 **After this sweep:** Return to Voice and Tone, then Clarity.
@@ -160,6 +162,8 @@ For every statement, ask "Okay, so what?" If the copy doesn't answer that questi
 
 **Specificity upgrades:**
 
+These are illustrative transformations, not facts or required numeric targets. Use them only when the actual evidence supports the number or promise.
+
 | Vague | Specific |
 |-------|----------|
 | Save time | Save 4 hours every week |
@@ -177,51 +181,51 @@ For every statement, ask "Okay, so what?" If the copy doesn't answer that questi
 **Process:**
 1. Highlight vague words and phrases
 2. Ask "Can this be more specific?"
-3. Add numbers, timeframes, or examples
-4. Remove content that can't be made specific (it's probably filler)
+3. Add sourced numbers, timeframes, or clearly labeled examples where useful; never invent precision
+4. Keep useful qualitative explanations and uncertainty; remove content only when it contributes nothing to the reader's task
 
 **After this sweep:** Return to Prove It, So What, Voice and Tone, then Clarity.
 
 ---
 
-### Sweep 6: Heightened Emotion
+### Sweep 6: Emotional Relevance (When Applicable)
 
-**Focus:** Does the copy make the reader feel something?
+**Focus:** Would an emotional element help this audience understand or evaluate this offer? Skip this sweep for straightforward information that already works.
 
 **What to check:**
-- Flat, informational language
-- Missing emotional triggers
+- Emotion that distracts from the information or exaggerates the stakes
+- A documented customer concern left too abstract to understand
 - Pain points mentioned but not felt
 - Aspirations stated but not evoked
 
-**Emotional dimensions to consider:**
+**Possible dimensions, when supported by customer context:**
 - Pain of the current state
 - Frustration with alternatives
-- Fear of missing out
+- A genuine time or availability constraint, stated accurately
 - Desire for transformation
 - Pride in making smart choices
 - Relief from solving the problem
 
-**Techniques for heightening emotion:**
+**Optional techniques for a relevant passage:**
 - Paint the "before" state vividly
 - Use sensory language
 - Tell micro-stories
-- Reference shared experiences
+- Reference documented experiences without pretending everyone shares them
 - Ask questions that prompt reflection
 
 **Process:**
-1. Read for emotional impact—does it move you?
-2. Identify flat sections that should resonate
-3. Add emotional texture while staying authentic
-4. Ensure emotion serves the message (not manipulation)
+1. Check whether emotion serves the current reader's task
+2. Identify a specific comprehension or decision gap, if any
+3. Use an evidenced experience or clearly labeled illustration only when it fills that gap
+4. Accept clear informational language unchanged; no story or emotional texture is required
 
 **After this sweep:** Return to Specificity, Prove It, So What, Voice and Tone, then Clarity.
 
 ---
 
-### Sweep 7: Zero Risk
+### Sweep 7: Decision Friction (When Applicable)
 
-**Focus:** Have we removed every barrier to action?
+**Focus:** Are known decision barriers and actual next steps clear? Copy cannot eliminate real risks; state relevant limits and terms accurately.
 
 **What to check:**
 - Friction near CTAs
@@ -247,11 +251,11 @@ For every statement, ask "Okay, so what?" If the copy doesn't answer that questi
 
 **Process:**
 1. Focus on sections near CTAs
-2. List every reason someone might hesitate
-3. Check if the copy addresses each concern
-4. Add risk reversals or trust signals as needed
+2. Identify concerns documented in the brief, customer research or the offer's actual terms
+3. Address relevant concerns without introducing hypothetical objections or unrelated rebuttals
+4. Add only available, accurate guarantees, trial terms or evidence; skip this sweep when there is no relevant decision or CTA
 
-**After this sweep:** Return through all previous sweeps one final time: Heightened Emotion, Specificity, Prove It, So What, Voice and Tone, Clarity.
+**After this sweep:** Recheck any clarity, accuracy or tone affected by the edits. Stop when no useful changes remain.
 
 ---
 
@@ -261,14 +265,14 @@ Use these for faster reviews when a full seven-sweep process isn't needed.
 
 ### Word-Level Checks
 
-**Cut these words:**
+**Inspect in context; retain words that carry meaning:**
 - Very, really, extremely, incredibly (weak intensifiers)
 - Just, actually, basically (filler)
 - In order to (use "to")
 - That (often unnecessary)
 - Things, stuff (vague)
 
-**Replace these:**
+**Possible simpler alternatives; preserve established technical meanings:**
 
 | Weak | Strong |
 |------|--------|
@@ -325,7 +329,7 @@ Use these for faster reviews when a full seven-sweep process isn't needed.
 - [ ] Reads well aloud
 
 ### So What (Sweep 3)
-- [ ] Every feature connects to a benefit
+- [ ] Feature consequences explained where readers need them
 - [ ] Claims answer "why should I care?"
 - [ ] Benefits connect to real desires
 - [ ] No impressive-but-empty statements
@@ -338,21 +342,21 @@ Use these for faster reviews when a full seven-sweep process isn't needed.
 
 ### Specificity (Sweep 5)
 - [ ] Vague words replaced with concrete ones
-- [ ] Numbers and timeframes included
+- [ ] Useful numbers and timeframes included only when supported
 - [ ] Generic statements made specific
 - [ ] Filler content removed
 
-### Heightened Emotion (Sweep 6)
-- [ ] Copy evokes feeling, not just information
-- [ ] Pain points feel real
-- [ ] Aspirations feel achievable
-- [ ] Emotion serves the message authentically
+### Emotional Relevance (Sweep 6, if applicable)
+- [ ] Emotion serves a specific reader need
+- [ ] Experiences and concerns have a basis in the available context
+- [ ] No story, heightened pain or shared experience was manufactured
+- [ ] Clear informational passages accepted unchanged where appropriate
 
-### Zero Risk (Sweep 7)
-- [ ] Objections addressed near CTA
-- [ ] Trust signals present
-- [ ] Next steps are crystal clear
-- [ ] Risk reversals stated (guarantee, trial, etc.)
+### Decision Friction (Sweep 7, if applicable)
+- [ ] Relevant, known objections addressed where readers need them
+- [ ] Any trust signals or guarantees are supported by actual evidence and terms
+- [ ] Next steps and material limits are clear
+- [ ] No unnecessary objections or sales sections added to informational text
 
 ### Final Checks
 - [ ] No typos or grammatical errors
@@ -366,7 +370,7 @@ Use these for faster reviews when a full seven-sweep process isn't needed.
 
 ### Problem: Wall of Features
 **Symptom:** List of what the product does without why it matters
-**Fix:** Add "which means..." after each feature to bridge to benefits
+**Fix:** Explain a feature's practical consequence where readers need that connection; keep self-explanatory specifications concise
 
 ### Problem: Corporate Speak
 **Symptom:** "Leverage synergies to optimize outcomes"

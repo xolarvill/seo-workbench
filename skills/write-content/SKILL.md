@@ -5,7 +5,7 @@ description: Write a complete SEO article, or prepare an approved article for th
 
 # Write Content
 
-Writes a complete SEO-optimized article. Four phases: research → content type decision → knowledge extraction → write. Includes the full anti-AI-slop ruleset and the voice rules that make the output sound like a practitioner, not a press release.
+Writes a complete SEO article. Four phases: research → content type decision → knowledge extraction → write. Use evidence to answer the reader's task and the shared reader-experience review to assess the prose.
 
 ## Delivery mode
 
@@ -68,56 +68,25 @@ Ask one at a time. Keep it quick.
 
 Produce the complete article in clean markdown. Follow ALL of these rules:
 
-### Voice and Stance
-- Write like a practitioner talking to a peer. Not a textbook, not a press release.
-- Take clear positions when evidence supports them. Never claim “we tested” unless the project contains that test or the user supplied it.
-- Use "you" and "I/we" — write to one person, not an audience.
-- Use specific numbers, names, and dates only when verified or supplied by the user. Never invent specificity to make prose sound experienced.
-- Weave in interview answers as first-person experience. Preserve phrasing where it sounds natural.
-- Use contractions: "doesn't" not "does not."
-- Preserve genuine changes in reasoning when they exist; do not fabricate a personal story as a stylistic device.
-- Anchor in real context — reference current events, industry shifts, or cultural touchstones where relevant.
-
-### Rhythm and Structure
-- Vary sentence length dramatically. Mix 5-word punches with 30-word complexes. Never 3+ consecutive sentences of similar length.
-- Vary paragraph length. One-sentence paragraphs are fine. So are 6-sentence ones.
-- Use fragments for emphasis. Start sentences with "And" or "But" when natural.
-- Include parenthetical asides and brief tangents — humans do this, AI doesn't.
-- Shift registers. After a technical explanation, drop into a casual aside. Uniform register = AI tell.
-- Break the topic-sentence-support pattern. Start some paragraphs with an example, a question, or a statement that only makes sense after reading on.
-- Cover sections asymmetrically. Spend 500 words on the interesting part and 50 on the boring-but-necessary one.
-- Don't summarize at the end of sections unless genuinely complex (3+ subsections).
-
-### Show, Don't Just State
-- Use concrete examples when they clarify a real mechanism. Do not turn an uncertain ranking claim into a fictional scenario.
-- For claims backed by documented experience, explain what was tried, what happened, and what remained uncertain.
-
-### Anti-Slop Rules
-
-**NEVER use these words** — highest-signal AI tells:
-delve, landscape (metaphorical), testament, leverage, utilize, robust, seamless, furthermore, moreover, additionally, pivotal, multifaceted, harness, embark, navigate (metaphorical), showcase, streamline, paramount, culminate, spearhead, commence, endeavor, vibrant, innovative, comprehensive (as adjective).
-
-**NEVER use these phrases:**
-"It's worth noting", "In today's [anything]", "Let's dive in", "In conclusion", "plays a crucial/vital/pivotal role", "It goes without saying", "In the realm of".
-
-**Avoid these structural patterns:**
-- Rule-of-three groupings (use 2 or 4 items instead)
-- Synonym cycling (repeat the right word rather than finding alternatives)
-- Copula avoidance ("serves as" — just say "is")
-- Em-dash chains (max 1-2 per 1000 words)
-- Binary contrasts ("it's not X, it's Y" — just make the argument)
-- Participial tack-ons ("...highlighting the importance of X" — delete or make a separate sentence)
-- Clustering of: however, notably, essentially, that said, arguably — fine individually, but 3+ in one article flags AI
+### Evidence and Expression
+- Answer the reader's question directly, in the requested tone. Choose person, register, sentence length and paragraph structure for clarity in the article's language; plain Chinese or English can remain plain.
+- Take clear positions when evidence supports them. Use specific numbers, names and dates only when verified or supplied by the user. Never claim a test, result or personal experience without supporting evidence.
+- Attribute interview answers to the actual speaker. Use first person only when the author can truthfully own the experience; an interview does not make it the writer's experience.
+- Use examples when they clarify a mechanism. Distinguish hypothetical illustrations from observed cases, and never turn an uncertain claim into an invented story.
+- Include current events, changes in reasoning, comparisons or limitations when they help readers use the answer. Do not add an objection, contrarian opening, anecdote or reassurance to make the writing appear experienced.
+- Follow `../reader-experience-review/SKILL.md` for prose decisions. Lists of three, negative sentences, repeated technical terms, punctuation and familiar phrases are not defects by themselves. Do not impose word bans, punctuation quotas, sentence-length patterns, asides or register changes.
 
 ### Content Type Structure
 
-- **How-to**: 40-60 word quick answer first (featured snippet target), then numbered steps, each step = one action with "what goes wrong"
-- **Comparison**: Verdict first ("Choose A if... Choose B if..."), then detailed analysis
-- **Listicle**: Summary table above fold, consistent evaluation framework per item
-- **Definition**: "[Term] is..." in the first sentence, no preamble
-- **Case study**: Lead with the result number, then the story (PAS framework)
-- **Pillar page**: Table of contents, overview, then link to deep-dive articles
-- **Service/landing page**: PAS framework. Pain point first, agitate consequences, then solution
+Use these patterns when they serve the task; short explanations do not need a full article template.
+
+- **How-to**: Give the direct answer and steps in working order. Include failure conditions where they affect an action.
+- **Comparison**: Explain who each option suits, with evidence for the distinctions.
+- **Listicle**: Use consistent evaluation criteria; add a summary table when it helps comparison.
+- **Definition**: Define the term directly, then explain its relevant use or limits.
+- **Case study**: Present the documented outcome, context and method. Preserve uncertainty and attribution.
+- **Pillar page**: Provide navigation and links to relevant detailed explanations.
+- **Service/landing page**: Explain the reader's need and the supported offer without inventing or amplifying a problem.
 
 ### SEO Structure
 - Make the topic clear in the title, main heading, introduction, and relevant sections without exact-match quotas or density targets.
@@ -128,13 +97,13 @@ delve, landscape (metaphorical), testament, leverage, utilize, robust, seamless,
 
 ### Long Article Strategy
 - Write section by section. Track what you've covered to prevent repetition and voice drift.
-- The article should contain enough first-party evidence, examples, analysis, or experience to justify publishing it. Do not fabricate these elements or enforce an arbitrary percentage.
+- Support the article's claims with appropriate evidence and explanation. First-party tests or cases are valuable when available, but their absence does not require invented experience or an editorial disclaimer in an otherwise supported explanation.
 
 ### Final Checks
 
-1. **"So What?" test**: For each major section — could anyone have written this, for anyone, about anything? If yes, inject specific knowledge.
-2. **Self-check**: Scan for blacklisted words, sections where every paragraph starts with a topic sentence, unnecessary section summaries, participial tack-ons. Fix before delivering.
-3. **Reader comprehension**: Use `../reader-experience-review/SKILL.md` on the actual draft before delivery. Inspect instruction leakage, unexplained rebuttals, transitions and reader actions in context. Preserve correct technical terms, sources and useful caveats; word-list hits alone do not justify rewriting or claims of AI authorship. Accept low-impact wording when a change adds no reader value.
+1. **Task and evidence**: Check that each section helps the reader complete the task and that factual claims match available evidence. Keep unresolved evidence gaps in the task artifact; qualify public claims when readers need the qualification.
+2. **SEO usefulness**: Check topic clarity, descriptive headings, helpful links and the relevant content-type structure without counting keyword or link quotas.
+3. **Reader comprehension**: Use `../reader-experience-review/SKILL.md` on the actual draft before delivery. Assess whole passages for instruction leakage, invisible arguments, confusing transitions and reader actions. Preserve useful caveats and correct terms. Clear, plain prose can pass with zero edits; do not rewrite to satisfy a style pattern or imply AI authorship.
 
 ### Output
 
@@ -155,14 +124,14 @@ Load from `references` only when the step or rule calls for them. Don't preload 
 - `references/content-types-overview.md` for the decision table across all 23 content types (load this FIRST if unsure which type to pick)
 
 **Writing technique modules** (`references`) — load only when the matching rule needs more depth:
-- `anti-slop-ruleset.md` — full tiered banned vocab + structural tell list (when the inline anti-slop block isn't catching something)
-- `voice-injection-playbook.md` — voice and register techniques (when the draft reads flat)
+- `anti-slop-ruleset.md` — historical wording prompts; use only to investigate a specific reader problem, never as word bans or structural quotas
+- `voice-injection-playbook.md` — optional expression techniques for a specific clarity or requested voice problem; do not force personality into adequate prose
 - `eeat-signal-embedding.md` — how to surface experience without a bio section
 - `structured-data-snippets.md` — current structured-data eligibility boundaries and content formatting
 - `fact-checking.md` — how to verify every specific number and claim
 - `human-input-framework.md` — the knowledge-extraction questions (reinforces Phase 3)
 
-Other archived technique notes may contain vendor benchmarks, fixed keyword densities, outdated rich-result advice, or hypotheses about private ranking systems. Do not load them as execution rules. Current project evidence, the shared content-type overview, the `schema` skill, and current primary documentation override them.
+Supporting references may contain word bans, mandatory stylistic quirks, vendor benchmarks, fixed keyword densities, outdated rich-result advice or hypotheses about private ranking systems. Do not adopt these as execution rules. This entrypoint and the shared reader-experience review govern prose decisions; current project evidence, the shared content-type overview, the `schema` skill and current primary documentation govern SEO claims.
 
 ## Adapted specialist and workflow references
 
