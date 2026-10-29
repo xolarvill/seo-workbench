@@ -68,6 +68,8 @@ Keep useful compatibility limits, installation warnings, sources, interest discl
 
 Choose supported claims instead of announcing compliance with every internal “do not claim X.” Brand principles need not become compulsory slogans. Explicit user scope overrides a project template.
 
+For recommendations, connect uncertainty to the decision or next observation: explain what to change and how to assess it. When no effect forecast or attribution verdict is requested or asserted, a closing denial of guaranteed gains adds no useful condition. A diagnostic rule against inferring a penalty or defect constrains the judgment; it does not require announcing that absent allegation to the reader.
+
 For close judgments, read [calibration examples](references/calibration.md). Prefer understandable prose over speculative polishing.
 
 ## Deliver and verify

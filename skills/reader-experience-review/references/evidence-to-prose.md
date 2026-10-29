@@ -18,6 +18,7 @@ Keep the evidence record with the existing task or editorial artifact: source, c
 | A load rating is unknown and needed for a product recommendation | Obtain the essential specification or withhold that recommendation | Identify the needed model/rating if the reader's decision cannot proceed; do not invent a limit or use “no guarantee” as a substitute |
 | A figure is illustrative | Keep source and illustration status | Use a clear caption once; repeat only for a distinct interpretation problem |
 | An outcome report lacks a comparison needed for attribution | Preserve windows, coverage and the causal gap | Describe observed change and the attribution limit when that is the reader's question; do not present an association as an established effect |
+| A recommendation has not yet been tested | Keep the recommendation grounded in observations; make no measured-uplift claim | Give the change and useful follow-up metric; discuss effect uncertainty when the reader asks for a forecast or evidence verdict, rather than adding a routine no-guarantee closer |
 | Sponsorship, a safety restriction or another material disclosure applies | Preserve the established facts and applicable requirement | State the needed disclosure or restriction where the reader uses it |
 
 “Reader-facing” includes reports whose purpose is to evaluate evidence. Their readers may need methods and uncertainty. Decide from that task, rather than hiding limitations or inserting them into every article.

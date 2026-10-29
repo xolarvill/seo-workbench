@@ -2,7 +2,7 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+  "local_snapshot_commit": "c7355de2e61343ea8ebf66f1edf0eeccfb0e0a66",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
@@ -126,9 +126,9 @@
         "path": "skills/README.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "c7355de2e61343ea8ebf66f1edf0eeccfb0e0a66",
         "date": "2026-10-29",
-        "subject": "refactor: make the reader method the single prose authority",
+        "subject": "docs: route all local skills by task and capability",
         "path": "skills/README.md",
         "record_status": "committed"
       },
@@ -142,7 +142,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/ab-test-setup/SKILL.md",
@@ -5958,10 +5958,10 @@
       "derived_from": [
         "seomachine:.claude/agents/meta-creator.md"
       ],
-      "local_sha256": "b09e38614f688d9bfce7d879244abdf9fda81a77e127516d4628ef1012c86dcf",
-      "local_git_blob_sha": "b2f90a524d1e5722b624750e6b6aceb9a005fa53",
+      "local_sha256": "e664e07668b24d85089ef905a78686366fbe758a4aaa60b3b7d8da7716411e9d",
+      "local_git_blob_sha": "534d521237ca70576b8653467ee7ba21be460d5c",
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/page-audit/references/pop-test-hierarchy.md",
@@ -7113,8 +7113,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "18ca6cb952a4a120aaf3e958cd3e0232d5e750370f2d189c1f607bae2b062d41",
-      "local_git_blob_sha": "7a4a2dd4d7fd432ca7ee39958681cb6aa720dd88",
+      "local_sha256": "5bf53221c642820955bddb2ff2ea66a0448e8c73a6b4b7d2b0427789d052046d",
+      "local_git_blob_sha": "67deb769202ebbf0730525f1427dac9221b70744",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -7140,7 +7140,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/reader-experience-review/references/calibration.md",
@@ -7213,13 +7213,13 @@
         "path": "skills/reader-experience-review/references/evidence-to-prose.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [],
-      "workingtree_modified": false,
-      "local_sha256": "f8c4e7d93cddbb43ffa2a349034c4ed11b581279233ddf2eb66b21632396d1be",
-      "local_git_blob_sha": "d4df8cded0b0fc34059de13ee6480572c9f7f704",
+      "workingtree_modified": true,
+      "local_sha256": "9e76be30838366d9eda378b2610af1a8ea7c56569786912568b3eb2af38e5a67",
+      "local_git_blob_sha": "dfd7125007dd7fcfa458c1a7e6a20bdb7497b344",
       "maintenance_status": "active"
     },
     {
@@ -20566,7 +20566,7 @@
     },
     {
       "from_path": "skills/reader-experience-review/SKILL.md",
-      "line": 71,
+      "line": 73,
       "syntax": "markdown_link",
       "target": "references/calibration.md",
       "resolved_path": "skills/reader-experience-review/references/calibration.md",

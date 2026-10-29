@@ -8,7 +8,7 @@ Read when a page needs title or description options. Use [page-audit](../SKILL.m
 2. Create meaningfully different options: distinct value or scope, rather than synonym swaps.
 3. Check accuracy against the visible page, natural topic wording, distinction from other site pages and consistency between title and description.
    Read the pair together: does the description add a useful fact, scope or decision detail, or just restate the title and append a stock CTA such as “Learn more” or “Try it now”? Overlap in the topic name is normal. Flag a template only when the pair adds little page-specific information; do not diagnose site-wide duplication from one page or imply a ranking penalty from phrase overlap. Retain an accurate, useful pair unchanged when revision adds no reader value.
-4. Report character counts and likely truncation as diagnostics. Explain the choice in terms of the reader promise and source facts.
+4. Explain the choice in terms of the reader promise and source facts. Include character counts when requested or when a concrete display concern makes them useful; length is not a default reporting quota. Keep rejected penalty/duplication inferences in the reasoning unless the user raised that concern or an actual finding needs correction.
 
 ## Deliverable
 
