@@ -10,4 +10,8 @@ This workbench extracts and adapts public SEO playbooks from:
 
 Keep upstream license text and NOTICE files when copying substantial content into `skills/`.
 
+File-level skill mappings, pinned comparison commits, embedded attribution notes,
+and the upstream update procedure are maintained in
+[Skill sources and upstream comparison](../docs/skill-sources.md).
+
 The wappalyzergo license is preserved at `third_party/licenses/wappalyzergo-MIT.txt`.
