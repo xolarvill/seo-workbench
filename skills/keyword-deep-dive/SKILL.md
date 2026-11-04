@@ -11,6 +11,8 @@ A complete picture of a single keyword's opportunity — intent, competition, wh
 
 **Target keyword** (required). Optionally: a URL if you already have a page targeting this keyword.
 
+Before selecting or reusing a keyword plan, follow [keyword context maintenance](../../docs/keyword-context-maintenance.md): check the relevant scope, decisions, evidence dates and page ownership. A launch list is not an exhaustive allowlist. Existing research can be reused when it still fits; record authorized changes in the declared strategy record and affected context.
+
 If the user didn't provide a keyword, ask for it before proceeding.
 
 ## Role

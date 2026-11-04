@@ -1,6 +1,6 @@
 ---
 name: project-context
-description: Create or update the brand voice and target keyword context files that initialize an SEO Workbench project. Use for INIT/config-brand-voice and INIT/config-target-keywords, or whenever project positioning, evidence boundaries, audience, editorial guardrails, or keyword ownership must be made explicit before strategy work.
+description: Create or maintain project brand voice and search-direction context. Use for initial context, changed positioning or keyword ownership, and stale or conflicting keyword plans.
 ---
 
 # Project Context
@@ -23,20 +23,26 @@ If no approved brand guide is available, infer a working draft from the project 
 
 ## Target keywords
 
-Write `context/target-keywords.md` with:
+Use [keyword context maintenance](../../docs/keyword-context-maintenance.md) when creating, relying on, or updating this file. It defines file responsibilities, decision and evidence handling, update triggers, and handoff checks.
 
-- commercial, comparison, and informational keyword groups;
-- one preferred page type or existing URL for each primary intent;
-- explicit first-priority hypothesis and rationale;
-- known cannibalization risks;
-- missing data and validation requirements.
+Keep `context/target-keywords.md` as a concise search-direction summary with:
 
-Use live SERP research for keyword selection. If Search Console, paid keyword volume, conversion, or margin data is unavailable, say so and avoid traffic or revenue forecasts.
+- applicable audience, market, language and scope;
+- confirmed intent groups and boundaries, separated from working hypotheses;
+- the actual maintained location of detailed query-to-page ownership and priorities;
+- supporting decision/research paths, relevant evidence dates and unresolved validation needs;
+- a last substantive review date and what was reviewed; link to historical launch lists in dated project reports rather than keeping release-specific tables in context.
+
+Maintain detailed keyword decisions and page ownership in one declared strategy location, not in a second full table here. The keyword workspace uses `strategy/keyword-pool.jsonl`; Markdown is not imported or synchronized automatically. Existing manual projects may keep an explicitly identified plan without first creating a keyword pool.
+
+Update affected context and ownership records in the same task as an authorized strategy change. Reuse still-applicable research; refresh only the evidence needed for the current decision. A missing file, old date, unlisted keyword or historical phase does not prohibit work.
+
+Base keyword selection on applicable observed SERP evidence; reuse suitable research and collect fresh evidence when the decision requires it. If Search Console, paid keyword volume, conversion, or margin data is unavailable, say so and avoid traffic or revenue forecasts.
 
 ## Completion checks
 
 - Keep verified facts, evidence-backed inference, and unknowns visibly separate.
 - Preserve regional differences instead of combining incompatible prices, claims, or product specifications.
-- Map every primary keyword to one intended owner page.
+- Give each selected primary intent one intended owner page in the declared ownership record, or mark the assignment unresolved; do not fabricate a URL or research to fill the summary.
 - Save the context in the current project; preserve existing approved documents and their actual paths.
 - Check the saved artifact against the requested scope, record unresolved facts and supporting evidence, and run `./seo --project <id> validate --json` when state or workflow contracts changed. No phase transition or next-step command is required.
