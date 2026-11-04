@@ -175,10 +175,13 @@ def keyword_handoff(project_dir: Path, keyword: str) -> dict[str, Any]:
         f"{action}Follow {KEYWORD_CONTEXT_POLICY}. "
         f'Read the available project evidence ({", ".join(context) or "none"}); '
         f"current target URL: {target}. "
-        "Check context scope, confirmed decisions, evidence dates and the declared ownership record. "
-        "Historical launch lists are not exhaustive; an old date or missing context alone does not block work. "
+        "Check the keyword's current, candidate or removed entry in context/target-keywords.md, "
+        "its linked decisions, evidence dates and intended page. "
+        "An unlisted keyword or missing register does not block supported research. "
         "Reuse applicable research and refresh only evidence needed for this decision. "
-        "Synchronize affected context and ownership records for authorized strategy changes; keep proposals unconfirmed. "
+        "For an authorized selection, record the keyword in current targets with a decision/research link; "
+        "for a withdrawal, move it to Targets but removed with date, reason and decision link. "
+        "Preserve history, reflect affected workspace mappings and keep proposals unconfirmed. "
         "Do not create a second metrics store, and treat missing evidence as unknown rather than zero."
     )
     result = {
