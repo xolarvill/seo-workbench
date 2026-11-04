@@ -9,6 +9,12 @@ Create durable operating context for later SEO skills. Separate verified facts f
 
 ## Brand voice
 
+Before creating `context/brand-voice.md`, consult the user's brand requirements. Read requirements already supplied in the conversation and any user-approved brand guide first. If they do not establish the intended audience/positioning, desired voice and important boundaries, ask the user for the missing requirements and wait for their answer before creating the file. Keep the question focused; request reference examples only when useful. Do not repeat questions the user has already answered.
+
+A request to create brand voice authorizes the task but does not by itself specify the voice. Project state, existing website copy and public evidence can inform questions or proposed options; they do not replace the user's requirements. Do not create an inferred file while the required answer is pending or treat silence as permission to choose. Continue independent authorized work if available.
+
+Once the requirements are clear, create the file within the requested scope; a separate approval round is not required unless the user requests one. For existing files, preserve supplied/approved requirements and limit edits to the authorized changes.
+
 Write `context/brand-voice.md` with:
 
 - status: approved, supplied, or inferred;
@@ -19,7 +25,7 @@ Write `context/brand-voice.md` with:
 
 Keep these as operating context. Future writers use evidence standards to select supported claims, and the [evidence-to-prose method](../reader-experience-review/references/evidence-to-prose.md) to decide which conditions readers need. Brand guardrails and lists of unperformed tests do not become mandatory disclaimers or article slogans.
 
-If no approved brand guide is available, infer a working draft from the project state and public site evidence. Label it as inferred and list what the owner must confirm. Do not present inferred tone or audience as approved fact.
+If the user requests a provisional proposal after discussing their requirements, label inferred choices as a draft and distinguish them from supplied/approved requirements. Do not use an inferred status label to bypass the consultation above or present proposed tone or audience as approved fact.
 
 ## Target keywords
 
@@ -41,6 +47,7 @@ Base SEO recommendations about which keywords to select on applicable observed S
 
 ## Completion checks
 
+- Before a new brand-voice file is created, establish the user's requirements from their actual answers or an approved guide; do not substitute site-copy inference or unresolved questions for this prerequisite.
 - Keep verified facts, evidence-backed inference, and unknowns visibly separate.
 - Preserve regional differences instead of combining incompatible prices, claims, or product specifications.
 - Check each selected keyword is recorded in current targets with a resolvable decision/research link and one intended page per primary intent, or an explicit unresolved assignment. Check removed targets retain their change history; do not fabricate research, pages or approvals.

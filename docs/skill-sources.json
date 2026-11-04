@@ -2,7 +2,7 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "9fd1205939cd2f95349bf4154deda151ad6abe8b",
+  "local_snapshot_commit": "39ac9345b0aa5ed70ce7cd552831cb6457f3e1a5",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
@@ -29,10 +29,10 @@
       "identical": 222,
       "workbench_native": 50
     },
-    "dependency_occurrences": 799,
+    "dependency_occurrences": 800,
     "dependencies_by_status": {
       "example_reference": 4,
-      "project_context_reference": 93,
+      "project_context_reference": 94,
       "resolved_local": 688,
       "route_or_example": 1,
       "template_reference": 3,
@@ -7029,8 +7029,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "baf42ddcad79fb93028268f5ac7d6daa5f48279e48a974a65fd22600a3abbfdb",
-      "local_git_blob_sha": "71b003d893c1422340dccc8f4770f34ea239b456",
+      "local_sha256": "d0153d5a7fb8ea0a9db66ffc4f0dd524e67f18c9fb5de1cb47a60e826a288917",
+      "local_git_blob_sha": "e58c26c6e0f17e8b20db6dfad5547accd49930ac",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -7040,9 +7040,9 @@
         "path": "skills/project-context/SKILL.md"
       },
       "last_local_change": {
-        "commit": "e59a9790174b16b39e188890be61c08666d6ffb4",
+        "commit": "76975060d5d93bde4df65057d0007b031b7830a7",
         "date": "2026-11-04",
-        "subject": "docs: define keyword context responsibilities and maintenance",
+        "subject": "docs: maintain selected and removed keywords in the target register",
         "path": "skills/project-context/SKILL.md",
         "record_status": "committed"
       },
@@ -20566,7 +20566,15 @@
     },
     {
       "from_path": "skills/project-context/SKILL.md",
-      "line": 20,
+      "line": 18,
+      "syntax": "backtick_path",
+      "target": "context/brand-voice.md",
+      "resolved_path": null,
+      "status": "project_context_reference"
+    },
+    {
+      "from_path": "skills/project-context/SKILL.md",
+      "line": 26,
       "syntax": "markdown_link",
       "target": "../reader-experience-review/references/evidence-to-prose.md",
       "resolved_path": "skills/reader-experience-review/references/evidence-to-prose.md",
@@ -20574,7 +20582,7 @@
     },
     {
       "from_path": "skills/project-context/SKILL.md",
-      "line": 26,
+      "line": 32,
       "syntax": "markdown_link",
       "target": "../../docs/keyword-context-maintenance.md",
       "resolved_path": "docs/keyword-context-maintenance.md",
@@ -20582,7 +20590,7 @@
     },
     {
       "from_path": "skills/project-context/SKILL.md",
-      "line": 28,
+      "line": 34,
       "syntax": "backtick_path",
       "target": "context/target-keywords.md",
       "resolved_path": null,
@@ -20590,7 +20598,7 @@
     },
     {
       "from_path": "skills/project-context/SKILL.md",
-      "line": 36,
+      "line": 42,
       "syntax": "backtick_path",
       "target": "strategy/keyword-pool.jsonl",
       "resolved_path": null,
