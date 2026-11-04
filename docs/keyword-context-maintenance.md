@@ -1,48 +1,58 @@
 # Keyword context responsibilities and maintenance
 
-This is the shared contract for agents creating, using or changing a project's keyword direction. The [project-context skill](../skills/project-context/SKILL.md) owns the method. Use it for the current decision; this document does not schedule research or require a project reset.
+This is the shared contract for agents maintaining a project's target keyword register. The [project-context skill](../skills/project-context/SKILL.md) owns the method. The register records actual selected keywords across tasks and releases, including subsequent removal; detailed rationale belongs in linked reports.
 
 ## File responsibilities
 
 | Location | Responsibility | Maintenance boundary |
 | --- | --- | --- |
-| `context/target-keywords.md` | Concise search direction: audience, market, language, relevant intent groups, confirmed boundaries, hypotheses and pointers | Summarizes applicable decisions; not an exhaustive query list, metrics store, publication status or task allowlist |
-| `strategy/keyword-pool.jsonl` | Keyword workspace decisions, priorities and query-to-page/content assignments | Use the existing CLI/UI operations and preserve concurrent decisions; the Markdown summary does not populate it |
-| An explicitly declared manual strategy plan | Detailed ownership and priorities for projects not using the keyword workspace | Declare the actual path in context; do not require a pool merely to begin work or maintain two independently authoritative ownership tables |
+| `context/target-keywords.md` | Maintained register of current target keywords, candidates if useful, and previously targeted keywords that were removed | Record each selected keyword here with a decision/research link; preserve its lifecycle instead of replacing the register with a navigation page |
+| `strategy/keyword-pool.jsonl` | Broader discovery pool and structured keyword workspace data, including operational decisions and mappings | A collected query is not automatically an approved target. Use existing CLI/UI operations to reflect applicable register decisions; Markdown and JSONL are not synchronized automatically |
+| Scoped strategy plans | Article batches, cluster structure and publication sequencing | Link to the register for current target selection; a historical plan is not a competing current target register |
 | `strategy/keyword-dives/` and `strategy/briefs/` | Query-scoped research and writing decisions, including observation dates, market and evidence limits | Reuse applicable evidence; a brief or research file does not by itself approve a strategy change |
 | `audits/` and existing content records | Observed search/site/business evidence and content production state | Keep original source windows and eligibility; do not copy metrics or production status into a parallel context ledger |
-| Dated project reports | Decision rationale, proposals, release/campaign-specific query lists and plans, historical snapshots and supersession pointers | Preserve prior decisions; distinguish proposed, confirmed and superseded conclusions |
+| Dated project reports | Detailed decisions, evidence, release/campaign plans, historical snapshots and removal rationale | Link from the keyword's register entry; keep historical snapshots dated rather than treating them as current target state |
 
 All paths above are project-relative. Repository policy and architecture belong under `docs/`; private store decisions remain in their project. No new task database, background synchronizer or Markdown parser is required by this contract.
 
 ## What a usable context file contains
 
-Record the file's site-wide purpose and scope, last substantive review date, and what that review covered. Distinguish confirmed direction from site-wide working hypotheses. Keep release/campaign-specific query lists, article batches, launch priorities and publication order in dated reports; link to them as scoped plans rather than embedding them in context. Include the real maintained strategy path and relevant decision/research pointers. Link to detailed ownership instead of repeating the full table.
+Keep a cumulative site-wide register, not just themes and document pointers. A keyword selected for today's task belongs in this file even when it originated in a single launch. Put a link immediately after the keyword, or link the keyword itself, to the actual decision/report or research. Add the selection/change date and intended page or content handle when known. Do not fabricate an owner or imply publication from a planning entry.
+
+Use sections or an explicit status column for current targets, candidates and removed targets. Distinguish a candidate that was never selected from a target later removed. Keep detailed research, batch production plans and explanations in reports; the register contains the concise current decision and its entry point.
+
+An explicit user choice to target a keyword can be registered immediately with its decision link. Missing research belongs in the linked record; it does not require reopening the selection before recording it.
 
 For example, adapt this small outline to the available evidence:
 
 ```markdown
-# Search direction
+# Target keywords
 
-- Scope: audience, market, language, business stage and topics covered
-- Last substantive review: YYYY-MM-DD; decisions/evidence checked
-- Detailed ownership and priorities: actual project-relative path
+- Scope: audience, market and language
+- Last substantive update: YYYY-MM-DD; what changed
 
-## Confirmed direction
-Intent groups and supported exclusions, with decision references.
+## Current targets
 
-## Working hypotheses
-Site-wide search assumptions and what remains to be decided or verified.
+| Keyword and decision | Selected | Intended page | Note |
+| --- | --- | --- | --- |
+| AAA — [decision](../reports/YYYYMMDD_decision_topic.md) | YYYY-MM-DD | Known page or unassigned | Brief targeting scope |
 
-## Evidence and history
-Relevant dated research, unresolved limits and historical plan pointers.
+## Candidates
+
+Record proposed keywords here only when useful; keep them visibly unconfirmed.
+
+## Targets but removed
+
+| Keyword and decision | Removed | Reason / replacement |
+| --- | --- | --- |
+| BBB — [change decision](../reports/YYYYMMDD_decision_change.md) | YYYY-MM-DD | Changed strategy; replacement if applicable |
 ```
 
 A new review date must describe an actual check, not silently renew old SERP, volume or ranking evidence. Review dates and research observation dates serve different purposes. Existing files need not be bulk-converted before unrelated work can continue.
 
 ## Resolve decisions and evidence
 
-Use the current user goal and applicable repository/project instructions to establish scope and authorization. Read the relevant confirmed decisions and declared ownership record. Use sufficiently current, applicable evidence for claims about intent, demand, observed rankings or page conflicts. The context summary is a navigation aid to those materials.
+Use the current user goal and applicable repository/project instructions to establish scope and authorization. Read the register and its relevant linked decisions. The register is the maintained strategic target state, not merely a navigation aid. If a later confirmed decision has not been reflected there, reconcile the affected entry in this task instead of silently treating one copy as permanently authoritative. Use sufficiently current, applicable evidence for claims about intent, demand, observed rankings or page conflicts.
 
 Resolve conflicts by subject and scope, not by taking the newest timestamp everywhere:
 
@@ -59,9 +69,11 @@ The agent performing an authorized change owns the related maintenance in that t
 | Event | Required maintenance |
 | --- | --- |
 | Audience, market, language, offer or confirmed search boundary changes | Update the scoped context and link the decision; reassess only affected plans |
-| A topic/keyword is selected, reprioritized, dropped or assigned to a different page | Update the declared ownership/priority record and rationale; update context if its direction, hypotheses or pointers are affected |
+| A keyword is selected | Add or promote it to current targets in target-keywords.md in the same task, with date, intended page if known and a decision/research link; do not wait for a full strategy refresh |
+| A target's scope, priority or intended page changes | Update that entry and link the applicable decision; reflect affected operational mappings through existing workspace operations when used |
+| A previously selected target is dropped or replaced | Move it to Targets but removed with removal date, concise reason and decision link; retain its selection history or link and replacement if any. Restore it to current targets if later reselected, retaining the removal history in the linked record |
 | SERP intent, GSC conflicts or new site evidence challenges the plan | Record the observation, scope and uncertainty; distinguish a proposed change from an authorized decision |
-| A candidate direction is discussed without a decision | Keep it in the existing research/decision artifact as a proposal; do not present it as confirmed context |
+| A candidate keyword is discussed without a decision | Keep it in the linked research artifact and optionally the candidates section; do not promote it to a current target or mislabel it as previously removed |
 | A strategy file is moved or replaced | Update maintained incoming pointers in the same task; retain historical records and add a supersession pointer when needed |
 | Existing evidence is reused | Check query/intent, market/language, observation window and relevant site changes; record why it fits in the task artifact |
 
@@ -71,8 +83,8 @@ There is no daily/weekly rewrite or fixed expiry threshold. Review relevant cont
 
 ## Handoff and verification
 
-Both new-research and existing-research handoffs should point to this contract and the available project context. Before acting, inspect applicable decisions, evidence dates and the declared strategy location. If context is missing, continue from the current task and available evidence, recording essential unknowns. Do not create context just to satisfy a gate.
+Both new-research and existing-research handoffs should point to this contract and the available target register. Check whether the keyword is current, a candidate, removed or unrecorded, then read its linked decision. A removed keyword requires the relevant strategy decision to be revisited before reactivation; a new or unrecorded keyword can still be researched. When the task selects it, record it in current targets rather than leaving it only in a report. If context is missing, continue supported work and establish the register when making the first target decision.
 
-After changes, check affected pointers, preserve decision history and unconfirmed status, and ensure only one declared location owns detailed keyword assignments. Summaries may be projections of that record, not independent decisions. Follow repository validation requirements when workflow, state, CLI or skill contracts change.
+After changes, check the keyword's status, decision link and affected page mapping. Preserve history and unconfirmed status, avoid duplicate conflicting rows, and check any workspace projection touched by the task. A completed article remains a target until an actual strategy decision removes it; do not confuse publication/production state with target status. Follow repository validation requirements when workflow, state, CLI or skill contracts change.
 
 `validate --json` checks structural contracts; it cannot certify that research is still applicable or that a strategy is approved. This policy and handoff guidance do not automatically assess semantic freshness, update plans or force every agent to comply.

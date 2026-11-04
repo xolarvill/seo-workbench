@@ -1,6 +1,6 @@
 ---
 name: project-context
-description: Create or maintain project brand voice and search-direction context. Use for initial context, changed positioning or keyword ownership, and stale or conflicting keyword plans.
+description: Create or maintain project brand voice and the target keyword register. Use for initial context, keyword selection or removal, changed positioning or page ownership, and conflicting keyword plans.
 ---
 
 # Project Context
@@ -25,24 +25,24 @@ If no approved brand guide is available, infer a working draft from the project 
 
 Use [keyword context maintenance](../../docs/keyword-context-maintenance.md) when creating, relying on, or updating this file. It defines file responsibilities, decision and evidence handling, update triggers, and handoff checks.
 
-Keep `context/target-keywords.md` as a concise search-direction summary with:
+Maintain `context/target-keywords.md` as a cumulative target keyword register with:
 
 - applicable audience, market, language and scope;
-- confirmed intent groups and boundaries, separated from working hypotheses;
-- the actual maintained location of detailed query-to-page ownership and priorities;
-- supporting decision/research paths, relevant evidence dates and unresolved validation needs;
-- a last substantive review date and what was reviewed; link to historical launch lists in dated project reports rather than keeping release-specific tables in context.
+- actual current target keywords, each linked to its decision/report or research, plus selection date and intended page when known;
+- candidates kept separate from confirmed targets;
+- a Targets but removed section retaining removed keywords, removal dates, reasons, decision links and replacements where applicable;
+- the latest substantive update and relevant market/language boundaries. Keep detailed launch plans, research and rationale in linked reports, while retaining the selected keywords themselves here across releases.
 
-Maintain detailed keyword decisions and page ownership in one declared strategy location, not in a second full table here. The keyword workspace uses `strategy/keyword-pool.jsonl`; Markdown is not imported or synchronized automatically. Existing manual projects may keep an explicitly identified plan without first creating a keyword pool.
+This file owns the maintained strategic target list; do not reduce it to a document portal or move all selected keywords into reports. The keyword workspace uses `strategy/keyword-pool.jsonl` for discovery and operational data. Reflect affected register decisions there through existing operations when used; Markdown is not imported or synchronized automatically, and a collected query does not become a selected target merely by being in the pool.
 
-Update affected context and ownership records in the same task as an authorized strategy change. Reuse still-applicable research; refresh only the evidence needed for the current decision. A missing file, old date, unlisted keyword or historical phase does not prohibit work.
+When an authorized task selects a keyword, add it to current targets in the same task with its decision link. When strategy removes it, move it to Targets but removed rather than deleting it. Update affected page mappings, preserve history, and keep undecided proposals separate. Reuse still-applicable research; refresh only evidence needed for the decision. A missing file, old date, unlisted keyword or historical phase does not prohibit supported research.
 
-Base keyword selection on applicable observed SERP evidence; reuse suitable research and collect fresh evidence when the decision requires it. If Search Console, paid keyword volume, conversion, or margin data is unavailable, say so and avoid traffic or revenue forecasts.
+Base SEO recommendations about which keywords to select on applicable observed SERP evidence; reuse suitable research and collect fresh evidence when needed. Register an explicit user target choice immediately with its decision link, recording research gaps in the linked report rather than requiring research before registration. If Search Console, paid keyword volume, conversion, or margin data is unavailable, say so and avoid traffic or revenue forecasts.
 
 ## Completion checks
 
 - Keep verified facts, evidence-backed inference, and unknowns visibly separate.
 - Preserve regional differences instead of combining incompatible prices, claims, or product specifications.
-- Give each selected primary intent one intended owner page in the declared ownership record, or mark the assignment unresolved; do not fabricate a URL or research to fill the summary.
+- Check each selected keyword is recorded in current targets with a resolvable decision/research link and one intended page per primary intent, or an explicit unresolved assignment. Check removed targets retain their change history; do not fabricate research, pages or approvals.
 - Save the context in the current project; preserve existing approved documents and their actual paths.
 - Check the saved artifact against the requested scope, record unresolved facts and supporting evidence, and run `./seo --project <id> validate --json` when state or workflow contracts changed. No phase transition or next-step command is required.

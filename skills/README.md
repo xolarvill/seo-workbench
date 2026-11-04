@@ -23,7 +23,7 @@ For all reader-facing prose, [reader-experience-review](reader-experience-review
 
 | Skill and trigger | Useful inputs | Expected output | Combine when useful |
 |---|---|---|---|
-| [project-context](project-context/SKILL.md): establish or maintain audience, voice and search direction; reconcile stale keyword context | Existing context, decisions, evidence and declared keyword ownership | Scoped context, current strategy pointers and synchronized decisions | product-marketing-context for offer positioning; [keyword maintenance](../docs/keyword-context-maintenance.md) for update rules |
+| [project-context](project-context/SKILL.md): maintain audience, voice and target keyword lifecycle | Existing context, keyword decisions and research | Current/candidate/removed target register with decision links and page assignments | product-marketing-context for offer positioning; [keyword maintenance](../docs/keyword-context-maintenance.md) for update rules |
 | [product-marketing-context](product-marketing-context/SKILL.md): clarify positioning, alternatives, customer pains and offer | Product facts, customer language, current positioning | Reusable product-marketing context | project-context for SEO and brand context; reuse shared facts |
 | [seo](seo/SKILL.md): a broad SEO request needs scoping or several capabilities | Goal, site/project, existing artifacts | Scoped method selection and evidence needs | Relevant direct specialists; skip this router for a clear task |
 | [seo-plan](seo-plan/SKILL.md): build a site-level SEO roadmap | Goals, markets, resources, current performance and site inventory | Prioritized SEO roadmap | site-audit for an unknown baseline; content-strategy for editorial choices |
