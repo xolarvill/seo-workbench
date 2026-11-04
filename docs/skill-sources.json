@@ -2,7 +2,7 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "39ac9345b0aa5ed70ce7cd552831cb6457f3e1a5",
+  "local_snapshot_commit": "3b21238750f5ed82e558064fe8606b2094502cd4",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
@@ -126,9 +126,9 @@
         "path": "skills/README.md"
       },
       "last_local_change": {
-        "commit": "e59a9790174b16b39e188890be61c08666d6ffb4",
+        "commit": "817c90f8f5ca7de1bfaebfee75549cf7abd61b48",
         "date": "2026-11-04",
-        "subject": "docs: define keyword context responsibilities and maintenance",
+        "subject": "docs: maintain selected and removed keywords in the target register",
         "path": "skills/README.md",
         "record_status": "committed"
       },
@@ -142,7 +142,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/ab-test-setup/SKILL.md",
@@ -4437,9 +4437,9 @@
         "path": "skills/keyword-deep-dive/SKILL.md"
       },
       "last_local_change": {
-        "commit": "e59a9790174b16b39e188890be61c08666d6ffb4",
+        "commit": "817c90f8f5ca7de1bfaebfee75549cf7abd61b48",
         "date": "2026-11-04",
-        "subject": "docs: define keyword context responsibilities and maintenance",
+        "subject": "docs: maintain selected and removed keywords in the target register",
         "path": "skills/keyword-deep-dive/SKILL.md",
         "record_status": "committed"
       },
@@ -4453,7 +4453,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/keyword-deep-dive/references/ctr-benchmarks-by-position.md",
@@ -7040,9 +7040,9 @@
         "path": "skills/project-context/SKILL.md"
       },
       "last_local_change": {
-        "commit": "76975060d5d93bde4df65057d0007b031b7830a7",
+        "commit": "3b21238750f5ed82e558064fe8606b2094502cd4",
         "date": "2026-11-04",
-        "subject": "docs: maintain selected and removed keywords in the target register",
+        "subject": "fix: require user requirements before creating brand voice",
         "path": "skills/project-context/SKILL.md",
         "record_status": "committed"
       },
@@ -7056,7 +7056,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/project-context/agents/openai.yaml",
