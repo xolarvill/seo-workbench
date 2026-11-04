@@ -194,6 +194,44 @@ def test_stage_progression_and_handoff_paths(tmp_path: Path) -> None:
     assert updated["revision"]
 
 
+@pytest.mark.parametrize("keyword,has_research", [("desk shelf", True), ("cable management", False)])
+@pytest.mark.parametrize("has_context", [True, False])
+def test_handoff_provides_context_policy_without_promoting_or_mutating_old_context(
+    tmp_path: Path, keyword: str, has_research: bool, has_context: bool
+) -> None:
+    project_dir = project(tmp_path)
+    view = query_keyword_workspace(project_dir, KeywordWorkspaceQuery(limit=100))
+    context_path = project_dir / "context/target-keywords.md"
+    if has_context:
+        context_path.write_text(
+            "# Launch plan\n\nDate: 2020-01-01\n\n"
+            "| Keyword | Target URL | Decision |\n| --- | --- | --- |\n"
+            "| cable management | /obsolete-page | drop |\n"
+            "| launch-only phrase | /launch | prioritize |\n",
+            encoding="utf-8",
+        )
+    before = {path.relative_to(project_dir): path.read_bytes() for path in project_dir.rglob("*") if path.is_file()}
+
+    handoff = keyword_handoff(project_dir, keyword)
+
+    assert handoff["ok"] is True
+    assert handoff["policy_path"] == "docs/keyword-context-maintenance.md"
+    assert (Path(__file__).resolve().parents[1] / handoff["policy_path"]).is_file()
+    assert handoff["policy_path"] in handoff["prompt"]
+    assert ("context/target-keywords.md" in handoff["context"]) is has_context
+    if has_research:
+        assert handoff["existing_path"] in handoff["context"]
+        assert handoff["existing_path"] in handoff["prompt"]
+        assert "output_path" not in handoff
+    else:
+        assert handoff["existing_path"] is None
+        assert handoff["output_path"].endswith("info-cable-management.md")
+        assert not (project_dir / handoff["output_path"]).exists()
+    assert query_keyword_workspace(project_dir, KeywordWorkspaceQuery(limit=100)) == view
+    after = {path.relative_to(project_dir): path.read_bytes() for path in project_dir.rglob("*") if path.is_file()}
+    assert after == before
+
+
 def test_cluster_aggregates_raw_query_evidence_and_measured_stage(tmp_path: Path) -> None:
     project_dir = project(tmp_path)
     pool_path = project_dir / "strategy/keyword-pool.jsonl"

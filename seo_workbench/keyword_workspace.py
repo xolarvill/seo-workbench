@@ -23,6 +23,7 @@ DECISIONS = {"unreviewed", "prioritize", "hold", "drop"}
 STAGES = {"needs_decision", "needs_mapping", "mapped", "demand_check", "researched", "handed_off", "held", "dropped"}
 MAX_BATCH = 1_000
 QUEUE_MIN_SCORE = 40.0
+KEYWORD_CONTEXT_POLICY = "docs/keyword-context-maintenance.md"
 
 
 @dataclass(frozen=True)
@@ -149,41 +150,52 @@ def keyword_handoff(project_dir: Path, keyword: str) -> dict[str, Any]:
     row = next((item for item in data["rows"] if item["keyword"] == normalized), None)
     if row is None:
         raise ValueError("keyword not found")
-    if row.get("research_path"):
-        return {
-            "ok": True,
-            "keyword": normalized,
-            "existing_path": row["research_path"],
-            "skill": "skills/keyword-deep-dive/SKILL.md",
-        }
+    existing_path = row.get("research_path")
     prefix = "product" if row.get("intent") in {"commercial", "transactional"} else "info"
     output = f"strategy/keyword-dives/{prefix}-{_slug(normalized)}.md"
     context = [
         path
         for path in (
+            existing_path,
             "strategy/keyword-pool.jsonl",
             "context/target-keywords.md",
             "audits/gsc/search-analytics/latest.json",
             "audits/content-portfolio/latest.json",
         )
-        if (project_dir / path).exists()
+        if path and (project_dir / path).exists()
     ]
     target = row.get("target_url") or "unassigned"
+    action = (
+        f'Review the existing research for "{normalized}" at {existing_path} for reuse. '
+        if existing_path
+        else f'Research "{normalized}" and write the result to {output}. '
+    )
     prompt = (
-        "Use skills/keyword-deep-dive/SKILL.md to research "
-        f'\"{normalized}\". Read the available project evidence ({", ".join(context) or "none"}); '
-        f"current target URL: {target}. Write the result to {output}. "
+        "Use skills/keyword-deep-dive/SKILL.md. "
+        f"{action}Follow {KEYWORD_CONTEXT_POLICY}. "
+        f'Read the available project evidence ({", ".join(context) or "none"}); '
+        f"current target URL: {target}. "
+        "Check the keyword's current, candidate or removed entry in context/target-keywords.md, "
+        "its linked decisions, evidence dates and intended page. "
+        "An unlisted keyword or missing register does not block supported research. "
+        "Reuse applicable research and refresh only evidence needed for this decision. "
+        "For an authorized selection, record the keyword in current targets with a decision/research link; "
+        "for a withdrawal, move it to Targets but removed with date, reason and decision link. "
+        "Preserve history, reflect affected workspace mappings and keep proposals unconfirmed. "
         "Do not create a second metrics store, and treat missing evidence as unknown rather than zero."
     )
-    return {
+    result = {
         "ok": True,
         "keyword": normalized,
-        "existing_path": None,
+        "existing_path": existing_path,
         "skill": "skills/keyword-deep-dive/SKILL.md",
+        "policy_path": KEYWORD_CONTEXT_POLICY,
         "context": context,
-        "output_path": output,
         "prompt": prompt,
     }
+    if not existing_path:
+        result["output_path"] = output
+    return result
 
 
 def _workspace_data(project_dir: Path) -> dict[str, Any]:

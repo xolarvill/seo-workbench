@@ -11,6 +11,8 @@ A complete picture of a single keyword's opportunity — intent, competition, wh
 
 **Target keyword** (required). Optionally: a URL if you already have a page targeting this keyword.
 
+Before selecting or reusing a keyword plan, follow [keyword context maintenance](../../docs/keyword-context-maintenance.md): check its current/candidate/removed entry, linked decisions, evidence dates and page ownership. When the task selects a keyword, record it in `context/target-keywords.md` with its decision/research link; a strategy removal moves it to Targets but removed. Existing research can be reused when it still fits. Unlisted keywords can still be researched; research alone does not approve selection or reactivation.
+
 If the user didn't provide a keyword, ask for it before proceeding.
 
 ## Role

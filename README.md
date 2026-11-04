@@ -57,6 +57,8 @@ Run your coding agent from the repository root. SEO Workbench is agent-neutral. 
 
 Agents choose methods from the current goal, project artifacts, and evidence. Read `AGENTS.md` and the task-oriented `skills/README.md`, then load and combine the relevant local methods. Stored phases do not schedule work; the `next` command has been retired. When the UI is open, new audit files and Markdown documents appear there automatically.
 
+For keyword planning, `context/target-keywords.md` is the maintained list of current targets, candidates and removed targets. Record each selected keyword with a link to its decision/research; keep detailed rationale and launch plans in reports. Follow [keyword context maintenance](docs/keyword-context-maintenance.md) for lifecycle and evidence checks. Markdown is not automatically synchronized with the keyword workspace.
+
 ### Working manually
 
 Manual operation is supported, create a project and collect its first evidence:
