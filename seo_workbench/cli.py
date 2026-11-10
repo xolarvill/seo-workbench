@@ -48,7 +48,6 @@ from seo_workbench.crux import collect_from_state as collect_crux_from_state
 from seo_workbench.doctor import run_doctor
 from seo_workbench.evidence import collect_from_state
 from seo_workbench.feishu_notify import send_report_via_feishu_gateway
-from seo_workbench.feishu_sync import import_hexcal_from_feishu_gateway
 from seo_workbench.gsc import (
     authenticate as authenticate_gsc,
     bind_property as bind_gsc_property,
@@ -58,7 +57,6 @@ from seo_workbench.gsc import (
     collect_sitemaps as collect_gsc_sitemaps,
     list_properties as list_gsc_properties,
 )
-from seo_workbench.hexcal_blog_import import import_hexcal_blog
 from seo_workbench.keywords import collect_keywords
 from seo_workbench.measurement_regimes import SOURCES as MEASUREMENT_SOURCES, list_regimes, record_regime
 from seo_workbench.performance import collect_from_state as collect_performance_from_state
@@ -797,40 +795,6 @@ def cmd_doctor(args: argparse.Namespace) -> int:
             status = "ok" if check["ok"] else check["severity"]
             print(f"{status}: {check['name']} - {check['detail']}")
     return 0 if result["ok"] else 1
-
-
-def cmd_content_import_hexcal(args: argparse.Namespace) -> int:
-    if not args.keywords_json and not args.pipeline_json:
-        raise ValueError("content import-hexcal requires --keywords-json or --pipeline-json")
-    result = import_hexcal_blog(
-        args.project_dir,
-        keywords_path=args.keywords_json,
-        pipeline_path=args.pipeline_json,
-    )
-    payload = {"ok": True, **result}
-    if args.json_output:
-        print_json(payload)
-        return 0
-    print(result["blog_pipeline_path"] or result["keyword_pool_path"])
-    return 0
-
-
-def cmd_content_import_feishu(args: argparse.Namespace) -> int:
-    if args.keywords_only and args.pipeline_only:
-        raise ValueError("choose at most one of --keywords-only or --pipeline-only")
-    report = import_hexcal_from_feishu_gateway(
-        args.project_dir,
-        profile=args.profile,
-        config_path=args.config,
-        include_keywords=not args.pipeline_only,
-        include_pipeline=not args.keywords_only,
-        limit=args.limit,
-    )
-    if args.json_output:
-        print_json({"ok": True, **report})
-        return 0
-    print(f"imported keywords={report['keywords_imported']} pipeline={report['pipeline_imported']}")
-    return 0
 
 
 def cmd_content_import_draft(args: argparse.Namespace) -> int:
@@ -1729,21 +1693,6 @@ def build_parser() -> argparse.ArgumentParser:
 
     content = sub.add_parser("content")
     content_sub = content.add_subparsers(dest="content_command", required=True)
-    import_hexcal = content_sub.add_parser("import-hexcal")
-    import_hexcal.add_argument("--keywords-json", type=Path)
-    import_hexcal.add_argument("--pipeline-json", type=Path)
-    import_hexcal.add_argument("--json", action="store_true", dest="json_output")
-    import_hexcal.set_defaults(func=cmd_content_import_hexcal)
-
-    import_feishu = content_sub.add_parser("import-feishu")
-    import_feishu.add_argument("--profile", required=True)
-    import_feishu.add_argument("--config", type=Path)
-    import_feishu.add_argument("--keywords-only", action="store_true")
-    import_feishu.add_argument("--pipeline-only", action="store_true")
-    import_feishu.add_argument("--limit", type=int)
-    import_feishu.add_argument("--json", action="store_true", dest="json_output")
-    import_feishu.set_defaults(func=cmd_content_import_feishu)
-
     import_draft_cmd = content_sub.add_parser("import-draft")
     import_draft_cmd.add_argument("--from-file", type=Path, required=True)
     import_draft_cmd.add_argument("--json", action="store_true", dest="json_output")

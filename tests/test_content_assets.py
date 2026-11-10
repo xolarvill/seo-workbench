@@ -19,7 +19,7 @@ from seo_workbench.content_assets import (
 from seo_workbench.content_publish import build_publish_payload
 
 
-FEISHU_CONFIG = Path(__file__).resolve().parents[1] / "templates/hexcal-feishu-profile.json"
+FEISHU_CONFIG = Path(__file__).resolve().parents[1] / "tests/fixtures/feishu-profile.json"
 
 
 def test_collect_inline_rids_preserves_document_order() -> None:
@@ -166,7 +166,7 @@ def test_download_asset_files_from_feishu_updates_manifest(tmp_path: Path) -> No
     report, path = download_asset_files_from_feishu(
         project_dir,
         "rec1",
-        profile="hexcal-seo",
+        profile="seo-profile",
         config_path=FEISHU_CONFIG,
         runner=runner,
     )
@@ -176,7 +176,7 @@ def test_download_asset_files_from_feishu_updates_manifest(tmp_path: Path) -> No
     assert report["downloaded"] == ["recInline"]
     assert saved["assets"][0]["source_table"] == "ugc_historical"
     assert saved["assets"][0]["local_path"] == "content/assets/files/recInline"
-    assert calls[0][0][:3] == ["lark-cli", "--profile", "hexcal-seo"]
+    assert calls[0][0][:3] == ["lark-cli", "--profile", "seo-profile"]
     assert calls[-1][0][-2:] == ["--as", "user"]
 
 
@@ -190,7 +190,7 @@ def test_download_asset_files_from_feishu_reports_failure(tmp_path: Path) -> Non
         return subprocess.CompletedProcess(cmd, 1, stdout="", stderr="missing")
 
     report, _ = download_asset_files_from_feishu(
-        project_dir, "rec1", profile="hexcal-seo", config_path=FEISHU_CONFIG, runner=runner
+        project_dir, "rec1", profile="seo-profile", config_path=FEISHU_CONFIG, runner=runner
     )
 
     assert report["collection_status"] == "failed"
@@ -204,7 +204,7 @@ def test_download_asset_files_rejects_manifest_path_traversal(tmp_path: Path) ->
     manifest.write_text(json.dumps({"assets": [{"rid": "../../escape", "role": "inline"}]}), encoding="utf-8")
 
     with pytest.raises(ValueError, match="invalid Feishu record ID"):
-        download_asset_files_from_feishu(project_dir, "rec1", profile="hexcal-seo")
+        download_asset_files_from_feishu(project_dir, "rec1", profile="seo-profile")
     assert not (tmp_path / "escape").exists()
 
 
@@ -381,7 +381,7 @@ def test_write_asset_candidates_from_feishu_filters_and_writes_manifest(tmp_path
     report, path = write_asset_candidates_from_feishu(
         project_dir,
         "rec1",
-        profile="hexcal-seo",
+        profile="seo-profile",
         config_path=FEISHU_CONFIG,
         runner=runner,
     )
@@ -390,7 +390,7 @@ def test_write_asset_candidates_from_feishu_filters_and_writes_manifest(tmp_path
     assert report["candidates"][0]["rid"] == "recGood"
     assert report["candidates"][0]["mmx_visual_description"] == "Clean studio shot"
     assert path == project_dir / "content/assets/rec1-candidates.json"
-    assert calls[0][0][:3] == ["lark-cli", "--profile", "hexcal-seo"]
+    assert calls[0][0][:3] == ["lark-cli", "--profile", "seo-profile"]
     assert json.loads(path.read_text(encoding="utf-8"))["candidate_count"] == 1
 
 
@@ -431,7 +431,7 @@ def test_describe_asset_candidates_downloads_mmx_and_writes_back(tmp_path: Path,
     report, path = describe_asset_candidates(
         project_dir,
         "rec1",
-        profile="hexcal-seo",
+        profile="seo-profile",
         config_path=FEISHU_CONFIG,
         runner=runner,
     )
@@ -453,7 +453,7 @@ def test_feishu_asset_catalog_rejects_generic_projects(tmp_path: Path) -> None:
     state.init_state("shopify", "Store", "https://example.com", project_dir=project_dir)
 
     with pytest.raises(ValueError, match="Hexcal project adapter"):
-        write_asset_candidates_from_feishu(project_dir, "rec1", profile="hexcal-seo")
+        write_asset_candidates_from_feishu(project_dir, "rec1", profile="seo-profile")
 
 
 def test_content_describe_candidates_cli_outputs_json(tmp_path: Path, capsys, monkeypatch) -> None:
@@ -465,9 +465,9 @@ def test_content_describe_candidates_cli_outputs_json(tmp_path: Path, capsys, mo
 
     monkeypatch.setattr("seo_workbench.cli.describe_asset_candidates", fake_describe)
 
-    assert main(["--project-dir", str(project_dir), "content", "describe-candidates", "rec1", "--profile", "hexcal-seo", "--json"]) == 1
+    assert main(["--project-dir", str(project_dir), "content", "describe-candidates", "rec1", "--profile", "seo-profile", "--json"]) == 1
     assert "requires --confirm" in json.loads(capsys.readouterr().out)["error"]
-    assert main(["--project-dir", str(project_dir), "content", "describe-candidates", "rec1", "--profile", "hexcal-seo", "--confirm", "--json"]) == 0
+    assert main(["--project-dir", str(project_dir), "content", "describe-candidates", "rec1", "--profile", "seo-profile", "--confirm", "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
 
     assert payload["ok"] is True
@@ -500,7 +500,7 @@ def test_content_asset_candidates_cli_outputs_json(tmp_path: Path, capsys, monke
 
     monkeypatch.setattr("seo_workbench.cli.write_asset_candidates_from_feishu", fake_candidates)
 
-    assert main(["--project-dir", str(project_dir), "content", "asset-candidates", "rec1", "--profile", "hexcal-seo", "--json"]) == 0
+    assert main(["--project-dir", str(project_dir), "content", "asset-candidates", "rec1", "--profile", "seo-profile", "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
 
     assert payload["ok"] is True
@@ -516,7 +516,7 @@ def test_content_download_assets_cli_outputs_json(tmp_path: Path, capsys, monkey
 
     monkeypatch.setattr("seo_workbench.cli.download_asset_files_from_feishu", fake_download)
 
-    assert main(["--project-dir", str(project_dir), "content", "download-assets", "rec1", "--profile", "hexcal-seo", "--json"]) == 0
+    assert main(["--project-dir", str(project_dir), "content", "download-assets", "rec1", "--profile", "seo-profile", "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
 
     assert payload["ok"] is True

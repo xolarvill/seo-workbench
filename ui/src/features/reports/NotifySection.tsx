@@ -69,7 +69,7 @@ export function NotifySection({ projectId, jobs, refreshKey, onOpenFile, onRunCo
         <section className={styles.card}>
           <div><span className={styles.kicker}>Defaults</span><h2>Report settings</h2><p>These values are used when reports or index results are sent to a reviewer.</p></div>
           <label className={styles.field}><span>Reviewer role</span><input value={role} onChange={(event) => setRole(event.target.value)} placeholder="seo" /></label>
-          <label className={styles.field}><span>Feishu profile</span><input value={profile} onChange={(event) => setProfile(event.target.value)} placeholder="Required, e.g. hexcal-seo" /></label>
+          <label className={styles.field}><span>Feishu profile</span><input value={profile} onChange={(event) => setProfile(event.target.value)} placeholder="Required, e.g. seo-profile" /></label>
         </section>
 
         <section className={styles.card}>

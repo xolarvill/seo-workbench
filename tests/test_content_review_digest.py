@@ -8,7 +8,7 @@ from seo_workbench.cli import main
 from seo_workbench.content_review_digest import generate_review_digest
 
 
-FEISHU_CONFIG = Path(__file__).resolve().parents[1] / "templates/hexcal-feishu-profile.json"
+FEISHU_CONFIG = Path(__file__).resolve().parents[1] / "tests/fixtures/feishu-profile.json"
 
 
 def test_generate_review_digest_reads_feishu_thread_without_mutating_state(tmp_path: Path) -> None:
@@ -32,7 +32,7 @@ def test_generate_review_digest_reads_feishu_thread_without_mutating_state(tmp_p
 
     report, path = generate_review_digest(
         project_dir,
-        profile="hexcal-seo",
+        profile="seo-profile",
         config_path=FEISHU_CONFIG,
         bot_id="bot_1",
         now=datetime(2026, 7, 29, tzinfo=timezone.utc),
@@ -70,7 +70,7 @@ def test_content_review_digest_cli_outputs_json(tmp_path: Path, capsys, monkeypa
 
     monkeypatch.setattr("seo_workbench.cli.generate_review_digest", fake_digest)
 
-    assert main(["--project-dir", str(project_dir), "content", "review-digest", "--profile", "hexcal-seo", "--json"]) == 0
+    assert main(["--project-dir", str(project_dir), "content", "review-digest", "--profile", "seo-profile", "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
 
     assert payload["ok"] is True

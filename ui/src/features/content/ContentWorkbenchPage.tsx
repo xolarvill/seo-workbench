@@ -290,11 +290,10 @@ export function ContentWorkbenchPage({ projectId, section, workspace, jobs, refr
               <button type="button" disabled={running} onClick={() => launch({ label: "Cluster brief", action: "cluster-brief" })}>Cluster brief</button>
               <button type="button" disabled={running || !pathValue} onClick={() => launch({ label: "Import clusters", action: "import-clusters", project_relative_path: pathValue })}>Import clusters</button>
             </> : <>
-              <label className={styles.field}><span>Feishu profile</span><input value={profile} onChange={(event) => setProfile(event.target.value)} placeholder="Required, e.g. hexcal-seo" /></label>
+              <label className={styles.field}><span>Feishu profile</span><input value={profile} onChange={(event) => setProfile(event.target.value)} placeholder="Required, e.g. seo-profile" /></label>
               <label className={styles.field}><span>Reviewer role</span><input value={role} onChange={(event) => setRole(event.target.value)} placeholder="seo" /></label>
               <label className={styles.field}><span>Asset limit</span><input value={limit} onChange={(event) => setLimit(event.target.value)} placeholder="20" inputMode="numeric" /></label>
               <label className={styles.field}><span>Import file</span><input value={pathValue} onChange={(event) => setPathValue(event.target.value)} placeholder="content/drafts/input.json" /></label>
-              <button type="button" disabled={running || !profile.trim()} onClick={() => launch({ label: "Import Feishu", action: "import-feishu", profile: profile || undefined })}>Import Feishu</button>
               <button type="button" disabled={running || !pathValue} onClick={() => launch({ label: "Import draft", action: "import-draft", project_relative_path: pathValue })}>Import draft</button>
             </>}
           </section>

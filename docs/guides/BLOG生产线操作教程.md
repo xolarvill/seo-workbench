@@ -1,14 +1,14 @@
 # BLOG 生产线操作教程
 
-本教程用于 Hexcal BLOG 的日常生产。其他项目可以复用同一套关键词、内容、Shopify 和 GSC 命令，只需替换项目 ID，并跳过没有配置的飞书步骤。SEO Workbench 负责 idea、关键词、状态、内容文件、发布记录与收录证据；飞书只在需要素材、评审或通知时接入，不是生产状态的主库。
+本教程用于 BLOG 的日常生产。其他项目可以复用同一套关键词、内容、Shopify 和 GSC 命令，只需替换项目 ID，并跳过没有配置的通知步骤。SEO Workbench 负责 idea、关键词、状态、内容文件、发布记录与收录证据；飞书只在需要素材、评审或通知时接入，不是生产状态的主库。
 
 ## 1. 开工检查
 
 ```bash
 ./setup.sh --check
-./seo --project hexcal validate --json
-./seo --project hexcal doctor --json
-./seo --project hexcal ui
+./seo --project my-store validate --json
+./seo --project my-store doctor --json
+./seo --project my-store ui
 ```
 
 在 UI 中打开 **Content**。Shopify 与 GSC 在 **Connections** 中配置；飞书 profile 保存在仓库根目录忽略提交的 `.runtime/profiles.json`，不要把密钥写进项目文档。
@@ -16,7 +16,7 @@
 查看今天真正需要处理的工作：
 
 ```bash
-./seo --project hexcal content ops --json
+./seo --project my-store content ops --json
 ```
 
 ## 2. 由 Workbench 产生 idea
@@ -31,20 +31,14 @@
 4. 对 prioritize 且缺少研究的关键词运行 **Agent deep dive**；已有文档直接打开，缺少时只复制 agent 请求，不创建空 Markdown；
 5. 从 Content 完成写作和上线，再从 Pages/GSC 回看 measured 状态。
 
-批量栏支持当前页或全部筛选结果，单次最多 1,000 条。写入采用文件 revision 和全有或全无校验：cluster、Content ID 或 URL 任一非法时整批不写，agent 或另一个 UI 会话已修改关键词池时返回冲突而不会覆盖。被修改的历史记录会保留 Feishu `source_record` 和其他未知字段。
+批量栏支持当前页或全部筛选结果，单次最多 1,000 条。写入采用文件 revision 和全有或全无校验：cluster、Content ID 或 URL 任一非法时整批不写，agent 或另一个 UI 会话已修改关键词池时返回冲突而不会覆盖。被修改的历史记录会保留其他未知字段。
 
-关键词池应先来自本项目的研究和判断。需要继承飞书已有关键词或历史文章时再运行：
-
-```bash
-./seo --project hexcal content import-feishu --profile hexcal-seo --json
-```
-
-导入采用补充式合并：同 ID 的 Workbench 标题、关键词、状态、草稿和人工备注优先；飞书新增记录可以进入队列。
+关键词池应先来自本项目的研究和判断：先在本项目的关键词研究里形成候选，再进入关键词池。
 
 需要补充 Semrush 或 Google Ads 时继续使用本地文件采集，不接入第二个关键词主库：
 
 ```bash
-./seo --project hexcal keywords collect \
+./seo --project my-store keywords collect \
   --semrush-xlsx semrush.xlsx \
   --google-ads-csv google-ads.csv --json
 ```
@@ -52,20 +46,20 @@
 根据当前关键词池生成聚类任务：
 
 ```bash
-./seo --project hexcal content cluster-brief --json
+./seo --project my-store content cluster-brief --json
 ```
 
 让当前 agent 按生成文件中的 `expected_output_schema` 和项目 `context/`、`strategy/` 资料完成 `clusters.json`，再导入：
 
 ```bash
-./seo --project hexcal content import-clusters --from-file clusters.json --json
-./seo --project hexcal content queue --status planned --json
+./seo --project my-store content import-clusters --from-file clusters.json --json
+./seo --project my-store content queue --status planned --json
 ```
 
 SEO 负责人确认选题后，才进入写作：
 
 ```bash
-./seo --project hexcal content status <item_id> ready_to_write \
+./seo --project my-store content status <item_id> ready_to_write \
   --note "topic approved by SEO owner" --json
 ```
 
@@ -74,7 +68,7 @@ SEO 负责人确认选题后，才进入写作：
 导出写作 brief：
 
 ```bash
-./seo --project hexcal content brief <item_id> --json
+./seo --project my-store content brief <item_id> --json
 ```
 
 写作者使用本项目的 `skills/content-brief`、`skills/write-content` 和 brief，不以飞书旧流程的 prompt 作为内容标准。
@@ -82,13 +76,13 @@ SEO 负责人确认选题后，才进入写作：
 只有文章需要旧素材库图片时，才运行素材路线：
 
 ```bash
-./seo --project hexcal content asset-candidates <item_id> --profile hexcal-seo --json
-./seo --project hexcal content describe-candidates <item_id> --profile hexcal-seo --no-writeback --json
+./seo --project my-store content asset-candidates <item_id> --profile blog-profile --json
+./seo --project my-store content describe-candidates <item_id> --profile blog-profile --no-writeback --json
 # 确认要把新描述回写飞书时：
-./seo --project hexcal content describe-candidates <item_id> --profile hexcal-seo --confirm --json
-./seo --project hexcal content download-assets <item_id> --profile hexcal-seo --json
-./seo --project hexcal content upload-assets <item_id> --json
-./seo --project hexcal content apply-assets <item_id> --json
+./seo --project my-store content describe-candidates <item_id> --profile blog-profile --confirm --json
+./seo --project my-store content download-assets <item_id> --profile blog-profile --json
+./seo --project my-store content upload-assets <item_id> --json
+./seo --project my-store content apply-assets <item_id> --json
 ```
 
 草稿导入文件至少需要以下结构。`scheduled_at` 必须包含时区，导入后统一保存为 UTC：
@@ -110,8 +104,8 @@ SEO 负责人确认选题后，才进入写作：
 ```
 
 ```bash
-./seo --project hexcal content import-draft --from-file article.json --json
-./seo --project hexcal content qc <item_id> --json
+./seo --project my-store content import-draft --from-file article.json --json
+./seo --project my-store content qc <item_id> --json
 ```
 
 ## 4. 人工审核与发布
@@ -119,24 +113,24 @@ SEO 负责人确认选题后，才进入写作：
 修订意见可以直接写入 Workbench，也可以显式推送到飞书评审：
 
 ```bash
-./seo --project hexcal content review-push <item_id> \
-  --role seo_review --profile hexcal-seo --confirm --json
-./seo --project hexcal content review-digest --profile hexcal-seo --json
+./seo --project my-store content review-push <item_id> \
+  --role seo_review --profile blog-profile --confirm --json
+./seo --project my-store content review-digest --profile blog-profile --json
 ```
 
 飞书回复只生成建议，不自动改变状态。SEO 负责人最终确认：
 
 ```bash
-./seo --project hexcal content status <item_id> approved \
+./seo --project my-store content status <item_id> approved \
   --note "human approved" --json
 ```
 
 先检查 Shopify payload，再执行真实写入：
 
 ```bash
-./seo --project hexcal content publish-dry-run <item_id> \
+./seo --project my-store content publish-dry-run <item_id> \
   --blog-id <blog_id> --json
-./seo --project hexcal content publish <item_id> \
+./seo --project my-store content publish <item_id> \
   --blog-id <blog_id> --confirm --json
 ```
 
@@ -147,10 +141,10 @@ SEO 负责人确认选题后，才进入写作：
 普通 BLOG 不使用 Google Indexing API。发布时间到达后，由 Sitemap 发现和 GSC URL Inspection 判断：
 
 ```bash
-./seo --project hexcal content index-queue --json
-./seo --project hexcal gsc inspect --limit 10 --json
-./seo --project hexcal content index-status \
-  --notify-role seo --profile hexcal-seo --confirm --json
+./seo --project my-store content index-queue --json
+./seo --project my-store gsc inspect --limit 10 --json
+./seo --project my-store content index-status \
+  --notify-role seo --profile blog-profile --confirm --json
 ```
 
 只有 GSC 返回已收录时才发送飞书消息。发送失败不会写入“已通知”标记，下次运行可以重试；成功后不会重复发送。同一 URL 长时间未收录会进入 `indexing_issue`，由 SEO 负责人检查 canonical、Sitemap、内容质量和站内链接。
@@ -158,9 +152,9 @@ SEO 负责人确认选题后，才进入写作：
 ## 6. 每日收工
 
 ```bash
-./seo --project hexcal content ops --json
-./seo --project hexcal content report --period daily --json
-./seo --project hexcal validate --json
+./seo --project my-store content ops --json
+./seo --project my-store content report --period daily --json
+./seo --project my-store validate --json
 ```
 
 生产日的完成标准：没有未经人工确认的 Shopify/飞书写入；文章状态、排期和 live URL 可在 Content 查看；发布与 GSC 运行记录保存在 `audits/`；需要处理的问题显示在 `content ops`。

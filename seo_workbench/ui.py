@@ -1801,7 +1801,7 @@ def _content_command(project_dir: Path, request: ContentActionRequest) -> tuple[
         raise ValueError(f"content action requires confirm: {action}")
     if action == "describe-candidates" and not request.no_writeback and not request.confirm:
         raise ValueError("content action requires confirm: describe-candidates")
-    feishu_actions = {"import-feishu", "asset-candidates", "describe-candidates", "download-assets", "review-push", "review-digest", "notify-report", "index-status"}
+    feishu_actions = {"asset-candidates", "describe-candidates", "download-assets", "review-push", "review-digest", "notify-report", "index-status"}
     if action in feishu_actions and not (request.profile or "").strip():
         raise ValueError(f"content action requires an explicit Feishu profile: {action}")
     if action == "publish" and request.allow_warnings:
@@ -1812,9 +1812,7 @@ def _content_command(project_dir: Path, request: ContentActionRequest) -> tuple[
     if action == "gsc-inspect":
         return ("gsc", "inspect", "--limit", str(request.limit or 10), "--json")
     command: list[str] = ["content"]
-    if action == "import-feishu":
-        command += ["import-feishu", "--profile", profile, "--json"]
-    elif action == "cluster-brief":
+    if action == "cluster-brief":
         command += ["cluster-brief", "--json"]
     elif action == "import-clusters":
         path = _content_relative_path(project_dir, request.project_relative_path, field="project_relative_path")
