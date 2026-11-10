@@ -40,6 +40,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 - [Skills acceptance and maintenance](history/20261029-skills-acceptance-and-maintenance.md): independent outputs, observed failures and retests, regression scope, maintenance and rollback commits.
 - [Agent instruction structure](history/20261110-agent-instruction-structure.md): task routing, grouped guardrails, the reporting contract, and what moved out of `AGENTS.md`.
 - [Docs pruning](history/20261110-docs-pruning.md): which obsolete plans and acceptance records were removed, and the links that moved with them.
+- [Docs hierarchy and Hexcal removal](history/20261110-docs-hierarchy-and-hexcal-removal.md): the guides/reference/history split, the path rewrites it required, and what the import-chain removal left in place.
 
 ## Evidence selection
 
