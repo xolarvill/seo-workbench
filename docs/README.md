@@ -27,13 +27,10 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 ## Operations and architecture
 
 - [Google integrations](google-integrations.md): CrUX and read-only GSC configuration, evidence scopes, and status meanings.
-- [Analytics MCP assessment](20261027-analytics-mcp-assessment.md): API and MCP boundaries, current Google / Clarity tools, and the proposed optional Clarity integration.
 - [Clarity integration](clarity-integrations.md): project-scoped MCP connections, behavior queries, private evidence and transient recording links.
 - [Shopify integrations](shopify-integrations.md): Admin API credential setup, granted scopes, rotation, and project isolation.
 - [Statistical SEO operations](统计学SEO操作手册.md): the minimum operator preparation, daily collection entry point, measurement boundaries, and metric catalog.
-- [Hexcal BLOG adapter](hexcal-blog-migration.md): optional Feishu field aliases, ownership boundaries, and retained production capabilities.
 - [Standalone workbench architecture](independent-workbench.md): local setup, project isolation, CLI boundaries, and runtime design.
-- [Preserved SEO capability families](capability-preservation.md): provenance and capability-preservation notes from the standalone refactor.
 - [Skill sources and upstream comparison](skill-sources.md): pinned upstream versions, file-level provenance, local change history, and the update-review procedure.
 - [Canonical skill ownership and layout migration](20261029-skill-layout-migration.md): shared skill namespace, merged capabilities, old-path mapping, and migration verification.
 - [Specialist methods and runtime adaptation](20261029-skill-methods-runtime-adaptation.md): current method owners, preserved originals, local operation references, and verification.
@@ -41,10 +38,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 - [Writing authority and evidence boundary](20261029-writing-authority-and-evidence-boundary.md): one expression method, internal verification records, reader-useful conditions, and actual generation checks.
 - [Task-oriented skill discovery](20261029-skill-discovery-entrypoints.md): triggers, inputs, outputs, combinations and ownership across all 60 entrypoints.
 - [Skills acceptance and maintenance](20261029-skills-acceptance-and-maintenance.md): independent outputs, observed failures and retests, regression scope, maintenance and rollback commits.
-- [Local skill integration diagnosis](20261026-local-skill-integration-diagnosis.md): discovery, routing, and execution gaps; prompted use is not evidence of autonomous selection.
-- [Agent-led workbench acceptance](20261026-agent-led-workbench-acceptance.md): next-command retirement, regression results, desktop/mobile QA, and bounded autonomous-selection evidence.
 - [Agent instruction structure](20261110-agent-instruction-structure.md): task routing, grouped guardrails, the reporting contract, and what moved out of `AGENTS.md`.
-- [Agent skill routing design](agent-skill-routing-design.md): agent-led method selection, retired next-step scheduling, compatibility boundaries, and acceptance evidence.
 
 ## Evidence selection
 

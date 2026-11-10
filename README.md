@@ -159,7 +159,7 @@ This is the rule catalog the technical audit can detect. It is not a claim that 
 
 Browser collectors use the matching Playwright runtime with explicit process cleanup and partial-result gates; see [browser runtime and probe comparability](docs/browser-runtime.md).
 
-Before resuming a broad audit, follow the [bounded crawl reliability pilot](docs/crawl-reliability-pilot.md) and preserve the full-audit pointer and operator ledger.
+Before resuming a broad audit, follow the bounded recrawl procedure in [technical audit](docs/technical-audit.md) and preserve the full-audit pointer and operator ledger.
 
 Issue fingerprints use rule-specific source/target identities. Timings, sizes, content hashes, and duplicate-group members remain observations; they do not create new issue identities. First observations are candidates. Repeated fresh observations in a comparable audit confirm presence; priority alone never implies confirmation.
 
@@ -257,7 +257,6 @@ Use `./seo --help` and `./seo <command> --help` for the full command reference.
 - [Google integrations](docs/google-integrations.md)
 - [Shopify integrations](docs/shopify-integrations.md)
 - [Standalone workbench architecture](docs/independent-workbench.md)
-- [Preserved SEO capability families](docs/capability-preservation.md)
 
 ### Optional Google integrations
 
