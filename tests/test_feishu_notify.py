@@ -8,7 +8,7 @@ from seo_workbench.cli import main
 from seo_workbench.feishu_notify import send_report_via_feishu_gateway
 
 
-FEISHU_CONFIG = Path(__file__).resolve().parents[1] / "templates/hexcal-feishu-profile.json"
+FEISHU_CONFIG = Path(__file__).resolve().parents[1] / "tests/fixtures/feishu-profile.json"
 
 
 def test_send_report_via_feishu_gateway_writes_private_run_record(tmp_path: Path) -> None:
@@ -29,7 +29,7 @@ def test_send_report_via_feishu_gateway_writes_private_run_record(tmp_path: Path
         Path("content/reports/daily.md"),
         title="Daily",
         role="seo_review",
-        profile="hexcal-seo",
+        profile="seo-profile",
         config_path=FEISHU_CONFIG,
         runner=runner,
     )
@@ -38,7 +38,7 @@ def test_send_report_via_feishu_gateway_writes_private_run_record(tmp_path: Path
     assert result["message_id"] == "om_1"
     assert "gateway_response" not in result
     assert path.stat().st_mode & 0o777 == 0o600
-    assert calls[0][0][:3] == ["lark-cli", "--profile", "hexcal-seo"]
+    assert calls[0][0][:3] == ["lark-cli", "--profile", "seo-profile"]
     assert bodies[0]["receive_id"] == "oc_replace_with_review_chat_id"
 
 
@@ -61,7 +61,7 @@ def test_send_report_accepts_project_prefixed_path_and_marks_sent(tmp_path: Path
         Path("projects/hexcal/content/reports/daily.md"),
         title="Daily",
         role="seo_review",
-        profile="hexcal-seo",
+        profile="seo-profile",
         config_path=FEISHU_CONFIG,
         runner=runner,
     )
@@ -79,7 +79,7 @@ def test_content_notify_report_requires_confirm(tmp_path: Path, capsys) -> None:
     state.init_state("shopify", "Hexcal", "https://www.hexcal.com", project_dir=project_dir)
     (project_dir / "content/reports/daily.md").write_text("# Daily\n", encoding="utf-8")
 
-    assert main(["--project-dir", str(project_dir), "content", "notify-report", "content/reports/daily.md", "--role", "seo", "--title", "Daily", "--profile", "hexcal-seo", "--json"]) == 1
+    assert main(["--project-dir", str(project_dir), "content", "notify-report", "content/reports/daily.md", "--role", "seo", "--title", "Daily", "--profile", "seo-profile", "--json"]) == 1
     assert "requires --confirm" in json.loads(capsys.readouterr().out)["error"]
 
 
@@ -92,7 +92,7 @@ def test_content_notify_report_cli_outputs_json(tmp_path: Path, capsys, monkeypa
 
     monkeypatch.setattr(cli_module, "send_report_via_feishu_gateway", fake_send)
 
-    assert main(["--project-dir", str(project_dir), "content", "notify-report", "content/reports/daily.md", "--role", "seo", "--title", "Daily", "--profile", "hexcal-seo", "--confirm", "--json"]) == 0
+    assert main(["--project-dir", str(project_dir), "content", "notify-report", "content/reports/daily.md", "--role", "seo", "--title", "Daily", "--profile", "seo-profile", "--confirm", "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
 
     assert payload["ok"] is True

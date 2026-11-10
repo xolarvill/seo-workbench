@@ -29,7 +29,7 @@ If the user requests a provisional proposal after discussing their requirements,
 
 ## Target keywords
 
-Use [keyword context maintenance](../../docs/keyword-context-maintenance.md) when creating, relying on, or updating this file. It defines file responsibilities, decision and evidence handling, update triggers, and handoff checks.
+Use [keyword context maintenance](../../docs/reference/keyword-context-maintenance.md) when creating, relying on, or updating this file. It defines file responsibilities, decision and evidence handling, update triggers, and handoff checks.
 
 Maintain `context/target-keywords.md` as a cumulative target keyword register with:
 

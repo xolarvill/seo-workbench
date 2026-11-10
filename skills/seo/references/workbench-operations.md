@@ -9,7 +9,7 @@ Use this reference when a skill needs collection, state, credentials or delivery
 | Current state and setup | `./seo --project example-store status --json`; `./seo --project example-store doctor --json` |
 | Raw/rendered page evidence | `./seo --project example-store evidence --rendered --crawl-limit 5 --json` when collection is needed; use `--crawl-limit 0` for the project URL alone |
 | Technical rules | `./seo --project example-store tech-audit --help`; reuse eligible current evidence and record coverage |
-| Search Console / GA4 / CrUX | See [Google integration setup and commands](../../../docs/google-integrations.md); use the bound property and exact window |
+| Search Console / GA4 / CrUX | See [Google integration setup and commands](../../../docs/reference/google-integrations.md); use the bound property and exact window |
 | Comparable production statistics | `./seo --project example-store statistics collect --json` aligns finalized GSC and business windows through its readiness gates |
 | Backlink provider exports | `./seo --project example-store backlinks import --help`; preserve provider identity, capture date and completeness |
 | Backlink paid collection | `./seo --project example-store backlinks collect --help`; the explicit `--confirm-paid` operation spends provider credits |
@@ -21,7 +21,7 @@ Run only the collection needed by the task. A wording review can reuse adequate 
 
 Resolve `context/`, `strategy/`, `content/`, `audits/` and `reports/` under the selected project directory, normally `projects/<id>/`. Reuse existing brand and product context before creating another document. Keep repository architecture and maintenance records in `docs/`.
 
-Use the configured Workbench connection for the selected project. [Google integrations](../../../docs/google-integrations.md) documents shared auth profiles and project bindings. Shopify and Clarity credentials are project scoped under the project's ignored runtime directory. Keep secrets out of prompts, commands, reports and source control; the connection interfaces expose status without returning secret values.
+Use the configured Workbench connection for the selected project. [Google integrations](../../../docs/reference/google-integrations.md) documents shared auth profiles and project bindings. Shopify and Clarity credentials are project scoped under the project's ignored runtime directory. Keep secrets out of prompts, commands, reports and source control; the connection interfaces expose status without returning secret values.
 
 ## Draft and publication handoff
 

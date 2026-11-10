@@ -264,7 +264,7 @@ Google 集成准备好后补充：
 5. 写出已确认事实、推断、缺口和下一项验证。
 6. 修复后用相同范围重新采集，并运行 `audit-diff` 或对应的 `changes evaluate`。
 
-Workbench 可对已配置的 GA4 与 Shopify 项目执行只读采集，并按页面合并 sessions、key events 和商品净额；CRM 或私密客服等其他来源仍需先按页面和前后窗口聚合、匿名化，再通过 `business-signals import` 导入。不要导入用户、订单或事件标识符。完整执行格式见 [SEO 迭代闭环](SEO迭代闭环.md)。
+Workbench 可对已配置的 GA4 与 Shopify 项目执行只读采集，并按页面合并 sessions、key events 和商品净额；CRM 或私密客服等其他来源仍需先按页面和前后窗口聚合、匿名化，再通过 `business-signals import` 导入。不要导入用户、订单或事件标识符。完整执行格式见 [SEO 迭代闭环](../reference/SEO迭代闭环.md)。
 
 ## 诊断输出模板
 

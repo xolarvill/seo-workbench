@@ -1,6 +1,6 @@
 # 关键词上下文职责与维护验收
 
-> 本文记录首轮实现。用户随后明确：target-keywords.md 应持续记录具体目标词及其移除状态；首轮“仅方向和入口”的设计已由 [目标关键词台账规范](keyword-context-maintenance.md) 取代，以下首轮结论不作为当前文件职责。
+> 本文记录首轮实现。用户随后明确：target-keywords.md 应持续记录具体目标词及其移除状态；首轮“仅方向和入口”的设计已由 [目标关键词台账规范](../reference/keyword-context-maintenance.md) 取代，以下首轮结论不作为当前文件职责。
 
 - 日期：2026-11-04（Asia/Shanghai）
 - 范围：仓库通用规则、本地技能与关键词研究交接；不采集新 SEO 数据，不修改或发布站点。
@@ -8,7 +8,7 @@
 
 ## 已实现
 
-1. [统一职责和维护机制](keyword-context-maintenance.md)：context 保留全站搜索方向；上线批次清单归入具名日期报告；详细页面归属只指定一个维护位置。任务执行 agent 在已授权决定变化时同步相关记录，使用前检查适用范围、决定和证据，保留历史与提案状态。
+1. [统一职责和维护机制](../reference/keyword-context-maintenance.md)：context 保留全站搜索方向；上线批次清单归入具名日期报告；详细页面归属只指定一个维护位置。任务执行 agent 在已授权决定变化时同步相关记录，使用前检查适用范围、决定和证据，保留历史与提案状态。
 2. 根 AGENTS、README、技能索引、project-context 与 keyword-deep-dive 指向同一机制。不新增关键词数据库、定时刷新器或按文件年龄阻断任务的门槛。
 3. 新研究和复用研究的 `keyword_handoff` 均返回 `policy_path`、可用上下文及提示；保留既有 `existing_path` 和新研究 `output_path` 路由行为，不创建或改写研究、关键词决定和页面归属。
 

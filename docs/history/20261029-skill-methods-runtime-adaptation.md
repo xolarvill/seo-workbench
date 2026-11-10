@@ -1,10 +1,10 @@
 # 专家方法整理与运行引用适配
 
-日期：2026-10-29（Asia/Shanghai）。范围：已批准计划第 4、5 步。第 2、3 步见[能力归属和目录迁移](20261029-skill-layout-migration.md)，来源与历史见[来源参考](skill-sources.md)。
+日期：2026-10-29（Asia/Shanghai）。范围：已批准计划第 4、5 步。第 2、3 步见[能力归属和目录迁移](20261029-skill-layout-migration.md)，来源与历史见[来源参考](../skill-sources.md)。
 
 ## 第 4 步：方法归属与来源保存
 
-原有 11 份专家材料与 24 份流程文档逐项登记在 [skill-method-adaptations.json](skill-method-adaptations.json)。其中 34 份整理为当前能力的按需参考，scrub 仅保留历史。
+原有 11 份专家材料与 24 份流程文档逐项登记在 [skill-method-adaptations.json](../skill-method-adaptations.json)。其中 34 份整理为当前能力的按需参考，scrub 仅保留历史。
 
 - 编辑、内容审阅、元数据、SEO 编辑、内链、关键词分布、集群、标题、转化与表现方法分别挂在对应的主入口下。
 - 研究、brief 到写作、旧文更新、内容日历、落地页和再利用流程改成输入、专业判断和交付物的参考；不复制原环境的命令执行链。
@@ -27,7 +27,7 @@
 | 局部 meta 与现成文章交接 | 新的按需参考接到仍默认运行完整研究／创作的主入口 | 增加 metadata-only 和 delivery 模式，复用现有输入，按任务执行导入或校验 |
 | 来源维护脚本 | 最新历史未刷新、内容变化标记不可恢复、缺失材料可能中断扫描 | 使用真实 Git 历史和首次 blob，单列未提交修改；缺失材料返回错误；增加临时 Git 仓库回归 |
 
-共享执行契约见 [Workbench operations](../skills/seo/references/workbench-operations.md)，已从技能索引和相关方法接入。主入口仍为 60 个；来源清单覆盖 406 个文件。35 份历史专家／流程原文保持原指纹。原始来源 ID、固定上游比较版本和许可声明均保留。
+共享执行契约见 [Workbench operations](../../skills/seo/references/workbench-operations.md)，已从技能索引和相关方法接入。主入口仍为 60 个；来源清单覆盖 406 个文件。35 份历史专家／流程原文保持原指纹。原始来源 ID、固定上游比较版本和许可声明均保留。
 
 ## 校验与行为抽样
 

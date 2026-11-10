@@ -106,7 +106,7 @@ CrUX 提供真实 Chrome 用户的当前值和历史趋势：
 
 ## GSC 是显式的只读证据
 
-首次使用需要由用户完成授权和 property 绑定。配置方法见 [Google integrations](google-integrations.md)。完成后运行：
+首次使用需要由用户完成授权和 property 绑定。配置方法见 [Google integrations](../reference/google-integrations.md)。完成后运行：
 
 ```bash
 ./seo --project my-site gsc collect --json

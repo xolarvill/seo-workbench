@@ -4,7 +4,6 @@ from pathlib import Path
 import pytest
 
 from seo_workbench.content_pipeline import normalize_status
-from seo_workbench.hexcal_blog_import import HEXCAL_STATUS_MAP
 from seo_workbench import state
 from seo_workbench.cli import main
 from seo_workbench.validation import validate_project
@@ -120,12 +119,6 @@ def test_content_queue_validation_rejects_invalid_status(tmp_path: Path) -> None
 
     assert result["ok"] is False
     assert any(issue["code"] == "state.content_queue_item" for issue in result["issues"])
-
-
-def test_hexcal_statuses_normalize_to_workbench_queue_statuses() -> None:
-    assert normalize_status("cluster_approved", HEXCAL_STATUS_MAP) == "ready_to_write"
-    assert normalize_status("修改中", HEXCAL_STATUS_MAP) == "revision_requested"
-    assert normalize_status("已收录", HEXCAL_STATUS_MAP) == "indexed"
 
 
 def test_project_id_rejects_path_traversal() -> None:

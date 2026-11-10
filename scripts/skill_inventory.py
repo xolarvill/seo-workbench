@@ -75,7 +75,7 @@ def dependencies(files: list[dict]) -> list[dict]:
                     status = 'route_or_example'
                 else:
                     rooted = target.startswith(('skills/', 'third_party/', 'docs/', 'scripts/', 'data_sources/', '.claude/'))
-                    resolved = posixpath.normpath(target if rooted else str(Path(path).parent / target))
+                    resolved = posixpath.normpath(target if rooted else (Path(path).parent / target).as_posix())
                     try:
                         exists = local_path(resolved).exists()
                     except ValueError:
@@ -83,7 +83,7 @@ def dependencies(files: list[dict]) -> list[dict]:
                     else:
                         status = 'resolved_local' if exists else 'upstream_runtime_reference' if target.startswith(('scripts/', 'data_sources/', '.claude/')) else 'missing_literal_target'
                 rows.append({'from_path': path, 'line': number, 'syntax': syntax, 'target': raw,
-                             'resolved_path': resolved, 'status': status})
+                             'resolved_path': Path(resolved).as_posix() if resolved else None, 'status': status})
     return rows
 
 

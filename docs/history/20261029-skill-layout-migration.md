@@ -1,6 +1,6 @@
 # Skills 能力归属与一级目录迁移
 
-日期：2026-10-29（Asia/Shanghai）。本次执行已批准计划的第 2、3 步。来源基线见 [skill-sources.md](skill-sources.md)，逐文件迁移表见 [skill-layout-migration.json](skill-layout-migration.json)。
+日期：2026-10-29（Asia/Shanghai）。本次执行已批准计划的第 2、3 步。来源基线见 [skill-sources.md](../skill-sources.md)，逐文件迁移表见 [skill-layout-migration.json](../skill-layout-migration.json)。
 
 ## 能力归属决定（第 2 步）
 

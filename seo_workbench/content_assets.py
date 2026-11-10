@@ -13,6 +13,7 @@ from urllib.request import Request, urlopen
 
 from seo_workbench import state
 from seo_workbench.feishu_gateway import download_attachment, list_records, upsert_record
+from seo_workbench.product_anchors import load_product_anchors
 from seo_workbench_tools.files import atomic_write_text
 
 
@@ -24,7 +25,7 @@ MIME_TO_EXT = {"image/jpeg": ".jpg", "image/png": ".png", "image/gif": ".gif"}
 MAX_SHOPIFY_IMAGE_BYTES = 15 * 1024 * 1024
 SHOPIFY_RESIZE_WIDTH_PX = 2400
 MMX_PROMPT = (
-    "Describe this Hexcal desk-setup image in 1-2 sentences for blog-post image matching. "
+    "Describe this product image in 1-2 sentences for blog-post image matching. "
     "Mention the main product/object, shot composition, and visual mood. "
     "Avoid generic phrases like 'a desk setup'."
 )
@@ -32,30 +33,6 @@ TIMES_USED_HARD_CAP = 3
 ALLOWED_CONTENT_TYPES = {"Photo", "Rendering"}
 RATING_RANK = {"Brand Contents": 3, "PUGC": 2, "UGC": 1, "": 0}
 FEISHU_RECORD_ID_RE = re.compile(r"rec[A-Za-z0-9]+")
-ANCHOR_PRODUCTS = {
-    "studio": {
-        "Hexcal Studio",
-        "Hexcal Studio Extension Kit",
-        "Under Desk Drawer",
-        "Under Desk Cable Management Tray",
-        "Hexcal Light",
-        "Hexcal Power",
-        "Hexcal Cable Management",
-        "Tech Pouch",
-        "Desk Mat Bundle",
-        "Hexcal Desk Mat",
-    },
-    "plus": {"Hexcal Studio Plus (Silver)", "Hexcal Studio Plus (Dark Gray)"},
-    "ergon": {
-        "Hexcal Elevate Standing Desk",
-        "Hexcal Ascend Standing Desk",
-        "Hexcal Arm",
-        "Single Monitor Arm",
-        "Heavy Duty Monitor Arm",
-        "Monitor Mount System",
-        "Hexcal Inspire Chair",
-    },
-}
 ASSET_FIELDS = {
     table: {
         name: name
@@ -152,9 +129,8 @@ def write_asset_candidates_from_feishu(
     limit: int = 40,
     runner: Any = subprocess.run,
 ) -> tuple[dict[str, Any], Path]:
-    _require_hexcal_project(project_dir)
     record = _find_pipeline_record(project_dir, item_id)
-    allowed = _allowed_products(record)
+    allowed = _allowed_products(project_dir, record)
     candidates = []
     for table in UGC_TABLES:
         for row in _list_asset_rows(table, profile, config_path, runner):
@@ -190,7 +166,6 @@ def describe_asset_candidates(
     write_back: bool = True,
     runner: Any = subprocess.run,
 ) -> tuple[dict[str, Any], Path]:
-    _require_hexcal_project(project_dir)
     manifest_path = manifest_path or state.safe_project_path(project_dir, f"content/assets/{_safe_name(item_id)}-candidates.json")
     if not manifest_path.exists():
         raise FileNotFoundError(f"{manifest_path} not found; run content asset-candidates first")
@@ -290,7 +265,6 @@ def download_asset_files_from_feishu(
     manifest_path: Path | None = None,
     runner: Any = subprocess.run,
 ) -> tuple[dict[str, Any], Path]:
-    _require_hexcal_project(project_dir)
     if manifest_path is None:
         manifest_path = state.safe_project_path(project_dir, f"content/assets/{_safe_name(item_id)}.json")
         if not manifest_path.exists():
@@ -328,12 +302,6 @@ def download_asset_files_from_feishu(
         "manifest_path": str(manifest_path.relative_to(project_dir)),
     }
     return report, manifest_path
-
-
-def _require_hexcal_project(project_dir: Path) -> None:
-    name = str((state.load_state(project_dir).get("project") or {}).get("name") or "").strip().casefold()
-    if name != "hexcal":
-        raise ValueError("Feishu asset catalogs are available only for the Hexcal project adapter")
 
 
 def upload_asset_files_to_shopify(
@@ -655,10 +623,11 @@ def _asset_candidate(table: str, row: dict[str, Any]) -> dict[str, Any] | None:
     }
 
 
-def _allowed_products(record: dict[str, Any]) -> set[str]:
+def _allowed_products(project_dir: Path, record: dict[str, Any]) -> set[str]:
+    anchors = load_product_anchors(project_dir)
     allowed: set[str] = set()
     for anchor in record.get("product_anchor") or []:
-        allowed.update(ANCHOR_PRODUCTS.get(str(anchor), set()))
+        allowed.update(entry["title"] for entry in anchors.get(str(anchor), []))
     return allowed
 
 

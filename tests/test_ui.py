@@ -24,7 +24,8 @@ def ui_client(tmp_path: Path) -> tuple[TestClient, Path]:
     (project_dir / "strategy/cluster-plan.md").write_text("# Original\n", encoding="utf-8")
     tutorials_dir = tmp_path / "docs"
     tutorials_dir.mkdir()
-    (tutorials_dir / "SEO基础知识与证据模型.md").write_text("# SEO Foundations\n\nLocal tutorial.\n", encoding="utf-8")
+    (tutorials_dir / "guides").mkdir()
+    (tutorials_dir / "guides" / "SEO基础知识与证据模型.md").write_text("# SEO Foundations\n\nLocal tutorial.\n", encoding="utf-8")
     app = create_app(
         projects_root=projects_root,
         runtime_dir=tmp_path / ".runtime/ui",
@@ -721,7 +722,7 @@ def test_ui_serves_allowlisted_tutorials_as_read_only_content(tmp_path: Path) ->
 
     assert listed.status_code == 200
     assert listed.json()["count"] == 1
-    assert listed.json()["tutorials"][0]["source"] == "SEO基础知识与证据模型.md"
+    assert listed.json()["tutorials"][0]["source"] == "guides/SEO基础知识与证据模型.md"
     assert opened.status_code == 200
     assert opened.json()["tutorial"]["content"].startswith("# SEO Foundations")
     assert opened.json()["tutorial"]["revision"]

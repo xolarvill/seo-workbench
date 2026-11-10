@@ -3499,10 +3499,6 @@
     },
     {
       "from_path": "skills/README.md",
-      "target_path": "docs/capability-preservation.md"
-    },
-    {
-      "from_path": "skills/README.md",
       "target_path": "third_party/NOTICE.md"
     },
     {

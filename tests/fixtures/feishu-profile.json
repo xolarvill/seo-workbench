@@ -1,7 +1,7 @@
 {
   "profiles": {
-    "hexcal-seo": {
-      "lark_cli_profile": "hexcal-seo",
+    "seo-profile": {
+      "lark_cli_profile": "seo-profile",
       "recipients": {
         "seo_owner": {"kind": "user", "open_id": "ou_replace_with_app_scoped_open_id", "chat_id": "oc_optional_p2p_chat_id"},
         "seo_review_group": {"kind": "chat", "chat_id": "oc_replace_with_review_chat_id"}

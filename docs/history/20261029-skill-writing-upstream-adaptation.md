@@ -8,7 +8,7 @@
 
 当前规则要求反驳指向本文已提出的观点、明确比较请求或任务中可指认的错误；没有实用条件、事实或动作的免责段落列入必须修改。先给有依据的答案，限制写在影响选择的位置；整段复读，检查是否一直在回应缺席的对手。保留真实安全、兼容性、利益披露和概念图标签。
 
-校准覆盖相同语句在不同上下文的判断、重复声明合并、正常技术措辞与零修改。可复用的构造案例见 [skill-writing-cases.json](fixtures/skill-writing-cases.json)，这些案例不来自实际店铺文章。
+校准覆盖相同语句在不同上下文的判断、重复声明合并、正常技术措辞与零修改。可复用的构造案例见 [skill-writing-cases.json](../fixtures/skill-writing-cases.json)，这些案例不来自实际店铺文章。
 
 第 6 步结果：独立会话按新正文复核六个案例：A／E／F 的无收益辩白列为必改并删除；B 兼容性、C 厂商安全步骤、D 明确购买问题均接受原样。没有新增故事、购物安慰或风险提示。改前后对同一构造案例的分类与输出均已核对。结构／来源和 agent-led 工作流 38 项回归及严格引用检查通过。
 
@@ -39,7 +39,7 @@
 | 旧页 brief 与业务匹配 | 新增 seo-content-brief 方法 → 既有 content-brief 和 existing-page-scope 参考 | 保留／加强／新增；区分信息解释与实际产品服务；保留论坛等真实 SERP 类型，不引入域名排除表、配额或新技能入口 |
 | 结构化数据／图片政策 | Claude SEO 纠错线索 + Google 官方现场核对 → schema 共享政策和匹配参考 | FAQ 停展、Breadcrumb 桌面范围、Event 公开可预订与真实地点；描述性 alt text；区分语义有效、功能资格和实际展示 |
 
-逐项来源、实际读取的文件 blob、本地落点、采用及未采用理由保存在 [skill-upstream-adoptions.json](skill-upstream-adoptions.json)。新增 brief 参考单独登记 Claude SEO 来源和已知选择适配基线；仍为 60 个技能入口，材料增至 408 个文件。
+逐项来源、实际读取的文件 blob、本地落点、采用及未采用理由保存在 [skill-upstream-adoptions.json](../skill-upstream-adoptions.json)。新增 brief 参考单独登记 Claude SEO 来源和已知选择适配基线；仍为 60 个技能入口，材料增至 408 个文件。
 
 ### 主要来源
 

@@ -4,47 +4,45 @@ The operational references are in English. The practical SEO tutorials are writt
 
 ## Start here
 
-1. [SEO 基础知识与证据模型](SEO基础知识与证据模型.md) explains what can be observed, inferred, measured, or only verified by Google data.
-2. [SEO 增长诊断与拆解](SEO增长诊断与拆解.md) connects search visibility to visits, products, conversion, and revenue without turning diagnostic models into ranking formulas.
-3. [SEO 工具链协同工作流指南](SEO工具链协同工作流指南.md) maps Workbench commands to decisions and deliverables.
-4. [从 0 到 1 新站 SEO 建设教程](从0到1新站SEO建设教程.md) covers discovery, launch, measurement, and iteration for a new site.
-5. [BLOG 生产线操作教程](BLOG生产线操作教程.md) is the day-to-day Workbench-led path from topic approval through Shopify scheduling, GSC inspection, and Feishu notification.
-6. [Technical SEO Audit](technical-audit.md) documents the bounded crawl, deterministic rules, GSC priority model, diff, scheduling, and Feishu notification loop.
-7. [SEO 迭代闭环](SEO迭代闭环.md) covers the Pages action loop, change records, outcome review, aggregate business signals, technical issue verification, and backlink snapshots.
-8. [统计学 SEO 操作手册](统计学SEO操作手册.md) defines production prerequisites, measurement-regime duties, statistical methods, UI surfaces, and recovery rules.
+1. [SEO 基础知识与证据模型](guides/SEO基础知识与证据模型.md) explains what can be observed, inferred, measured, or only verified by Google data.
+2. [SEO 增长诊断与拆解](guides/SEO增长诊断与拆解.md) connects search visibility to visits, products, conversion, and revenue without turning diagnostic models into ranking formulas.
+3. [SEO 工具链协同工作流指南](guides/SEO工具链协同工作流指南.md) maps Workbench commands to decisions and deliverables.
+4. [从 0 到 1 新站 SEO 建设教程](guides/从0到1新站SEO建设教程.md) covers discovery, launch, measurement, and iteration for a new site.
+5. [BLOG 生产线操作教程](guides/BLOG生产线操作教程.md) is the day-to-day Workbench-led path from topic approval through Shopify scheduling, GSC inspection, and Feishu notification.
+6. [Technical SEO Audit](reference/technical-audit.md) documents the bounded crawl, deterministic rules, GSC priority model, diff, scheduling, and Feishu notification loop.
+7. [SEO 迭代闭环](reference/SEO迭代闭环.md) covers the Pages action loop, change records, outcome review, aggregate business signals, technical issue verification, and backlink snapshots.
+8. [统计学 SEO 操作手册](reference/统计学SEO操作手册.md) defines production prerequisites, measurement-regime duties, statistical methods, UI surfaces, and recovery rules.
 
 ## Choose the site guide
 
 | Site type | Guide | Main concerns |
 |---|---|---|
-| Shopify Liquid theme | [Shopify 从 0 到 1 SEO 建设进阶教程](Shopify从0到1-SEO建设进阶教程.md) | templates, collections, products, apps, markets |
-| Shopify Hydrogen | [Shopify Hydrogen Headless SEO 指南](Shopify-Hydrogen-Headless-SEO指南.md) | raw/rendered parity, routing, Storefront API, edge delivery |
-| WooCommerce B2B | [WooCommerce B2B SEO 指南](WooCommerce-B2B-SEO指南.md) | public catalog, inquiry, role pricing, cache boundaries |
-| Custom or framework-free site | [自建普通网站 SEO 指南](自建普通网站SEO指南.md) | HTTP contracts, HTML, routing, Sitemap, release checks |
+| Shopify Liquid theme | [Shopify 从 0 到 1 SEO 建设进阶教程](guides/Shopify从0到1-SEO建设进阶教程.md) | templates, collections, products, apps, markets |
+| Shopify Hydrogen | [Shopify Hydrogen Headless SEO 指南](guides/Shopify-Hydrogen-Headless-SEO指南.md) | raw/rendered parity, routing, Storefront API, edge delivery |
+| WooCommerce B2B | [WooCommerce B2B SEO 指南](guides/WooCommerce-B2B-SEO指南.md) | public catalog, inquiry, role pricing, cache boundaries |
+| Custom or framework-free site | [自建普通网站 SEO 指南](guides/自建普通网站SEO指南.md) | HTTP contracts, HTML, routing, Sitemap, release checks |
 
 The platform guides contain only platform-specific decisions. Use the shared foundation for content quality, evidence confidence, structured data boundaries, Lighthouse, CrUX, GSC, and audit-diff interpretation.
 
 ## Operations and architecture
 
-- [Local UI surface](ui-local-surface.md): the optional local viewer's audit whitelist, credential APIs, Markdown write scope, and read-only Pages boundary.
-- [Google integrations](google-integrations.md): CrUX and read-only GSC configuration, evidence scopes, and status meanings.
-- [Analytics MCP assessment](20261027-analytics-mcp-assessment.md): API and MCP boundaries, current Google / Clarity tools, and the proposed optional Clarity integration.
-- [Clarity integration](clarity-integrations.md): project-scoped MCP connections, behavior queries, private evidence and transient recording links.
-- [Shopify integrations](shopify-integrations.md): Admin API credential setup, granted scopes, rotation, and project isolation.
-- [Statistical SEO operations](统计学SEO操作手册.md): the minimum operator preparation, daily collection entry point, measurement boundaries, and metric catalog.
-- [Hexcal BLOG adapter](hexcal-blog-migration.md): optional Feishu field aliases, ownership boundaries, and retained production capabilities.
-- [Standalone workbench architecture](independent-workbench.md): local setup, project isolation, CLI boundaries, and runtime design.
-- [Preserved SEO capability families](capability-preservation.md): provenance and capability-preservation notes from the standalone refactor.
+- [Local UI surface](reference/ui-local-surface.md): the optional local viewer's audit whitelist, credential APIs, Markdown write scope, and read-only Pages boundary.
+- [Google integrations](reference/google-integrations.md): CrUX and read-only GSC configuration, evidence scopes, and status meanings.
+- [Clarity integration](reference/clarity-integrations.md): project-scoped MCP connections, behavior queries, private evidence and transient recording links.
+- [Shopify integrations](reference/shopify-integrations.md): Admin API credential setup, granted scopes, rotation, and project isolation.
+- [Statistical SEO operations](reference/统计学SEO操作手册.md): the minimum operator preparation, daily collection entry point, measurement boundaries, and metric catalog.
+- [Standalone workbench architecture](reference/independent-workbench.md): local setup, project isolation, CLI boundaries, and runtime design.
 - [Skill sources and upstream comparison](skill-sources.md): pinned upstream versions, file-level provenance, local change history, and the update-review procedure.
-- [Canonical skill ownership and layout migration](20261029-skill-layout-migration.md): shared skill namespace, merged capabilities, old-path mapping, and migration verification.
-- [Specialist methods and runtime adaptation](20261029-skill-methods-runtime-adaptation.md): current method owners, preserved originals, local operation references, and verification.
-- [Writing standards and selected upstream methods](20261029-skill-writing-upstream-adaptation.md): reader-focused editing, shared writing rules, behavior cases, and the adopted/deferred upstream changes.
-- [Writing authority and evidence boundary](20261029-writing-authority-and-evidence-boundary.md): one expression method, internal verification records, reader-useful conditions, and actual generation checks.
-- [Task-oriented skill discovery](20261029-skill-discovery-entrypoints.md): triggers, inputs, outputs, combinations and ownership across all 60 entrypoints.
-- [Skills acceptance and maintenance](20261029-skills-acceptance-and-maintenance.md): independent outputs, observed failures and retests, regression scope, maintenance and rollback commits.
-- [Local skill integration diagnosis](20261026-local-skill-integration-diagnosis.md): discovery, routing, and execution gaps; prompted use is not evidence of autonomous selection.
-- [Agent-led workbench acceptance](20261026-agent-led-workbench-acceptance.md): next-command retirement, regression results, desktop/mobile QA, and bounded autonomous-selection evidence.
-- [Agent skill routing design](agent-skill-routing-design.md): agent-led method selection, retired next-step scheduling, compatibility boundaries, and acceptance evidence.
+- [Canonical skill ownership and layout migration](history/20261029-skill-layout-migration.md): shared skill namespace, merged capabilities, old-path mapping, and migration verification.
+- [Specialist methods and runtime adaptation](history/20261029-skill-methods-runtime-adaptation.md): current method owners, preserved originals, local operation references, and verification.
+- [Writing standards and selected upstream methods](history/20261029-skill-writing-upstream-adaptation.md): reader-focused editing, shared writing rules, behavior cases, and the adopted/deferred upstream changes.
+- [Writing authority and evidence boundary](history/20261029-writing-authority-and-evidence-boundary.md): one expression method, internal verification records, reader-useful conditions, and actual generation checks.
+- [Task-oriented skill discovery](history/20261029-skill-discovery-entrypoints.md): triggers, inputs, outputs, combinations and ownership across all 60 entrypoints.
+- [Skills acceptance and maintenance](history/20261029-skills-acceptance-and-maintenance.md): independent outputs, observed failures and retests, regression scope, maintenance and rollback commits.
+- [Agent instruction structure](history/20261110-agent-instruction-structure.md): task routing, grouped guardrails, the reporting contract, and what moved out of `AGENTS.md`.
+- [Docs pruning](history/20261110-docs-pruning.md): which obsolete plans and acceptance records were removed, and the links that moved with them.
+- [Docs hierarchy and Hexcal removal](history/20261110-docs-hierarchy-and-hexcal-removal.md): the guides/reference/history split, the path rewrites it required, and what the import-chain removal left in place.
+- [Product anchors and main integration](history/20261110-product-anchors-and-main-merge.md): moving store product data out of the package, and how main's working contract, definition of done, and UI surface doc merged in.
 
 ## Evidence selection
 

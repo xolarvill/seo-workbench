@@ -8,7 +8,7 @@ from seo_workbench.content_briefs import export_revision_brief, export_writing_b
 
 def test_export_writing_brief_uses_pipeline_context_and_links(tmp_path: Path) -> None:
     project_dir = tmp_path / "project"
-    state.init_state("shopify", "Hexcal", "https://example.com", project_dir=project_dir)
+    state.init_state("shopify", "Acme", "https://example.com", project_dir=project_dir)
     (project_dir / "content/blog-pipeline.jsonl").write_text(
         "\n".join(
             [
@@ -34,6 +34,18 @@ def test_export_writing_brief_uses_pipeline_context_and_links(tmp_path: Path) ->
     )
     (project_dir / "strategy/briefs").mkdir(parents=True, exist_ok=True)
     (project_dir / "context").mkdir(parents=True, exist_ok=True)
+    (project_dir / "context/product-anchors.json").write_text(
+        json.dumps(
+            {
+                "studio": [
+                    {"title": "Acme Studio", "handle": "acme-studio"},
+                    {"title": "Acme Desk Mat Bundle", "handle": "acme-desk-mat-bundle"},
+                    {"title": "Tech Pouch", "handle": "tech-pouch"},
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
     (project_dir / "context/brand-voice.md").write_text("Brand", encoding="utf-8")
     (project_dir / "context/blog-style-guide.md").write_text("Blog", encoding="utf-8")
     (project_dir / "context/product-specs.md").write_text("Specs", encoding="utf-8")
@@ -68,7 +80,7 @@ def test_export_writing_brief_uses_pipeline_context_and_links(tmp_path: Path) ->
     assert "context/brand-voice.md" in text
     assert "context/blog-style-guide.md" in text
     assert "context/product-specs.md" in text
-    assert "[Hexcal Studio](https://example.com/products/hexcal-studio)" in text
+    assert "[Acme Studio](https://example.com/products/acme-studio)" in text
     assert "[Cable Guide](https://example.com/blogs/articles/cable-guide)" in text
     assert "Feature image record IDs: recFeature" in text
     assert '<img data-rid="rec..." alt="...">' in text

@@ -127,8 +127,8 @@ const workspace: Workspace = {
 };
 
 const tutorialSummaries: TutorialSummary[] = [
-  { slug: "seo-foundations", title: "SEO 基础知识与证据模型", description: "Evidence", category: "Foundations", source: "SEO基础知识与证据模型.md" },
-  { slug: "growth-diagnosis", title: "SEO 增长诊断与拆解", description: "Growth", category: "Foundations", source: "SEO增长诊断与拆解.md" },
+  { slug: "seo-foundations", title: "SEO 基础知识与证据模型", description: "Evidence", category: "Foundations", source: "guides/SEO基础知识与证据模型.md" },
+  { slug: "growth-diagnosis", title: "SEO 增长诊断与拆解", description: "Growth", category: "Foundations", source: "guides/SEO增长诊断与拆解.md" },
 ];
 
 const tutorialDocuments: Record<string, TutorialDocument> = {
@@ -237,7 +237,7 @@ const techAudit: TechAuditData = {
   ],
   run: null,
   summary: { pages: 18, issues: 4, four_oh_four: 2, successful_pages: 16, crawled_pages: 18, discovered_unique: 21, queued_remaining: 3, continuation_available: true },
-  schedule: { enabled: true, every_minutes: 60, notify_role: "seo", profile: "hexcal-seo", next_run_at: "2026-08-03T01:00:00Z" },
+  schedule: { enabled: true, every_minutes: 60, notify_role: "seo", profile: "seo-profile", next_run_at: "2026-08-03T01:00:00Z" },
   last_recrawl: null,
   pages: [
     { page_id: "page-1", url: "https://example.com/missing", final_url: "https://example.com/missing", status_code: 404, indexability: { status: "unknown", indexable: null }, title: "", meta_description: "", meta_keywords: "", h1: [], h2: [], inlink_count: 3, crawl_depth: 1, response_time_ms: 20, response_size: 100, issue_ids: ["HTTP_4XX"], priority: 65, last_recrawl_at: null, last_recrawl_status: null },

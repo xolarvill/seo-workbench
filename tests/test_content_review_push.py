@@ -8,7 +8,7 @@ from seo_workbench.cli import main
 from seo_workbench.content_review_push import push_review_request
 
 
-FEISHU_CONFIG = Path(__file__).resolve().parents[1] / "templates/hexcal-feishu-profile.json"
+FEISHU_CONFIG = Path(__file__).resolve().parents[1] / "tests/fixtures/feishu-profile.json"
 
 
 def test_push_review_request_sends_feishu_post_and_stores_thread_id(tmp_path: Path) -> None:
@@ -39,7 +39,7 @@ def test_push_review_request_sends_feishu_post_and_stores_thread_id(tmp_path: Pa
         project_dir,
         "rec1",
         role="seo_review",
-        profile="hexcal-seo",
+        profile="seo-profile",
         config_path=FEISHU_CONFIG,
         now=datetime(2026, 7, 29, tzinfo=timezone.utc),
         runner=runner,
@@ -64,7 +64,7 @@ def test_content_review_push_requires_confirm(tmp_path: Path, capsys) -> None:
     project_dir = tmp_path / "project"
     state.init_state("shopify", "Hexcal", "https://www.hexcal.com", project_dir=project_dir)
 
-    assert main(["--project-dir", str(project_dir), "content", "review-push", "rec1", "--role", "seo", "--profile", "hexcal-seo", "--json"]) == 1
+    assert main(["--project-dir", str(project_dir), "content", "review-push", "rec1", "--role", "seo", "--profile", "seo-profile", "--json"]) == 1
     payload = json.loads(capsys.readouterr().out)
 
     assert payload["ok"] is False

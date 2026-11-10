@@ -23,7 +23,7 @@ For all reader-facing prose, [reader-experience-review](reader-experience-review
 
 | Skill and trigger | Useful inputs | Expected output | Combine when useful |
 |---|---|---|---|
-| [project-context](project-context/SKILL.md): maintain audience, voice and target keyword lifecycle | Existing context, keyword decisions and research | Current/candidate/removed target register with decision links and page assignments | product-marketing-context for offer positioning; [keyword maintenance](../docs/keyword-context-maintenance.md) for update rules |
+| [project-context](project-context/SKILL.md): maintain audience, voice and target keyword lifecycle | Existing context, keyword decisions and research | Current/candidate/removed target register with decision links and page assignments | product-marketing-context for offer positioning; [keyword maintenance](../docs/reference/keyword-context-maintenance.md) for update rules |
 | [product-marketing-context](product-marketing-context/SKILL.md): clarify positioning, alternatives, customer pains and offer | Product facts, customer language, current positioning | Reusable product-marketing context | project-context for SEO and brand context; reuse shared facts |
 | [seo](seo/SKILL.md): a broad SEO request needs scoping or several capabilities | Goal, site/project, existing artifacts | Scoped method selection and evidence needs | Relevant direct specialists; skip this router for a clear task |
 | [seo-plan](seo-plan/SKILL.md): build a site-level SEO roadmap | Goals, markets, resources, current performance and site inventory | Prioritized SEO roadmap | site-audit for an unknown baseline; content-strategy for editorial choices |
@@ -142,6 +142,6 @@ Specialist references live with their owners: [article editing](copy-editing/ref
 
 ## Sources and maintenance
 
-All 60 repository-wide entrypoints live at `skills/<capability>/SKILL.md`. Capability groupings above describe work, not upstream ownership. Use [the provenance reference](../docs/skill-sources.md) for upstream versions and local changes, [attribution](../third_party/NOTICE.md) for licenses, [the migration map](../docs/20261029-skill-layout-migration.md) for old paths, and [the adaptation map](../docs/skill-method-adaptations.json) for preserved specialist/workflow methods. [Historical originals](../third_party/skill-history/seomachine/README.md) support source comparison.
+All 60 repository-wide entrypoints live at `skills/<capability>/SKILL.md`. Capability groupings above describe work, not upstream ownership. Use [the provenance reference](../docs/skill-sources.md) for upstream versions and local changes, [attribution](../third_party/NOTICE.md) for licenses, [the migration map](../docs/history/20261029-skill-layout-migration.md) for old paths, and [the adaptation map](../docs/skill-method-adaptations.json) for preserved specialist/workflow methods. [Historical originals](../third_party/skill-history/seomachine/README.md) support source comparison.
 
 Source recipes are material for judgment and adaptation. Current project facts, evidence eligibility, bounded collectors, project isolation and user authorization govern execution. Source-era article quotas, generic scores and invented authority estimates are not acceptance gates. Preserve useful methods without restoring archived executors or independent prose authorities.

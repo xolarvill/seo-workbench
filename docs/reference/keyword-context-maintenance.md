@@ -1,6 +1,6 @@
 # Keyword context responsibilities and maintenance
 
-This is the shared contract for agents maintaining a project's target keyword register. The [project-context skill](../skills/project-context/SKILL.md) owns the method. The register records actual selected keywords across tasks and releases, including subsequent removal; detailed rationale belongs in linked reports.
+This is the shared contract for agents maintaining a project's target keyword register. The [project-context skill](../../skills/project-context/SKILL.md) owns the method. The register records actual selected keywords across tasks and releases, including subsequent removal; detailed rationale belongs in linked reports.
 
 ## File responsibilities
 

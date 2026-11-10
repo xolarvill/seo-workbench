@@ -115,8 +115,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "26533fcf8c40ed6766552cb7dd9a8391a66ef6aac882e278ba900e5ae010c9ff",
-      "local_git_blob_sha": "f33e5c667cc067c5170a730d38ebfe0b562ad3fe",
+      "local_sha256": "ded232a9865a0c30a940e8de1fc619bf28df93418f25f96a12e302097cd60db3",
+      "local_git_blob_sha": "bfd426e74f3080f2ba30f79ac7c870e2fc1a6380",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -474,12 +474,12 @@
         "path": "skills/analytics-tracking/references/provider-inputs.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [],
-      "local_sha256": "4e2daeb76cdbc90bdac061b9e768615a9a26a24df105423fb4c34f5057493192",
-      "local_git_blob_sha": "4c417aa8c84eccce4e355bf1ef47869217c1f496",
+      "local_sha256": "ddcaaa775c0d61887dddb7ddd2e384ee4276520b5957e40e0b8dcebfe65ba168",
+      "local_git_blob_sha": "beb4ae8a84b62841e4bb7b85c70cb6f15af267a1",
       "maintenance_status": "active",
       "workingtree_modified": false
     },
@@ -4426,8 +4426,8 @@
       "upstream_path": "skills/keyword-deep-dive/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "35170af6789cefa3f4fb609da891a6dc0097c0e01d17103c3b3a65f2a9645ef9",
-      "local_git_blob_sha": "eb388d155cba7db87b3af9425d35a2a4506282db",
+      "local_sha256": "86249e4eca89dbc05e2c90f823138907ece3e33ac1195ba7bf86ced2e3f83afd",
+      "local_git_blob_sha": "7990dc4d79dbd1c96d83ba591bfd3ac1a366c6e7",
       "comparison_upstream_blob_sha": "03d0e665ec8c70a4f622703f2eb3ecf2c1ff9239",
       "comparison_status": "different",
       "first_local_record": {
@@ -7029,8 +7029,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "d0153d5a7fb8ea0a9db66ffc4f0dd524e67f18c9fb5de1cb47a60e826a288917",
-      "local_git_blob_sha": "e58c26c6e0f17e8b20db6dfad5547accd49930ac",
+      "local_sha256": "000cfd3d0bb2faa74eef3da044c58d10e02ef9b40558259ced15070491c46fd9",
+      "local_git_blob_sha": "6f9aa37980eb0b9224836aa439d00a38c79e525e",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -11083,8 +11083,8 @@
       "upstream_path": "skills/seo-google/references/auth-setup.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "d442626b9bb35a93cd43d2bbb87c85993325ffa701287887da1db3aa6ec6b2c3",
-      "local_git_blob_sha": "c33f8a6132eb0254d7d54641469c7e2ae212b295",
+      "local_sha256": "b232980410e28e01bd6d7e8483d318b048420589cc23561012f0ae18ec58e977",
+      "local_git_blob_sha": "fd783ed11c32cf1aa0902a66736a57500b13fa61",
       "comparison_upstream_blob_sha": "8265533a2dec96494aa06aa97185ea8f4a64b38b",
       "comparison_status": "different",
       "first_local_record": {
@@ -13503,12 +13503,12 @@
         "path": "skills/seo/references/workbench-operations.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [],
-      "local_sha256": "338da1b2e6a51fb5ed6527b00ac793603af2ae7bb59d7ec5bd518a9020967c74",
-      "local_git_blob_sha": "a759e2b41d91192daab5e0b66dd42b4a80852ddc",
+      "local_sha256": "4e76127295e91c717b9d274a5419c56cf65304c70bdbcc07349c3231edd5f587",
+      "local_git_blob_sha": "990095047542d0a71124b408422cb1d4db921886",
       "maintenance_status": "active",
       "workingtree_modified": false
     },
@@ -17872,8 +17872,8 @@
       "from_path": "skills/README.md",
       "line": 26,
       "syntax": "markdown_link",
-      "target": "../docs/keyword-context-maintenance.md",
-      "resolved_path": "docs/keyword-context-maintenance.md",
+      "target": "../docs/reference/keyword-context-maintenance.md",
+      "resolved_path": "docs/reference/keyword-context-maintenance.md",
       "status": "resolved_local"
     },
     {
@@ -18416,8 +18416,8 @@
       "from_path": "skills/README.md",
       "line": 145,
       "syntax": "markdown_link",
-      "target": "../docs/20261029-skill-layout-migration.md",
-      "resolved_path": "docs/20261029-skill-layout-migration.md",
+      "target": "../docs/history/20261029-skill-layout-migration.md",
+      "resolved_path": "docs/history/20261029-skill-layout-migration.md",
       "status": "resolved_local"
     },
     {
@@ -18552,8 +18552,8 @@
       "from_path": "skills/analytics-tracking/references/provider-inputs.md",
       "line": 3,
       "syntax": "markdown_link",
-      "target": "../../../docs/google-integrations.md",
-      "resolved_path": "docs/google-integrations.md",
+      "target": "../../../docs/reference/google-integrations.md",
+      "resolved_path": "docs/reference/google-integrations.md",
       "status": "resolved_local"
     },
     {
@@ -19744,8 +19744,8 @@
       "from_path": "skills/keyword-deep-dive/SKILL.md",
       "line": 14,
       "syntax": "markdown_link",
-      "target": "../../docs/keyword-context-maintenance.md",
-      "resolved_path": "docs/keyword-context-maintenance.md",
+      "target": "../../docs/reference/keyword-context-maintenance.md",
+      "resolved_path": "docs/reference/keyword-context-maintenance.md",
       "status": "resolved_local"
     },
     {
@@ -20584,8 +20584,8 @@
       "from_path": "skills/project-context/SKILL.md",
       "line": 32,
       "syntax": "markdown_link",
-      "target": "../../docs/keyword-context-maintenance.md",
-      "resolved_path": "docs/keyword-context-maintenance.md",
+      "target": "../../docs/reference/keyword-context-maintenance.md",
+      "resolved_path": "docs/reference/keyword-context-maintenance.md",
       "status": "resolved_local"
     },
     {
@@ -22176,8 +22176,8 @@
       "from_path": "skills/seo-google/references/auth-setup.md",
       "line": 3,
       "syntax": "markdown_link",
-      "target": "../../../docs/google-integrations.md",
-      "resolved_path": "docs/google-integrations.md",
+      "target": "../../../docs/reference/google-integrations.md",
+      "resolved_path": "docs/reference/google-integrations.md",
       "status": "resolved_local"
     },
     {
@@ -22832,8 +22832,8 @@
       "from_path": "skills/seo/references/workbench-operations.md",
       "line": 12,
       "syntax": "markdown_link",
-      "target": "../../../docs/google-integrations.md",
-      "resolved_path": "docs/google-integrations.md",
+      "target": "../../../docs/reference/google-integrations.md",
+      "resolved_path": "docs/reference/google-integrations.md",
       "status": "resolved_local"
     },
     {
@@ -22880,8 +22880,8 @@
       "from_path": "skills/seo/references/workbench-operations.md",
       "line": 24,
       "syntax": "markdown_link",
-      "target": "../../../docs/google-integrations.md",
-      "resolved_path": "docs/google-integrations.md",
+      "target": "../../../docs/reference/google-integrations.md",
+      "resolved_path": "docs/reference/google-integrations.md",
       "status": "resolved_local"
     },
     {

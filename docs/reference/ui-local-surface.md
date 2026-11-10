@@ -26,4 +26,4 @@ Editor writes are limited to `context/`, `strategy/`, `content/`, `audits/`, and
 
 ## Shared components
 
-Status pills use `ui/src/components/StatusPill.tsx` (see `docs/UI状态Pill规范.md`); help tooltips use `ui/src/components/HelpTooltip.tsx` (see `docs/UI帮助气泡规范.md`). Page-local tone maps, pill CSS, and ad-hoc tooltip implementations are not accepted.
+Status pills use `ui/src/components/StatusPill.tsx` (see `docs/reference/UI状态Pill规范.md`); help tooltips use `ui/src/components/HelpTooltip.tsx` (see `docs/reference/UI帮助气泡规范.md`). Page-local tone maps, pill CSS, and ad-hoc tooltip implementations are not accepted.
