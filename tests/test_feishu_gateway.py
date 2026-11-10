@@ -200,6 +200,26 @@ def test_download_attachment_resolves_field_alias_and_file_token(tmp_path: Path)
     assert output.read_bytes() == b"image"
 
 
+def test_attachment_download_uses_bound_bot_identity_for_both_steps(tmp_path: Path) -> None:
+    config = _config(tmp_path)
+    payload = json.loads(config.read_text())
+    payload["profiles"]["hexcal-seo"]["identity"] = "bot"
+    config.write_text(json.dumps(payload))
+    output = tmp_path / "image.jpg"
+    calls = []
+
+    def runner(cmd, **kwargs):
+        calls.append(cmd)
+        if "+record-get" in cmd:
+            return subprocess.CompletedProcess(cmd, 0, stdout=json.dumps({"data": {"record": {"fields": {"fld_contents": [{"file_token": "file_image"}]}}}}), stderr="")
+        output.write_bytes(b"image")
+        return subprocess.CompletedProcess(cmd, 0, stdout='{"ok":true}', stderr="")
+
+    download_attachment(profile="hexcal-seo", config_path=config, base="dcdb", table="blog_pipeline", record_id="rec1", field="contents", output=output, runner=runner)
+    assert len(calls) == 2
+    assert all(cmd[cmd.index("--as") + 1] == "bot" for cmd in calls)
+
+
 def test_list_thread_replies_unwraps_lark_envelope(tmp_path: Path) -> None:
     def runner(cmd, **kwargs):
         return subprocess.CompletedProcess(

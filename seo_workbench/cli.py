@@ -1126,10 +1126,10 @@ def cmd_content_asset_candidates(args: argparse.Namespace) -> int:
         limit=args.limit,
     )
     if args.json_output:
-        print_json({"ok": True, "path": str(path), **report})
-        return 0
+        print_json({"ok": report["collection_status"] in {"ok", "partial"}, "path": str(path), **report})
+        return 0 if report["collection_status"] in {"ok", "partial"} else 2
     print(path)
-    return 0
+    return 0 if report["collection_status"] in {"ok", "partial"} else 2
 
 
 def cmd_content_describe_candidates(args: argparse.Namespace) -> int:
@@ -1820,7 +1820,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     asset_candidates_cmd = content_sub.add_parser("asset-candidates")
     asset_candidates_cmd.add_argument("item_id")
-    asset_candidates_cmd.add_argument("--profile", required=True)
+    asset_candidates_cmd.add_argument("--profile", help="Override the project's asset-library binding")
     asset_candidates_cmd.add_argument("--config", type=Path)
     asset_candidates_cmd.add_argument("--limit", type=int, default=40)
     asset_candidates_cmd.add_argument("--json", action="store_true", dest="json_output")
@@ -1828,7 +1828,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     describe_candidates_cmd = content_sub.add_parser("describe-candidates")
     describe_candidates_cmd.add_argument("item_id")
-    describe_candidates_cmd.add_argument("--profile", required=True)
+    describe_candidates_cmd.add_argument("--profile", help="Override the project's asset-library binding")
     describe_candidates_cmd.add_argument("--config", type=Path)
     describe_candidates_cmd.add_argument("--manifest", type=Path)
     describe_candidates_cmd.add_argument("--limit", type=int, default=20)
@@ -1845,7 +1845,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     download_assets_cmd = content_sub.add_parser("download-assets")
     download_assets_cmd.add_argument("item_id")
-    download_assets_cmd.add_argument("--profile", required=True)
+    download_assets_cmd.add_argument("--profile", help="Override the project's asset-library binding")
     download_assets_cmd.add_argument("--config", type=Path)
     download_assets_cmd.add_argument("--manifest", type=Path)
     download_assets_cmd.add_argument("--json", action="store_true", dest="json_output")

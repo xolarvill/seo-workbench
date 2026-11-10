@@ -124,16 +124,28 @@ def write_asset_candidates_from_feishu(
     project_dir: Path,
     item_id: str,
     *,
-    profile: str,
+    profile: str | None = None,
     config_path: Path | None = None,
     limit: int = 40,
     runner: Any = subprocess.run,
 ) -> tuple[dict[str, Any], Path]:
+    profile, config_path = _resolve_asset_profile(project_dir, profile, config_path)
     record = _find_pipeline_record(project_dir, item_id)
     allowed = _allowed_products(project_dir, record)
     candidates = []
+    errors = []
     for table in UGC_TABLES:
-        for row in _list_asset_rows(table, profile, config_path, runner):
+        try:
+            rows = _list_asset_rows(table, profile, config_path, runner)
+        except (RuntimeError, ValueError) as exc:
+            message = str(exc)[:500]
+            errors.append({"table": table, "message": message})
+            # A denied Base is not an empty material library. Do not keep
+            # probing its tables with the same denied identity.
+            if "91403" in message or "permission" in message.casefold():
+                break
+            continue
+        for row in rows:
             candidate = _asset_candidate(table, row)
             if not candidate:
                 continue
@@ -143,11 +155,12 @@ def write_asset_candidates_from_feishu(
     candidates.sort(key=lambda item: (-RATING_RANK.get(item["rating"], 0), item["times_used"], item["table"], item["rid"]))
     candidates = candidates[:limit]
     report = {
-        "collection_status": "ok",
+        "collection_status": "partial" if errors and candidates else ("failed" if errors else "ok"),
         "item_id": item_id,
         "allowed_products": sorted(allowed),
         "candidate_count": len(candidates),
         "candidates": candidates,
+        "errors": errors,
     }
     path = state.safe_project_path(project_dir, f"content/assets/{_safe_name(item_id)}-candidates.json")
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -159,13 +172,14 @@ def describe_asset_candidates(
     project_dir: Path,
     item_id: str,
     *,
-    profile: str,
+    profile: str | None = None,
     config_path: Path | None = None,
     manifest_path: Path | None = None,
     limit: int = 20,
     write_back: bool = True,
     runner: Any = subprocess.run,
 ) -> tuple[dict[str, Any], Path]:
+    profile, config_path = _resolve_asset_profile(project_dir, profile, config_path)
     manifest_path = manifest_path or state.safe_project_path(project_dir, f"content/assets/{_safe_name(item_id)}-candidates.json")
     if not manifest_path.exists():
         raise FileNotFoundError(f"{manifest_path} not found; run content asset-candidates first")
@@ -260,11 +274,12 @@ def download_asset_files_from_feishu(
     project_dir: Path,
     item_id: str,
     *,
-    profile: str,
+    profile: str | None = None,
     config_path: Path | None = None,
     manifest_path: Path | None = None,
     runner: Any = subprocess.run,
 ) -> tuple[dict[str, Any], Path]:
+    profile, config_path = _resolve_asset_profile(project_dir, profile, config_path)
     if manifest_path is None:
         manifest_path = state.safe_project_path(project_dir, f"content/assets/{_safe_name(item_id)}.json")
         if not manifest_path.exists():
@@ -273,17 +288,24 @@ def download_asset_files_from_feishu(
     files_dir = state.safe_project_path(project_dir, "content/assets/files")
     files_dir.mkdir(parents=True, exist_ok=True)
     downloaded = []
+    cached_hits = []
     failed = []
     for asset in manifest.get("assets", []):
         if not isinstance(asset, dict) or not asset.get("rid"):
             continue
         if asset.get("local_path"):
-            continue
+            cached = state.safe_project_path(project_dir, asset["local_path"])
+            if cached.is_file() and cached.stat().st_size > 0:
+                cached_hits.append(asset["rid"])
+                continue
         rid = str(asset["rid"])
         out = state.safe_project_path(project_dir, f"content/assets/files/{_feishu_record_id(rid)}")
-        table, error = _download_asset(rid, out, profile, config_path, runner)
+        table, error = _download_asset(
+            rid, out, profile, config_path, runner,
+            source_table=str(asset.get("source_table") or ""),
+        )
         if table:
-            asset["local_path"] = str(out.relative_to(project_dir))
+            asset["local_path"] = out.relative_to(project_dir).as_posix()
             asset["source_table"] = table
             asset["downloaded"] = True
             downloaded.append(rid)
@@ -298,10 +320,32 @@ def download_asset_files_from_feishu(
         "collection_status": "partial" if failed and downloaded else ("failed" if failed else "ok"),
         "item_id": item_id,
         "downloaded": downloaded,
+        "cached": cached_hits,
         "failed": failed,
         "manifest_path": str(manifest_path.relative_to(project_dir)),
     }
     return report, manifest_path
+
+
+def _resolve_asset_profile(
+    project_dir: Path, profile: str | None, config_path: Path | None,
+) -> tuple[str, Path | None]:
+    if profile:
+        return profile, config_path
+    binding = state.safe_project_path(project_dir, ".runtime/integrations/asset-library.json")
+    if not binding.is_file() or binding.is_symlink():
+        raise ValueError("Configure the project's asset-library binding or pass --profile explicitly")
+    data = json.loads(binding.read_text(encoding="utf-8"))
+    name = str(data.get("profile") or "").strip()
+    relative = Path(str(data.get("config_path") or ""))
+    if not name or relative.is_absolute() or ".." in relative.parts or relative.parts[:1] != (".runtime",):
+        raise ValueError("Asset library binding requires a profile and project-local .runtime config path")
+    configured = state.safe_project_path(project_dir, str(relative))
+    if not configured.is_file() or configured.is_symlink():
+        raise ValueError("Asset library profile config is missing or a symlink")
+    if config_path is not None:
+        raise ValueError("--config requires an explicit --profile")
+    return name, configured
 
 
 def upload_asset_files_to_shopify(
@@ -332,6 +376,16 @@ def upload_asset_files_to_shopify(
             failed.append({"rid": asset.get("rid", ""), "message": "local_path is missing"})
             continue
         try:
+            if asset.get("shopify_file_id"):
+                created = _wait_for_shopify_file_url(graphql_runner, asset["shopify_file_id"], timeout)
+                url = (created.get("image") or {}).get("url") or ""
+                asset["file_status"] = created.get("fileStatus", "")
+                if not url or created.get("fileStatus") != "READY":
+                    raise ValueError("Existing Shopify file is not ready; resume later without creating a duplicate")
+                asset["url"] = url
+                asset.pop("upload_error", None)
+                uploaded.append(asset.get("rid", ""))
+                continue
             file_path = state.safe_project_path(project_dir, local_path)
             mime = _image_mime(file_path, check_size=False)
             if _resize_for_shopify(file_path, mime, resize_runner):
@@ -344,11 +398,11 @@ def upload_asset_files_to_shopify(
             asset["shopify_file_id"] = created.get("id", "")
             asset["file_status"] = created.get("fileStatus", "")
             url = ((created.get("image") or {}).get("url")) or ""
-            if not url and asset["shopify_file_id"]:
+            if (not url or created.get("fileStatus") != "READY") and asset["shopify_file_id"]:
                 created = _wait_for_shopify_file_url(graphql_runner, asset["shopify_file_id"], timeout)
                 asset["file_status"] = created.get("fileStatus", asset["file_status"])
                 url = ((created.get("image") or {}).get("url")) or ""
-            if not url:
+            if not url or created.get("fileStatus") != "READY":
                 raise ValueError("Shopify fileCreate returned no CDN image URL")
             asset["url"] = url
             asset.pop("upload_error", None)
@@ -403,7 +457,9 @@ def _wait_for_shopify_file_url(graphql_runner: Any, file_id: str, timeout: float
         node = payload.get("data", {}).get("node") or {}
         if isinstance(node, dict):
             last = node
-            if (node.get("image") or {}).get("url"):
+            if node.get("fileStatus") == "FAILED":
+                return node
+            if node.get("fileStatus") == "READY" and (node.get("image") or {}).get("url"):
                 return node
         time.sleep(2)
     return last
@@ -473,9 +529,13 @@ def _download_asset(
     profile: str,
     config_path: Path | None,
     runner: Any,
+    *,
+    source_table: str = "",
 ) -> tuple[str, str]:
     errors = []
-    for table in UGC_TABLES:
+    if source_table and source_table not in UGC_TABLES:
+        return "", "Unknown asset source table"
+    for table in (source_table,) if source_table else UGC_TABLES:
         try:
             download_attachment(
                 profile=profile,
@@ -485,11 +545,12 @@ def _download_asset(
                 record_id=rid,
                 field="contents",
                 output=out,
-                identity="user",
                 runner=runner,
             )
         except RuntimeError as exc:
             errors.append(f"{table}: {str(exc)[:200]}")
+            if "91403" in str(exc) or "permission" in str(exc).casefold():
+                break
             continue
         if out.exists() and out.stat().st_size > 0:
             return table, ""
@@ -513,7 +574,6 @@ def _download_table_attachment(
         record_id=rid,
         field="contents",
         output=out,
-        identity="user",
         runner=runner,
     )
     if not out.exists() or out.stat().st_size == 0:
