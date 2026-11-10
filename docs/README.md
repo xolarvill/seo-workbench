@@ -26,6 +26,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 
 ## Operations and architecture
 
+- [Local UI surface](ui-local-surface.md): the optional local viewer's audit whitelist, credential APIs, Markdown write scope, and read-only Pages boundary.
 - [Google integrations](google-integrations.md): CrUX and read-only GSC configuration, evidence scopes, and status meanings.
 - [Analytics MCP assessment](20261027-analytics-mcp-assessment.md): API and MCP boundaries, current Google / Clarity tools, and the proposed optional Clarity integration.
 - [Clarity integration](clarity-integrations.md): project-scoped MCP connections, behavior queries, private evidence and transient recording links.

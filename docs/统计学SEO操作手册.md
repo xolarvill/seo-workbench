@@ -95,6 +95,19 @@
 - GA4 key events 取决于属性配置，不等于购买；Shopify revenue 不做自然搜索渠道归因。
 - 自动 decision 只使用通过可比性、覆盖和多重检验闸门的结果；发布、合并和重定向仍由人决定。
 
+## 周报生成
+
+团队周报落在 `projects/<id>/reports/presentations/`，每周一个稳定的 `YYYY_week_WW.pdf`，外加一份私有聚合 manifest；只能通过 `reports presentation generate` 生成，不手写、不并行发布同名文件。
+
+生成门槛（readiness gate）：
+
+- `statistics` 是新鲜的；
+- GSC 结束日期是近期的 finalized 日期；
+- GSC 与业务数据各有 28 天历史；
+- 存在当周的 portfolio 快照。
+
+证据部分或不完全可比时，允许带明确 caveat 渲染；必需证据缺失或过期则直接阻止生成。本地 UI 调度器在本地时间周五 16:00 之后尝试生成当周 deck，它不是 hosted scheduler，机器关机或未开 UI 时不会补跑。
+
 ## 维护节奏
 
 - 每次采集：查看运行状态、共同截止日和源警告。
