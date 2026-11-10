@@ -7,9 +7,19 @@ Agent-neutral SEO workflow repo. Use the local Python CLI and local `skills/` fi
 1. State goal, scope, and acceptance criteria in three lines before acting; scope comes from the current request, not a stored phase.
 2. Deliver the whole stated scope in one pass. Do not silently narrow it; if you cannot finish, list what remains and why.
 3. If the task clearly exceeds one session, give a phase plan first, then finish it phase by phase with a one-line progress note each time.
-4. Never claim "done" without verification output for the change.
+4. Never claim "done" without verification output for the change; see Definition of done.
 5. On conflict: this file > `docs/` > examples inside `skills/`. The user's current instruction beats this file.
 6. New invariants go to `docs/` first; only promote one here if it changes every action.
+
+## Definition of done
+
+Done means you re-ran the real path yourself and can show the output. Reading the code, a clean diff, or "should work" is not done. Show the evidence, not the command.
+
+- Evidence collection: re-run the affected collector on a real project and show `collection_status`, counts, and warnings. No absence claim may rest on data that was not collected.
+- Statistics, outcomes, portfolio: regenerate the affected artifact and show every gate result, the written file, and its timestamp.
+- UI: open the changed surface and show a screenshot with a clean console.
+- Contracts, CLI, state: execute the changed path end to end, paste the JSON, and run the affected tests under `tests/`, showing the summary line.
+- Docs and instructions: show the changed text and confirm every referenced path or link resolves.
 
 ## Agent-led work
 
@@ -39,7 +49,9 @@ third_party/            Attribution and upstream license notes
 The original third-party repos are not runtime dependencies. Their useful content is preserved under `skills/`.
 The Feishu adapter is implemented inside Workbench. Keep it limited to the Base, attachment, review, and notification operations used by SEO workflows.
 
-## Daily Commands
+## Running the workbench
+
+The agent drives the workbench; the operator does not need to type commands. Every command returns JSON evidence so a result can be checked rather than asserted.
 
 ```bash
 ./seo --project example-store status --json
