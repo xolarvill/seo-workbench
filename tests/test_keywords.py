@@ -1,4 +1,5 @@
 import json
+import re
 import zipfile
 from pathlib import Path
 
@@ -13,13 +14,35 @@ from seo_workbench.keywords import (
     read_google_ads_csv,
     read_gsc_search_analytics,
     read_semrush_xlsx,
-    HEXCAL_BRAND_PATTERN,
-    HEXCAL_COMPETITOR_PATTERN,
+    brand_exclusion_patterns,
     KeywordRecord,
 )
 
 
-def test_priority_score_matches_hexcal_source_priors() -> None:
+BRAND_PATTERN = re.compile(r"\bacme(?:\s*studio)?\b", re.IGNORECASE)
+COMPETITOR_PATTERN = re.compile(r"\brival\b", re.IGNORECASE)
+
+
+def test_brand_exclusion_patterns_follow_project_identity(tmp_path: Path) -> None:
+    project_dir = tmp_path / "project"
+    state.init_state("shopify", "Acme Studio", "https://www.acme.com", project_dir=project_dir)
+
+    (pattern,) = brand_exclusion_patterns(project_dir)
+
+    assert pattern.search("acme")
+    assert pattern.search("Acme Studio")
+    assert pattern.search("acme-studio")
+    assert not pattern.search("standing desk")
+
+
+def test_brand_exclusion_patterns_are_empty_without_project_identity(tmp_path: Path) -> None:
+    project_dir = tmp_path / "project"
+    state.init_state("shopify", "", "", project_dir=project_dir)
+
+    assert brand_exclusion_patterns(project_dir) == ()
+
+
+def test_priority_score_matches_source_priors() -> None:
     semrush = priority_score("semrush_manual", 1000, 20, 2.5, "commercial")
     sitemap = priority_score("sitemap", 0, 0, 0, "")
 
@@ -33,11 +56,11 @@ def test_google_ads_csv_parser_supports_ranges_and_cpc(tmp_path: Path) -> None:
         "Metadata\n"
         "Keyword\tAvg. monthly searches\tTop of page bid (high range)\n"
         "standing desk cable tray\t1K - 10K\t$2.50\n"
-        "hexcal studio\t100\t$1.00\n",
+        "acme studio\t100\t$1.00\n",
         encoding="utf-8",
     )
 
-    records = read_google_ads_csv(csv_path, exclusion_patterns=(HEXCAL_BRAND_PATTERN, HEXCAL_COMPETITOR_PATTERN))
+    records = read_google_ads_csv(csv_path, exclusion_patterns=(BRAND_PATTERN, COMPETITOR_PATTERN))
 
     assert len(records) == 1
     assert records[0].keyword == "standing desk cable tray"
@@ -46,14 +69,14 @@ def test_google_ads_csv_parser_supports_ranges_and_cpc(tmp_path: Path) -> None:
     assert parse_ads_volume("1K – 10K") == 5500
 
 
-def test_generic_keyword_parser_does_not_apply_hexcal_exclusions(tmp_path: Path) -> None:
+def test_generic_keyword_parser_does_not_apply_project_exclusions(tmp_path: Path) -> None:
     csv_path = tmp_path / "ads.csv"
     csv_path.write_text(
-        "Keyword\tAvg. monthly searches\nhexcal studio\t100\n",
+        "Keyword\tAvg. monthly searches\nacme studio\t100\n",
         encoding="utf-8",
     )
 
-    assert [record.keyword for record in read_google_ads_csv(csv_path)] == ["hexcal studio"]
+    assert [record.keyword for record in read_google_ads_csv(csv_path)] == ["acme studio"]
 
 
 def test_semrush_xlsx_parser_filters_by_kd_volume_and_brand(tmp_path: Path) -> None:
@@ -64,11 +87,11 @@ def test_semrush_xlsx_parser_filters_by_kd_volume_and_brand(tmp_path: Path) -> N
             ["Keyword", "Intent", "Volume", "Keyword Difficulty", "CPC"],
             ["standing desk cable tray", "Commercial", "40", "20", "2.5"],
             ["too hard keyword", "Informational", "1000", "80", "1"],
-            ["hexcal studio", "Commercial", "1000", "10", "1"],
+            ["acme studio", "Commercial", "1000", "10", "1"],
         ],
     )
 
-    records = read_semrush_xlsx(xlsx, exclusion_patterns=(HEXCAL_BRAND_PATTERN, HEXCAL_COMPETITOR_PATTERN))
+    records = read_semrush_xlsx(xlsx, exclusion_patterns=(BRAND_PATTERN, COMPETITOR_PATTERN))
 
     assert len(records) == 1
     assert records[0].source == "semrush_manual"
@@ -87,7 +110,7 @@ def test_gsc_search_analytics_parser_filters_and_dedupes_queries(tmp_path: Path)
                             "rows": [
                                 {"keys": ["desk cables"], "impressions": 20, "ctr": 0.2, "position": 8},
                                 {"keys": ["cable desk"], "impressions": 10, "ctr": 0.3, "position": 7},
-                                {"keys": ["hexcal studio"], "impressions": 100, "ctr": 0.5, "position": 1},
+                                {"keys": ["acme studio"], "impressions": 100, "ctr": 0.5, "position": 1},
                                 {"keys": ["low signal"], "impressions": 9, "ctr": 1.0, "position": 1},
                             ]
                         }
@@ -98,7 +121,7 @@ def test_gsc_search_analytics_parser_filters_and_dedupes_queries(tmp_path: Path)
         encoding="utf-8",
     )
 
-    records = read_gsc_search_analytics(report, exclusion_patterns=(HEXCAL_BRAND_PATTERN, HEXCAL_COMPETITOR_PATTERN))
+    records = read_gsc_search_analytics(report, exclusion_patterns=(BRAND_PATTERN, COMPETITOR_PATTERN))
 
     assert len(records) == 1
     assert records[0].keyword == "desk cables"

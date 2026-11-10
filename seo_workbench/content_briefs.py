@@ -6,24 +6,8 @@ from pathlib import Path
 from typing import Any
 
 from seo_workbench import state
+from seo_workbench.product_anchors import load_product_anchors
 from seo_workbench_tools.files import atomic_write_text
-
-
-PRODUCT_LINKS = {
-    "studio": [
-        ("Hexcal Studio", "hexcal-studio"),
-        ("Magnetic Desk Mat Bundle", "hexcal-magnetic-desk-mat-bundle-black"),
-        ("Tech Pouch", "tech-pouch"),
-    ],
-    "plus": [("Hexcal Studio Plus", "hexcal-studio-plus")],
-    "ergon": [
-        ("Elevate Standing Desk", "elevate-standing-desk"),
-        ("Single Monitor Arm", "single-monitor-arm"),
-        ("Heavy Duty Monitor Arm", "heavy-duty-monitor-arm"),
-        ("Monitor Mount System", "monitor-mount-system"),
-        ("Hexcal Inspire Chair", "hexcal-inspire-chair"),
-    ],
-}
 
 
 def export_writing_brief(project_dir: Path, item_id: str) -> tuple[dict[str, Any], Path]:
@@ -241,12 +225,13 @@ def _product_links(project_dir: Path | None, record: dict[str, Any]) -> list[dic
         return []
     project = state.load_state(project_dir).get("project") or {}
     site_url = str(project.get("url") or "").rstrip("/")
-    if not site_url or str(project.get("name") or "").strip().casefold() != "hexcal":
+    if not site_url:
         return []
+    anchors = load_product_anchors(project_dir)
     links = []
     for anchor in record.get("product_anchor") or []:
-        for title, slug in PRODUCT_LINKS.get(str(anchor), []):
-            links.append({"title": title, "live_url": f"{site_url}/products/{slug}"})
+        for entry in anchors.get(str(anchor), []):
+            links.append({"title": entry["title"], "live_url": f"{site_url}/products/{entry['handle']}"})
     return links
 
 

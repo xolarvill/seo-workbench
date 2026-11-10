@@ -43,15 +43,6 @@ KD_PRIOR = {"gsc": 0.55, "autocomplete": 0.50, "sitemap": 0.45, "ads": 0.50}
 VOL_PRIOR = {"autocomplete": 0.25, "sitemap": 0.15}
 INTENT_PRIOR = {"autocomplete": 0.55, "gsc": 0.40, "sitemap": 0.40, "ads": 0.55}
 
-HEXCAL_BRAND_PATTERN = re.compile(
-    r"\b(hexcal|hex\s*cal|hexal|excal|hexacal|hexcel|hexical|hexcall|hex\s*ergo|hexcalstudio)\b",
-    re.IGNORECASE,
-)
-HEXCAL_COMPETITOR_PATTERN = re.compile(
-    r"\b(uplift|humanscale|ergotron|desky|progressive\s*desk|grovemade|secretlab|"
-    r"deskhaus|flexispot|flexi\s*spot|fezibo|varidesk)\b",
-    re.IGNORECASE,
-)
 NAV_PATTERN = re.compile(
     r"\b(log\s*in|login|sign\s*in|coupon|promo\s*code|discount\s*code|customer\s*service|"
     r"warranty|tracking|return\s*policy|near\s*me|phone\s*number|store\s*hours|reddit)\b",
@@ -107,6 +98,26 @@ def priority_score(source: str, volume: float, kd: float, cpc: float, intent: st
     return round(trust * composite * 100, 2)
 
 
+def brand_exclusion_patterns(project_dir: Path) -> tuple[re.Pattern[str], ...]:
+    """Derive brand exclusions from the project name and site host."""
+
+    project = state.load_state(project_dir).get("project") or {}
+    names = []
+    name = " ".join(str(project.get("name") or "").split())
+    if name:
+        names.append(name)
+    host = (urllib.parse.urlsplit(str(project.get("url") or "")).hostname or "").lower()
+    if host.startswith("www."):
+        host = host[4:]
+    if host:
+        names.append(host.split(".")[0])
+    tokens = [re.escape(value).replace(r"\ ", r"[\s-]*") for value in names]
+    tokens = list(dict.fromkeys(token for token in tokens if token))
+    if not tokens:
+        return ()
+    return (re.compile(r"\b(?:" + "|".join(tokens) + r")\b", re.IGNORECASE),)
+
+
 def collect_keywords(
     project_dir: Path,
     *,
@@ -119,8 +130,7 @@ def collect_keywords(
     timeout: float = 15,
     dry_run: bool = False,
 ) -> dict[str, Any]:
-    project_name = str((state.load_state(project_dir).get("project") or {}).get("name") or "").strip().casefold()
-    exclusion_patterns = (HEXCAL_BRAND_PATTERN, HEXCAL_COMPETITOR_PATTERN) if project_name == "hexcal" else ()
+    exclusion_patterns = brand_exclusion_patterns(project_dir)
     records: list[KeywordRecord] = []
     for path in semrush_xlsx or []:
         records.extend(read_semrush_xlsx(path, exclusion_patterns=exclusion_patterns))

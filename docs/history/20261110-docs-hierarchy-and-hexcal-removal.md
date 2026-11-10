@@ -26,13 +26,13 @@
 
 ## 边界
 
-- 保留 `seo_workbench/content_assets.py` 的 `ANCHOR_PRODUCTS`、`MMX_PROMPT` 与 `_require_hexcal_project`，`content_briefs.py` 的 `PRODUCT_LINKS`，`keywords.py` 的 `HEXCAL_BRAND_PATTERN` / `HEXCAL_COMPETITOR_PATTERN`（仅在项目名为 `hexcal` 时启用）。这些是真实店铺的内容与关键词数据，不属于导入链路残留；删除会改变 content brief 与关键词采集结果，需单独决策。
+- 店铺品牌数据在同日后继提交中一并移除：`content_assets.py` 的 `ANCHOR_PRODUCTS` 与 `_require_hexcal_project`、`content_briefs.py` 的 `PRODUCT_LINKS`、`keywords.py` 的 `HEXCAL_BRAND_PATTERN` / `HEXCAL_COMPETITOR_PATTERN` 均已删除。商品目录改由项目上下文 `context/product-anchors.json` 提供，关键词品牌排除改由项目名与站点主机名推导，`MMX_PROMPT` 改为通用措辞。
 - UI 的 TypeScript 测试未运行（本机无 `node_modules`），本次 TSX 改动仅为删除一个按钮与一处 profile 名。
 - 测试失败清单按本机 Windows 环境记录；未在 Linux CI 复跑。
 - `docs/design/` 未纳入三层结构，仍保留在根下。
 
 ## 后续
 
-- 决策 Hexcal 品牌数据（`content_assets.py`、`content_briefs.py`、`keywords.py`）去留：若保留，建议补一条"店铺专属数据按项目隔离"的说明；若移除，需同步 content brief 与关键词测试。
+- 店铺专属数据现按项目隔离：`context/product-anchors.json` 可选，缺失时不按商品过滤候选、也不生成商品链接；契约见 `docs/guides/BLOG生产线操作教程.md`。需要店铺定制文案时，应在项目上下文中声明，而不是改回包内常量。
 - 在 Linux CI 复跑上述测试，确认 8 个失败项确为 Windows 环境差异。
 - 如需再拆分 `docs/reference/`，按"集成 / 统计 / UI"三组评估，避免再次平铺。

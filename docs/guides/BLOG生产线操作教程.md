@@ -73,6 +73,8 @@ SEO 负责人确认选题后，才进入写作：
 
 写作者使用本项目的 `skills/content-brief`、`skills/write-content` 和 brief，不以飞书旧流程的 prompt 作为内容标准。
 
+素材路线按商品锚点过滤候选。锚点定义在项目的 `context/product-anchors.json`，格式为 `{"<anchor>": [{"title": "商品标题", "handle": "shopify-handle"}]}`；文件不存在时不做商品过滤，`content brief` 也不生成商品链接。
+
 只有文章需要旧素材库图片时，才运行素材路线：
 
 ```bash

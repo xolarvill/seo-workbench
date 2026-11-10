@@ -17,6 +17,7 @@ from seo_workbench.content_assets import (
     write_asset_manifest,
 )
 from seo_workbench.content_publish import build_publish_payload
+from seo_workbench.product_anchors import load_product_anchors
 
 
 FEISHU_CONFIG = Path(__file__).resolve().parents[1] / "tests/fixtures/feishu-profile.json"
@@ -146,7 +147,7 @@ def test_patch_html_with_asset_urls_escapes_values() -> None:
 
 def test_download_asset_files_from_feishu_updates_manifest(tmp_path: Path) -> None:
     project_dir = tmp_path / "project"
-    state.init_state("shopify", "Hexcal", "https://example.com", project_dir=project_dir)
+    state.init_state("shopify", "Acme", "https://example.com", project_dir=project_dir)
     manifest = project_dir / "content/assets/rec1.json"
     manifest.write_text(json.dumps({"assets": [{"rid": "recInline", "role": "inline", "resolved": False}]}), encoding="utf-8")
     calls = []
@@ -182,7 +183,7 @@ def test_download_asset_files_from_feishu_updates_manifest(tmp_path: Path) -> No
 
 def test_download_asset_files_from_feishu_reports_failure(tmp_path: Path) -> None:
     project_dir = tmp_path / "project"
-    state.init_state("shopify", "Hexcal", "https://example.com", project_dir=project_dir)
+    state.init_state("shopify", "Acme", "https://example.com", project_dir=project_dir)
     manifest = project_dir / "content/assets/rec1.json"
     manifest.write_text(json.dumps({"assets": [{"rid": "recInline", "role": "inline"}]}), encoding="utf-8")
 
@@ -199,7 +200,7 @@ def test_download_asset_files_from_feishu_reports_failure(tmp_path: Path) -> Non
 
 def test_download_asset_files_rejects_manifest_path_traversal(tmp_path: Path) -> None:
     project_dir = tmp_path / "project"
-    state.init_state("shopify", "Hexcal", "https://example.com", project_dir=project_dir)
+    state.init_state("shopify", "Acme", "https://example.com", project_dir=project_dir)
     manifest = project_dir / "content/assets/rec1.json"
     manifest.write_text(json.dumps({"assets": [{"rid": "../../escape", "role": "inline"}]}), encoding="utf-8")
 
@@ -338,9 +339,14 @@ def test_content_assets_cli_outputs_json(tmp_path: Path, capsys) -> None:
 
 def test_write_asset_candidates_from_feishu_filters_and_writes_manifest(tmp_path: Path) -> None:
     project_dir = tmp_path / "project"
-    state.init_state("shopify", "Hexcal", "https://example.com", project_dir=project_dir)
+    state.init_state("shopify", "Acme", "https://example.com", project_dir=project_dir)
     (project_dir / "content/blog-pipeline.jsonl").write_text(
         json.dumps({"id": "rec1", "product_anchor": ["studio"]}) + "\n",
+        encoding="utf-8",
+    )
+    (project_dir / "context").mkdir(parents=True, exist_ok=True)
+    (project_dir / "context/product-anchors.json").write_text(
+        json.dumps({"studio": [{"title": "Acme Studio", "handle": "acme-studio"}]}),
         encoding="utf-8",
     )
     calls = []
@@ -354,7 +360,7 @@ def test_write_asset_candidates_from_feishu_filters_and_writes_manifest(tmp_path
                 {
                     "_record_id": "recGood",
                     "contents_number": "HX-1",
-                    "product": ["Hexcal Studio"],
+                    "product": ["Acme Studio"],
                     "content_type": "Photo",
                     "rating": "PUGC",
                     "times_used": 1,
@@ -368,7 +374,7 @@ def test_write_asset_candidates_from_feishu_filters_and_writes_manifest(tmp_path
                 },
                 {
                     "_record_id": "recUsed",
-                    "product": ["Hexcal Studio"],
+                    "product": ["Acme Studio"],
                     "content_type": "Photo",
                     "times_used": 3,
                 },
@@ -396,7 +402,7 @@ def test_write_asset_candidates_from_feishu_filters_and_writes_manifest(tmp_path
 
 def test_describe_asset_candidates_downloads_mmx_and_writes_back(tmp_path: Path, monkeypatch) -> None:
     project_dir = tmp_path / "project"
-    state.init_state("shopify", "Hexcal", "https://example.com", project_dir=project_dir)
+    state.init_state("shopify", "Acme", "https://example.com", project_dir=project_dir)
     manifest = project_dir / "content/assets/rec1-candidates.json"
     manifest.write_text(
         json.dumps(
@@ -448,12 +454,19 @@ def test_describe_asset_candidates_downloads_mmx_and_writes_back(tmp_path: Path,
     assert "mmx-test" not in mmx_call
 
 
-def test_feishu_asset_catalog_rejects_generic_projects(tmp_path: Path) -> None:
+def test_product_anchors_are_optional_and_project_scoped(tmp_path: Path) -> None:
     project_dir = tmp_path / "project"
     state.init_state("shopify", "Store", "https://example.com", project_dir=project_dir)
 
-    with pytest.raises(ValueError, match="Hexcal project adapter"):
-        write_asset_candidates_from_feishu(project_dir, "rec1", profile="seo-profile")
+    assert load_product_anchors(project_dir) == {}
+
+    (project_dir / "context").mkdir(parents=True, exist_ok=True)
+    (project_dir / "context/product-anchors.json").write_text(
+        json.dumps({"studio": [{"title": "Acme Studio", "handle": "acme-studio"}, {"title": "Broken"}]}),
+        encoding="utf-8",
+    )
+
+    assert load_product_anchors(project_dir) == {"studio": [{"title": "Acme Studio", "handle": "acme-studio"}]}
 
 
 def test_content_describe_candidates_cli_outputs_json(tmp_path: Path, capsys, monkeypatch) -> None:
