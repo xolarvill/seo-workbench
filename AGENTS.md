@@ -29,8 +29,6 @@ Done means you re-ran the real path yourself and can show the output. Reading th
 - For keyword, topic, or page-ownership decisions, follow [keyword context maintenance](docs/keyword-context-maintenance.md). `context/target-keywords.md` is the maintained target keyword register across tasks and releases: record selected keywords with decision/research links, and move withdrawn targets to Targets but removed with dates and rationale. Detailed research and launch plans belong in project reports; do not reduce the register to a portal or remove a target merely because its launch is past. The agent making an authorized decision must update the affected entries and operational mappings in the same task, preserving history and keeping candidates unconfirmed.
 - For current reader-facing prose, use [`reader-experience-review`](skills/reader-experience-review/SKILL.md) as the single expression method during drafting and revision. Writing, marketing, voice and SEO skills supply task methods and inputs; their examples do not create a competing style policy or another mandatory prose pass. Use its evidence-to-prose reference to turn verification rules into supported claims and necessary reader conditions. Keep internal collection/status gaps in the existing task artifact unless the reader's actual question requires them.
 - Briefly explain the chosen method and purpose. Keep decisions, outputs, evidence pointers, and remaining gaps in the existing task artifact so another session can resume from the work itself. Reading a skill or marking a legacy step done is not proof that its method was completed.
-- CLI commands execute explicit operations and return evidence; use `./seo --help` or command-specific help to choose them. Legacy `phase`/`step` records remain compatible but never prescribe the next action or restrict skill choice.
-- Skill selection does not expand the user's authorized scope. Project facts and current Workbench evidence/collection rules override conflicting source-material recipes; do not execute archived scripts or old source-material recipes blindly.
 - Callable methods share `skills/<capability>/SKILL.md`. Keep one canonical entrypoint per capability, put complementary methods in its references, and preserve source IDs and old paths in `docs/skill-sources.json` when moving material. Historical specialist/workflow documents live under `third_party/skill-history/`.
 
 ## Current Shape
@@ -81,9 +79,6 @@ Initialize a project:
 
 - Prefer `skills/` over third-party skill packs; do not restore external repo dependencies unless the user explicitly asks.
 - Prefer `seo_workbench_tools/` for machine evidence; do not rewrite probes unless the existing collector cannot supply the field.
-- Run `validate --json` after changing workflow, state, CLI contracts, or skill mappings.
-- Run `doctor --json` when debugging local setup, missing evidence, or optional rendered support.
-- Keep stores isolated under `projects/<id>/`; prefer `--project <id>` for daily use and retain `--project-dir` for explicit external or test directories.
 
 ### Evidence and conclusions
 
@@ -92,10 +87,8 @@ Initialize a project:
 - Technology detection uses the pinned Go helper under `seo_workbench_tools/technology_detector/`; keep its JSON contract stable and update fixtures before changing the fingerprint provider version.
 - `technology` defaults to balanced Wappalyzer detection (page, scripts, robots, and DNS), then adds explicit asset-name fallback and consumes existing rendered runtime evidence when available. Use `--scan-mode fast` for the reproducible Go headers/cookies/raw-HTML path. Never turn a zero detection into a positive absence claim; record runtime-only gaps in `architecture_analysis.evidence_quality`.
 - Rendered mobile evidence must use a mobile user agent as well as a mobile viewport. Preserve per-profile final URLs and report profile-specific navigation instead of merging desktop and mobile routes.
-- Lighthouse performance evidence uses the pinned Node runner and browser resolved by `setup.sh`; keep runs sequential, default to five runs, and preserve every complete LHR before changing aggregation behavior.
 - Performance summaries must preserve `requested_url`, `final_url`, `main_document_url`, per-run final URL consistency, and redirect status. Never compare performance snapshots that ended on different final URLs.
 - Keep Lighthouse traffic behind `network_boundary.guarded_proxy` unless the user explicitly selects `--allow-private`; redact sensitive URL credentials and query values before persisting LHR or HTML artifacts.
-- Treat Lighthouse as lab evidence and CrUX as field evidence. Never merge their scores or substitute one silently for the other; preserve CrUX URL-to-origin fallback and `no_data` status.
 - Performance verdicts use CrUX field data as the source of truth. Lab (Lighthouse) and crawler/bot measurements (e.g. response-time rules like SLOW_RESPONSE) are diagnostics only and must never be treated as proof of a performance problem; never commit to "fixing" crawler metrics such as SLOW_RESPONSE counts, only CrUX-observed issues.
 - CrUX defaults to aggregate, mobile, and desktop current data plus 40 history periods. Treat `projects/<id>/audits/crux/latest.json` as its stable pointer.
 - `statistics collect` is the production entry point for statistical SEO evidence. It must use finalized GSC as the common end date, align GA4 and Shopify to that date, refuse truncated or incomparable evidence, append only aggregate date-by-page history, and refresh Portfolio only after every gate passes.
@@ -118,7 +111,6 @@ Initialize a project:
 
 - GSC is read-only and explicit. Keep OAuth clients, tokens, service accounts, and project bindings under ignored `.runtime/` paths; never persist authorization headers or credentials in audit artifacts.
 - GA4 is read-only and project-bound. Keep OAuth tokens under ignored `.runtime/google/`, keep the property binding under the project's ignored `.runtime/`, and preserve exact query windows in every artifact; default to two complete processing days before today.
-- Clarity MCP uses the pinned local Node runner and project-scoped credentials at `.runtime/integrations/clarity.json`. Never share authenticated processes across brands or expose tokens in argv, status, evidence or logs. Queries and credential verification share the per-brand operation lease and cooldown.
 - Clarity responses with unconfirmed scope are exploratory partial evidence, not production statistics. Keep per-kind immutable records and current pointers under `audits/clarity/`; private recording links exist only in the local viewer's transient memory, never audit files or job logs. Clarity does not replace CrUX or enter the production statistics chain.
 - Keep the GA4 commerce funnel event-count based and landing-page associated: `view_item`, `add_to_cart`, `begin_checkout`, and `purchase` totals may be filtered to Organic Search, but standard-event tracking coverage must be checked across all channels. Never infer broken tracking from zero organic purchases alone.
 - Shopify order evidence is product-level net revenue, not channel attribution. Use exact windows matching GA4, aggregate line-item amounts rather than repeating order totals, exclude test/unpaid orders, and never persist customer or order identifiers.
@@ -126,8 +118,6 @@ Initialize a project:
 
 ### Artifacts, archive, and UI
 
-- The local UI is optional and local-only. Detect an active UI from `.runtime/ui/session.json`; open its `http://localhost:<port>` address in any browser without a browser session. Keep using the same `./seo --project <id> ...` commands and project files; the UI filesystem watcher will surface new evidence and Markdown files automatically.
-- The UI audit path and Markdown writes are bounded: fixed action whitelist, write-only local credentials, and revision-checked writes limited to `context/`, `strategy/`, `content/`, `audits/`, and `reports/`. Full boundary: `docs/ui-local-surface.md`.
 - Store repository-wide diagnostics, architecture decisions, and agent/workflow design under `docs/`; do not file them in a store's reports or weekly archive. Keep public repository documents free of private store evidence and local session identifiers.
 - Store project reports and decision records under `projects/<id>/reports/` with the naming pattern `YYYYMMDD_<category>_<topic>.md` (categories: `tech`, `content`, `ops`, `decision`, `outcome`). Keep decision rationale, evidence pointers, and follow-up dates in the report body so later sessions can reconstruct intent.
 - Keep the current week's work archive under `projects/<id>/reports/` using `YYYY_week_WW_work_done.md`. Create or update it when starting work, follow `templates/weekly_work_done.md` for the four sections and formatting, carry unfinished work into the next week's overview, and do not create duplicate weekly files.
@@ -143,8 +133,6 @@ Initialize a project:
 - Treat `projects/<id>/audits/gsc/latest.json` as the stable composite GSC pointer; GSC artifacts are private local data with mode `0600`.
 - Treat `projects/<id>/audits/gsc/search-analytics/latest.json` as the canonical page/query metrics source for technical priority, Pages, and SEO outcome evaluation; the composite pointer is for combined status and audit diff.
 - Pages actions are read-time projections of portfolio, content operations, technical issues, and SEO changes. Do not add a generic task database or duplicate domain status.
-- Shared UI status pills are mandatory: use `ui/src/components/StatusPill.tsx` and follow `docs/UI状态Pill规范.md` rather than adding page-local tone maps or pill CSS.
-- Shared UI help tooltips are mandatory: use `ui/src/components/HelpTooltip.tsx` and follow `docs/UI帮助气泡规范.md` rather than adding page-local implementations.
 - Pages may update existing local ledgers only. Never publish, redirect, recrawl, push notifications, or mutate the site from Pages; keep those actions in the existing workspaces and confirmation paths.
 - Treat `projects/<id>/audits/diffs/latest.json` as the stable current diff pointer; timestamped `audit-diff-*.json` files are immutable records.
 
