@@ -288,7 +288,12 @@ Automatic installation of missing system runtimes currently requires macOS and H
 - Node.js 24
 - Chrome or Chromium
 
+If uv cannot read its user-profile managed Python, install Python locally for this workspace:
 
+```bash
+env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv python install 3.11
+env UV_CACHE_DIR=.uv-cache UV_PYTHON_INSTALL_DIR=.uv-python uv sync --frozen --python 3.11
+```
 
 ## Current boundaries
 
