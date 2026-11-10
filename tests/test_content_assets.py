@@ -23,6 +23,83 @@ from seo_workbench.product_anchors import load_product_anchors
 FEISHU_CONFIG = Path(__file__).resolve().parents[1] / "tests/fixtures/feishu-profile.json"
 
 
+def test_project_asset_binding_uses_bot_and_reports_denied_catalog(tmp_path: Path) -> None:
+    project_dir = tmp_path / "project"
+    state.init_state("shopify", "Hexcal", "https://example.com", project_dir=project_dir)
+    (project_dir / "content/blog-pipeline.jsonl").write_text(json.dumps({"id": "rec1"}) + "\n")
+    config = json.loads(FEISHU_CONFIG.read_text())
+    config["profiles"]["seo-profile"]["identity"] = "bot"
+    profile_path = project_dir / ".runtime/feishu/assets.json"
+    profile_path.parent.mkdir(parents=True)
+    profile_path.write_text(json.dumps(config))
+    binding = project_dir / ".runtime/integrations/asset-library.json"
+    binding.parent.mkdir(parents=True)
+    binding.write_text(json.dumps({"profile": "seo-profile", "config_path": ".runtime/feishu/assets.json"}))
+    calls = []
+
+    def runner(cmd, **kwargs):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(cmd, 1, stdout="", stderr='{"error":{"code":91403,"message":"permission denied"}}')
+
+    report, path = write_asset_candidates_from_feishu(project_dir, "rec1", runner=runner)
+
+    assert report["collection_status"] == "failed"
+    assert report["candidate_count"] == 0
+    assert report["errors"] and "91403" in report["errors"][0]["message"]
+    assert len(calls) == 1  # Denied Base is not repeatedly searched or reported as empty.
+    assert calls[0][calls[0].index("--as") + 1] == "bot"
+    assert json.loads(path.read_text())["collection_status"] == "failed"
+
+
+def test_asset_binding_rejects_config_outside_project_runtime(tmp_path: Path) -> None:
+    project_dir = tmp_path / "project"
+    state.init_state("shopify", "Hexcal", "https://example.com", project_dir=project_dir)
+    binding = project_dir / ".runtime/integrations/asset-library.json"
+    binding.parent.mkdir(parents=True)
+    binding.write_text(json.dumps({"profile": "p", "config_path": "../other/.runtime/profiles.json"}))
+    with pytest.raises(ValueError, match="project-local"):
+        write_asset_candidates_from_feishu(project_dir, "rec1")
+
+
+def test_download_recovers_missing_cache_using_recorded_source_table(tmp_path: Path) -> None:
+    project_dir = tmp_path / "project"
+    state.init_state("shopify", "Hexcal", "https://example.com", project_dir=project_dir)
+    manifest = project_dir / "content/assets/rec1.json"
+    manifest.write_text(json.dumps({"assets": [{"rid": "recCover", "role": "feature", "source_table": "ugc_historical", "local_path": "content/assets/files/recCover"}]}))
+    calls = []
+
+    def runner(cmd, **kwargs):
+        calls.append(cmd)
+        if "+record-get" in cmd:
+            return subprocess.CompletedProcess(cmd, 0, stdout=json.dumps({"data": {"record": {"record_id": "recCover", "fields": {"replace_with_attachment_field_id": [{"file_token": "file_cover"}]}}}}), stderr="")
+        Path(cmd[cmd.index("--output") + 1]).write_bytes(b"\xff\xd8\xffimage")
+        return subprocess.CompletedProcess(cmd, 0, stdout='{"ok":true}', stderr="")
+
+    report, _ = download_asset_files_from_feishu(project_dir, "rec1", profile="seo-profile", config_path=FEISHU_CONFIG, runner=runner)
+    assert report["collection_status"] == "ok" and report["downloaded"] == ["recCover"]
+    assert len(calls) == 2
+    table_id = json.loads(FEISHU_CONFIG.read_text())["profiles"]["seo-profile"]["bases"]["dcdb"]["tables"]["ugc_historical"]["id"]
+    assert calls[0][calls[0].index("--table-id") + 1] == table_id
+
+
+def test_upload_resumes_existing_shopify_file_without_duplicate_create(tmp_path: Path) -> None:
+    project_dir = tmp_path / "project"
+    state.init_state("shopify", "Store", "https://example.com", project_dir=project_dir)
+    manifest = project_dir / "content/assets/rec1.json"
+    manifest.write_text(json.dumps({"assets": [{"rid": "recCover", "role": "feature", "local_path": "content/assets/files/recCover", "shopify_file_id": "gid://shopify/MediaImage/12", "upload_error": "CDN was still processing"}]}))
+    calls = []
+
+    def graphql(query, variables):
+        calls.append(query)
+        assert "FileNode" in query
+        return {"data": {"node": {"id": "gid://shopify/MediaImage/12", "fileStatus": "READY", "image": {"url": "https://cdn.shopify.com/cover.jpg"}}}}
+
+    report, _ = upload_asset_files_to_shopify(project_dir, "rec1", graphql_runner=graphql)
+    assert report["collection_status"] == "ok" and len(calls) == 1
+    asset = json.loads(manifest.read_text())["assets"][0]
+    assert asset["url"] == "https://cdn.shopify.com/cover.jpg" and "upload_error" not in asset
+
+
 def test_collect_inline_rids_preserves_document_order() -> None:
     assert collect_inline_rids('<p><img data-rid="recA1" /></p><img alt="x" data-rid="recB2">') == ["recA1", "recB2"]
 

@@ -26,6 +26,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 
 ## Operations and architecture
 
+- [Project asset library](reference/asset-library.md): binding a project to its Feishu Base material library, downloading attachments, delivering Shopify CDN URLs, and verifying article image fields.
 - [Local UI surface](reference/ui-local-surface.md): the optional local viewer's audit whitelist, credential APIs, Markdown write scope, and read-only Pages boundary.
 - [Google integrations](reference/google-integrations.md): CrUX and read-only GSC configuration, evidence scopes, and status meanings.
 - [Clarity integration](reference/clarity-integrations.md): project-scoped MCP connections, behavior queries, private evidence and transient recording links.

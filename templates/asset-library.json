@@ -1,0 +1,9 @@
+{
+  "schema_version": "asset-library-v1",
+  "provider": "feishu_base",
+  "profile": "assets",
+  "config_path": ".runtime/feishu/asset-library-profile.json",
+  "live_access": {
+    "status": "not_verified"
+  }
+}

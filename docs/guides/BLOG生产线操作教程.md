@@ -75,17 +75,19 @@ SEO 负责人确认选题后，才进入写作：
 
 素材路线按商品锚点过滤候选。锚点定义在项目的 `context/product-anchors.json`，格式为 `{"<anchor>": [{"title": "商品标题", "handle": "shopify-handle"}]}`；文件不存在时不做商品过滤，`content brief` 也不生成商品链接。
 
-只有文章需要旧素材库图片时，才运行素材路线：
+素材库是项目级能力：绑定写在项目 `.runtime/` 下，绑定后命令不必重复 `--profile`，显式 `--profile / --config` 仍可用。绑定方法、缓存与恢复规则见 [项目素材库与文章配图](../reference/asset-library.md)。
 
 ```bash
-./seo --project my-store content asset-candidates <item_id> --profile blog-profile --json
-./seo --project my-store content describe-candidates <item_id> --profile blog-profile --no-writeback --json
+./seo --project my-store content asset-candidates <item_id> --json
+./seo --project my-store content describe-candidates <item_id> --no-writeback --json
 # 确认要把新描述回写飞书时：
-./seo --project my-store content describe-candidates <item_id> --profile blog-profile --confirm --json
-./seo --project my-store content download-assets <item_id> --profile blog-profile --json
+./seo --project my-store content describe-candidates <item_id> --confirm --json
+./seo --project my-store content download-assets <item_id> --json
 ./seo --project my-store content upload-assets <item_id> --json
 ./seo --project my-store content apply-assets <item_id> --json
 ```
+
+`feature` 对应博客 Image 封面字段，正文图片不能替代它。apply 只改本地，后台更新需按授权单独执行并回读。权限失败保持 failed/blocked；缓存可明确复用，但不算实时获取成功，也不自动回写用量或发布。
 
 草稿导入文件至少需要以下结构。`scheduled_at` 必须包含时区，导入后统一保存为 UTC：
 

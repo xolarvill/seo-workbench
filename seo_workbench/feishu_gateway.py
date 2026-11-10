@@ -48,6 +48,8 @@ def list_records(
             "--format",
             "json",
         ]
+        if resolved.get("identity"):
+            command += ["--as", _profile_identity(resolved)]
         for field in projected:
             command += ["--field-id", field]
         payload = _run_json(command, runner=runner, operation="Base record list")
@@ -102,10 +104,13 @@ def download_attachment(
     record_id: str,
     field: str,
     output: Path,
-    identity: str = "user",
+    identity: str | None = None,
     runner: Any = subprocess.run,
 ) -> dict[str, Any]:
     resolved = _load_profile(profile, config_path)
+    identity = identity or _profile_identity(resolved)
+    if identity not in {"user", "bot"}:
+        raise ValueError("Feishu identity must be user or bot")
     base_config, table_config = _resolve_table(resolved, base, table)
     field_map = _field_map(table_config)
     remote_field = _configured_field(field_map, field)
@@ -275,6 +280,13 @@ def _resolve_role(profile: dict[str, Any], role: str) -> tuple[str, str]:
 
 def _lark_command(profile: dict[str, Any]) -> list[str]:
     return ["lark-cli", "--profile", str(profile["lark_cli_profile"])]
+
+
+def _profile_identity(profile: dict[str, Any]) -> str:
+    identity = str(profile.get("identity") or "user")
+    if identity not in {"user", "bot"}:
+        raise ValueError("Feishu profile identity must be user or bot")
+    return identity
 
 
 def _field_map(table: dict[str, Any]) -> dict[str, str]:
