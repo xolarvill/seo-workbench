@@ -2,6 +2,15 @@
 
 Agent-neutral SEO workflow repo. Use the local Python CLI and local `skills/` first.
 
+## How to work
+
+1. State goal, scope, and acceptance criteria in three lines before acting; scope comes from the current request, not a stored phase.
+2. Deliver the whole stated scope in one pass. Do not silently narrow it; if you cannot finish, list what remains and why.
+3. If the task clearly exceeds one session, give a phase plan first, then finish it phase by phase with a one-line progress note each time.
+4. Never claim "done" without verification output for the change.
+5. On conflict: this file > `docs/` > examples inside `skills/`. The user's current instruction beats this file.
+6. New invariants go to `docs/` first; only promote one here if it changes every action.
+
 ## Agent-led work
 
 - Start from the user's current goal, the project's `AGENTS.md` when present, relevant decisions, artifacts, and evidence. Choose the work from that context; a stored phase is historical context, not a gate or a task scheduler.
@@ -61,10 +70,57 @@ Initialize a project:
 
 ## Working Rules
 
+### Scope and working method
+
 - Prefer `skills/` over third-party skill packs.
 - Prefer `seo_workbench_tools/` for machine evidence; do not rewrite probes unless the existing collector cannot supply the field.
 - Run `validate --json` after changing workflow, state, CLI contracts, or skill mappings.
 - Run `doctor --json` when debugging local setup, missing evidence, or optional rendered support.
+- Keep stores isolated under `projects/<id>/`; prefer `--project <id>` for daily use and retain `--project-dir` for explicit external or test directories.
+- Do not restore Claude slash commands or external repo dependencies unless the user explicitly asks.
+- Each reform layer should be committed separately.
+
+### Evidence and conclusions
+
+- Project raw, robots/sitemap, resource-header, rendered, and technical crawls share the injected crawl session: attach signing headers only to the exact HTTPS host on each hop, preserve mobile UA, respect persistent host cooldown, and never forward signature headers across redirects. Persist unavailable page retries separately from discovery and retain both through Continue; a recovered request must not remain failed because of earlier transport attempts. Keep Lighthouse/CrUX measurement traffic separate from this crawl pacing.
+- Keep response evidence eligibility separate from SEO severity and priority. Unknown status, rate limits, challenges, parse failures, and unavailable target HTML cannot prove missing metadata or hreflang return links; incomplete link or sitemap coverage cannot prove absence. Preserve real observed HTTP errors, and never verify old issues from unavailable evidence or an older rule-evaluation fingerprint version.
+- Technology detection uses the pinned Go helper under `seo_workbench_tools/technology_detector/`; keep its JSON contract stable and update fixtures before changing the fingerprint provider version.
+- `technology` defaults to balanced Wappalyzer detection (page, scripts, robots, and DNS), then adds explicit asset-name fallback and consumes existing rendered runtime evidence when available. Use `--scan-mode fast` for the reproducible Go headers/cookies/raw-HTML path. Never turn a zero detection into a positive absence claim; record runtime-only gaps in `architecture_analysis.evidence_quality`.
+- Rendered mobile evidence must use a mobile user agent as well as a mobile viewport. Preserve per-profile final URLs and report profile-specific navigation instead of merging desktop and mobile routes.
+- Lighthouse performance evidence uses the pinned Node runner and browser resolved by `setup.sh`; keep runs sequential, default to five runs, and preserve every complete LHR before changing aggregation behavior.
+- Performance summaries must preserve `requested_url`, `final_url`, `main_document_url`, per-run final URL consistency, and redirect status. Never compare performance snapshots that ended on different final URLs.
+- Keep Lighthouse traffic behind `network_boundary.guarded_proxy` unless the user explicitly selects `--allow-private`; redact sensitive URL credentials and query values before persisting LHR or HTML artifacts.
+- Treat Lighthouse as lab evidence and CrUX as field evidence. Never merge their scores or substitute one silently for the other; preserve CrUX URL-to-origin fallback and `no_data` status.
+- Performance verdicts use CrUX field data as the source of truth. Lab (Lighthouse) and crawler/bot measurements (e.g. response-time rules like SLOW_RESPONSE) are diagnostics only and must never be treated as proof of a performance problem; never commit to "fixing" crawler metrics such as SLOW_RESPONSE counts, only CrUX-observed issues.
+- CrUX defaults to aggregate, mobile, and desktop current data plus 40 history periods. Treat `projects/<id>/audits/crux/latest.json` as its stable pointer.
+- `statistics collect` is the production entry point for statistical SEO evidence. It must use finalized GSC as the common end date, align GA4 and Shopify to that date, refuse truncated or incomparable evidence, append only aggregate date-by-page history, and refresh Portfolio only after every gate passes.
+- Record GSC, GA4, Shopify, consent, or cross-source measurement-definition changes in `context/measurement-regimes.jsonl`. A breaking regime inside a comparison range makes the affected source incomparable; never smooth across it or silently treat the series as continuous.
+- `gsc collect` combines finalized 28-day Search Analytics comparison, Sitemap status, and a bounded URL Inspection sample. URL Inspection is indexed-version evidence, not a live test. Treat `needs_auth` as a user handoff, not a site failure.
+- Audit diff compares the newest immutable raw, technology, performance, CrUX, and GSC snapshot with its newest matching identity. Never classify a regression when Lighthouse runtime, CrUX effective scope/form factor, or GSC property/window/data-state comparability fails.
+- SEO change outcomes are descriptive pre/post evidence, not causal claims. Keep GSC and aggregate business windows comparable; verdicts are per expected metric and a metric without sufficient evidence is `insufficient_data` on its own without vetoing the other metrics, while a non-comparable window or a fully unobserved change stays `insufficient_data`. Missing business evidence is `insufficient_data`, not zero.
+- Use explicit change-scoped GSC collection for outcome reviews so the change day is excluded from both windows; an unobserved changed URL is `insufficient_data`, not zero traffic.
+- Keep change-scoped GSC refreshes to at most 25 URLs; use an explicit full-property artifact for larger change sets.
+- Pages evaluates one-URL SEO changes through the existing background job runner; use the CLI and an explicit GSC artifact for multi-URL reviews.
+- `content-portfolio-v4` is the same-site union of current/previous GSC pages, the latest technical inventory, live content URLs, comparable business-only URLs, transparent query projections, and private daily-history diagnostics. Treat absent source evidence as `not_observed`, not zero, not unindexed, and not nonexistent. Query statistics cover observed GSC query-page rows only; longitudinal intervals require explicit daily coverage; Shopify product value is all-channel context rather than SEO revenue attribution. Keep `audits/content-portfolio/latest.json` as the stable pointer.
+- Apply Benjamini-Hochberg false-discovery control before promoting simultaneous page-level CTR benchmark deviations into the action queue. Preserve unadjusted p-values and adjusted q-values; point-estimate opportunity remains diagnostic when it does not survive FDR.
+- `seo-outcome-v2` uses change-scoped daily evidence and moving-block intervals. Matched controls are allowed only when private history covers both windows and at least three unchanged, same-type pages match pre-change clicks/impressions; all outcome reports retain `causal_claim=false`.
+- Technical-rule effects require at least six verified or provisional fixes (each observation carries a `confidence` flag; provisional comes from partial same-fingerprint audits) with complete 14-day pre/post GSC history, exclude comparisons crossing a GSC measurement regime, and apply FDR across tested rules. Call them associations, never causal impact.
+- Technical issues are verified only by a complete later audit with the same semantic config fingerprint (collection parameters such as crawl limits, concurrency, timeouts, and private-network access are excluded from the fingerprint). Partial same-fingerprint runs record lower-confidence provisional evidence only; incomparable runs cannot prove absence.
+- Persist one technical issue per fingerprint, then group operator queues by rule and page template; keep fingerprint-level evidence and verification history authoritative.
+- Backlink snapshots are provider-scoped. Only two complete same-source snapshots can confirm absence as lost; never invent authority/toxicity scores or auto-generate disavow actions.
+
+### Integrations and credentials
+
+- GSC is read-only and explicit. Keep OAuth clients, tokens, service accounts, and project bindings under ignored `.runtime/` paths; never persist authorization headers or credentials in audit artifacts.
+- GA4 is read-only and project-bound. Keep OAuth tokens under ignored `.runtime/google/`, keep the property binding under the project's ignored `.runtime/`, and preserve exact query windows in every artifact; default to two complete processing days before today.
+- Clarity MCP uses the pinned local Node runner and project-scoped credentials at `.runtime/integrations/clarity.json`. Never share authenticated processes across brands or expose tokens in argv, status, evidence or logs. Queries and credential verification share the per-brand operation lease and cooldown.
+- Clarity responses with unconfirmed scope are exploratory partial evidence, not production statistics. Keep per-kind immutable records and current pointers under `audits/clarity/`; private recording links exist only in the local viewer's transient memory, never audit files or job logs. Clarity does not replace CrUX or enter the production statistics chain.
+- Keep the GA4 commerce funnel event-count based and landing-page associated: `view_item`, `add_to_cart`, `begin_checkout`, and `purchase` totals may be filtered to Organic Search, but standard-event tracking coverage must be checked across all channels. Never infer broken tracking from zero organic purchases alone.
+- Shopify order evidence is product-level net revenue, not channel attribution. Use exact windows matching GA4, aggregate line-item amounts rather than repeating order totals, exclude test/unpaid orders, and never persist customer or order identifiers.
+- Shopify Admin credentials are project-scoped at `projects/<id>/.runtime/integrations/shopify.json` with mode `0600`. Accept only canonical `*.myshopify.com` targets, use the pinned Admin GraphQL version and a fixed read-only verification query, expose granted scopes but never the token, and warn rather than hide when a token includes write scopes.
+
+### Artifacts, archive, and UI
+
 - The local UI is optional and local-only. Detect an active UI from `.runtime/ui/session.json`; open its `http://localhost:<port>` address in any browser without a browser session. Keep using the same `./seo --project <id> ...` commands and project files; the UI filesystem watcher will surface new evidence and Markdown files automatically.
 - When the UI starts an audit, it invokes the existing project-scoped CLI through a fixed action whitelist. Do not add arbitrary command execution, shell strings, or remote binds. Credential management is limited to fixed local-only provider APIs: secret values are write-only, never returned, stored below ignored `.runtime/` paths with private permissions, and never accepted through arbitrary filesystem paths or a generic environment editor.
 - Markdown UI writes are limited to `context/`, `strategy/`, `content/`, `audits/`, and `reports/`, use revision-based conflict detection, and must never overwrite concurrent agent edits silently.
@@ -78,52 +134,16 @@ Initialize a project:
 - Project-level `evidence` defaults to a maximum of five representative same-host routes discovered from raw/rendered internal links. Keep discovery bounded, exclude static resources and sensitive query parameters, and use `--crawl-limit 0` for a strict single-URL run.
 - For Headless SEO work, prefer `./seo evidence --rendered --json` when Playwright is available so `headless_audit` includes raw/rendered diffs.
 - Evidence collectors should return structured JSON with `collection_status`, `errors`, and `warnings` even when some fetches fail.
-- Project raw, robots/sitemap, resource-header, rendered, and technical crawls share the injected crawl session: attach signing headers only to the exact HTTPS host on each hop, preserve mobile UA, respect persistent host cooldown, and never forward signature headers across redirects. Persist unavailable page retries separately from discovery and retain both through Continue; a recovered request must not remain failed because of earlier transport attempts. Keep Lighthouse/CrUX measurement traffic separate from this crawl pacing.
-- Keep response evidence eligibility separate from SEO severity and priority. Unknown status, rate limits, challenges, parse failures, and unavailable target HTML cannot prove missing metadata or hreflang return links; incomplete link or sitemap coverage cannot prove absence. Preserve real observed HTTP errors, and never verify old issues from unavailable evidence or an older rule-evaluation fingerprint version.
-- Technology detection uses the pinned Go helper under `seo_workbench_tools/technology_detector/`; keep its JSON contract stable and update fixtures before changing the fingerprint provider version.
-- `technology` defaults to balanced Wappalyzer detection (page, scripts, robots, and DNS), then adds explicit asset-name fallback and consumes existing rendered runtime evidence when available. Use `--scan-mode fast` for the reproducible Go headers/cookies/raw-HTML path. Never turn a zero detection into a positive absence claim; record runtime-only gaps in `architecture_analysis.evidence_quality`.
-- Rendered mobile evidence must use a mobile user agent as well as a mobile viewport. Preserve per-profile final URLs and report profile-specific navigation instead of merging desktop and mobile routes.
-- Lighthouse performance evidence uses the pinned Node runner and browser resolved by `setup.sh`; keep runs sequential, default to five runs, and preserve every complete LHR before changing aggregation behavior.
-- Performance summaries must preserve `requested_url`, `final_url`, `main_document_url`, per-run final URL consistency, and redirect status. Never compare performance snapshots that ended on different final URLs.
-- Keep Lighthouse traffic behind `network_boundary.guarded_proxy` unless the user explicitly selects `--allow-private`; redact sensitive URL credentials and query values before persisting LHR or HTML artifacts.
 - Treat `projects/<id>/audits/performance/latest.json` as the stable performance pointer; timestamped performance directories are immutable records.
-- Treat Lighthouse as lab evidence and CrUX as field evidence. Never merge their scores or substitute one silently for the other; preserve CrUX URL-to-origin fallback and `no_data` status.
-- Performance verdicts use CrUX field data as the source of truth. Lab (Lighthouse) and crawler/bot measurements (e.g. response-time rules like SLOW_RESPONSE) are diagnostics only and must never be treated as proof of a performance problem; never commit to "fixing" crawler metrics such as SLOW_RESPONSE counts, only CrUX-observed issues.
-- CrUX defaults to aggregate, mobile, and desktop current data plus 40 history periods. Treat `projects/<id>/audits/crux/latest.json` as its stable pointer.
-- GSC is read-only and explicit. Keep OAuth clients, tokens, service accounts, and project bindings under ignored `.runtime/` paths; never persist authorization headers or credentials in audit artifacts.
-- GA4 is read-only and project-bound. Keep OAuth tokens under ignored `.runtime/google/`, keep the property binding under the project's ignored `.runtime/`, and preserve exact query windows in every artifact; default to two complete processing days before today.
-- Clarity MCP uses the pinned local Node runner and project-scoped credentials at `.runtime/integrations/clarity.json`. Never share authenticated processes across brands or expose tokens in argv, status, evidence or logs. Queries and credential verification share the per-brand operation lease and cooldown.
-- Clarity responses with unconfirmed scope are exploratory partial evidence, not production statistics. Keep per-kind immutable records and current pointers under `audits/clarity/`; private recording links exist only in the local viewer's transient memory, never audit files or job logs. Clarity does not replace CrUX or enter the production statistics chain.
-- Keep the GA4 commerce funnel event-count based and landing-page associated: `view_item`, `add_to_cart`, `begin_checkout`, and `purchase` totals may be filtered to Organic Search, but standard-event tracking coverage must be checked across all channels. Never infer broken tracking from zero organic purchases alone.
-- Shopify order evidence is product-level net revenue, not channel attribution. Use exact windows matching GA4, aggregate line-item amounts rather than repeating order totals, exclude test/unpaid orders, and never persist customer or order identifiers.
-- `statistics collect` is the production entry point for statistical SEO evidence. It must use finalized GSC as the common end date, align GA4 and Shopify to that date, refuse truncated or incomparable evidence, append only aggregate date-by-page history, and refresh Portfolio only after every gate passes.
 - Treat `audits/statistics/history/` as private aggregate evidence with a rolling 120-day default. Daily rows are idempotent by date and URL; missing observations remain absent rather than being synthesized as zero.
-- Record GSC, GA4, Shopify, consent, or cross-source measurement-definition changes in `context/measurement-regimes.jsonl`. A breaking regime inside a comparison range makes the affected source incomparable; never smooth across it or silently treat the series as continuous.
-- `gsc collect` combines finalized 28-day Search Analytics comparison, Sitemap status, and a bounded URL Inspection sample. URL Inspection is indexed-version evidence, not a live test. Treat `needs_auth` as a user handoff, not a site failure.
 - Treat `projects/<id>/audits/gsc/latest.json` as the stable composite GSC pointer; GSC artifacts are private local data with mode `0600`.
 - Treat `projects/<id>/audits/gsc/search-analytics/latest.json` as the canonical page/query metrics source for technical priority, Pages, and SEO outcome evaluation; the composite pointer is for combined status and audit diff.
-- Shopify Admin credentials are project-scoped at `projects/<id>/.runtime/integrations/shopify.json` with mode `0600`. Accept only canonical `*.myshopify.com` targets, use the pinned Admin GraphQL version and a fixed read-only verification query, expose granted scopes but never the token, and warn rather than hide when a token includes write scopes.
-- Keep stores isolated under `projects/<id>/`; prefer `--project <id>` for daily use and retain `--project-dir` for explicit external or test directories.
-- Audit diff compares the newest immutable raw, technology, performance, CrUX, and GSC snapshot with its newest matching identity. Never classify a regression when Lighthouse runtime, CrUX effective scope/form factor, or GSC property/window/data-state comparability fails.
-- SEO change outcomes are descriptive pre/post evidence, not causal claims. Keep GSC and aggregate business windows comparable; verdicts are per expected metric and a metric without sufficient evidence is `insufficient_data` on its own without vetoing the other metrics, while a non-comparable window or a fully unobserved change stays `insufficient_data`. Missing business evidence is `insufficient_data`, not zero.
-- Use explicit change-scoped GSC collection for outcome reviews so the change day is excluded from both windows; an unobserved changed URL is `insufficient_data`, not zero traffic.
-- Keep change-scoped GSC refreshes to at most 25 URLs; use an explicit full-property artifact for larger change sets.
-- Pages evaluates one-URL SEO changes through the existing background job runner; use the CLI and an explicit GSC artifact for multi-URL reviews.
-- `content-portfolio-v4` is the same-site union of current/previous GSC pages, the latest technical inventory, live content URLs, comparable business-only URLs, transparent query projections, and private daily-history diagnostics. Treat absent source evidence as `not_observed`, not zero, not unindexed, and not nonexistent. Query statistics cover observed GSC query-page rows only; longitudinal intervals require explicit daily coverage; Shopify product value is all-channel context rather than SEO revenue attribution. Keep `audits/content-portfolio/latest.json` as the stable pointer.
-- Apply Benjamini-Hochberg false-discovery control before promoting simultaneous page-level CTR benchmark deviations into the action queue. Preserve unadjusted p-values and adjusted q-values; point-estimate opportunity remains diagnostic when it does not survive FDR.
-- `seo-outcome-v2` uses change-scoped daily evidence and moving-block intervals. Matched controls are allowed only when private history covers both windows and at least three unchanged, same-type pages match pre-change clicks/impressions; all outcome reports retain `causal_claim=false`.
-- Technical-rule effects require at least six verified or provisional fixes (each observation carries a `confidence` flag; provisional comes from partial same-fingerprint audits) with complete 14-day pre/post GSC history, exclude comparisons crossing a GSC measurement regime, and apply FDR across tested rules. Call them associations, never causal impact.
 - Pages actions are read-time projections of portfolio, content operations, technical issues, and SEO changes. Do not add a generic task database or duplicate domain status.
 - Shared UI status pills are mandatory: use `ui/src/components/StatusPill.tsx` and follow `docs/UI状态Pill规范.md` rather than adding page-local tone maps or pill CSS.
 - Shared UI help tooltips are mandatory: use `ui/src/components/HelpTooltip.tsx` and follow `docs/UI帮助气泡规范.md` rather than adding page-local implementations.
 - Grouped technical actions are read-only and drill down by rule/template; update status, owner, and notes on individual issue fingerprints.
 - Pages may update existing local ledgers only. Never publish, redirect, recrawl, push notifications, or mutate the site from Pages; keep those actions in the existing workspaces and confirmation paths.
-- Technical issues are verified only by a complete later audit with the same semantic config fingerprint (collection parameters such as crawl limits, concurrency, timeouts, and private-network access are excluded from the fingerprint). Partial same-fingerprint runs record lower-confidence provisional evidence only; incomparable runs cannot prove absence.
-- Persist one technical issue per fingerprint, then group operator queues by rule and page template; keep fingerprint-level evidence and verification history authoritative.
-- Backlink snapshots are provider-scoped. Only two complete same-source snapshots can confirm absence as lost; never invent authority/toxicity scores or auto-generate disavow actions.
 - Treat `projects/<id>/audits/diffs/latest.json` as the stable current diff pointer; timestamped `audit-diff-*.json` files are immutable records.
-- Do not restore Claude slash commands or external repo dependencies unless the user explicitly asks.
-- Each reform layer should be committed separately.
 
 ## Skill discovery
 
