@@ -39,6 +39,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 - [Task-oriented skill discovery](20261029-skill-discovery-entrypoints.md): triggers, inputs, outputs, combinations and ownership across all 60 entrypoints.
 - [Skills acceptance and maintenance](20261029-skills-acceptance-and-maintenance.md): independent outputs, observed failures and retests, regression scope, maintenance and rollback commits.
 - [Agent instruction structure](20261110-agent-instruction-structure.md): task routing, grouped guardrails, the reporting contract, and what moved out of `AGENTS.md`.
+- [Docs pruning](20261110-docs-pruning.md): which obsolete plans and acceptance records were removed, and the links that moved with them.
 
 ## Evidence selection
 
