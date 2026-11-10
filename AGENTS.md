@@ -96,4 +96,6 @@ workflows/  templates/  Workflow manifests and state templates
 projects/<id>/          One isolated runtime directory per store
 ```
 
+Project records live under `projects/<id>/`: reports in `reports/YYYYMMDD_<category>_<topic>.md`, plus `context/`, `strategy/`, `content/`, and `audits/`. Root `docs/` holds repository-wide and cross-project documentation only.
+
 `./seo` is the repository-local launcher for the installed `seo-workbench` console script; keep `python -m seo_workbench` only as a compatibility and diagnosis fallback. For the full command catalog, see `README.md` → Common commands, or run `./seo --help` and `./seo <command> --help`.
