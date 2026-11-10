@@ -79,6 +79,13 @@ Agent-neutral SEO workflow repo. Use the local Python CLI and local `skills/` fi
 - Run `validate --json` after changing workflow, state, CLI contracts, or skill mappings, and `doctor --json` when debugging local setup, missing evidence, or optional rendered support. Do not restore Claude slash commands or external repo dependencies unless the user explicitly asks.
 - Each reform layer is committed separately.
 
+## Reporting
+
+- A project record under `projects/<id>/reports/` is five sections in this order: `结论` → `方法与覆盖` → `证据` → `边界` → `后续`. Lead with the answer in a few sentences, then the scope and method actually used, then evidence pointers that keep URL, window, device or form factor, and confidence attached, then what the evidence cannot support, then follow-ups with dates and owner. Record the data time zone, and use `###` subheadings and tables only where they help.
+- Weekly archives follow [`templates/weekly_work_done.md`](templates/weekly_work_done.md) exactly: `速览` → `实质工作` → `遗留工作` → `其他`, with `###` only inside `实质工作`. Each substantive item opens its own `### N. 标题（MM-DD）` block and links its sub-report and evidence pointer; unfinished work from last week is carried forward in both `速览` and `遗留工作`.
+- The chat reply answers first, then groups by theme: decisions, artifact links, verification results, remaining gaps. No section template and no restating internal collection logs.
+- Presentations are generated only through `reports presentation generate`; never hand-author or re-render the PDF.
+
 ## Repository shape and commands
 
 ```text
