@@ -136,6 +136,10 @@ GSC 不可用时仍会生成技术问题，但会标记 `gsc_attributed=false`�
 
 问题台账保存在 `strategy/technical-issues.jsonl`。配置指纹只统计影响规则判定的字段；抓取上限、并发、超时、私有网段等采集参数不影响规则，不参与指纹。采集完整且语义指纹与基线一致的后续审计，会把已不再出现的问题标记为 `verified`；部分抓取但语义指纹一致的后续审计，会把已不再出现的问题标记为 `provisional`（低置信证据，可进入统计，但不构成证明修复）；不可比配置不会产生任何验证。再次出现的已验证问题会重新打开，仍被观察到的 `fixed` 问题会记录复验失败。
 
+## 身份迁移（仅预览）
+
+Legacy issue identity 的迁移目前只有预览：`preview_identity_migration` 输出将要发生的变更，但不会写入。在 apply 工作流经过评审前保持 preview-only；迁移必须保留每个 member 的决策和历史，缺失目标证据时如实报告，而不是猜测。
+
 ## 定时与飞书
 
 后台页面可以保存 interval、Feishu role 和 profile；运行中的 crawl 会显示阶段、已处理 URL、发现数量和耗时，并每 2 秒刷新同一份 run 状态。Workbench 进程打开时会每 15 秒检查 due schedule，并调用同一条 `tech-audit run --scheduled --json`；关闭后台后仍可使用本机 cron/launchd：

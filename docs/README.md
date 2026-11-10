@@ -26,6 +26,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 
 ## Operations and architecture
 
+- [Local UI surface](reference/ui-local-surface.md): the optional local viewer's audit whitelist, credential APIs, Markdown write scope, and read-only Pages boundary.
 - [Google integrations](reference/google-integrations.md): CrUX and read-only GSC configuration, evidence scopes, and status meanings.
 - [Clarity integration](reference/clarity-integrations.md): project-scoped MCP connections, behavior queries, private evidence and transient recording links.
 - [Shopify integrations](reference/shopify-integrations.md): Admin API credential setup, granted scopes, rotation, and project isolation.
@@ -41,6 +42,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 - [Agent instruction structure](history/20261110-agent-instruction-structure.md): task routing, grouped guardrails, the reporting contract, and what moved out of `AGENTS.md`.
 - [Docs pruning](history/20261110-docs-pruning.md): which obsolete plans and acceptance records were removed, and the links that moved with them.
 - [Docs hierarchy and Hexcal removal](history/20261110-docs-hierarchy-and-hexcal-removal.md): the guides/reference/history split, the path rewrites it required, and what the import-chain removal left in place.
+- [Product anchors and main integration](history/20261110-product-anchors-and-main-merge.md): moving store product data out of the package, and how main's working contract, definition of done, and UI surface doc merged in.
 
 ## Evidence selection
 
