@@ -197,4 +197,4 @@ diff 也必须先判断可比性。最终 URL、设备类型、CrUX 实际范围
 - [Google 电商 SEO 指南](https://developers.google.com/search/docs/specialty/ecommerce)
 - [Google 对生成式 AI 内容的说明](https://developers.google.com/search/docs/fundamentals/using-gen-ai-content)
 - [Web Vitals](https://web.dev/articles/vitals)
-- [SEO Workbench Google 集成](google-integrations.md)
+- [SEO Workbench Google 集成](../reference/google-integrations.md)

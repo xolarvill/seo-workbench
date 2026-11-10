@@ -44,6 +44,6 @@
 
 ## 校验与范围
 
-39 项结构、来源、引用、维护工具、上游记录与 agent-led 工作流回归通过；严格引用检查通过；项目 validate 为 ok=true，保留已有可选 browser evidence 目录缺失 warning。16 个构造案例保存在 [skill-writing-cases.json](fixtures/skill-writing-cases.json)。当前仍为 60 个入口，409 个材料文件。
+39 项结构、来源、引用、维护工具、上游记录与 agent-led 工作流回归通过；严格引用检查通过；项目 validate 为 ok=true，保留已有可选 browser evidence 目录缺失 warning。16 个构造案例保存在 [skill-writing-cases.json](../fixtures/skill-writing-cases.json)。当前仍为 60 个入口，409 个材料文件。
 
 上述证据覆盖实际短文生成及契约一致性，不用于估算真实文章的改善幅度。此次只完成第 9、10 步之前的两项补修。

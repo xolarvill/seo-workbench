@@ -6,7 +6,7 @@ Date: 2026-10-29 (Asia/Shanghai). Approved plan step 9: improve discovery of res
 
 The previous index linked all 60 canonical skills, but gave detailed task routing mainly to core SEO methods. Other capabilities appeared as grouped names without comparable trigger, input, output or ownership guidance. Flattening directories had removed source-folder nesting without fully resolving selection cost.
 
-[The rewritten index](../skills/README.md) provides a short task locator and nine capability tables. Every canonical skill has one row describing its trigger, useful inputs, expected output and optional combinations. Inputs are evidence to look for, not mandatory questionnaires; outputs follow the user's requested scope. The index remains navigation rather than a scheduler or an allowlist.
+[The rewritten index](../../skills/README.md) provides a short task locator and nine capability tables. Every canonical skill has one row describing its trigger, useful inputs, expected output and optional combinations. Inputs are evidence to look for, not mandatory questionnaires; outputs follow the user's requested scope. The index remains navigation rather than a scheduler or an allowlist.
 
 Adjacent methods now have explicit divisions:
 

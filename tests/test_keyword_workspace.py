@@ -215,7 +215,7 @@ def test_handoff_provides_context_policy_without_promoting_or_mutating_old_conte
     handoff = keyword_handoff(project_dir, keyword)
 
     assert handoff["ok"] is True
-    assert handoff["policy_path"] == "docs/keyword-context-maintenance.md"
+    assert handoff["policy_path"] == "docs/reference/keyword-context-maintenance.md"
     assert (Path(__file__).resolve().parents[1] / handoff["policy_path"]).is_file()
     assert handoff["policy_path"] in handoff["prompt"]
     assert ("context/target-keywords.md" in handoff["context"]) is has_context

@@ -1,8 +1,8 @@
 # 本地 skills 来源与上游比对参考
 
-本文件是技能来源维护入口，配套的 [skill-sources.json](skill-sources.json) 保存完整文件映射、内容指纹、本地历史和引用关系。最后核查：**2026-10-29（Asia/Shanghai）**。第 1 步建立来源基线；第 2、3 步已按[能力归属与目录迁移记录](20261029-skill-layout-migration.md)更新为 60 个一级入口。
+本文件是技能来源维护入口，配套的 [skill-sources.json](skill-sources.json) 保存完整文件映射、内容指纹、本地历史和引用关系。最后核查：**2026-10-29（Asia/Shanghai）**。第 1 步建立来源基线；第 2、3 步已按[能力归属与目录迁移记录](history/20261029-skill-layout-migration.md)更新为 60 个一级入口。
 
-第 4、5 步的[方法与运行适配记录](20261029-skill-methods-runtime-adaptation.md)保存了专业参考归属、失效执行引用的处理与验证。第 6、7、8 步见[写作与上游适配](20261029-skill-writing-upstream-adaptation.md)。第 9 步见[主动发现入口](20261029-skill-discovery-entrypoints.md)。第 10 步见[验收与维护](20261029-skills-acceptance-and-maintenance.md)。
+第 4、5 步的[方法与运行适配记录](history/20261029-skill-methods-runtime-adaptation.md)保存了专业参考归属、失效执行引用的处理与验证。第 6、7、8 步见[写作与上游适配](history/20261029-skill-writing-upstream-adaptation.md)。第 9 步见[主动发现入口](history/20261029-skill-discovery-entrypoints.md)。第 10 步见[验收与维护](history/20261029-skills-acceptance-and-maintenance.md)。
 
 ## 快速查询
 
@@ -88,12 +88,12 @@ JSON 覆盖 skills/ 和 third_party/skill-history/ 的受维护文件，不含�
 
 已知本地适配线索可从以下位置恢复：
 
-- 核心 SuperSEO 方法：当前 reader-experience-review 接入、事实依据、非机械字数／密度规则；参见[复审报告](20261029-local-skills-review.md)。
+- 核心 SuperSEO 方法：当前 reader-experience-review 接入、事实依据、非机械字数／密度规则；参见[复审报告](history/20261029-local-skills-review.md)。
 - Claude SEO 核心入口：技术采集、证据资格、字段性能数据与当前结构化数据规则；结合 AGENTS 和对应文件的本地 Git 差异阅读。
 - Workbench 原生方法：project-context、headless-precheck、reader-experience-review 没有对应的外部上游正文。
 - 每文件的实际本地变更可由 JSON 的 commit 指针恢复，不把“与上游不同”统一归类为本地补丁。
 
-本轮按条目吸收和未采用的决定见 [skill-upstream-adoptions.json](skill-upstream-adoptions.json) 与[实施记录](20261029-skill-writing-upstream-adaptation.md)。每项保留固定 SHA、实际读取的上游文件 blob、落点与本地适配，不把单项采用视为整包升级。
+本轮按条目吸收和未采用的决定见 [skill-upstream-adoptions.json](skill-upstream-adoptions.json) 与[实施记录](history/20261029-skill-writing-upstream-adaptation.md)。每项保留固定 SHA、实际读取的上游文件 blob、落点与本地适配，不把单项采用视为整包升级。
 
 ## 以后如何比对上游更新
 

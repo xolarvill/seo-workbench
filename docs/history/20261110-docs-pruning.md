@@ -18,7 +18,7 @@
 ## 证据
 
 - 入链修复：`README.md:162` 的 pilot 链接改指 `technical-audit.md` 的重爬契约；`README.md:260` 与 `docs/README.md` 删除 6 条对应条目；`docs/20261029-local-skills-review.md:40` 去掉指向已删验收记录的链接；`docs/skill-layout-migration.json` 的 `existing_local_dependencies` 从 218 条降到 217 条。
-- 全仓链接检查（README、AGENTS、CLAUDE、docs 下 36 个 md）：0 条真实断链；仅剩 `docs/keyword-context-maintenance.md` 两处 `YYYYMMDD` 占位示例，属预期。
+- 全仓链接检查（README、AGENTS、CLAUDE、docs 下 36 个 md）：0 条真实断链；仅剩 `docs/reference/keyword-context-maintenance.md` 两处 `YYYYMMDD` 占位示例，属预期。
 - 全仓检索 10 个文件名：无残留引用（`cli.py`、`feishu_gateway.py` 等代码不受影响）。
 - `pytest tests/test_skill_layout.py tests/test_skill_methods.py` 通过（技能清单与迁移边不依赖已删文档）。
 

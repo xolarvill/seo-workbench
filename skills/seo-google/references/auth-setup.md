@@ -1,6 +1,6 @@
 # Google authentication and project binding
 
-The maintained setup contract is [Google integrations](../../../docs/google-integrations.md). Read it when creating or repairing a connection; use the current CLI help for arguments. Authentication profiles and per-project property bindings replace the source pack's global configuration.
+The maintained setup contract is [Google integrations](../../../docs/reference/google-integrations.md). Read it when creating or repairing a connection; use the current CLI help for arguments. Authentication profiles and per-project property bindings replace the source pack's global configuration.
 
 ## Existing setup first
 

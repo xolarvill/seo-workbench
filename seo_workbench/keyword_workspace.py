@@ -23,7 +23,7 @@ DECISIONS = {"unreviewed", "prioritize", "hold", "drop"}
 STAGES = {"needs_decision", "needs_mapping", "mapped", "demand_check", "researched", "handed_off", "held", "dropped"}
 MAX_BATCH = 1_000
 QUEUE_MIN_SCORE = 40.0
-KEYWORD_CONTEXT_POLICY = "docs/keyword-context-maintenance.md"
+KEYWORD_CONTEXT_POLICY = "docs/reference/keyword-context-maintenance.md"
 
 
 @dataclass(frozen=True)

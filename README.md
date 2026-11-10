@@ -57,7 +57,7 @@ Run your coding agent from the repository root. SEO Workbench is agent-neutral. 
 
 Agents choose methods from the current goal, project artifacts, and evidence. Read `AGENTS.md` and the task-oriented `skills/README.md`, then load and combine the relevant local methods. Stored phases do not schedule work; the `next` command has been retired. When the UI is open, new audit files and Markdown documents appear there automatically.
 
-For keyword planning, `context/target-keywords.md` is the maintained list of current targets, candidates and removed targets. Record each selected keyword with a link to its decision/research; keep detailed rationale and launch plans in reports. Follow [keyword context maintenance](docs/keyword-context-maintenance.md) for lifecycle and evidence checks. Markdown is not automatically synchronized with the keyword workspace.
+For keyword planning, `context/target-keywords.md` is the maintained list of current targets, candidates and removed targets. Record each selected keyword with a link to its decision/research; keep detailed rationale and launch plans in reports. Follow [keyword context maintenance](docs/reference/keyword-context-maintenance.md) for lifecycle and evidence checks. Markdown is not automatically synchronized with the keyword workspace.
 
 ### Working manually
 
@@ -157,9 +157,9 @@ This is the rule catalog the technical audit can detect. It is not a claim that 
 - `SLOW_RESPONSE` — Slow response
 - `LARGE_HTML` — Large HTML response
 
-Browser collectors use the matching Playwright runtime with explicit process cleanup and partial-result gates; see [browser runtime and probe comparability](docs/browser-runtime.md).
+Browser collectors use the matching Playwright runtime with explicit process cleanup and partial-result gates; see [browser runtime and probe comparability](docs/reference/browser-runtime.md).
 
-Before resuming a broad audit, follow the bounded recrawl procedure in [technical audit](docs/technical-audit.md) and preserve the full-audit pointer and operator ledger.
+Before resuming a broad audit, follow the bounded recrawl procedure in [technical audit](docs/reference/technical-audit.md) and preserve the full-audit pointer and operator ledger.
 
 Issue fingerprints use rule-specific source/target identities. Timings, sizes, content hashes, and duplicate-group members remain observations; they do not create new issue identities. First observations are candidates. Repeated fresh observations in a comparable audit confirm presence; priority alone never implies confirmation.
 
@@ -252,27 +252,27 @@ Use `./seo --help` and `./seo <command> --help` for the full command reference.
 ### Operation Manual Documentation
 
 - [SEO tutorial index](docs/README.md)
-- [SEO iteration loop](docs/SEO迭代闭环.md)
-- [BLOG production tutorial](docs/BLOG生产线操作教程.md)
-- [Google integrations](docs/google-integrations.md)
-- [Shopify integrations](docs/shopify-integrations.md)
-- [Standalone workbench architecture](docs/independent-workbench.md)
+- [SEO iteration loop](docs/reference/SEO迭代闭环.md)
+- [BLOG production tutorial](docs/guides/BLOG生产线操作教程.md)
+- [Google integrations](docs/reference/google-integrations.md)
+- [Shopify integrations](docs/reference/shopify-integrations.md)
+- [Standalone workbench architecture](docs/reference/independent-workbench.md)
 
 ### Optional Google integrations
 
 CrUX requires a Google API key. GSC supports desktop OAuth and service accounts, requests read-only access, and never submits Sitemaps. Ordinary Blog URLs rely on Sitemap discovery and GSC monitoring; `content index-submit` is retained only as a fail-safe compatibility command and rejects Blog submissions because Google's Indexing API is limited to `JobPosting` and `BroadcastEvent` pages.
 
-See [Google integrations](docs/google-integrations.md) for setup, authentication, evidence scopes, and status meanings.
+See [Google integrations](docs/reference/google-integrations.md) for setup, authentication, evidence scopes, and status meanings.
 
 ### Optional Clarity integration
 
-Clarity MCP provides project-scoped dashboard queries, recording samples and documentation retrieval. Configure it in **Connections → Optional**, or run `./seo --project example-store clarity --help`. Tokens are write-only; observations remain separate from formal statistics. See [Clarity integration](docs/clarity-integrations.md).
+Clarity MCP provides project-scoped dashboard queries, recording samples and documentation retrieval. Configure it in **Connections → Optional**, or run `./seo --project example-store clarity --help`. Tokens are write-only; observations remain separate from formal statistics. See [Clarity integration](docs/reference/clarity-integrations.md).
 
 ### Optional Shopify integration
 
 Shopify projects can store one project-scoped Admin API access token. The Workbench verifies the canonical `.myshopify.com` domain and granted access scopes before saving, never returns the token, and warns when the connected app has write scopes.
 
-See [Shopify integrations](docs/shopify-integrations.md) for custom app setup, rotation, and security boundaries.
+See [Shopify integrations](docs/reference/shopify-integrations.md) for custom app setup, rotation, and security boundaries.
 
 ## Setup requirements
 

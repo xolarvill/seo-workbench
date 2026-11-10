@@ -1,6 +1,6 @@
 # Analytics provider inputs
 
-Use the current project's event plan, measurement regimes and collected evidence first. For Workbench GA4 setup and collection, read [Google integrations](../../../docs/google-integrations.md) and [current operations](../../seo/references/workbench-operations.md).
+Use the current project's event plan, measurement regimes and collected evidence first. For Workbench GA4 setup and collection, read [Google integrations](../../../docs/reference/google-integrations.md) and [current operations](../../seo/references/workbench-operations.md).
 
 | Source | Inputs needed for this task |
 |---|---|

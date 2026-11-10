@@ -6,7 +6,7 @@
 
 ## 方法与覆盖
 
-- 基线：读取 `AGENTS.md`、`CLAUDE.md`、`README.md`、`docs/README.md`；对 63 条 Working Rules 逐条判定"留 / 合并 / 外移 / 删"，并以只读方式确认每条规则的 owner 文档是否存在（`docs/technical-audit.md`、`docs/google-integrations.md`、`docs/统计学SEO操作手册.md`、`docs/SEO迭代闭环.md`、`docs/shopify-integrations.md`、`docs/clarity-integrations.md`、`docs/browser-runtime.md`、`docs/UI状态Pill规范.md`、`docs/UI帮助气泡规范.md`、`docs/skill-sources.md` 等）。
+- 基线：读取 `AGENTS.md`、`CLAUDE.md`、`README.md`、`docs/README.md`；对 63 条 Working Rules 逐条判定"留 / 合并 / 外移 / 删"，并以只读方式确认每条规则的 owner 文档是否存在（`docs/reference/technical-audit.md`、`docs/reference/google-integrations.md`、`docs/reference/统计学SEO操作手册.md`、`docs/reference/SEO迭代闭环.md`、`docs/reference/shopify-integrations.md`、`docs/reference/clarity-integrations.md`、`docs/reference/browser-runtime.md`、`docs/reference/UI状态Pill规范.md`、`docs/reference/UI帮助气泡规范.md`、`docs/skill-sources.md` 等）。
 - 报告实况：`projects/*/reports/` 共 16 份子报告、141 个一二级标题；结论、方法、证据、边界、后续五个概念都存在，但节名分别出现 摘要、结论先行、判断与建议、证据台账、证据红线、跟进日期 等变体，合同据此固定为 `结论 / 方法与覆盖 / 证据 / 边界 / 后续`。
 - 逐主题确认后才落盘：汇报合同 → 骨架 → 入口与技能 → 命令与仓库形状 → 证据与收集 → 集成与数据 → 统计、结果与页面。每批先给处理表，确认后再执行。
 

@@ -127,8 +127,8 @@ const workspace: Workspace = {
 };
 
 const tutorialSummaries: TutorialSummary[] = [
-  { slug: "seo-foundations", title: "SEO 基础知识与证据模型", description: "Evidence", category: "Foundations", source: "SEO基础知识与证据模型.md" },
-  { slug: "growth-diagnosis", title: "SEO 增长诊断与拆解", description: "Growth", category: "Foundations", source: "SEO增长诊断与拆解.md" },
+  { slug: "seo-foundations", title: "SEO 基础知识与证据模型", description: "Evidence", category: "Foundations", source: "guides/SEO基础知识与证据模型.md" },
+  { slug: "growth-diagnosis", title: "SEO 增长诊断与拆解", description: "Growth", category: "Foundations", source: "guides/SEO增长诊断与拆解.md" },
 ];
 
 const tutorialDocuments: Record<string, TutorialDocument> = {
