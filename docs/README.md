@@ -43,6 +43,7 @@ The platform guides contain only platform-specific decisions. Use the shared fou
 - [Skills acceptance and maintenance](20261029-skills-acceptance-and-maintenance.md): independent outputs, observed failures and retests, regression scope, maintenance and rollback commits.
 - [Local skill integration diagnosis](20261026-local-skill-integration-diagnosis.md): discovery, routing, and execution gaps; prompted use is not evidence of autonomous selection.
 - [Agent-led workbench acceptance](20261026-agent-led-workbench-acceptance.md): next-command retirement, regression results, desktop/mobile QA, and bounded autonomous-selection evidence.
+- [Agent instruction structure](20261110-agent-instruction-structure.md): task routing, grouped guardrails, the reporting contract, and what moved out of `AGENTS.md`.
 - [Agent skill routing design](agent-skill-routing-design.md): agent-led method selection, retired next-step scheduling, compatibility boundaries, and acceptance evidence.
 
 ## Evidence selection
