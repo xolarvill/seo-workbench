@@ -7,7 +7,8 @@ description: >
   accessibility, llms.txt compliance, passage-level citability scoring, and
   platform-specific optimization. Use when user says "AI Overviews", "SGE",
   "GEO", "AI search", "LLM optimization", "Perplexity", "AI citations",
-  "ChatGPT search", or "AI visibility".
+  "ChatGPT search", "AI visibility", "prompt discovery", "query fan-out",
+  "反推用户问法", or "用户会怎么问".
 user-invokable: true
 argument-hint: "[url]"
 license: MIT
@@ -47,6 +48,17 @@ Use current project evidence and the [Workbench operations guide](../seo/referen
 **Only 11% of domains** are cited by both ChatGPT and Google AI Overviews for the same query, so platform-specific optimization is essential.
 
 ---
+
+## Prompt Discovery (Before GEO Analysis)
+
+Use when the prompt set would otherwise be invented by the analyst. Discovery produces candidates, not evidence of demand.
+
+1. In 2–3 assistants, use fresh sessions with personalization and memory off; ask how a named audience would ask for the job, and collect 10–15 exact phrasings across the six families (brand, category, comparison, best-for, how-to, problem).
+2. Record model, date, locale and session; deduplicate and cluster by task and intent.
+3. Validate against observed demand when available (GSC queries, site search, sales or support language, community threads), and label provenance: `model_generated`, `observed_query`, `customer_language` or `competitor_gap`.
+4. Freeze 6–12 validated prompts as the observation set; run it unchanged across the target and competitors.
+
+Model-generated questions are hypotheses; do not infer demand, ranking, traffic or conversion from them. Full steps and the observation matrix: [AI citation research](references/citation-research.md).
 
 ## GEO Analysis Criteria (Updated)
 

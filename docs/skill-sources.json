@@ -2,7 +2,7 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "4f81976836bb679c824bf81037c85588f690ca15",
+  "local_snapshot_commit": "09541d433ed057834626ca8e259191d512d63401",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
@@ -29,11 +29,11 @@
       "identical": 222,
       "workbench_native": 53
     },
-    "dependency_occurrences": 830,
+    "dependency_occurrences": 831,
     "dependencies_by_status": {
       "example_reference": 4,
       "project_context_reference": 102,
-      "resolved_local": 710,
+      "resolved_local": 711,
       "route_or_example": 1,
       "template_reference": 3,
       "upstream_runtime_reference": 10
@@ -115,8 +115,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "3ad7dfbbf0eb2fc46b8d8944d0244293a6e0d12441c054edf888197cc602367c",
-      "local_git_blob_sha": "bed637ef37f405972c4eadfd135f3f66e1f5c3b8",
+      "local_sha256": "c28ddc98e15bbe90a375efcf550c837364a882eb81966e2c36bbb8dbc0c4c349",
+      "local_git_blob_sha": "555efff229c2873f3e38910f71aa98b7d7870f12",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -142,7 +142,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/ab-test-setup/SKILL.md",
@@ -10899,8 +10899,8 @@
       "upstream_path": "skills/seo-geo/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "0603bdffef7b63cb7ac286d70082c74ad58a76ee0df158c5a250e4f0ebfc4591",
-      "local_git_blob_sha": "babf392bb326a561a69ecd3c7f547fac0c983ffe",
+      "local_sha256": "6546a5957f19db6659e964d21ddb9d4973c2ce4056c843ac4317449ac68cf3ed",
+      "local_git_blob_sha": "b8cbf471b8681d2ddda5b6fd2d4e5993c815790c",
       "comparison_upstream_blob_sha": "b52a0745b06ed05c9e70487143a059a74e6288ab",
       "comparison_status": "different",
       "first_local_record": {
@@ -10910,9 +10910,9 @@
         "path": "skills/claude-seo-extra/seo-geo/SKILL.md"
       },
       "last_local_change": {
-        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
-        "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "commit": "09541d433ed057834626ca8e259191d512d63401",
+        "date": "2026-11-11",
+        "subject": "feat: add GEO prompt discovery method",
         "path": "skills/seo-geo/SKILL.md",
         "record_status": "committed"
       },
@@ -10951,9 +10951,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
+        "commit": "09541d433ed057834626ca8e259191d512d63401",
         "date": "2026-11-11",
-        "subject": "feat: add competitive landscape analysis workflow",
+        "subject": "feat: add GEO prompt discovery method",
         "path": "skills/seo-geo/references/citation-research.md",
         "record_status": "committed"
       },
@@ -10966,7 +10966,7 @@
       "local_sha256": "002bfc66e3cfac5f92e14972a61e5e479ae73801b569450c7143fcb8e8a4cf25",
       "local_git_blob_sha": "4b7302765737e9144cd222dee70fdb5c9240a5fd",
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "claude-seo:skills/seo-google/LICENSE.txt",
@@ -22368,7 +22368,7 @@
     },
     {
       "from_path": "skills/seo-geo/SKILL.md",
-      "line": 22,
+      "line": 23,
       "syntax": "markdown_link",
       "target": "../seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
@@ -22376,7 +22376,15 @@
     },
     {
       "from_path": "skills/seo-geo/SKILL.md",
-      "line": 244,
+      "line": 61,
+      "syntax": "markdown_link",
+      "target": "references/citation-research.md",
+      "resolved_path": "skills/seo-geo/references/citation-research.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-geo/SKILL.md",
+      "line": 256,
       "syntax": "markdown_link",
       "target": "../seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
@@ -22384,7 +22392,7 @@
     },
     {
       "from_path": "skills/seo-geo/SKILL.md",
-      "line": 257,
+      "line": 269,
       "syntax": "markdown_link",
       "target": "../seo-flow/SKILL.md",
       "resolved_path": "skills/seo-flow/SKILL.md",
@@ -22392,7 +22400,7 @@
     },
     {
       "from_path": "skills/seo-geo/SKILL.md",
-      "line": 263,
+      "line": 275,
       "syntax": "markdown_link",
       "target": "references/citation-research.md",
       "resolved_path": "skills/seo-geo/references/citation-research.md",

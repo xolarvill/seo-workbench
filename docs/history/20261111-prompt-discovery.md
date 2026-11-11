@@ -10,6 +10,15 @@
 - 明确 model-generated prompts 是假设，不是需求；不得据此推断 ranking、traffic 或 conversion；模型的内容建议是待验证候选，不是 content brief。
 - Method 第 1 步改为从 frozen observation set 构造 prompt；第 4 步记录 discovery 与 observed demand 的来源差异；Deliverable 增加 prompt discovery log 和 frozen prompt/task matrix。
 
+## 入口增强
+
+同日追加，仅提升可发现性，不改变方法：
+
+- [seo-geo/SKILL.md](../../skills/seo-geo/SKILL.md) 的 frontmatter description 增加 `prompt discovery`、`query fan-out`、`反推用户问法`、`用户会怎么问` 触发词。
+- 同一入口正文新增 4 步 Prompt Discovery 摘要，详细步骤和观测矩阵仍指向 [citation-research.md](../../skills/seo-geo/references/citation-research.md)。
+- [skills/README.md](../../skills/README.md) 的 seo-geo 行补充 `prompt discovery / 反推用户问法`。
+- 按本轮范围没有新增 AGENTS Task routing 行，也没有拆成独立 skill。
+
 ## 边界
 
 - 没有新增采集器、provider、评分模型或 `workflows/*.json`。
