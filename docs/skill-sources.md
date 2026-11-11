@@ -7,7 +7,7 @@
 ## 快速查询
 
 - 查某个技能来自哪里：在下方入口表中找名称，打开固定版本的上游链接。
-- 查 references、assets、许可证等配套文件：在 JSON 的 `files` 中按 `local_path` 查找。当前 412 个受维护文件均有记录；原材料与派生方法保持独立来源身份。
+- 查 references、assets、许可证等配套文件：在 JSON 的 `files` 中按 `local_path` 查找。当前 413 个受维护文件均有记录；原材料与派生方法保持独立来源身份。
 - 查本地何时修改：查看 `first_local_record`、`last_local_change`，再用 Git 读取对应文件差异。
 - 查旧工具路径和断开的引用：在 JSON 的 `dependencies` 中按 `from_path` 或 `target` 查询。后续修复应更新这里的状态。
 - 查升级范围：比较同一来源的 `comparison_ref` 与新提交，按本文后面的步骤审阅。
@@ -34,10 +34,10 @@
 | 来源 | 全部文件 | 活跃技能 | 专家原文 | 流程原文 | 与上游相同 | 与上游有差异 |
 |---|---:|---:|---:|---:|---:|---:|
 | superseo | 125 | 11 | 0 | 0 | 87 | 38 |
-| claude-seo | 141 | 20 | 0 | 0 | 71 | 70 |
+| claude-seo | 141 | 20 | 0 | 0 | 70 | 71 |
 | seomachine | 93 | 24 | 11 | 24 | 64 | 29 |
-| workbench | 53 | 6 | 0 | 0 | 不适用 | 不适用 |
-| 合计 | **412** | **61** | **11** | **24** | **222** | **137** |
+| workbench | 54 | 6 | 0 | 0 | 不适用 | 不适用 |
+| 合计 | **413** | **61** | **11** | **24** | **221** | **138** |
 
 原有 364 个文件的来源 ID 全部保留。新增组合入口和适配参考分别登记为 Workbench 文件，并通过 composed_from 或 derived_from 关联原记录；历史专家与流程原文保留在 third_party/skill-history。
 
@@ -71,7 +71,7 @@ JSON 覆盖 skills/ 和 third_party/skill-history/ 的受维护文件，不含�
 
 ## 引用关系与适配线索
 
-当前登记 831 处字面路径引用：Markdown 链接目标，以及指定前缀的无空白反引号路径。每条保存来源文件、行号、原始目标、解析位置和状态。它用于后续修复定位，不执行其中的命令。
+当前登记 839 处字面路径引用：Markdown 链接目标，以及指定前缀的无空白反引号路径。每条保存来源文件、行号、原始目标、解析位置和状态。它用于后续修复定位，不执行其中的命令。
 
 | 状态 | 解释 |
 |---|---|
@@ -285,7 +285,7 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [third_party/skill-history/seomachine/commands/scrub.md](../third_party/skill-history/seomachine/commands/scrub.md) | [.claude/commands/scrub.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/commands/scrub.md) | 相同 | `f0116d2` |
 | [third_party/skill-history/seomachine/commands/write.md](../third_party/skill-history/seomachine/commands/write.md) | [.claude/commands/write.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/commands/write.md) | 相同 | `f0116d2` |
 
-### workbench / reference（44）
+### workbench / reference（45）
 
 | 当前文件 | 固定版本中的上游路径／派生来源 | 内容比对 | 本地首次记录 |
 |---|---|---|---|
@@ -333,6 +333,7 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [skills/write-content/references/article-workflow.md](../skills/write-content/references/article-workflow.md) | seomachine:.claude/commands/article.md | 本地方法 | `08d0679` |
 | [skills/write-content/references/draft-handoff.md](../skills/write-content/references/draft-handoff.md) | seomachine:.claude/commands/publish-draft.md | 本地方法 | `08d0679` |
 | [skills/write-content/references/drafting-workflow.md](../skills/write-content/references/drafting-workflow.md) | seomachine:.claude/commands/write.md | 本地方法 | `08d0679` |
+| [skills/write-content/references/title-craft.md](../skills/write-content/references/title-craft.md) | Workbench 本地方法 | 本地方法 | `8de1f43` |
 
 ### 归入参考的来源方法
 

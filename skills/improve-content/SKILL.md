@@ -56,7 +56,7 @@ Produce the requested revision in clean markdown: a complete article for a full 
 - Follow `../reader-experience-review/SKILL.md` for prose decisions. Negative sentences, lists of three, repeated technical terms, punctuation and familiar phrases need contextual assessment, not automatic deletion. Do not impose word bans, punctuation quotas, sentence-length patterns, asides or register changes.
 
 ### SEO
-- Make the topic clear in the title, main heading, introduction and relevant sections without exact-match or density targets.
+- Make the topic clear in the title, main heading, introduction and relevant sections without exact-match or density targets. Use [title craft](../write-content/references/title-craft.md) when the title is in scope and only names the topic.
 - Put direct answers where they help readers; use paragraphs, lists and tables according to the explanation rather than a fixed snippet length.
 - Use PAA questions when they support the page's actual task. Add internal links with descriptive anchor text when they help readers continue that task; use no per-word quota.
 - Preserve useful existing metadata, headings, links and factual qualifications unless the requested improvement warrants a change. Use the `schema` skill and current primary documentation for structured-data eligibility.

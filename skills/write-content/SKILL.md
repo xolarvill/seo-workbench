@@ -1,6 +1,6 @@
 ---
 name: write-content
-description: Write a complete SEO article, or prepare an approved article for the existing Workbench draft and delivery workflow. Reuse adequate briefs, research and project context.
+description: Write a complete SEO article, including title and metadata craft, or prepare an approved article for the existing Workbench draft and delivery workflow. Reuse adequate briefs, research and project context.
 ---
 
 # Write Content
@@ -90,6 +90,7 @@ Use these patterns when they serve the task; short explanations do not need a fu
 - **Service/landing page**: Explain the reader's need and the supported offer without inventing or amplifying a problem.
 
 ### SEO Structure
+- Before drafting, use [title craft](references/title-craft.md) to state the page's angle and generate candidates. Treat the title as a promise the article must support, not a label added at publication.
 - Make the topic clear in the title, main heading, introduction, and relevant sections without exact-match quotas or density targets.
 - Put direct answers where they improve time to value. Paragraphs, lists, and tables should match the information, not a fixed snippet formula.
 - Use PAA questions only when they support the page's main task.
@@ -103,7 +104,7 @@ Use these patterns when they serve the task; short explanations do not need a fu
 ### Final Checks
 
 1. **Task and evidence**: Check that each section helps the reader complete the task and that factual claims match available evidence. Keep unresolved evidence gaps in the task artifact; qualify public claims when readers need the qualification.
-2. **SEO usefulness**: Check topic clarity, descriptive headings, helpful links and the relevant content-type structure without counting keyword or link quotas.
+2. **SEO usefulness**: Check topic clarity, a title that gives a specific supported reason to read, descriptive headings, helpful links and the relevant content-type structure without counting keyword or link quotas.
 3. **Reader comprehension**: Use `../reader-experience-review/SKILL.md` on the actual draft before delivery. Assess whole passages for instruction leakage, invisible arguments, confusing transitions and reader actions. Preserve useful caveats and correct terms. Clear, plain prose can pass with zero edits; do not rewrite to satisfy a style pattern or imply AI authorship.
 
 ### Output

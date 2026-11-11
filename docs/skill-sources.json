@@ -2,38 +2,38 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "09541d433ed057834626ca8e259191d512d63401",
+  "local_snapshot_commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
   "summary": {
-    "tracked_files": 412,
+    "tracked_files": 413,
     "by_source": {
       "claude-seo": 141,
       "seomachine": 93,
       "superseo": 125,
-      "workbench": 53
+      "workbench": 54
     },
     "by_kind": {
       "agent_metadata": 1,
       "asset": 9,
       "index": 2,
       "license": 19,
-      "reference": 285,
+      "reference": 286,
       "skill": 61,
       "specialist_reference": 11,
       "workflow_reference": 24
     },
     "by_comparison_status": {
-      "different": 137,
-      "identical": 222,
-      "workbench_native": 53
+      "different": 138,
+      "identical": 221,
+      "workbench_native": 54
     },
-    "dependency_occurrences": 831,
+    "dependency_occurrences": 839,
     "dependencies_by_status": {
       "example_reference": 4,
       "project_context_reference": 102,
-      "resolved_local": 711,
+      "resolved_local": 719,
       "route_or_example": 1,
       "template_reference": 3,
       "upstream_runtime_reference": 10
@@ -115,8 +115,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "c28ddc98e15bbe90a375efcf550c837364a882eb81966e2c36bbb8dbc0c4c349",
-      "local_git_blob_sha": "555efff229c2873f3e38910f71aa98b7d7870f12",
+      "local_sha256": "e99403652c21c58118853ae85ef1d51b3a32555480ba4a155741b014e90ced27",
+      "local_git_blob_sha": "ea539d5950fb0cd10d66c3720fd839ff76a4a330",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -126,9 +126,9 @@
         "path": "skills/README.md"
       },
       "last_local_change": {
-        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
+        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
         "date": "2026-11-11",
-        "subject": "feat: add competitive landscape analysis workflow",
+        "subject": "docs: add title craft for article titles",
         "path": "skills/README.md",
         "record_status": "committed"
       },
@@ -142,7 +142,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/ab-test-setup/SKILL.md",
@@ -3328,8 +3328,8 @@
       "upstream_path": "skills/improve-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "3d665710a34e28631f9005aa5d2237f2aa2fb2425571aecd419cd8fe5832e978",
-      "local_git_blob_sha": "0ff5abfdfd44fe1669cf53a2d981cda5489f399e",
+      "local_sha256": "d50cc9f3615e475cb315dd0a6f8c57010ab3e591a043a48f168d91bc0712995c",
+      "local_git_blob_sha": "7a90c50570221e841c66c690a217c28e7b46c80f",
       "comparison_upstream_blob_sha": "8f1ff6b0c8fca8e96e4b821773d296ebf5c70c21",
       "comparison_status": "different",
       "first_local_record": {
@@ -3339,9 +3339,9 @@
         "path": "skills/improve-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
-        "date": "2026-10-29",
-        "subject": "refactor: make the reader method the single prose authority",
+        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "date": "2026-11-11",
+        "subject": "docs: add title craft for article titles",
         "path": "skills/improve-content/SKILL.md",
         "record_status": "committed"
       },
@@ -9506,10 +9506,10 @@
       "upstream_path": "skills/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "5db99be445c3d72fdaabf75ca92133981b586d6e48221e8df1bec06233ff62f7",
-      "local_git_blob_sha": "b0a7ce2efebd750b4b966c42522a6f12c87d0f97",
+      "local_sha256": "2a054fe7be5cabad0538ae5ed34abc6d7228f607e992b595b4ce8d56aa92954b",
+      "local_git_blob_sha": "aea6d0538a4f370ef4d0eef4c10207a6f2bc5373",
       "comparison_upstream_blob_sha": "b0a7ce2efebd750b4b966c42522a6f12c87d0f97",
-      "comparison_status": "identical",
+      "comparison_status": "different",
       "first_local_record": {
         "commit": "f0116d2b9ece16554ae734ba404e77b736bb48e3",
         "date": "2026-06-26",
@@ -9517,9 +9517,9 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md"
       },
       "last_local_change": {
-        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
-        "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "date": "2026-11-11",
+        "subject": "docs: add title craft for article titles",
         "path": "skills/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md",
         "record_status": "committed"
       },
@@ -10910,9 +10910,9 @@
         "path": "skills/claude-seo-extra/seo-geo/SKILL.md"
       },
       "last_local_change": {
-        "commit": "09541d433ed057834626ca8e259191d512d63401",
+        "commit": "390e93744aa4175ca282172d5b006d04ec76c284",
         "date": "2026-11-11",
-        "subject": "feat: add GEO prompt discovery method",
+        "subject": "docs: surface GEO prompt discovery in entrypoints",
         "path": "skills/seo-geo/SKILL.md",
         "record_status": "committed"
       },
@@ -10926,7 +10926,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/seo-geo/references/citation-research.md",
@@ -14690,8 +14690,8 @@
       "upstream_path": "skills/write-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "f0fd5ea8aa809179e501af507c5b5f5b5ea58f8aab794d81933145daebca7436",
-      "local_git_blob_sha": "11fa66e1bffef55da806e482d97eda1116c2b798",
+      "local_sha256": "c07e63321db649e39d353fd89dcc61b626b070113ceca3e2adc8c9d5fe2f4cec",
+      "local_git_blob_sha": "0e6680a1e3aeee19c79482efd27c44f4f3bc2592",
       "comparison_upstream_blob_sha": "35c6c4041ba0a03de482ccc8e439183e6031d681",
       "comparison_status": "different",
       "first_local_record": {
@@ -14701,9 +14701,9 @@
         "path": "skills/write-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
-        "date": "2026-10-29",
-        "subject": "refactor: make the reader method the single prose authority",
+        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "date": "2026-11-11",
+        "subject": "docs: add title craft for article titles",
         "path": "skills/write-content/SKILL.md",
         "record_status": "committed"
       },
@@ -16028,8 +16028,8 @@
       "upstream_path": "skills/write-content/references/quality-scoring.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "a831c6b577d223e04402b0e5e48e7771ede813725d5ed593c7a44dd512e8c69c",
-      "local_git_blob_sha": "8b78dcd269668e2035cff344d04a232b2f638bc8",
+      "local_sha256": "2156b3935fc1f11cbae9cf1b29900eeb26636c3891f960103594e860f7498369",
+      "local_git_blob_sha": "f8bbcf6c7c040c34d6351fb30b46c64431465e53",
       "comparison_upstream_blob_sha": "5d3a3ad5559e4c6f587b1a3a0adda4e175a2bb63",
       "comparison_status": "different",
       "first_local_record": {
@@ -16039,9 +16039,9 @@
         "path": "skills/write-content/references/quality-scoring.md"
       },
       "last_local_change": {
-        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
-        "date": "2026-10-29",
-        "subject": "refactor: make the reader method the single prose authority",
+        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "date": "2026-11-11",
+        "subject": "docs: add title craft for article titles",
         "path": "skills/write-content/references/quality-scoring.md",
         "record_status": "committed"
       },
@@ -16070,8 +16070,8 @@
       "upstream_path": "skills/write-content/references/seo-optimization-layer.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "28f718ae22f051a5ca3fcc1629ab11ed3502bf1fe3ce9d46cbb41525c8ea4faa",
-      "local_git_blob_sha": "f1d0d6935c3b3e39235be691e9ca10098f7c75b1",
+      "local_sha256": "809ee8cb447e779adbda4d534b4c1bc0827ebb4191c3171a3300f57ef6d780f8",
+      "local_git_blob_sha": "0995757bfebd2dd3a1268f9016ada1093fdb020b",
       "comparison_upstream_blob_sha": "d2fbae1a76183ce15df2388d798adc294340fdda",
       "comparison_status": "different",
       "first_local_record": {
@@ -16081,9 +16081,9 @@
         "path": "skills/write-content/references/seo-optimization-layer.md"
       },
       "last_local_change": {
-        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
-        "date": "2026-10-29",
-        "subject": "refactor: unify writing methods around reader tasks and evidence",
+        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "date": "2026-11-11",
+        "subject": "docs: add title craft for article titles",
         "path": "skills/write-content/references/seo-optimization-layer.md",
         "record_status": "committed"
       },
@@ -16182,6 +16182,44 @@
       },
       "maintenance_status": "active",
       "workingtree_modified": false
+    },
+    {
+      "id": "workbench:skills/write-content/references/title-craft.md",
+      "local_path": "skills/write-content/references/title-craft.md",
+      "path_history": [
+        "skills/write-content/references/title-craft.md"
+      ],
+      "kind": "reference",
+      "capability": "write-content",
+      "current_owner_path": "skills/write-content/SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "date": "2026-11-11",
+        "subject": "docs: add title craft for article titles",
+        "path": "skills/write-content/references/title-craft.md",
+        "record_status": "committed"
+      },
+      "last_local_change": {
+        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "date": "2026-11-11",
+        "subject": "docs: add title craft for article titles",
+        "path": "skills/write-content/references/title-craft.md",
+        "record_status": "committed"
+      },
+      "content_changed_since_first_local_record": false,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [],
+      "workingtree_modified": false,
+      "local_sha256": "059a796654c9dac2e2597a34344e99d2136384d91c9bea82ade06796097c362d",
+      "local_git_blob_sha": "9f20d14d516b7bb7e027de92449fcd94cf52ebe3",
+      "maintenance_status": "active"
     },
     {
       "id": "superseo:skills/write-content/references/voice-injection-playbook.md",
@@ -19872,6 +19910,14 @@
     },
     {
       "from_path": "skills/improve-content/SKILL.md",
+      "line": 59,
+      "syntax": "markdown_link",
+      "target": "../write-content/references/title-craft.md",
+      "resolved_path": "skills/write-content/references/title-craft.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/improve-content/SKILL.md",
       "line": 66,
       "syntax": "backtick_path",
       "target": "references/content-types-overview.md",
@@ -21720,7 +21766,15 @@
     },
     {
       "from_path": "skills/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md",
-      "line": 64,
+      "line": 74,
+      "syntax": "markdown_link",
+      "target": "../../../../write-content/references/title-craft.md",
+      "resolved_path": "skills/write-content/references/title-craft.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md",
+      "line": 75,
       "syntax": "markdown_link",
       "target": "../README.md",
       "resolved_path": "skills/seo-flow/references/prompts/README.md",
@@ -21728,7 +21782,7 @@
     },
     {
       "from_path": "skills/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md",
-      "line": 65,
+      "line": 76,
       "syntax": "markdown_link",
       "target": "../../flow-framework.md",
       "resolved_path": "skills/seo-flow/references/flow-framework.md",
@@ -21736,7 +21790,7 @@
     },
     {
       "from_path": "skills/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md",
-      "line": 66,
+      "line": 77,
       "syntax": "markdown_link",
       "target": "../../bibliography.md",
       "resolved_path": "skills/seo-flow/references/bibliography.md",
@@ -23696,7 +23750,15 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 107,
+      "line": 93,
+      "syntax": "markdown_link",
+      "target": "references/title-craft.md",
+      "resolved_path": "skills/write-content/references/title-craft.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/SKILL.md",
+      "line": 108,
       "syntax": "backtick_path",
       "target": "../reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -23704,7 +23766,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 121,
+      "line": 122,
       "syntax": "backtick_path",
       "target": "references/content-types",
       "resolved_path": "skills/write-content/references/content-types",
@@ -23712,7 +23774,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 125,
+      "line": 126,
       "syntax": "backtick_path",
       "target": "references/content-types-overview.md",
       "resolved_path": "skills/write-content/references/content-types-overview.md",
@@ -23720,7 +23782,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 141,
+      "line": 142,
       "syntax": "markdown_link",
       "target": "references/article-workflow.md",
       "resolved_path": "skills/write-content/references/article-workflow.md",
@@ -23728,7 +23790,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 142,
+      "line": 143,
       "syntax": "markdown_link",
       "target": "references/drafting-workflow.md",
       "resolved_path": "skills/write-content/references/drafting-workflow.md",
@@ -23736,7 +23798,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 143,
+      "line": 144,
       "syntax": "markdown_link",
       "target": "references/draft-handoff.md",
       "resolved_path": "skills/write-content/references/draft-handoff.md",
@@ -23744,7 +23806,7 @@
     },
     {
       "from_path": "skills/write-content/SKILL.md",
-      "line": 147,
+      "line": 148,
       "syntax": "markdown_link",
       "target": "references/fact-checking.md",
       "resolved_path": "skills/write-content/references/fact-checking.md",
@@ -23879,11 +23941,51 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/write-content/references/quality-scoring.md",
+      "line": 41,
+      "syntax": "markdown_link",
+      "target": "title-craft.md",
+      "resolved_path": "skills/write-content/references/title-craft.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/seo-optimization-layer.md",
+      "line": 15,
+      "syntax": "markdown_link",
+      "target": "title-craft.md",
+      "resolved_path": "skills/write-content/references/title-craft.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/write-content/references/structured-data-snippets.md",
       "line": 19,
       "syntax": "markdown_link",
       "target": "../../schema/references/search-eligibility.md",
       "resolved_path": "skills/schema/references/search-eligibility.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/title-craft.md",
+      "line": 101,
+      "syntax": "markdown_link",
+      "target": "seo-optimization-layer.md",
+      "resolved_path": "skills/write-content/references/seo-optimization-layer.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/title-craft.md",
+      "line": 102,
+      "syntax": "markdown_link",
+      "target": "quality-scoring.md",
+      "resolved_path": "skills/write-content/references/quality-scoring.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/write-content/references/title-craft.md",
+      "line": 103,
+      "syntax": "markdown_link",
+      "target": "../../seo-flow/references/prompts/local/prompt-generating-a-title-tag.md",
+      "resolved_path": "skills/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md",
       "status": "resolved_local"
     },
     {

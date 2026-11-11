@@ -2,7 +2,7 @@
 ---
 title: "Prompt: Generating a Title Tag"
 description: "Prompt: Generating a Title Tag"
-updated: 2026-04-25
+updated: 2026-11-11
 tags:
   - prompts
   - local
@@ -12,59 +12,70 @@ tags:
 
 ## Use This When
 
-Use this prompt when you need a structured local deliverable and want the model to separate observations, assumptions, recommended actions, and claims that need verification.
+Use this prompt when a page has a topic, reader, intent and evidence, and you need title candidates with a defensible reason to read. It is not a request for a general SEO audit.
 
 ## AI Compatibility
 
-Works with long-context reasoning models. For smaller models, provide narrower inputs and ask for one output section at a time.
+Works with long-context reasoning models. For smaller models, provide narrower inputs and ask for the angle and candidates in separate turns.
 
 ## Inputs
 
-- Business or website name.
-- Target page, profile, query set, or campaign.
-- Audience and geography where relevant.
-- Existing evidence: analytics, search results, calls, reviews, profile facts, or source notes.
-- Constraints, exclusions, and required sources.
+- Page or article topic, target query and search intent.
+- Reader and the decision or action the page supports.
+- Page type: article, comparison, how-to, definition, listicle or service page.
+- Three to five observed SERP titles for the same query, when available.
+- Concrete evidence the page can support: findings, numbers, names, constraints, examples.
+- Brand voice and any banned phrases.
+- Display constraints that matter for the target language and layout.
 
 ## Prompt
 
 ```text
-Act as a senior SEO strategist using the FLOW model.
+Act as an editor and SEO strategist. Create title candidates for: [PAGE OR ARTICLE].
 
-Task: create a local deliverable for: [BUSINESS OR ASSET].
+Inputs:
+- Target query and intent: [QUERY AND INTENT]
+- Reader and decision: [WHO THE PAGE IS FOR AND WHAT THEY NEED TO DECIDE]
+- Page type: [PAGE TYPE]
+- Observed SERP titles: [3-5 TITLES, OR "not supplied"]
+- Supported specifics: [FINDINGS, NUMBERS, NAMES, CONSTRAINTS, EXAMPLES]
+- Brand voice and constraints: [VOICE, BANNED PHRASES]
+- Display constraints: [LANGUAGE, LAYOUT, KNOWN TRUNCATION]
 
-Use only the supplied inputs and clearly label any assumption. Do not invent statistics. Do not reuse private examples. Build the answer around:
-1. Searcher or buyer intent.
-2. Evidence available now.
-3. Gaps that block trust, extraction, or conversion.
-4. Recommended changes in priority order.
-5. Measurement events and review cadence.
-6. Claims that require source verification before publication.
+First state the article's angle in one sentence: "After reading this, the reader can / will know / will avoid ___." Use only the supplied material. If the material does not support an angle, say what is missing instead of inventing one.
 
-Return a concise working document the team can execute.
+Then generate 6-8 title candidates. Label each with its strategy: specific outcome, named object or number, common mistake, tradeoff, reader situation, comparison, counterintuitive finding, or how-to with a boundary. Use only facts supplied. Do not add best, top, complete, a year or a number unless the input supports it. Do not copy a SERP title.
+
+For each candidate, give:
+1. The title.
+2. The strategy.
+3. The specific fact or section that supports it.
+4. The main risk: overpromise, ambiguity, truncation or an unsupported claim.
+
+Recommend one primary title and one or two alternates. Explain the choice against intent fit, specificity, truth, differentiation, voice and display. Then give H1 and meta-description notes. Mark any claim that still needs verification.
 ```
 
 ## Output
 
-- Executive summary.
-- Priority table.
-- Recommended copy, structure, or audit findings.
-- Evidence needed.
-- Measurement plan.
-- Verification checklist.
+- The angle sentence.
+- A candidate table: title, strategy, supporting fact, risk.
+- One primary title and one or two alternates, with the reason for the choice.
+- H1 and meta-description notes.
+- Claims or facts that still need verification.
 
 ## Example
 
-Input: a local service page with weak proof and inconsistent profile details.
+Input: a page about migrating a small team's analytics setup, with a documented constraint that the CMS cannot change.
 
-Expected output: a prioritized rewrite brief, facts to reconcile, internal links to add, and the conversion event to measure.
+Expected output: a candidate such as `Analytics Migration for Teams That Cannot Change Their CMS`; reject `The Ultimate Guide to Analytics Migration` when the page has no evidence for the superlative. The example is a pattern, not a claim about a real page.
 
 ## See Also
 
+- [Title craft](../../../../write-content/references/title-craft.md)
 - [Prompt Library](../README.md)
 - [FLOW Framework](../../flow-framework.md)
 - [Bibliography](../../bibliography.md)
 
 ## Source Note
 
-Derived from the Local SEO Knowledge Base structure and rewritten for public use with the repository evidence standard.
+Derived from the Local SEO Knowledge Base structure and rewritten for public use with the repository evidence standard. Title-specific method follows the write-content title craft reference.

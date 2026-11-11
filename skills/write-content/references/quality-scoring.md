@@ -38,7 +38,7 @@ Use any relevant findings from the reader method already applied during composit
 ### SEO and discoverability, when in scope
 
 - Does the page address the intended search intent with natural terminology?
-- Are title, H1 and description accurate and useful rather than formulaic?
+- Are title, H1 and description accurate and useful rather than formulaic? Use [title craft](title-craft.md) when the title only names the topic; accuracy alone does not make a title useful to a reader.
 - Are internal links relevant, verified and descriptive? There is no density quota.
 - Are sources linked where verification helps, without padding citations?
 - Does proposed structured data match visible content and current implementation requirements?

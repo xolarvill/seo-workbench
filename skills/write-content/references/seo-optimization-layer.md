@@ -12,9 +12,11 @@ Use related terms because they explain the subject, not to meet a density or hea
 
 ## 2. Title and description
 
-Draft a title that identifies the page and gives a truthful reason to read it. Review likely display length in the relevant language and layout; character counts are drafting aids, not universal limits or ranking guarantees.
+Use [title craft](title-craft.md) before drafting and again here; this section is the final metadata check.
 
-Write a concise description reflecting the actual content. A CTA fits only when it helps the reader's next action. Offer variants when the user needs a choice or test, rather than producing a fixed number. Do not add “best,” a year or a numeric promise unless the page supports it.
+Draft a title that identifies the page and gives a truthful reason to read it. A title that only names the topic is accurate but does not give a reason to read; if the draft has no specific angle, fix the draft first. Review likely display length in the relevant language and layout; character counts are drafting aids, not universal limits or ranking guarantees.
+
+Write a concise description reflecting the actual content. A CTA fits only when it helps the reader's next action. Offer variants when the user needs a choice or test, rather than producing a fixed number. Do not add “best,” a year or a numeric promise unless the page supports it. When the article supports a concrete detail, use it; the rule against unsupported modifiers is not a reason to default to a generic label.
 
 ## 3. Page structure
 
