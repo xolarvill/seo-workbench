@@ -260,4 +260,4 @@ For prompt-guided AI content optimization, select relevant optimize-stage refere
 
 Read the matching reference when it supports the current task:
 
-- [AI citation research](references/citation-research.md): a topic needs a prompt-based citation observation plan.
+- [AI citation research](references/citation-research.md): a topic needs prompt discovery or a prompt-based citation observation plan.

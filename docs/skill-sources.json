@@ -2,7 +2,7 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "ea36dbcee15446f5d0f2b35eaacae2988a20c246",
+  "local_snapshot_commit": "4f81976836bb679c824bf81037c85588f690ca15",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
@@ -29,11 +29,11 @@
       "identical": 222,
       "workbench_native": 53
     },
-    "dependency_occurrences": 829,
+    "dependency_occurrences": 830,
     "dependencies_by_status": {
       "example_reference": 4,
       "project_context_reference": 102,
-      "resolved_local": 709,
+      "resolved_local": 710,
       "route_or_example": 1,
       "template_reference": 3,
       "upstream_runtime_reference": 10
@@ -126,9 +126,9 @@
         "path": "skills/README.md"
       },
       "last_local_change": {
-        "commit": "11deeabee81b6ce9385346fe8800f5bd631ce7de",
-        "date": "2026-11-10",
-        "subject": "docs: split documentation into guides, reference, and history",
+        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
+        "date": "2026-11-11",
+        "subject": "feat: add competitive landscape analysis workflow",
         "path": "skills/README.md",
         "record_status": "committed"
       },
@@ -142,7 +142,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/ab-test-setup/SKILL.md",
@@ -583,24 +583,24 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
         "date": "2026-11-11",
+        "subject": "feat: add competitive landscape analysis workflow",
         "path": "skills/competitive-landscape/SKILL.md",
-        "subject": "Add competitive landscape workflow",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
         "date": "2026-11-11",
+        "subject": "feat: add competitive landscape analysis workflow",
         "path": "skills/competitive-landscape/SKILL.md",
-        "subject": "Add competitive landscape workflow",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "bc40287c728a9ce36a889743ec11fdd64b5aa49d2cd08dc6bd0bf22453298bd6",
       "local_git_blob_sha": "2cc9e5631b05632f190845bc9694d733e523af9e",
       "maintenance_status": "active"
@@ -621,24 +621,24 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
         "date": "2026-11-11",
+        "subject": "feat: add competitive landscape analysis workflow",
         "path": "skills/competitive-landscape/references/analysis-workflow.md",
-        "subject": "Add competitive landscape workflow",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
         "date": "2026-11-11",
+        "subject": "feat: add competitive landscape analysis workflow",
         "path": "skills/competitive-landscape/references/analysis-workflow.md",
-        "subject": "Add competitive landscape workflow",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "6fc2be8151af265cb975ba1fab88b490b566dc531c798fc6c3acd5c6ba11d71e",
       "local_git_blob_sha": "0d384e59a0d12a3d97b75708c417353b94892a31",
       "maintenance_status": "active"
@@ -659,24 +659,24 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
         "date": "2026-11-11",
+        "subject": "feat: add competitive landscape analysis workflow",
         "path": "skills/competitive-landscape/references/report-template.md",
-        "subject": "Add competitive landscape workflow",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
         "date": "2026-11-11",
+        "subject": "feat: add competitive landscape analysis workflow",
         "path": "skills/competitive-landscape/references/report-template.md",
-        "subject": "Add competitive landscape workflow",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "d17b73e11d1f35e5c37055d30125dff095785ec1ed983c15699c6458c380262c",
       "local_git_blob_sha": "73348e70e3213f0be18a5bae31288dc3a3a8ae32",
       "maintenance_status": "active"
@@ -10899,8 +10899,8 @@
       "upstream_path": "skills/seo-geo/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "01bb26cfc3072f9637c0240dfee7cbc4dede97aedfbac2fd64d200ad64bf059f",
-      "local_git_blob_sha": "23fd1e419e8bb59a13889a1cf7ddc6370ad5d97c",
+      "local_sha256": "0603bdffef7b63cb7ac286d70082c74ad58a76ee0df158c5a250e4f0ebfc4591",
+      "local_git_blob_sha": "babf392bb326a561a69ecd3c7f547fac0c983ffe",
       "comparison_upstream_blob_sha": "b52a0745b06ed05c9e70487143a059a74e6288ab",
       "comparison_status": "different",
       "first_local_record": {
@@ -10926,7 +10926,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/seo-geo/references/citation-research.md",
@@ -10951,9 +10951,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
-        "date": "2026-10-29",
-        "subject": "refactor: adapt preserved specialist methods to canonical skills",
+        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
+        "date": "2026-11-11",
+        "subject": "feat: add competitive landscape analysis workflow",
         "path": "skills/seo-geo/references/citation-research.md",
         "record_status": "committed"
       },
@@ -10963,8 +10963,8 @@
       "derived_from": [
         "seomachine:.claude/commands/research-ai-citations.md"
       ],
-      "local_sha256": "d108ac4929c32be26c5241089a21efd1ca18b9b19a7afca6a9b1dc62466105e7",
-      "local_git_blob_sha": "e418b70072a6456ee3b366d1d1fe01a5261a0d9b",
+      "local_sha256": "002bfc66e3cfac5f92e14972a61e5e479ae73801b569450c7143fcb8e8a4cf25",
+      "local_git_blob_sha": "4b7302765737e9144cd222dee70fdb5c9240a5fd",
       "maintenance_status": "active",
       "workingtree_modified": true
     },
@@ -12455,9 +12455,9 @@
         "path": "skills/claude-seo-extra/seo-plan/SKILL.md"
       },
       "last_local_change": {
-        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
-        "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
+        "date": "2026-11-11",
+        "subject": "feat: add competitive landscape analysis workflow",
         "path": "skills/seo-plan/SKILL.md",
         "record_status": "committed"
       },
@@ -12471,7 +12471,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "claude-seo:skills/seo-plan/assets/agency.md",
@@ -22416,7 +22416,7 @@
     },
     {
       "from_path": "skills/seo-geo/references/citation-research.md",
-      "line": 40,
+      "line": 51,
       "syntax": "markdown_link",
       "target": "../../../third_party/skill-history/seomachine/commands/research-ai-citations.md",
       "resolved_path": "third_party/skill-history/seomachine/commands/research-ai-citations.md",
@@ -22424,10 +22424,18 @@
     },
     {
       "from_path": "skills/seo-geo/references/citation-research.md",
-      "line": 40,
+      "line": 51,
       "syntax": "markdown_link",
       "target": "../../../docs/history/20261111-competitive-landscape-skill.md",
       "resolved_path": "docs/history/20261111-competitive-landscape-skill.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-geo/references/citation-research.md",
+      "line": 51,
+      "syntax": "markdown_link",
+      "target": "../../../docs/history/20261111-prompt-discovery.md",
+      "resolved_path": "docs/history/20261111-prompt-discovery.md",
       "status": "resolved_local"
     },
     {

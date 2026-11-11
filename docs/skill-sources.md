@@ -71,7 +71,7 @@ JSON 覆盖 skills/ 和 third_party/skill-history/ 的受维护文件，不含�
 
 ## 引用关系与适配线索
 
-当前登记 829 处字面路径引用：Markdown 链接目标，以及指定前缀的无空白反引号路径。每条保存来源文件、行号、原始目标、解析位置和状态。它用于后续修复定位，不执行其中的命令。
+当前登记 830 处字面路径引用：Markdown 链接目标，以及指定前缀的无空白反引号路径。每条保存来源文件、行号、原始目标、解析位置和状态。它用于后续修复定位，不执行其中的命令。
 
 | 状态 | 解释 |
 |---|---|
@@ -233,7 +233,7 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 
 | 当前文件 | 固定版本中的上游路径／派生来源 | 内容比对 | 本地首次记录 |
 |---|---|---|---|
-| [skills/competitive-landscape/SKILL.md](../skills/competitive-landscape/SKILL.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/competitive-landscape/SKILL.md](../skills/competitive-landscape/SKILL.md) | Workbench 本地方法 | 本地方法 | `4f81976` |
 | [skills/headless-precheck/SKILL.md](../skills/headless-precheck/SKILL.md) | Workbench 本地方法 | 本地方法 | `45c60ef` |
 | [skills/project-context/SKILL.md](../skills/project-context/SKILL.md) | Workbench 本地方法 | 本地方法 | `4146d19` |
 | [skills/reader-experience-review/SKILL.md](../skills/reader-experience-review/SKILL.md) | Workbench 本地方法 | 本地方法 | `aff4dea` |
@@ -290,8 +290,8 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | 当前文件 | 固定版本中的上游路径／派生来源 | 内容比对 | 本地首次记录 |
 |---|---|---|---|
 | [skills/analytics-tracking/references/provider-inputs.md](../skills/analytics-tracking/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
-| [skills/competitive-landscape/references/analysis-workflow.md](../skills/competitive-landscape/references/analysis-workflow.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
-| [skills/competitive-landscape/references/report-template.md](../skills/competitive-landscape/references/report-template.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/competitive-landscape/references/analysis-workflow.md](../skills/competitive-landscape/references/analysis-workflow.md) | Workbench 本地方法 | 本地方法 | `4f81976` |
+| [skills/competitive-landscape/references/report-template.md](../skills/competitive-landscape/references/report-template.md) | Workbench 本地方法 | 本地方法 | `4f81976` |
 | [skills/content-strategy/references/calendar-planning.md](../skills/content-strategy/references/calendar-planning.md) | seomachine:.claude/commands/content-calendar.md | 本地方法 | `08d0679` |
 | [skills/content-strategy/references/topic-opportunities.md](../skills/content-strategy/references/topic-opportunities.md) | seomachine:.claude/commands/research-topics.md | 本地方法 | `08d0679` |
 | [skills/content-strategy/references/trend-research.md](../skills/content-strategy/references/trend-research.md) | seomachine:.claude/commands/research-trending.md | 本地方法 | `08d0679` |
