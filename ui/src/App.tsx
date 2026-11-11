@@ -233,7 +233,7 @@ export function App() {
           {activeView === "pages" ? <PagesWorkbenchPage projectId={selectedProject} refreshKey={refreshKey} refreshing={jobs.some((job) => job.action === "pages-refresh" && ["queued", "running"].includes(job.status))} initialGroup={routeParams.get("group") || "now"} initialSource={routeParams.get("source") || ""} initialQuery={routeParams.get("q") || ""} onRefresh={() => runAuditAction("pages-refresh")} onUpdated={() => setRefreshKey((value) => value + 1)} /> : null}
           {activeView === "link-building" ? <LinkBuildingPage projectId={selectedProject} refreshKey={refreshKey} /> : null}
           {activeView === "statistics" ? <StatisticsPage projectId={selectedProject} refreshKey={refreshKey} refreshing={jobs.some((job) => job.action === "statistics-collect" && ["queued", "running"].includes(job.status))} onRefresh={() => runAuditAction("statistics-collect")} onNavigatePages={navigatePages} /> : null}
-          {activeView === "workflow" ? <WorkflowPage workspace={workspace} onOpenActions={() => setActionsOpen(true)} onOpenKeywords={() => navigate("keywords")} onOpenContent={() => navigate("content")} /> : null}
+          {activeView === "workflow" ? <WorkflowPage onOpenActions={() => setActionsOpen(true)} onOpenKeywords={() => navigate("keywords")} onOpenContent={() => navigate("content")} /> : null}
           {activeView === "tutorials" ? <TutorialsPage /> : null}
           {activeView === "integrations" ? (
             <Suspense fallback={<div className="loading-screen"><span>Opening integrations</span></div>}>

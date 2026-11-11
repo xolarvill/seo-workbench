@@ -8,7 +8,7 @@ from typing import Any
 from seo_workbench_tools.evidence_bundle import DEFAULT_OUTPUT_DIR, collect, write_bundle
 
 
-DEFAULT_STATE = Path("projects/default/state.json")
+DEFAULT_PROJECT = Path("projects/default/project.json")
 
 
 def page_urls_from_state(state: dict[str, Any]) -> list[str]:
@@ -21,7 +21,7 @@ def page_urls_from_state(state: dict[str, Any]) -> list[str]:
 
 
 def collect_from_state(
-    state_path: Path,
+    project_file: Path,
     timeout: float,
     sample_limit: int,
     output_dir: Path,
@@ -34,14 +34,14 @@ def collect_from_state(
     gsc: bool = False,
     crawl_limit: int = 5,
 ) -> Path:
-    state = json.loads(state_path.read_text(encoding="utf-8"))
+    state = json.loads(project_file.read_text(encoding="utf-8"))
     url = state.get("project", {}).get("url")
     if not url:
-        raise ValueError(f"missing project.url in {state_path}")
+        raise ValueError(f"missing project.url in {project_file}")
     from seo_workbench.shopify_crawler import read_crawler_access
     from seo_workbench_tools.crawl_session import CrawlSession
     try:
-        access = read_crawler_access(state_path.parent, url)
+        access = read_crawler_access(project_file.parent, url)
     except FileNotFoundError:
         access = None
     session = CrawlSession(url, access=access)
@@ -93,7 +93,7 @@ def collect_from_state(
                 if value
             ]
             gsc_report = collect_gsc(
-                state_path.parent,
+                project_file.parent,
                 output_dir.parent / "gsc",
                 inspection_urls=inspection_urls,
                 timeout=max(timeout, 30),
@@ -118,7 +118,7 @@ def collect_from_state(
     from seo_workbench_tools.evidence_bundle import collection_status
 
     bundle["collection_status"] = collection_status(bundle)
-    bundle["state_path"] = str(state_path)
+    bundle["project_file"] = str(project_file)
     return write_bundle(bundle, output_dir)
 
 
@@ -134,8 +134,8 @@ def _self_test() -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    argp = argparse.ArgumentParser(description="Collect evidence using projects/default/state.json.")
-    argp.add_argument("--state", type=Path, default=DEFAULT_STATE)
+    argp = argparse.ArgumentParser(description="Collect evidence using projects/default/project.json.")
+    argp.add_argument("--project-file", type=Path, default=DEFAULT_PROJECT)
     argp.add_argument("--timeout", type=float, default=15)
     argp.add_argument("--sample-limit", type=int, default=50)
     argp.add_argument("--crawl-limit", type=int, default=5)
@@ -156,7 +156,7 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         path = collect_from_state(
-            args.state,
+            args.project_file,
             args.timeout,
             args.sample_limit,
             args.output_dir,

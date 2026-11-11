@@ -4,7 +4,6 @@ export type ProjectSummary = {
   name: string;
   url: string;
   type: string;
-  phase: string;
   selectable: boolean;
   valid_state: boolean;
   error?: string;
@@ -453,18 +452,6 @@ export type ContentJobAction = {
   project_relative_path?: string;
 };
 
-export type WorkflowStep = {
-  id: string;
-  label: string;
-  status: string;
-  skip_reason?: string;
-};
-
-export type PhaseState = {
-  status: string;
-  steps: WorkflowStep[];
-};
-
 export type Workspace = {
   project_id: string;
   project: {
@@ -473,10 +460,6 @@ export type Workspace = {
     type: string;
     description?: string;
   };
-  phase: string;
-  step: WorkflowStep | null;
-  phase_order: string[];
-  phases: Record<string, PhaseState>;
   evidence: {
     items: EvidenceItem[];
     performance: {

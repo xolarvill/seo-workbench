@@ -160,8 +160,8 @@ info "go found: $(${GO_BIN} version)"
 info "node found: ${NODE_VERSION}"
 info "npm found: $(${NPM_BIN} --version)"
 
-if [ ! -f "${PROJECT_ROOT}/templates/state.json" ]; then
-  err "templates/state.json is missing"
+if [ ! -f "${PROJECT_ROOT}/templates/project.json" ]; then
+  err "templates/project.json is missing"
   exit 1
 fi
 info "standalone templates found"
@@ -248,7 +248,7 @@ Environment ready. Next steps:
        ./seo init shopify --name "My Store" --url "https://example.com"
 
   2. Give your agent a goal and project context:
-       ./seo status --json
+       ./seo projects --json
      Read AGENTS.md and skills/README.md; choose relevant local methods.
 
   3. Optional Google evidence requires credentials after setup:

@@ -1,10 +1,10 @@
 # SEO Workbench Tools
 
-Python 胶水工具层，用于给 TECHNICAL_AUDIT 阶段提供可复查的机器证据。
+Python 胶水工具层，用于给技术审计提供可复查的机器证据。
 
 ## 常用入口
 
-按 `projects/default/state.json` 自动采集：
+按 `projects/default/project.json` 自动采集：
 
 ```bash
 ./seo evidence

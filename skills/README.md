@@ -135,7 +135,7 @@ Choose by the point of friction: page persuasion → page-cro; a lead/checkout f
 
 ## Resume and execute
 
-Read the existing decision or brief, latest artifact, evidence pointers and remaining gaps. Reuse research when its target, market, date and scope still apply. A legacy phase or checked step cannot schedule work or prove a method complete. Read only references needed for this task; record the chosen method, material omissions and remaining gaps in the existing task artifact. Keep operational evidence there and deliver reader-facing copy in the requested format.
+Read the existing decision or brief, latest artifact, evidence pointers and remaining gaps. Reuse research when its target, market, date and scope still apply. A stored note or checked list cannot schedule work or prove a method complete. Read only references needed for this task; record the chosen method, material omissions and remaining gaps in the existing task artifact. Keep operational evidence there and deliver reader-facing copy in the requested format.
 
 For collection, credentials or delivery, read [Workbench operations](seo/references/workbench-operations.md) and the relevant command's help. Use the local CLI for explicit operations. Project-specific skills add store facts, assets and delivery formats; discover them inside the current project and follow its `AGENTS.md`.
 

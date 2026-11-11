@@ -8,7 +8,6 @@ export interface WorkbenchProject {
   name: string;
   url: string;
   type: string;
-  phase: string;
 }
 
 interface StoredConnection {

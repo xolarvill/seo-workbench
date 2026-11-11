@@ -227,11 +227,6 @@ class TechAuditScheduleUpdate(BaseModel):
     profile: str = Field(default="", max_length=64)
 
 
-class WorkflowActionRequest(BaseModel):
-    action: str
-    step_id: str | None = None
-
-
 class CruxKeyUpdate(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -1874,7 +1869,6 @@ def _content_command(project_dir: Path, request: ContentActionRequest) -> tuple[
 
 def _workspace(project_id: str, project_dir: Path, runtime_dir: Path) -> dict[str, Any]:
     data = state.load_state(project_dir)
-    phase, step = state.current_step(data)
     files = _markdown_files(project_dir)
     recent = sorted(files, key=lambda item: item["modified_at"], reverse=True)[:8]
     try:
@@ -1884,10 +1878,6 @@ def _workspace(project_id: str, project_dir: Path, runtime_dir: Path) -> dict[st
     return {
         "project_id": project_id,
         "project": data.get("project", {}),
-        "phase": phase,
-        "step": step,
-        "phase_order": data.get("phaseOrder", []),
-        "phases": data.get("phases", {}),
         "evidence": _evidence_summary(project_dir, runtime_dir),
         "changes": _seo_change_summary(project_dir),
         "content": _content_queue_summary(project_dir),
@@ -2154,7 +2144,7 @@ def create_app(
     @app.get("/api/v1/extension/projects")
     def extension_projects() -> dict[str, Any]:
         found = [
-            {key: project.get(key) for key in ("id", "name", "url", "type", "phase")}
+            {key: project.get(key) for key in ("id", "name", "url", "type")}
             for project in state.discover_projects(projects_root)
             if project.get("selectable") and project.get("valid_state")
         ]
@@ -2612,9 +2602,6 @@ def create_app(
 
         def mutation(data: dict[str, Any]) -> dict[str, Any]:
             item = set_queue_status(data, item_id, update.status, note=update.note)
-            data["lastAction"] = f"Updated content item {item_id} to {item['status']}"
-            data["nextAction"] = "Review content queue"
-            state.record_history(data, "content-status", "CONTENT_PRODUCTION", note=item_id)
             return dict(item)
 
         try:
@@ -3122,21 +3109,6 @@ def create_app(
         except RuntimeError as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
         return {"ok": True, "job": job}
-
-    @app.post("/api/v1/projects/{project_id}/workflow")
-    def update_workflow(project_id: str, request: WorkflowActionRequest) -> dict[str, Any]:
-        project_dir = _project(project_id, projects_root)
-        if request.action not in {"start", "done", "skip", "reset"}:
-            raise HTTPException(status_code=400, detail=f"unsupported workflow action: {request.action}")
-        try:
-            phase, step_id = state.mutate_state(
-                project_dir,
-                lambda data: state.update_step(data, request.action, request.step_id),
-            )
-        except ValueError as exc:
-            raise HTTPException(status_code=400, detail=str(exc)) from exc
-        hub.publish({"type": "workflow.updated", "project_id": project_id, "phase": phase, "step_id": step_id, "at": _timestamp()})
-        return {"ok": True, "action": request.action, "phase": phase, "step_id": step_id}
 
     @app.get("/api/v1/events")
     async def events(request: Request) -> StreamingResponse:

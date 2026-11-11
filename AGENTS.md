@@ -4,7 +4,7 @@ Agent-neutral SEO workflow repo. Use the local Python CLI and local `skills/` fi
 
 ## Start
 
-- Work from the user's current goal, the project's `AGENTS.md`, decisions, artifacts, and evidence. A stored phase is historical context, never a gate or a task scheduler.
+- Work from the user's current goal, the project's `AGENTS.md`, decisions, artifacts, and evidence.
 - State goal, scope, and acceptance criteria in a few lines before acting, and deliver the whole stated scope in one pass. If it clearly exceeds one session, give a phase plan and report one line per phase.
 - For substantive SEO work, choose skills from [`skills/README.md`](skills/README.md) and read the useful bodies before doing the professional work; combine or shorten methods to fit the task. The catalog is a navigation aid, not an allowlist, so search local modules when the task falls outside the examples. Do not wait for the user to name skills; engineering-only changes need SEO skills only when they change SEO semantics.
 - Keyword, page-ownership, and reader-facing writing tasks begin with the owner document named in [Task routing](#task-routing).
@@ -86,7 +86,7 @@ Done means you re-ran the real path and can show the output. A clean diff, a pas
 ### Engineering
 
 - Prefer `skills/` over third-party skill packs and `seo_workbench_tools/` for machine evidence; do not rewrite probes unless the existing collector cannot supply the field. Callable methods share `skills/<capability>/SKILL.md`: keep one canonical entrypoint per capability, put complementary methods in its references, preserve source IDs and old paths in `docs/skill-sources.json` when moving material, and keep historical specialist documents under `third_party/skill-history/`.
-- CLI commands execute explicit operations and return evidence; choose them through `./seo --help` or command-specific help. The `next` command is retired, and legacy `phase`/`step` records stay compatible but never prescribe the next action or restrict skill choice.
+- CLI commands execute explicit operations and return evidence; choose them through `./seo --help` or command-specific help. There is no stored phase, step, or `next` scheduler.
 - Skill selection never expands the user's authorized scope. Project facts and current Workbench evidence or collection rules override conflicting source-material recipes; do not execute archived slash commands or old scripts blindly.
 - Run `validate --json` after changing workflow, state, CLI contracts, or skill mappings, and `doctor --json` when debugging local setup, missing evidence, or optional rendered support. Do not restore Claude slash commands or external repo dependencies unless the user explicitly asks.
 - Each reform layer is committed separately.
@@ -102,10 +102,10 @@ Done means you re-ran the real path and can show the output. A clean diff, a pas
 ## Repository shape and commands
 
 ```text
-seo_workbench/          Python execution layer: state, CLI, evidence wrappers
+seo_workbench/          Python execution layer: project manifests, CLI, evidence wrappers
 seo_workbench_tools/    Raw and rendered SEO evidence collectors
 skills/                 First-party SEO playbooks
-workflows/  templates/  Workflow manifests and state templates
+templates/              Reusable project and report templates
 projects/<id>/          One isolated runtime directory per store
 ```
 

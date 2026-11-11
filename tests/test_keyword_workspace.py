@@ -43,7 +43,7 @@ def project(tmp_path: Path) -> Path:
     data["contentQueue"] = [
         {"id": "article-1", "title": "Cable guide", "status": "drafted", "target_keyword": "cable management"}
     ]
-    (project_dir / "state.json").write_text(json.dumps(data), encoding="utf-8")
+    state.save_state(data, project_dir)
     gsc = {
         "collection_status": "ok",
         "generated_at": "2026-08-18T00:00:00Z",

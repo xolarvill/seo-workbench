@@ -353,22 +353,7 @@
   white-space: nowrap;
 }
 
-.phaseList small {
-  font-size: 11px;
-}
-
-.phaseList .currentPhase { color: var(--primary); }
 .statusInfo { color: var(--info-dark); }
-
-.phaseList .currentPhase > span,
-.phaseList .completePhase > span {
-  border-color: var(--primary);
-  background: var(--primary);
-}
-
-.phaseList .completePhase {
-  color: var(--success-dark);
-}
 
 .architectureRow {
   min-height: 32px;

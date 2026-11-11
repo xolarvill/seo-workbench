@@ -6,7 +6,7 @@ Use this reference when a skill needs collection, state, credentials or delivery
 
 | Need | Current local operation / evidence |
 |---|---|
-| Current state and setup | `./seo --project example-store status --json`; `./seo --project example-store doctor --json` |
+| Project manifest and setup | `./seo projects --json`; `./seo --project example-store validate --json`; `./seo --project example-store doctor --json` |
 | Raw/rendered page evidence | `./seo --project example-store evidence --rendered --crawl-limit 5 --json` when collection is needed; use `--crawl-limit 0` for the project URL alone |
 | Technical rules | `./seo --project example-store tech-audit --help`; reuse eligible current evidence and record coverage |
 | Search Console / GA4 / CrUX | See [Google integration setup and commands](../../../docs/reference/google-integrations.md); use the bound property and exact window |

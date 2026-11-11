@@ -29,10 +29,10 @@
 读取项目现状，再按目标选择方法：
 
 ```bash
-./seo --project new-site status --json
+./seo projects --json
 ```
 
-Agent先读仓库 `AGENTS.md`、`skills/README.md` 与项目资料，再选择需要的方法。旧阶段状态不决定下一步；无需运行已退役的 `next` 命令。
+Agent先读仓库 `AGENTS.md`、`skills/README.md` 与项目资料，再选择需要的方法。项目不保存阶段或步骤；无需运行已退役的 `next` 命令。
 
 ## 上线前需要哪些页面
 

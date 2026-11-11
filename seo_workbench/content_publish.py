@@ -417,8 +417,5 @@ def _update_queue_after_publish(project_dir: Path, item_id: str, *, article_id: 
             data.setdefault("contentQueue", []).append(item)
         item["shopify_article_id"] = article_id
         item["live_url"] = live_url
-        data["lastAction"] = f"Published content item {item_id} to Shopify"
-        data["nextAction"] = "Review scheduled article in Shopify Admin"
-        state.record_history(data, "content-publish", "CONTENT_PRODUCTION", "prepare-publish", item_id)
 
     state.mutate_state(project_dir, mutation)
