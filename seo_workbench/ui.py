@@ -937,18 +937,43 @@ def _credential_profile_summary(profile: str, runtime_root: Path) -> dict[str, A
 
 def _ga4_profile_summary(profile: str, runtime_root: Path) -> dict[str, Any]:
     directory = ga4_probe.profile_dir(profile, runtime_root=runtime_root)
+    service_path = directory / "ga4-service-account.json"
     token_path = directory / "ga4-token.json"
-    if not token_path.is_file() or token_path.is_symlink():
+    if service_path.is_file() and not service_path.is_symlink():
+        credential_type = "service_account"
+        files = [service_path]
+    elif token_path.is_file() and not token_path.is_symlink():
+        credential_type = "oauth"
+        files = [token_path]
+    else:
         return {"profile": profile, "credential_type": "unknown", "status": "incomplete", "updated_at": None}
     status = "ready"
     try:
         credentials = ga4_probe.load_credentials(profile, refresh=False, runtime_root=runtime_root)
-        if not getattr(credentials, "valid", False) and not getattr(credentials, "refresh_token", None):
+        if not (
+            getattr(credentials, "valid", False)
+            or getattr(credentials, "refresh_token", None)
+            or getattr(credentials, "service_account_email", None)
+        ):
             status = "reauth_required"
     except (OSError, RuntimeError, ValueError, json.JSONDecodeError):
         status = "reauth_required"
-    updated = datetime.fromtimestamp(token_path.stat().st_mtime, timezone.utc).isoformat()
-    return {"profile": profile, "credential_type": "oauth", "status": status, "updated_at": updated}
+    principal = None
+    if credential_type == "service_account":
+        try:
+            candidate = json.loads(service_path.read_text(encoding="utf-8")).get("client_email")
+            if isinstance(candidate, str) and len(candidate) <= 254:
+                principal = candidate
+        except (OSError, json.JSONDecodeError):
+            status = "reauth_required"
+    updated = max(path.stat().st_mtime for path in files)
+    return {
+        "profile": profile,
+        "credential_type": credential_type,
+        "status": status,
+        "principal": principal,
+        "updated_at": datetime.fromtimestamp(updated, timezone.utc).isoformat(),
+    }
 
 
 def _google_integration_status(project_dir: Path, runtime_dir: Path) -> dict[str, Any]:

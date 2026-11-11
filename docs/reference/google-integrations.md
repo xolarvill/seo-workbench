@@ -25,7 +25,18 @@ The Connections workspace supports the complete operator flow:
 5. Run CrUX or GSC evidence collection and inspect the resulting status.
 6. Disconnect project bindings and delete unused auth profiles.
 
-GA4 uses a separate `analytics.readonly` token and an explicit project-to-property binding. A 28-day collection stores landing-page and acquisition-channel aggregates ending two complete days ago by default; it does not collect user or event identifiers. To compare with finalized GSC and Shopify evidence, pass the GSC window's exact end date to both business collectors.
+GA4 uses a separate `analytics.readonly` credential and an explicit project-to-property binding. A 28-day collection stores landing-page and acquisition-channel aggregates ending two complete days ago by default; it does not collect user or event identifiers. To compare with finalized GSC and Shopify evidence, pass the GSC window's exact end date to both business collectors.
+
+## Google Analytics 4 authentication
+
+Enable the Google Analytics Admin API and Data API. A service account works for both when its `client_email` is added as a user (Viewer) on the GA4 account or property:
+
+```bash
+./seo --project example-store ga4 import \
+  --profile ga4 --credential /path/to/service-account.json --json
+```
+
+The same command imports an exported `analytics.readonly` OAuth token in the `ga4.json` or authorized-user shape. A service account key is stored at `.runtime/google/profiles/<profile>/ga4-service-account.json`; an OAuth token remains `ga4-token.json`. Importing one credential type removes the other for that profile.
 
 ```bash
 ./seo --project example-store ga4 properties --profile ga4 --json

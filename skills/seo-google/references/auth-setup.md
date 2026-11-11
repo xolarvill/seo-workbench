@@ -29,7 +29,7 @@ Binding checks access and coverage of the project's URL. These commands use read
 
 ## GA4 and CrUX
 
-GA4 uses its separate `analytics.readonly` token and an explicit numeric property binding. Follow the Google integrations document and `ga4 properties`/`ga4 bind` help rather than reusing a Search Console token by assumption. A service account needs access to that GA4 property.
+GA4 uses its separate `analytics.readonly` credential and an explicit numeric property binding. Import either an exported OAuth token or a service account key with `ga4 import --credential`, then follow the Google integrations document and `ga4 properties`/`ga4 bind` help rather than reusing a Search Console token by assumption. A service account needs its `client_email` added as a user on that GA4 account or property.
 
 CrUX uses the Workbench key storage or supported environment setting documented in Google integrations. Its field records do not require a Search Console property binding. Local Connections stores, rotates and verifies supported credentials without returning secret values.
 
