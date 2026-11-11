@@ -333,7 +333,7 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [skills/write-content/references/article-workflow.md](../skills/write-content/references/article-workflow.md) | seomachine:.claude/commands/article.md | 本地方法 | `08d0679` |
 | [skills/write-content/references/draft-handoff.md](../skills/write-content/references/draft-handoff.md) | seomachine:.claude/commands/publish-draft.md | 本地方法 | `08d0679` |
 | [skills/write-content/references/drafting-workflow.md](../skills/write-content/references/drafting-workflow.md) | seomachine:.claude/commands/write.md | 本地方法 | `08d0679` |
-| [skills/write-content/references/title-craft.md](../skills/write-content/references/title-craft.md) | Workbench 本地方法 | 本地方法 | `8de1f43` |
+| [skills/write-content/references/title-craft.md](../skills/write-content/references/title-craft.md) | Workbench 本地方法 | 本地方法 | `47b0408` |
 
 ### 归入参考的来源方法
 

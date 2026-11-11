@@ -2,7 +2,7 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+  "local_snapshot_commit": "47b0408262fd4ba7d4e55720be93dfe6268e6638",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
@@ -126,7 +126,7 @@
         "path": "skills/README.md"
       },
       "last_local_change": {
-        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "commit": "47b0408262fd4ba7d4e55720be93dfe6268e6638",
         "date": "2026-11-11",
         "subject": "docs: add title craft for article titles",
         "path": "skills/README.md",
@@ -3339,7 +3339,7 @@
         "path": "skills/improve-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "commit": "47b0408262fd4ba7d4e55720be93dfe6268e6638",
         "date": "2026-11-11",
         "subject": "docs: add title craft for article titles",
         "path": "skills/improve-content/SKILL.md",
@@ -9517,7 +9517,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md"
       },
       "last_local_change": {
-        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "commit": "47b0408262fd4ba7d4e55720be93dfe6268e6638",
         "date": "2026-11-11",
         "subject": "docs: add title craft for article titles",
         "path": "skills/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md",
@@ -14701,7 +14701,7 @@
         "path": "skills/write-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "commit": "47b0408262fd4ba7d4e55720be93dfe6268e6638",
         "date": "2026-11-11",
         "subject": "docs: add title craft for article titles",
         "path": "skills/write-content/SKILL.md",
@@ -16039,7 +16039,7 @@
         "path": "skills/write-content/references/quality-scoring.md"
       },
       "last_local_change": {
-        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "commit": "47b0408262fd4ba7d4e55720be93dfe6268e6638",
         "date": "2026-11-11",
         "subject": "docs: add title craft for article titles",
         "path": "skills/write-content/references/quality-scoring.md",
@@ -16081,7 +16081,7 @@
         "path": "skills/write-content/references/seo-optimization-layer.md"
       },
       "last_local_change": {
-        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "commit": "47b0408262fd4ba7d4e55720be93dfe6268e6638",
         "date": "2026-11-11",
         "subject": "docs: add title craft for article titles",
         "path": "skills/write-content/references/seo-optimization-layer.md",
@@ -16199,14 +16199,14 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "commit": "47b0408262fd4ba7d4e55720be93dfe6268e6638",
         "date": "2026-11-11",
         "subject": "docs: add title craft for article titles",
         "path": "skills/write-content/references/title-craft.md",
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "8de1f439f7fb8e5ed1395d608297fc7fcf3d4a47",
+        "commit": "47b0408262fd4ba7d4e55720be93dfe6268e6638",
         "date": "2026-11-11",
         "subject": "docs: add title craft for article titles",
         "path": "skills/write-content/references/title-craft.md",

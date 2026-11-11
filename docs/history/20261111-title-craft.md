@@ -44,7 +44,7 @@ The optional "blandness test" from the review was intentionally left out. The se
 
 - `python3 scripts/skill_inventory.py check --strict-active`
 - `python3 -m pytest tests/test_skill_layout.py`
-- `./seo validate --json`
+- `./seo --project <id> validate --json` (an initialized local project; this checkout has no default project)
 - `git diff --check`
 
 Results are recorded in the commit that introduced this note.
