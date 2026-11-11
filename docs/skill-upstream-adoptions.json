@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "reviewed_on": "2026-10-29",
-  "scope": "Approved step 8; selected methods only. The source comparison refs do not imply a whole-pack import.",
+  "reviewed_on": "2026-11-11",
+  "scope": "Approved step 8; selected methods only. The source comparison refs do not imply a whole-pack import; 2026-11-11 competitive-landscape extension reviewed.",
   "sources": {
     "superseo": {
       "repository": "inhouseseo/superseo-skills",
@@ -17,6 +17,11 @@
       "repository": "TheCraigHewitt/seomachine",
       "verified_default_head": "120e7b46dc07c98382cd4f68ac5b6515ab9f2604",
       "checked_on": "2026-10-29"
+    },
+    "geo-seo-competitor-lens": {
+      "repository": "Boom-Caoq/geo-seo-competitor-lens",
+      "verified_default_head": "49deea6cd227ed46e20edfe8138e60f1709505f2",
+      "checked_on": "2026-11-11"
     }
   },
   "adopted": [
@@ -208,6 +213,22 @@
       "id": "remaining-provider-and-policy-catalogs",
       "decision": "Deferred",
       "reason": "No complete refresh of remaining schema types, provider model/pricing tables, ranking studies or technology CVE detection is claimed."
+    },
+    {
+      "id": "geo-seo-competitor-lens-scorecard",
+      "source_id": "geo-seo-competitor-lens",
+      "comparison_ref": "49deea6cd227ed46e20edfe8138e60f1709505f2",
+      "upstream_path": "skills/geo-seo/SKILL.md",
+      "decision": "Rejected",
+      "reason": "The fixed 0-100 weighted scorecard would synthesize a cross-dimension health score; the workbench keeps qualitative five-dimension contrast with source-level evidence and no synthetic total."
+    },
+    {
+      "id": "geo-seo-competitor-lens-full-import",
+      "source_id": "geo-seo-competitor-lens",
+      "comparison_ref": "49deea6cd227ed46e20edfe8138e60f1709505f2",
+      "upstream_path": "skills/geo-seo/SKILL.md",
+      "decision": "Rejected",
+      "reason": "The source is a fixed seven-section prompt with no runtime or collector; only its competitor register, GEO observation matrix and qualitative contrast were adapted, not the whole workflow or output format."
     }
   ]
 }

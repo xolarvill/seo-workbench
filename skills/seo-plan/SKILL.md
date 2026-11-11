@@ -30,7 +30,8 @@ metadata:
 - Analyze their content strategy, schema usage, technical setup
 - Identify keyword gaps and content opportunities
 - Assess their E-E-A-T signals
-- Estimate their domain authority
+- Observe public authority signals (mentions, citations and link sources) rather than estimating a domain-authority score
+- For a full landscape, use [competitive-landscape](../competitive-landscape/SKILL.md); keep this step to the inputs the roadmap needs
 
 ### 3. Architecture Design
 - Load industry template from `assets` directory

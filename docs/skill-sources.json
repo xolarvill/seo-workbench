@@ -2,38 +2,38 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "3b21238750f5ed82e558064fe8606b2094502cd4",
+  "local_snapshot_commit": "ea36dbcee15446f5d0f2b35eaacae2988a20c246",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
   "summary": {
-    "tracked_files": 409,
+    "tracked_files": 412,
     "by_source": {
       "claude-seo": 141,
       "seomachine": 93,
       "superseo": 125,
-      "workbench": 50
+      "workbench": 53
     },
     "by_kind": {
       "agent_metadata": 1,
       "asset": 9,
       "index": 2,
       "license": 19,
-      "reference": 283,
-      "skill": 60,
+      "reference": 285,
+      "skill": 61,
       "specialist_reference": 11,
       "workflow_reference": 24
     },
     "by_comparison_status": {
       "different": 137,
       "identical": 222,
-      "workbench_native": 50
+      "workbench_native": 53
     },
-    "dependency_occurrences": 800,
+    "dependency_occurrences": 829,
     "dependencies_by_status": {
       "example_reference": 4,
-      "project_context_reference": 94,
-      "resolved_local": 688,
+      "project_context_reference": 102,
+      "resolved_local": 709,
       "route_or_example": 1,
       "template_reference": 3,
       "upstream_runtime_reference": 10
@@ -115,8 +115,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "ded232a9865a0c30a940e8de1fc619bf28df93418f25f96a12e302097cd60db3",
-      "local_git_blob_sha": "bfd426e74f3080f2ba30f79ac7c870e2fc1a6380",
+      "local_sha256": "3ad7dfbbf0eb2fc46b8d8944d0244293a6e0d12441c054edf888197cc602367c",
+      "local_git_blob_sha": "bed637ef37f405972c4eadfd135f3f66e1f5c3b8",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -126,9 +126,9 @@
         "path": "skills/README.md"
       },
       "last_local_change": {
-        "commit": "817c90f8f5ca7de1bfaebfee75549cf7abd61b48",
-        "date": "2026-11-04",
-        "subject": "docs: maintain selected and removed keywords in the target register",
+        "commit": "11deeabee81b6ce9385346fe8800f5bd631ce7de",
+        "date": "2026-11-10",
+        "subject": "docs: split documentation into guides, reference, and history",
         "path": "skills/README.md",
         "record_status": "committed"
       },
@@ -142,7 +142,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/ab-test-setup/SKILL.md",
@@ -169,7 +169,7 @@
         "path": "skills/seo-machine-pipeline/skills/ab-test-setup/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/ab-test-setup/SKILL.md",
@@ -212,7 +212,7 @@
         "path": "skills/seo-machine-pipeline/skills/ab-test-setup/references/sample-size-guide.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/ab-test-setup/references/sample-size-guide.md",
@@ -255,7 +255,7 @@
         "path": "skills/seo-machine-pipeline/skills/ab-test-setup/references/test-templates.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/ab-test-setup/references/test-templates.md",
@@ -298,7 +298,7 @@
         "path": "skills/seo-machine-pipeline/skills/analytics-tracking/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/analytics-tracking/SKILL.md",
@@ -341,7 +341,7 @@
         "path": "skills/seo-machine-pipeline/skills/analytics-tracking/references/event-library.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/analytics-tracking/references/event-library.md",
@@ -384,7 +384,7 @@
         "path": "skills/seo-machine-pipeline/skills/analytics-tracking/references/ga4-implementation.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/analytics-tracking/references/ga4-implementation.md",
@@ -427,7 +427,7 @@
         "path": "skills/seo-machine-pipeline/skills/analytics-tracking/references/gtm-implementation.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/analytics-tracking/references/gtm-implementation.md",
@@ -468,9 +468,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
-        "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "commit": "11deeabee81b6ce9385346fe8800f5bd631ce7de",
+        "date": "2026-11-10",
+        "subject": "docs: split documentation into guides, reference, and history",
         "path": "skills/analytics-tracking/references/provider-inputs.md",
         "record_status": "committed"
       },
@@ -549,7 +549,7 @@
         "path": "skills/backlinks/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/backlinks/SKILL.md",
@@ -566,6 +566,120 @@
       },
       "maintenance_status": "active",
       "workingtree_modified": false
+    },
+    {
+      "id": "workbench:skills/competitive-landscape/SKILL.md",
+      "local_path": "skills/competitive-landscape/SKILL.md",
+      "path_history": [
+        "skills/competitive-landscape/SKILL.md"
+      ],
+      "kind": "skill",
+      "capability": "competitive-landscape",
+      "current_owner_path": "skills/competitive-landscape/SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-11",
+        "path": "skills/competitive-landscape/SKILL.md",
+        "subject": "Add competitive landscape workflow",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-11",
+        "path": "skills/competitive-landscape/SKILL.md",
+        "subject": "Add competitive landscape workflow",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [],
+      "workingtree_modified": true,
+      "local_sha256": "bc40287c728a9ce36a889743ec11fdd64b5aa49d2cd08dc6bd0bf22453298bd6",
+      "local_git_blob_sha": "2cc9e5631b05632f190845bc9694d733e523af9e",
+      "maintenance_status": "active"
+    },
+    {
+      "id": "workbench:skills/competitive-landscape/references/analysis-workflow.md",
+      "local_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "path_history": [
+        "skills/competitive-landscape/references/analysis-workflow.md"
+      ],
+      "kind": "reference",
+      "capability": "competitive-landscape",
+      "current_owner_path": "skills/competitive-landscape/SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-11",
+        "path": "skills/competitive-landscape/references/analysis-workflow.md",
+        "subject": "Add competitive landscape workflow",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-11",
+        "path": "skills/competitive-landscape/references/analysis-workflow.md",
+        "subject": "Add competitive landscape workflow",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [],
+      "workingtree_modified": true,
+      "local_sha256": "6fc2be8151af265cb975ba1fab88b490b566dc531c798fc6c3acd5c6ba11d71e",
+      "local_git_blob_sha": "0d384e59a0d12a3d97b75708c417353b94892a31",
+      "maintenance_status": "active"
+    },
+    {
+      "id": "workbench:skills/competitive-landscape/references/report-template.md",
+      "local_path": "skills/competitive-landscape/references/report-template.md",
+      "path_history": [
+        "skills/competitive-landscape/references/report-template.md"
+      ],
+      "kind": "reference",
+      "capability": "competitive-landscape",
+      "current_owner_path": "skills/competitive-landscape/SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-11",
+        "path": "skills/competitive-landscape/references/report-template.md",
+        "subject": "Add competitive landscape workflow",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-11",
+        "path": "skills/competitive-landscape/references/report-template.md",
+        "subject": "Add competitive landscape workflow",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [],
+      "workingtree_modified": true,
+      "local_sha256": "d17b73e11d1f35e5c37055d30125dff095785ec1ed983c15699c6458c380262c",
+      "local_git_blob_sha": "73348e70e3213f0be18a5bae31288dc3a3a8ae32",
+      "maintenance_status": "active"
     },
     {
       "id": "seomachine:.claude/skills/competitor-alternatives/SKILL.md",
@@ -592,7 +706,7 @@
         "path": "skills/seo-machine-pipeline/skills/competitor-alternatives/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/competitor-alternatives/SKILL.md",
@@ -635,7 +749,7 @@
         "path": "skills/seo-machine-pipeline/skills/competitor-alternatives/references/content-architecture.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/competitor-alternatives/references/content-architecture.md",
@@ -678,7 +792,7 @@
         "path": "skills/seo-machine-pipeline/skills/competitor-alternatives/references/templates.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/competitor-alternatives/references/templates.md",
@@ -720,7 +834,7 @@
         "path": "skills/content-brief/SKILL.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/content-brief/SKILL.md",
@@ -762,7 +876,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/content-brief/references/existing-page-scope.md",
@@ -802,7 +916,7 @@
         "path": "skills/seo-machine-pipeline/skills/content-strategy/SKILL.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/content-strategy/SKILL.md",
@@ -843,7 +957,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/content-strategy/references/calendar-planning.md",
@@ -883,7 +997,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/content-strategy/references/topic-opportunities.md",
@@ -923,7 +1037,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/content-strategy/references/trend-research.md",
@@ -963,7 +1077,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/content-strategy/references/work-priorities.md",
@@ -1005,7 +1119,7 @@
         "path": "skills/seo-machine-pipeline/skills/copy-editing/SKILL.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/copy-editing/SKILL.md",
@@ -1046,7 +1160,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/copy-editing/references/article-editing.md",
@@ -1088,7 +1202,7 @@
         "path": "skills/seo-machine-pipeline/skills/copy-editing/references/plain-english-alternatives.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/copy-editing/references/plain-english-alternatives.md",
@@ -1131,7 +1245,7 @@
         "path": "skills/seo-machine-pipeline/skills/copywriting/SKILL.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/copywriting/SKILL.md",
@@ -1174,7 +1288,7 @@
         "path": "skills/seo-machine-pipeline/skills/copywriting/references/copy-frameworks.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/copywriting/references/copy-frameworks.md",
@@ -1215,7 +1329,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/copywriting/references/headline-options.md",
@@ -1255,7 +1369,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/copywriting/references/landing-page-draft.md",
@@ -1295,7 +1409,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/copywriting/references/landing-page-handoff.md",
@@ -1337,7 +1451,7 @@
         "path": "skills/seo-machine-pipeline/skills/copywriting/references/natural-transitions.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/copywriting/references/natural-transitions.md",
@@ -1379,7 +1493,7 @@
         "path": "skills/drift/SKILL.md"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/drift/SKILL.md",
@@ -1421,7 +1535,7 @@
         "path": "skills/drift/references/comparison-rules.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/drift/references/comparison-rules.md",
@@ -1462,7 +1576,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/drift/references/content-performance-review.md",
@@ -1502,7 +1616,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/drift/references/content-performance-workflow.md",
@@ -1542,7 +1656,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/drift/references/performance-priorities.md",
@@ -1583,7 +1697,7 @@
         "path": "skills/eeat-audit/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/eeat-audit/SKILL.md",
@@ -2088,7 +2202,7 @@
         "path": "skills/seo-machine-pipeline/skills/email-sequence/SKILL.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/email-sequence/SKILL.md",
@@ -2131,7 +2245,7 @@
         "path": "skills/seo-machine-pipeline/skills/email-sequence/references/copy-guidelines.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/email-sequence/references/copy-guidelines.md",
@@ -2174,7 +2288,7 @@
         "path": "skills/seo-machine-pipeline/skills/email-sequence/references/email-types.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/email-sequence/references/email-types.md",
@@ -2215,7 +2329,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/email-sequence/references/provider-inputs.md",
@@ -2255,7 +2369,7 @@
         "path": "skills/seo-machine-pipeline/skills/email-sequence/references/sequence-templates.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/email-sequence/references/sequence-templates.md",
@@ -2297,7 +2411,7 @@
         "path": "skills/expert-interview/SKILL.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/expert-interview/SKILL.md",
@@ -2465,7 +2579,7 @@
         "path": "skills/expert-interview/references/knowledge-doc-template.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/expert-interview/references/knowledge-doc-template.md",
@@ -2549,7 +2663,7 @@
         "path": "skills/expert-interview/references/voice-injection-playbook.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/expert-interview/references/voice-injection-playbook.md",
@@ -2591,7 +2705,7 @@
         "path": "skills/featured-snippet-optimizer/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/featured-snippet-optimizer/SKILL.md",
@@ -2633,7 +2747,7 @@
         "path": "skills/featured-snippet-optimizer/references/aio-vs-snippet-decision.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/featured-snippet-optimizer/references/aio-vs-snippet-decision.md",
@@ -2717,7 +2831,7 @@
         "path": "skills/featured-snippet-optimizer/references/content-types/faq-page.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/featured-snippet-optimizer/references/content-types/faq-page.md",
@@ -2885,7 +2999,7 @@
         "path": "skills/featured-snippet-optimizer/references/structured-data-snippets.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/featured-snippet-optimizer/references/structured-data-snippets.md",
@@ -2928,7 +3042,7 @@
         "path": "skills/seo-machine-pipeline/skills/form-cro/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/form-cro/SKILL.md",
@@ -2971,7 +3085,7 @@
         "path": "skills/seo-machine-pipeline/skills/free-tool-strategy/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/free-tool-strategy/SKILL.md",
@@ -3014,7 +3128,7 @@
         "path": "skills/seo-machine-pipeline/skills/free-tool-strategy/references/tool-types.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/free-tool-strategy/references/tool-types.md",
@@ -3057,7 +3171,7 @@
         "path": "skills/seo-machine-pipeline/skills/growth-lead-SKILL.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/growth-lead/SKILL.md",
@@ -3183,7 +3297,7 @@
         "path": "skills/images/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/images/SKILL.md",
@@ -3225,7 +3339,7 @@
         "path": "skills/improve-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/improve-content/SKILL.md",
@@ -3267,7 +3381,7 @@
         "path": "skills/improve-content/references/anti-slop-ruleset.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/improve-content/references/anti-slop-ruleset.md",
@@ -3309,7 +3423,7 @@
         "path": "skills/improve-content/references/content-freshness.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/improve-content/references/content-freshness.md",
@@ -3351,7 +3465,7 @@
         "path": "skills/improve-content/references/content-types-overview.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/improve-content/references/content-types-overview.md",
@@ -3645,7 +3759,7 @@
         "path": "skills/improve-content/references/content-types/faq-page.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/improve-content/references/content-types/faq-page.md",
@@ -4190,7 +4304,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/improve-content/references/optimization-workflow.md",
@@ -4231,7 +4345,7 @@
         "path": "skills/improve-content/references/quality-scoring.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/improve-content/references/quality-scoring.md",
@@ -4272,7 +4386,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/improve-content/references/refresh-workflow.md",
@@ -4312,7 +4426,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/improve-content/references/seo-editing.md",
@@ -4353,7 +4467,7 @@
         "path": "skills/improve-content/references/voice-injection-playbook.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/improve-content/references/voice-injection-playbook.md",
@@ -4395,7 +4509,7 @@
         "path": "skills/improve-content/references/writing-pipeline.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/improve-content/references/writing-pipeline.md",
@@ -4437,9 +4551,9 @@
         "path": "skills/keyword-deep-dive/SKILL.md"
       },
       "last_local_change": {
-        "commit": "817c90f8f5ca7de1bfaebfee75549cf7abd61b48",
-        "date": "2026-11-04",
-        "subject": "docs: maintain selected and removed keywords in the target register",
+        "commit": "11deeabee81b6ce9385346fe8800f5bd631ce7de",
+        "date": "2026-11-10",
+        "subject": "docs: split documentation into guides, reference, and history",
         "path": "skills/keyword-deep-dive/SKILL.md",
         "record_status": "committed"
       },
@@ -4604,7 +4718,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/keyword-deep-dive/references/keyword-placement-review.md",
@@ -4644,7 +4758,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/keyword-deep-dive/references/research-workflow.md",
@@ -4726,7 +4840,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/keyword-deep-dive/references/serp-review.md",
@@ -4852,7 +4966,7 @@
         "path": "skills/seo-machine-pipeline/skills/launch-strategy/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/launch-strategy/SKILL.md",
@@ -4894,7 +5008,7 @@
         "path": "skills/linkbuilding/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/linkbuilding/SKILL.md",
@@ -5441,7 +5555,7 @@
         "path": "skills/seo-machine-pipeline/skills/marketing-ideas/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/marketing-ideas/SKILL.md",
@@ -5484,7 +5598,7 @@
         "path": "skills/seo-machine-pipeline/skills/marketing-ideas/references/ideas-by-category.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/marketing-ideas/references/ideas-by-category.md",
@@ -5527,7 +5641,7 @@
         "path": "skills/seo-machine-pipeline/skills/marketing-psychology/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/marketing-psychology/SKILL.md",
@@ -5570,7 +5684,7 @@
         "path": "skills/seo-machine-pipeline/skills/onboarding-cro/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/onboarding-cro/SKILL.md",
@@ -5613,7 +5727,7 @@
         "path": "skills/seo-machine-pipeline/skills/onboarding-cro/references/experiments.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/onboarding-cro/references/experiments.md",
@@ -5655,7 +5769,7 @@
         "path": "skills/page-audit/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/page-audit/SKILL.md",
@@ -5698,7 +5812,7 @@
         "path": "skills/claude-seo-extra/seo-page/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/page-audit/references/claude-seo/LICENSE.txt",
@@ -5741,7 +5855,7 @@
         "path": "skills/claude-seo-extra/seo-page/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/page-audit/references/claude-seo/single-page-checks.md",
@@ -5782,7 +5896,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/page-audit/references/content-assessment.md",
@@ -5906,7 +6020,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/page-audit/references/existing-page-review.md",
@@ -5946,9 +6060,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "4d2e8a3429c1d45a8b984eab5c7b34c0c6331c05",
         "date": "2026-10-29",
-        "subject": "feat: adopt selected upstream skill methods and policy corrections",
+        "subject": "fix: keep diagnostic guardrails out of routine recommendation prose",
         "path": "skills/page-audit/references/metadata-writing.md",
         "record_status": "committed"
       },
@@ -5961,7 +6075,7 @@
       "local_sha256": "e664e07668b24d85089ef905a78686366fbe758a4aaa60b3b7d8da7716411e9d",
       "local_git_blob_sha": "534d521237ca70576b8653467ee7ba21be460d5c",
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "superseo:skills/page-audit/references/pop-test-hierarchy.md",
@@ -6072,7 +6186,7 @@
         "path": "skills/seo-machine-pipeline/skills/page-cro/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/page-cro/SKILL.md",
@@ -6113,7 +6227,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/page-cro/references/conversion-analysis.md",
@@ -6155,7 +6269,7 @@
         "path": "skills/seo-machine-pipeline/skills/page-cro/references/experiments.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/page-cro/references/experiments.md",
@@ -6196,7 +6310,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/page-cro/references/landing-audit.md",
@@ -6236,7 +6350,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/page-cro/references/landing-competitor-review.md",
@@ -6276,7 +6390,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/page-cro/references/landing-page-review.md",
@@ -6316,7 +6430,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/page-cro/references/landing-research.md",
@@ -6358,7 +6472,7 @@
         "path": "skills/seo-machine-pipeline/skills/paid-ads/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/paid-ads/SKILL.md",
@@ -6401,7 +6515,7 @@
         "path": "skills/seo-machine-pipeline/skills/paid-ads/references/ad-copy-templates.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/paid-ads/references/ad-copy-templates.md",
@@ -6444,7 +6558,7 @@
         "path": "skills/seo-machine-pipeline/skills/paid-ads/references/audience-targeting.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/paid-ads/references/audience-targeting.md",
@@ -6487,7 +6601,7 @@
         "path": "skills/seo-machine-pipeline/skills/paid-ads/references/platform-setup-checklists.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/paid-ads/references/platform-setup-checklists.md",
@@ -6528,7 +6642,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/paid-ads/references/provider-inputs.md",
@@ -6568,7 +6682,7 @@
         "path": "skills/seo-machine-pipeline/skills/paywall-upgrade-cro/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/paywall-upgrade-cro/SKILL.md",
@@ -6611,7 +6725,7 @@
         "path": "skills/seo-machine-pipeline/skills/paywall-upgrade-cro/references/experiments.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/paywall-upgrade-cro/references/experiments.md",
@@ -6654,7 +6768,7 @@
         "path": "skills/seo-machine-pipeline/skills/popup-cro/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/popup-cro/SKILL.md",
@@ -6697,7 +6811,7 @@
         "path": "skills/seo-machine-pipeline/skills/pricing-strategy/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/pricing-strategy/SKILL.md",
@@ -6740,7 +6854,7 @@
         "path": "skills/seo-machine-pipeline/skills/pricing-strategy/references/research-methods.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/pricing-strategy/references/research-methods.md",
@@ -6783,7 +6897,7 @@
         "path": "skills/seo-machine-pipeline/skills/pricing-strategy/references/tier-structure.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/pricing-strategy/references/tier-structure.md",
@@ -6826,7 +6940,7 @@
         "path": "skills/seo-machine-pipeline/skills/product-marketing-context/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/product-marketing-context/SKILL.md",
@@ -6869,7 +6983,7 @@
         "path": "skills/seo-machine-pipeline/skills/programmatic-seo/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/programmatic-seo/SKILL.md",
@@ -6912,7 +7026,7 @@
         "path": "skills/claude-seo-extra/seo-programmatic/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/programmatic-seo/references/claude-seo/LICENSE.txt",
@@ -6955,7 +7069,7 @@
         "path": "skills/claude-seo-extra/seo-programmatic/SKILL.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/programmatic-seo/references/claude-seo/technical-planning.md",
@@ -6998,7 +7112,7 @@
         "path": "skills/seo-machine-pipeline/skills/programmatic-seo/references/playbooks.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/programmatic-seo/references/playbooks.md",
@@ -7040,9 +7154,9 @@
         "path": "skills/project-context/SKILL.md"
       },
       "last_local_change": {
-        "commit": "3b21238750f5ed82e558064fe8606b2094502cd4",
-        "date": "2026-11-04",
-        "subject": "fix: require user requirements before creating brand voice",
+        "commit": "11deeabee81b6ce9385346fe8800f5bd631ce7de",
+        "date": "2026-11-10",
+        "subject": "docs: split documentation into guides, reference, and history",
         "path": "skills/project-context/SKILL.md",
         "record_status": "committed"
       },
@@ -7124,9 +7238,9 @@
         "path": "skills/reader-experience-review/SKILL.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "4d2e8a3429c1d45a8b984eab5c7b34c0c6331c05",
         "date": "2026-10-29",
-        "subject": "refactor: make the reader method the single prose authority",
+        "subject": "fix: keep diagnostic guardrails out of routine recommendation prose",
         "path": "skills/reader-experience-review/SKILL.md",
         "record_status": "committed"
       },
@@ -7140,7 +7254,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "workbench:skills/reader-experience-review/references/calibration.md",
@@ -7166,7 +7280,7 @@
         "path": "skills/reader-experience-review/references/calibration.md"
       },
       "last_local_change": {
-        "commit": "50719b14adc80235b11784675c613578d8539287",
+        "commit": "6b52c5e52770a4e2275ee8c83dac387eb29c08fb",
         "date": "2026-10-29",
         "subject": "fix: prioritize reader needs over defensive writing",
         "path": "skills/reader-experience-review/references/calibration.md",
@@ -7207,9 +7321,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "166260fb14d1fdb252c4c411ec85fabb29de8008",
+        "commit": "4d2e8a3429c1d45a8b984eab5c7b34c0c6331c05",
         "date": "2026-10-29",
-        "subject": "fix: separate editorial evidence from reader-facing prose",
+        "subject": "fix: keep diagnostic guardrails out of routine recommendation prose",
         "path": "skills/reader-experience-review/references/evidence-to-prose.md",
         "record_status": "committed"
       },
@@ -7217,7 +7331,7 @@
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "9e76be30838366d9eda378b2610af1a8ea7c56569786912568b3eb2af38e5a67",
       "local_git_blob_sha": "dfd7125007dd7fcfa458c1a7e6a20bdb7497b344",
       "maintenance_status": "active"
@@ -7247,7 +7361,7 @@
         "path": "skills/seo-machine-pipeline/skills/referral-program/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/referral-program/SKILL.md",
@@ -7290,7 +7404,7 @@
         "path": "skills/seo-machine-pipeline/skills/referral-program/references/affiliate-programs.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/referral-program/references/affiliate-programs.md",
@@ -7333,7 +7447,7 @@
         "path": "skills/seo-machine-pipeline/skills/referral-program/references/program-examples.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/referral-program/references/program-examples.md",
@@ -7374,7 +7488,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/referral-program/references/provider-inputs.md",
@@ -7455,7 +7569,7 @@
         "path": "skills/schema/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/schema/SKILL.md",
@@ -7498,7 +7612,7 @@
         "path": "skills/seo-machine-pipeline/skills/schema-markup/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/schema/references/implementation/guide.md",
@@ -7541,7 +7655,7 @@
         "path": "skills/seo-machine-pipeline/skills/schema-markup/references/schema-examples.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/schema/references/implementation/references/schema-examples.md",
@@ -7582,7 +7696,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/schema/references/search-eligibility.md",
@@ -7621,7 +7735,7 @@
         "path": "skills/semantic-gap-analysis/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/semantic-gap-analysis/SKILL.md",
@@ -7788,7 +7902,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/semantic-gap-analysis/references/research-gap-workflow.md",
@@ -7872,7 +7986,7 @@
         "path": "skills/claude-seo-extra/seo-cluster/SKILL.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/seo-cluster/SKILL.md",
@@ -7915,7 +8029,7 @@
         "path": "skills/claude-seo-extra/seo-cluster/references/execution-workflow.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/seo-cluster/references/execution-workflow.md",
@@ -7958,7 +8072,7 @@
         "path": "skills/claude-seo-extra/seo-cluster/references/hub-spoke-architecture.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-cluster/references/hub-spoke-architecture.md",
@@ -8001,7 +8115,7 @@
         "path": "skills/claude-seo-extra/seo-cluster/references/serp-overlap-methodology.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-cluster/references/serp-overlap-methodology.md",
@@ -8044,7 +8158,7 @@
         "path": "skills/claude-seo-extra/seo-competitor-pages/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-competitor-pages/LICENSE.txt",
@@ -8087,7 +8201,7 @@
         "path": "skills/claude-seo-extra/seo-competitor-pages/SKILL.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-competitor-pages/SKILL.md",
@@ -8130,7 +8244,7 @@
         "path": "skills/claude-seo-extra/seo-content/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-content/LICENSE.txt",
@@ -8173,7 +8287,7 @@
         "path": "skills/claude-seo-extra/seo-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/seo-content/SKILL.md",
@@ -8216,7 +8330,7 @@
         "path": "skills/claude-seo-extra/seo-dataforseo/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-dataforseo/LICENSE.txt",
@@ -8259,7 +8373,7 @@
         "path": "skills/claude-seo-extra/seo-dataforseo/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-dataforseo/SKILL.md",
@@ -8302,7 +8416,7 @@
         "path": "skills/claude-seo-extra/seo-dataforseo/references/cost-tiers.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-dataforseo/references/cost-tiers.md",
@@ -8345,7 +8459,7 @@
         "path": "skills/claude-seo-extra/seo-dataforseo/references/tool-catalog.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-dataforseo/references/tool-catalog.md",
@@ -8388,7 +8502,7 @@
         "path": "skills/claude-seo-extra/seo-ecommerce/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-ecommerce/SKILL.md",
@@ -8431,7 +8545,7 @@
         "path": "skills/claude-seo-extra/seo-ecommerce/references/marketplace-endpoints.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-ecommerce/references/marketplace-endpoints.md",
@@ -8474,7 +8588,7 @@
         "path": "skills/claude-seo-extra/seo-flow/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/SKILL.md",
@@ -8517,7 +8631,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/bibliography.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-flow/references/bibliography.md",
@@ -8567,7 +8681,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/flow-framework.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/flow-framework.md",
@@ -8617,7 +8731,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/flow-prompts.lock"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/flow-prompts.lock",
@@ -8660,7 +8774,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/README.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-flow/references/prompts/README.md",
@@ -8703,7 +8817,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/find/content-planning-for-topical-relevance-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/find/content-planning-for-topical-relevance-prompt.md",
@@ -8753,7 +8867,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/find/content-prioritization-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/find/content-prioritization-prompt.md",
@@ -8803,7 +8917,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/find/keyword-research-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/find/keyword-research-prompt.md",
@@ -8853,7 +8967,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/find/keyword-variations-for-topical-relevance-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/find/keyword-variations-for-topical-relevance-prompt.md",
@@ -8903,7 +9017,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/find/prompt-audience-avatar.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/find/prompt-audience-avatar.md",
@@ -8953,7 +9067,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/leverage/backlink-competition-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/leverage/backlink-competition-prompt.md",
@@ -9003,7 +9117,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/ai-homepage-rewrite-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/local/ai-homepage-rewrite-prompt.md",
@@ -9053,7 +9167,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/claude-deep-research-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/local/claude-deep-research-prompt.md",
@@ -9103,7 +9217,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/gbp-categories-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/local/gbp-categories-prompt.md",
@@ -9153,7 +9267,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/gbp-description-claude-prompt-1.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/local/gbp-description-claude-prompt-1.md",
@@ -9203,7 +9317,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/gbp-description-claude-prompt-2.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/local/gbp-description-claude-prompt-2.md",
@@ -9253,7 +9367,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/gbp-description-claude-prompt-3.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/local/gbp-description-claude-prompt-3.md",
@@ -9303,7 +9417,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/gbp-services-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/local/gbp-services-prompt.md",
@@ -9353,7 +9467,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/prompt-generating-a-meta-description.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/local/prompt-generating-a-meta-description.md",
@@ -9403,7 +9517,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md",
@@ -9453,7 +9567,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/prompt-rewriting-existing-homepage.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/local/prompt-rewriting-existing-homepage.md",
@@ -9503,7 +9617,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/local/prompt-rewriting-existing-service-page.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/local/prompt-rewriting-existing-service-page.md",
@@ -9553,7 +9667,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/ai-detector-test-follow-up-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/ai-detector-test-follow-up-prompt.md",
@@ -9603,7 +9717,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/ai-supporting-pages-rewrite-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/ai-supporting-pages-rewrite-prompt.md",
@@ -9653,7 +9767,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/basic-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/basic-prompt.md",
@@ -9703,7 +9817,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/blog-post-outline-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/blog-post-outline-prompt.md",
@@ -9753,7 +9867,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/blog-post-writing-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/blog-post-writing-prompt.md",
@@ -9803,7 +9917,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/claude-prompt-1.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/claude-prompt-1.md",
@@ -9853,7 +9967,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/claude-prompt-2.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/claude-prompt-2.md",
@@ -9903,7 +10017,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/ctr-audit-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/ctr-audit-prompt.md",
@@ -9953,7 +10067,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/follow-up-prompt-1.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/follow-up-prompt-1.md",
@@ -10003,7 +10117,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/follow-up-prompt-2.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/follow-up-prompt-2.md",
@@ -10053,7 +10167,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/follow-up-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/follow-up-prompt.md",
@@ -10103,7 +10217,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/paa-question-rewording-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/paa-question-rewording-prompt.md",
@@ -10153,7 +10267,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/prompt-core-30-content-audit.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/prompt-core-30-content-audit.md",
@@ -10203,7 +10317,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/property-content-with-authority-audit-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/property-content-with-authority-audit-prompt.md",
@@ -10253,7 +10367,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/reddit-claude-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/reddit-claude-prompt.md",
@@ -10303,7 +10417,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/schema-prompt-1.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/schema-prompt-1.md",
@@ -10353,7 +10467,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/step-1-the-chatgpt-discovery-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/step-1-the-chatgpt-discovery-prompt.md",
@@ -10403,7 +10517,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/step-2-the-follow-up-qualifying-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/step-2-the-follow-up-qualifying-prompt.md",
@@ -10453,7 +10567,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/technical-audit-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/technical-audit-prompt.md",
@@ -10503,7 +10617,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/visibility-follow-up-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/visibility-follow-up-prompt.md",
@@ -10553,7 +10667,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/optimize/visiblity-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/optimize/visiblity-prompt.md",
@@ -10603,7 +10717,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/win/bofu-page-brief-generator.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/win/bofu-page-brief-generator.md",
@@ -10653,7 +10767,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/win/conversion-audit-prompt.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/win/conversion-audit-prompt.md",
@@ -10703,7 +10817,7 @@
         "path": "skills/claude-seo-extra/seo-flow/references/prompts/win/dual-surface-content-scorecard.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-flow/references/prompts/win/dual-surface-content-scorecard.md",
@@ -10753,7 +10867,7 @@
         "path": "skills/claude-seo-extra/seo-geo/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-geo/LICENSE.txt",
@@ -10796,7 +10910,7 @@
         "path": "skills/claude-seo-extra/seo-geo/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-geo/SKILL.md",
@@ -10837,22 +10951,22 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/seo-geo/references/citation-research.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
         "seomachine:.claude/commands/research-ai-citations.md"
       ],
-      "local_sha256": "8d25105e633160557d7490c3cd268b8b0728ba3adf4800fcd64f7d800313d6c9",
-      "local_git_blob_sha": "ddd965eeaa3b2826e5e3181cb0ddbc17321453df",
+      "local_sha256": "d108ac4929c32be26c5241089a21efd1ca18b9b19a7afca6a9b1dc62466105e7",
+      "local_git_blob_sha": "e418b70072a6456ee3b366d1d1fe01a5261a0d9b",
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-google/LICENSE.txt",
@@ -10879,7 +10993,7 @@
         "path": "skills/claude-seo-extra/seo-google/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-google/LICENSE.txt",
@@ -10922,7 +11036,7 @@
         "path": "skills/claude-seo-extra/seo-google/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-google/SKILL.md",
@@ -10965,7 +11079,7 @@
         "path": "skills/claude-seo-extra/seo-google/assets/templates/cwv-audit-report.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-google/assets/templates/cwv-audit-report.md",
@@ -11008,7 +11122,7 @@
         "path": "skills/claude-seo-extra/seo-google/assets/templates/gsc-performance-report.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-google/assets/templates/gsc-performance-report.md",
@@ -11051,7 +11165,7 @@
         "path": "skills/claude-seo-extra/seo-google/assets/templates/indexation-status-report.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-google/assets/templates/indexation-status-report.md",
@@ -11094,9 +11208,9 @@
         "path": "skills/claude-seo-extra/seo-google/references/auth-setup.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
-        "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "commit": "11deeabee81b6ce9385346fe8800f5bd631ce7de",
+        "date": "2026-11-10",
+        "subject": "docs: split documentation into guides, reference, and history",
         "path": "skills/seo-google/references/auth-setup.md",
         "record_status": "committed"
       },
@@ -11137,7 +11251,7 @@
         "path": "skills/claude-seo-extra/seo-google/references/ga4-data-api.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-google/references/ga4-data-api.md",
@@ -11180,7 +11294,7 @@
         "path": "skills/claude-seo-extra/seo-google/references/indexing-api.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-google/references/indexing-api.md",
@@ -11223,7 +11337,7 @@
         "path": "skills/claude-seo-extra/seo-google/references/keyword-planner-api.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-google/references/keyword-planner-api.md",
@@ -11266,7 +11380,7 @@
         "path": "skills/claude-seo-extra/seo-google/references/nlp-api.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-google/references/nlp-api.md",
@@ -11309,7 +11423,7 @@
         "path": "skills/claude-seo-extra/seo-google/references/pagespeed-crux-api.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-google/references/pagespeed-crux-api.md",
@@ -11352,7 +11466,7 @@
         "path": "skills/claude-seo-extra/seo-google/references/rate-limits-quotas.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-google/references/rate-limits-quotas.md",
@@ -11395,7 +11509,7 @@
         "path": "skills/claude-seo-extra/seo-google/references/search-console-api.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-google/references/search-console-api.md",
@@ -11438,7 +11552,7 @@
         "path": "skills/claude-seo-extra/seo-google/references/supplementary-apis.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-google/references/supplementary-apis.md",
@@ -11481,7 +11595,7 @@
         "path": "skills/claude-seo-extra/seo-google/references/youtube-api.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-google/references/youtube-api.md",
@@ -11524,7 +11638,7 @@
         "path": "skills/claude-seo-extra/seo-hreflang/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-hreflang/LICENSE.txt",
@@ -11567,7 +11681,7 @@
         "path": "skills/claude-seo-extra/seo-hreflang/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-hreflang/SKILL.md",
@@ -11610,7 +11724,7 @@
         "path": "skills/claude-seo-extra/seo-hreflang/references/content-parity.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-hreflang/references/content-parity.md",
@@ -11653,7 +11767,7 @@
         "path": "skills/claude-seo-extra/seo-hreflang/references/cultural-profiles.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-hreflang/references/cultural-profiles.md",
@@ -11696,7 +11810,7 @@
         "path": "skills/claude-seo-extra/seo-hreflang/references/locale-formats.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-hreflang/references/locale-formats.md",
@@ -11739,7 +11853,7 @@
         "path": "skills/claude-seo-extra/seo-image-gen/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-image-gen/LICENSE.txt",
@@ -11782,7 +11896,7 @@
         "path": "skills/claude-seo-extra/seo-image-gen/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-image-gen/SKILL.md",
@@ -11825,7 +11939,7 @@
         "path": "skills/claude-seo-extra/seo-image-gen/references/cost-tracking.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-image-gen/references/cost-tracking.md",
@@ -11868,7 +11982,7 @@
         "path": "skills/claude-seo-extra/seo-image-gen/references/gemini-models.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-image-gen/references/gemini-models.md",
@@ -11911,7 +12025,7 @@
         "path": "skills/claude-seo-extra/seo-image-gen/references/mcp-tools.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-image-gen/references/mcp-tools.md",
@@ -11954,7 +12068,7 @@
         "path": "skills/claude-seo-extra/seo-image-gen/references/post-processing.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-image-gen/references/post-processing.md",
@@ -11997,7 +12111,7 @@
         "path": "skills/claude-seo-extra/seo-image-gen/references/presets.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-image-gen/references/presets.md",
@@ -12040,7 +12154,7 @@
         "path": "skills/claude-seo-extra/seo-image-gen/references/prompt-engineering.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-image-gen/references/prompt-engineering.md",
@@ -12083,7 +12197,7 @@
         "path": "skills/claude-seo-extra/seo-image-gen/references/seo-image-presets.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-image-gen/references/seo-image-presets.md",
@@ -12126,7 +12240,7 @@
         "path": "skills/claude-seo-extra/seo-local/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-local/LICENSE.txt",
@@ -12169,7 +12283,7 @@
         "path": "skills/claude-seo-extra/seo-local/SKILL.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/seo-local/SKILL.md",
@@ -12212,7 +12326,7 @@
         "path": "skills/claude-seo-extra/seo-maps/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-maps/LICENSE.txt",
@@ -12255,7 +12369,7 @@
         "path": "skills/claude-seo-extra/seo-maps/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-maps/SKILL.md",
@@ -12298,7 +12412,7 @@
         "path": "skills/claude-seo-extra/seo-plan/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-plan/LICENSE.txt",
@@ -12330,8 +12444,8 @@
       "upstream_path": "skills/seo-plan/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "f8fbfb63ad3094442e4e8e5ff4a54f2c301f664fe0246bcaa79b3a24b753baa0",
-      "local_git_blob_sha": "b8b51f7f60f8eea628c4ef99233690a1b44d0ba3",
+      "local_sha256": "56f94069ecbe6f174948f9107a9ca4dcbd1b225dad1b425799ec9b75710403ea",
+      "local_git_blob_sha": "887118a146e558dba831e9c1e34608dc01fad99d",
       "comparison_upstream_blob_sha": "f2a6729652575082b7d603d5beab9e8602cd5e3a",
       "comparison_status": "different",
       "first_local_record": {
@@ -12341,7 +12455,7 @@
         "path": "skills/claude-seo-extra/seo-plan/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-plan/SKILL.md",
@@ -12357,7 +12471,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-plan/assets/agency.md",
@@ -12384,7 +12498,7 @@
         "path": "skills/claude-seo-extra/seo-plan/assets/agency.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-plan/assets/agency.md",
@@ -12427,7 +12541,7 @@
         "path": "skills/claude-seo-extra/seo-plan/assets/ecommerce.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-plan/assets/ecommerce.md",
@@ -12470,7 +12584,7 @@
         "path": "skills/claude-seo-extra/seo-plan/assets/generic.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/seo-plan/assets/generic.md",
@@ -12513,7 +12627,7 @@
         "path": "skills/claude-seo-extra/seo-plan/assets/local-service.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-plan/assets/local-service.md",
@@ -12556,7 +12670,7 @@
         "path": "skills/claude-seo-extra/seo-plan/assets/publisher.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-plan/assets/publisher.md",
@@ -12599,7 +12713,7 @@
         "path": "skills/claude-seo-extra/seo-plan/assets/saas.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-plan/assets/saas.md",
@@ -12642,7 +12756,7 @@
         "path": "skills/claude-seo-extra/seo-sxo/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo-sxo/SKILL.md",
@@ -12685,7 +12799,7 @@
         "path": "skills/claude-seo-extra/seo-sxo/references/page-type-taxonomy.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-sxo/references/page-type-taxonomy.md",
@@ -12728,7 +12842,7 @@
         "path": "skills/claude-seo-extra/seo-sxo/references/persona-scoring.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-sxo/references/persona-scoring.md",
@@ -12771,7 +12885,7 @@
         "path": "skills/claude-seo-extra/seo-sxo/references/user-story-framework.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-sxo/references/user-story-framework.md",
@@ -12814,7 +12928,7 @@
         "path": "skills/claude-seo-extra/seo-sxo/references/wireframe-templates.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo-sxo/references/wireframe-templates.md",
@@ -12857,7 +12971,7 @@
         "path": "skills/claude-seo-extra/seo/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo/LICENSE.txt",
@@ -12900,7 +13014,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo/SKILL.md",
@@ -12940,7 +13054,7 @@
         "path": "skills/claude-seo-extra/seo/references/backlink-quality.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo/references/backlink-quality.md",
@@ -12983,7 +13097,7 @@
         "path": "skills/claude-seo-extra/seo/references/cwv-thresholds.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo/references/cwv-thresholds.md",
@@ -13026,7 +13140,7 @@
         "path": "skills/claude-seo-extra/seo/references/eeat-framework.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo/references/eeat-framework.md",
@@ -13069,7 +13183,7 @@
         "path": "skills/claude-seo-extra/seo/references/free-backlink-sources.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo/references/free-backlink-sources.md",
@@ -13112,7 +13226,7 @@
         "path": "skills/claude-seo-extra/seo/references/local-schema-types.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo/references/local-schema-types.md",
@@ -13155,7 +13269,7 @@
         "path": "skills/claude-seo-extra/seo/references/local-seo-signals.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo/references/local-seo-signals.md",
@@ -13198,7 +13312,7 @@
         "path": "skills/claude-seo-extra/seo/references/maps-api-endpoints.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo/references/maps-api-endpoints.md",
@@ -13241,7 +13355,7 @@
         "path": "skills/claude-seo-extra/seo/references/maps-free-apis.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo/references/maps-free-apis.md",
@@ -13284,7 +13398,7 @@
         "path": "skills/claude-seo-extra/seo/references/maps-gbp-checklist.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo/references/maps-gbp-checklist.md",
@@ -13327,7 +13441,7 @@
         "path": "skills/claude-seo-extra/seo/references/maps-geo-grid.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo/references/maps-geo-grid.md",
@@ -13370,7 +13484,7 @@
         "path": "skills/claude-seo-extra/seo/references/quality-gates.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/seo/references/quality-gates.md",
@@ -13413,7 +13527,7 @@
         "path": "skills/claude-seo-extra/seo/references/schema-types.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/seo/references/schema-types.md",
@@ -13456,7 +13570,7 @@
         "path": "skills/claude-seo-extra/seo/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/seo/references/upstream-orchestration.md",
@@ -13497,9 +13611,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
-        "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "commit": "11deeabee81b6ce9385346fe8800f5bd631ce7de",
+        "date": "2026-11-10",
+        "subject": "docs: split documentation into guides, reference, and history",
         "path": "skills/seo/references/workbench-operations.md",
         "record_status": "committed"
       },
@@ -13537,7 +13651,7 @@
         "path": "skills/seo-machine-pipeline/skills/signup-flow-cro/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/signup-flow-cro/SKILL.md",
@@ -13580,7 +13694,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/site-audit/SKILL.md",
@@ -13621,7 +13735,7 @@
         "path": "skills/claude-seo-extra/seo-audit/LICENSE.txt"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/site-audit/references/claude-seo-LICENSE.txt",
@@ -13664,7 +13778,7 @@
         "path": "skills/claude-seo-extra/seo-audit/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/site-audit/references/claude-seo-audit.md",
@@ -13707,7 +13821,7 @@
         "path": "skills/seo-machine-pipeline/skills/seo-audit/references/aeo-geo-patterns.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/site-audit/references/references/aeo-geo-patterns.md",
@@ -13750,7 +13864,7 @@
         "path": "skills/seo-machine-pipeline/skills/seo-audit/references/ai-writing-detection.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/site-audit/references/references/ai-writing-detection.md",
@@ -13793,7 +13907,7 @@
         "path": "skills/seo-machine-pipeline/skills/seo-audit/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/site-audit/references/seo-machine-audit.md",
@@ -13877,7 +13991,7 @@
         "path": "skills/sitemap/SKILL.md"
       },
       "last_local_change": {
-        "commit": "b4c5142e4a0f1da6c2d37ff803a68ce2bffd785d",
+        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
         "date": "2026-10-29",
         "subject": "fix: align skill runtime references with Workbench operations",
         "path": "skills/sitemap/SKILL.md",
@@ -13920,7 +14034,7 @@
         "path": "skills/seo-machine-pipeline/skills/social-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/social-content/SKILL.md",
@@ -13961,7 +14075,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/social-content/references/content-repurposing.md",
@@ -14003,7 +14117,7 @@
         "path": "skills/seo-machine-pipeline/skills/social-content/references/platforms.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/social-content/references/platforms.md",
@@ -14046,7 +14160,7 @@
         "path": "skills/seo-machine-pipeline/skills/social-content/references/post-templates.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/social-content/references/post-templates.md",
@@ -14089,7 +14203,7 @@
         "path": "skills/seo-machine-pipeline/skills/social-content/references/reverse-engineering.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/social-content/references/reverse-engineering.md",
@@ -14173,7 +14287,7 @@
         "path": "skills/technical-audit/SKILL.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/technical-audit/SKILL.md",
@@ -14215,7 +14329,7 @@
         "path": "skills/topic-cluster-planning/SKILL.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/topic-cluster-planning/SKILL.md",
@@ -14256,7 +14370,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/topic-cluster-planning/references/cluster-review.md",
@@ -14296,7 +14410,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/topic-cluster-planning/references/cluster-workflow.md",
@@ -14378,7 +14492,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/topic-cluster-planning/references/internal-link-review.md",
@@ -14461,7 +14575,7 @@
         "path": "skills/topic-cluster-planning/references/publishing-sequence-decisions.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "skills/topic-cluster-planning/references/publishing-sequence-decisions.md",
@@ -14587,7 +14701,7 @@
         "path": "skills/write-content/SKILL.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/write-content/SKILL.md",
@@ -14629,7 +14743,7 @@
         "path": "skills/write-content/references/anti-slop-ruleset.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/write-content/references/anti-slop-ruleset.md",
@@ -14670,7 +14784,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/write-content/references/article-workflow.md",
@@ -14711,7 +14825,7 @@
         "path": "skills/write-content/references/content-types-overview.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/write-content/references/content-types-overview.md",
@@ -15005,7 +15119,7 @@
         "path": "skills/write-content/references/content-types/faq-page.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/write-content/references/content-types/faq-page.md",
@@ -15550,7 +15664,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/write-content/references/draft-handoff.md",
@@ -15590,7 +15704,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "skills/write-content/references/drafting-workflow.md",
@@ -15631,7 +15745,7 @@
         "path": "skills/write-content/references/eeat-signal-embedding.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/eeat-signal-embedding.md",
@@ -15673,7 +15787,7 @@
         "path": "skills/write-content/references/fact-checking.md"
       },
       "last_local_change": {
-        "commit": "166260fb14d1fdb252c4c411ec85fabb29de8008",
+        "commit": "1839b415da499446002f3065d873399e846ef576",
         "date": "2026-10-29",
         "subject": "fix: separate editorial evidence from reader-facing prose",
         "path": "skills/write-content/references/fact-checking.md",
@@ -15715,7 +15829,7 @@
         "path": "skills/write-content/references/geo-optimization.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/write-content/references/geo-optimization.md",
@@ -15757,7 +15871,7 @@
         "path": "skills/write-content/references/human-input-framework.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/human-input-framework.md",
@@ -15799,7 +15913,7 @@
         "path": "skills/write-content/references/information-gain-writing.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/information-gain-writing.md",
@@ -15925,7 +16039,7 @@
         "path": "skills/write-content/references/quality-scoring.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/write-content/references/quality-scoring.md",
@@ -15967,7 +16081,7 @@
         "path": "skills/write-content/references/seo-optimization-layer.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/seo-optimization-layer.md",
@@ -16009,7 +16123,7 @@
         "path": "skills/write-content/references/serp-driven-writing.md"
       },
       "last_local_change": {
-        "commit": "e4b025950515a656a3c6e4caebf242a6e22e8abf",
+        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
         "date": "2026-10-29",
         "subject": "refactor: unify writing methods around reader tasks and evidence",
         "path": "skills/write-content/references/serp-driven-writing.md",
@@ -16051,7 +16165,7 @@
         "path": "skills/write-content/references/structured-data-snippets.md"
       },
       "last_local_change": {
-        "commit": "51376add01fab35d18501ef8311b5035b96000a4",
+        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
         "date": "2026-10-29",
         "subject": "feat: adopt selected upstream skill methods and policy corrections",
         "path": "skills/write-content/references/structured-data-snippets.md",
@@ -16093,7 +16207,7 @@
         "path": "skills/write-content/references/voice-injection-playbook.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/write-content/references/voice-injection-playbook.md",
@@ -16135,7 +16249,7 @@
         "path": "skills/write-content/references/writing-pipeline.md"
       },
       "last_local_change": {
-        "commit": "33cce9d1ef0b99e88623c59e5c2c23f6a989c991",
+        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
         "date": "2026-10-29",
         "subject": "refactor: make the reader method the single prose authority",
         "path": "skills/write-content/references/writing-pipeline.md",
@@ -16176,7 +16290,7 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "08d06797b39ed4da6810dd873efba80a1b0c9a45",
+        "commit": "db7c1959ee5ef3c0b87b67b2b8cd9b3b8659ddef",
         "date": "2026-10-29",
         "subject": "refactor: adapt preserved specialist methods to canonical skills",
         "path": "third_party/skill-history/seomachine/README.md",
@@ -16216,7 +16330,7 @@
         "path": "skills/seo-machine-pipeline/agents/cluster-strategist.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/agents/cluster-strategist.md",
@@ -16263,7 +16377,7 @@
         "path": "skills/seo-machine-pipeline/agents/content-analyzer.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/agents/content-analyzer.md",
@@ -16310,7 +16424,7 @@
         "path": "skills/seo-machine-pipeline/agents/cro-analyst.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/agents/cro-analyst.md",
@@ -16357,7 +16471,7 @@
         "path": "skills/seo-machine-pipeline/agents/editor.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/agents/editor.md",
@@ -16404,7 +16518,7 @@
         "path": "skills/seo-machine-pipeline/agents/headline-generator.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/agents/headline-generator.md",
@@ -16451,7 +16565,7 @@
         "path": "skills/seo-machine-pipeline/agents/internal-linker.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/agents/internal-linker.md",
@@ -16498,7 +16612,7 @@
         "path": "skills/seo-machine-pipeline/agents/keyword-mapper.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/agents/keyword-mapper.md",
@@ -16545,7 +16659,7 @@
         "path": "skills/seo-machine-pipeline/agents/landing-page-optimizer.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/agents/landing-page-optimizer.md",
@@ -16592,7 +16706,7 @@
         "path": "skills/seo-machine-pipeline/agents/meta-creator.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/agents/meta-creator.md",
@@ -16639,7 +16753,7 @@
         "path": "skills/seo-machine-pipeline/agents/performance.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/agents/performance.md",
@@ -16686,7 +16800,7 @@
         "path": "skills/seo-machine-pipeline/agents/seo-optimizer.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/agents/seo-optimizer.md",
@@ -16733,7 +16847,7 @@
         "path": "skills/seo-machine-pipeline/commands/analyze-existing.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/analyze-existing.md",
@@ -16780,7 +16894,7 @@
         "path": "skills/seo-machine-pipeline/commands/article.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/article.md",
@@ -16827,7 +16941,7 @@
         "path": "skills/seo-machine-pipeline/commands/cluster.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/cluster.md",
@@ -16874,7 +16988,7 @@
         "path": "skills/seo-machine-pipeline/commands/content-calendar.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/content-calendar.md",
@@ -16921,7 +17035,7 @@
         "path": "skills/seo-machine-pipeline/commands/landing-audit.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/landing-audit.md",
@@ -16968,7 +17082,7 @@
         "path": "skills/seo-machine-pipeline/commands/landing-competitor.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/landing-competitor.md",
@@ -17015,7 +17129,7 @@
         "path": "skills/seo-machine-pipeline/commands/landing-publish.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/landing-publish.md",
@@ -17062,7 +17176,7 @@
         "path": "skills/seo-machine-pipeline/commands/landing-research.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/landing-research.md",
@@ -17109,7 +17223,7 @@
         "path": "skills/seo-machine-pipeline/commands/landing-write.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/landing-write.md",
@@ -17156,7 +17270,7 @@
         "path": "skills/seo-machine-pipeline/commands/optimize.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/optimize.md",
@@ -17203,7 +17317,7 @@
         "path": "skills/seo-machine-pipeline/commands/performance-review.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/performance-review.md",
@@ -17250,7 +17364,7 @@
         "path": "skills/seo-machine-pipeline/commands/priorities.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/priorities.md",
@@ -17297,7 +17411,7 @@
         "path": "skills/seo-machine-pipeline/commands/publish-draft.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/publish-draft.md",
@@ -17344,7 +17458,7 @@
         "path": "skills/seo-machine-pipeline/commands/repurpose.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/repurpose.md",
@@ -17391,7 +17505,7 @@
         "path": "skills/seo-machine-pipeline/commands/research-ai-citations.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/research-ai-citations.md",
@@ -17438,7 +17552,7 @@
         "path": "skills/seo-machine-pipeline/commands/research-gaps.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/research-gaps.md",
@@ -17485,7 +17599,7 @@
         "path": "skills/seo-machine-pipeline/commands/research-performance.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/research-performance.md",
@@ -17532,7 +17646,7 @@
         "path": "skills/seo-machine-pipeline/commands/research-serp.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/research-serp.md",
@@ -17579,7 +17693,7 @@
         "path": "skills/seo-machine-pipeline/commands/research-topics.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/research-topics.md",
@@ -17626,7 +17740,7 @@
         "path": "skills/seo-machine-pipeline/commands/research-trending.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/research-trending.md",
@@ -17673,7 +17787,7 @@
         "path": "skills/seo-machine-pipeline/commands/research.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/research.md",
@@ -17720,7 +17834,7 @@
         "path": "skills/seo-machine-pipeline/commands/rewrite.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/rewrite.md",
@@ -17767,7 +17881,7 @@
         "path": "skills/seo-machine-pipeline/commands/scrub.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/scrub.md",
@@ -17812,7 +17926,7 @@
         "path": "skills/seo-machine-pipeline/commands/write.md"
       },
       "last_local_change": {
-        "commit": "75eab47ff3cad96425bbd4040a27b9ea127b647f",
+        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
         "date": "2026-10-29",
         "subject": "refactor: unify local skills under canonical capability entrypoints",
         "path": "third_party/skill-history/seomachine/commands/write.md",
@@ -17904,13 +18018,21 @@
       "from_path": "skills/README.md",
       "line": 30,
       "syntax": "markdown_link",
+      "target": "competitive-landscape/SKILL.md",
+      "resolved_path": "skills/competitive-landscape/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 31,
+      "syntax": "markdown_link",
       "target": "content-strategy/SKILL.md",
       "resolved_path": "skills/content-strategy/SKILL.md",
       "status": "resolved_local"
     },
     {
       "from_path": "skills/README.md",
-      "line": 31,
+      "line": 32,
       "syntax": "markdown_link",
       "target": "seo-flow/SKILL.md",
       "resolved_path": "skills/seo-flow/SKILL.md",
@@ -17918,7 +18040,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 37,
+      "line": 38,
       "syntax": "markdown_link",
       "target": "keyword-deep-dive/SKILL.md",
       "resolved_path": "skills/keyword-deep-dive/SKILL.md",
@@ -17926,7 +18048,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 38,
+      "line": 39,
       "syntax": "markdown_link",
       "target": "topic-cluster-planning/SKILL.md",
       "resolved_path": "skills/topic-cluster-planning/SKILL.md",
@@ -17934,7 +18056,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 39,
+      "line": 40,
       "syntax": "markdown_link",
       "target": "seo-cluster/SKILL.md",
       "resolved_path": "skills/seo-cluster/SKILL.md",
@@ -17942,7 +18064,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 40,
+      "line": 41,
       "syntax": "markdown_link",
       "target": "semantic-gap-analysis/SKILL.md",
       "resolved_path": "skills/semantic-gap-analysis/SKILL.md",
@@ -17950,7 +18072,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 41,
+      "line": 42,
       "syntax": "markdown_link",
       "target": "content-brief/SKILL.md",
       "resolved_path": "skills/content-brief/SKILL.md",
@@ -17958,7 +18080,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 42,
+      "line": 43,
       "syntax": "markdown_link",
       "target": "programmatic-seo/SKILL.md",
       "resolved_path": "skills/programmatic-seo/SKILL.md",
@@ -17966,7 +18088,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 48,
+      "line": 49,
       "syntax": "markdown_link",
       "target": "write-content/SKILL.md",
       "resolved_path": "skills/write-content/SKILL.md",
@@ -17974,7 +18096,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 49,
+      "line": 50,
       "syntax": "markdown_link",
       "target": "improve-content/SKILL.md",
       "resolved_path": "skills/improve-content/SKILL.md",
@@ -17982,7 +18104,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 50,
+      "line": 51,
       "syntax": "markdown_link",
       "target": "reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -17990,7 +18112,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 51,
+      "line": 52,
       "syntax": "markdown_link",
       "target": "copywriting/SKILL.md",
       "resolved_path": "skills/copywriting/SKILL.md",
@@ -17998,7 +18120,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 52,
+      "line": 53,
       "syntax": "markdown_link",
       "target": "copy-editing/SKILL.md",
       "resolved_path": "skills/copy-editing/SKILL.md",
@@ -18006,7 +18128,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 53,
+      "line": 54,
       "syntax": "markdown_link",
       "target": "expert-interview/SKILL.md",
       "resolved_path": "skills/expert-interview/SKILL.md",
@@ -18014,7 +18136,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 61,
+      "line": 62,
       "syntax": "markdown_link",
       "target": "site-audit/SKILL.md",
       "resolved_path": "skills/site-audit/SKILL.md",
@@ -18022,7 +18144,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 62,
+      "line": 63,
       "syntax": "markdown_link",
       "target": "page-audit/SKILL.md",
       "resolved_path": "skills/page-audit/SKILL.md",
@@ -18030,7 +18152,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 63,
+      "line": 64,
       "syntax": "markdown_link",
       "target": "seo-content/SKILL.md",
       "resolved_path": "skills/seo-content/SKILL.md",
@@ -18038,7 +18160,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 64,
+      "line": 65,
       "syntax": "markdown_link",
       "target": "eeat-audit/SKILL.md",
       "resolved_path": "skills/eeat-audit/SKILL.md",
@@ -18046,7 +18168,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 65,
+      "line": 66,
       "syntax": "markdown_link",
       "target": "seo-sxo/SKILL.md",
       "resolved_path": "skills/seo-sxo/SKILL.md",
@@ -18054,7 +18176,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 66,
+      "line": 67,
       "syntax": "markdown_link",
       "target": "featured-snippet-optimizer/SKILL.md",
       "resolved_path": "skills/featured-snippet-optimizer/SKILL.md",
@@ -18062,7 +18184,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 67,
+      "line": 68,
       "syntax": "markdown_link",
       "target": "competitor-alternatives/SKILL.md",
       "resolved_path": "skills/competitor-alternatives/SKILL.md",
@@ -18070,7 +18192,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 68,
+      "line": 69,
       "syntax": "markdown_link",
       "target": "seo-competitor-pages/SKILL.md",
       "resolved_path": "skills/seo-competitor-pages/SKILL.md",
@@ -18078,7 +18200,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 69,
+      "line": 70,
       "syntax": "markdown_link",
       "target": "seo-geo/SKILL.md",
       "resolved_path": "skills/seo-geo/SKILL.md",
@@ -18086,7 +18208,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 77,
+      "line": 78,
       "syntax": "markdown_link",
       "target": "technical-audit/SKILL.md",
       "resolved_path": "skills/technical-audit/SKILL.md",
@@ -18094,7 +18216,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 78,
+      "line": 79,
       "syntax": "markdown_link",
       "target": "headless-precheck/SKILL.md",
       "resolved_path": "skills/headless-precheck/SKILL.md",
@@ -18102,7 +18224,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 79,
+      "line": 80,
       "syntax": "markdown_link",
       "target": "schema/SKILL.md",
       "resolved_path": "skills/schema/SKILL.md",
@@ -18110,7 +18232,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 80,
+      "line": 81,
       "syntax": "markdown_link",
       "target": "sitemap/SKILL.md",
       "resolved_path": "skills/sitemap/SKILL.md",
@@ -18118,7 +18240,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 81,
+      "line": 82,
       "syntax": "markdown_link",
       "target": "images/SKILL.md",
       "resolved_path": "skills/images/SKILL.md",
@@ -18126,7 +18248,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 82,
+      "line": 83,
       "syntax": "markdown_link",
       "target": "seo-image-gen/SKILL.md",
       "resolved_path": "skills/seo-image-gen/SKILL.md",
@@ -18134,7 +18256,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 83,
+      "line": 84,
       "syntax": "markdown_link",
       "target": "seo-ecommerce/SKILL.md",
       "resolved_path": "skills/seo-ecommerce/SKILL.md",
@@ -18142,7 +18264,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 84,
+      "line": 85,
       "syntax": "markdown_link",
       "target": "seo-hreflang/SKILL.md",
       "resolved_path": "skills/seo-hreflang/SKILL.md",
@@ -18150,7 +18272,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 85,
+      "line": 86,
       "syntax": "markdown_link",
       "target": "seo-local/SKILL.md",
       "resolved_path": "skills/seo-local/SKILL.md",
@@ -18158,7 +18280,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 86,
+      "line": 87,
       "syntax": "markdown_link",
       "target": "seo-maps/SKILL.md",
       "resolved_path": "skills/seo-maps/SKILL.md",
@@ -18166,7 +18288,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 92,
+      "line": 93,
       "syntax": "markdown_link",
       "target": "seo-google/SKILL.md",
       "resolved_path": "skills/seo-google/SKILL.md",
@@ -18174,7 +18296,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 93,
+      "line": 94,
       "syntax": "markdown_link",
       "target": "seo-dataforseo/SKILL.md",
       "resolved_path": "skills/seo-dataforseo/SKILL.md",
@@ -18182,7 +18304,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 94,
+      "line": 95,
       "syntax": "markdown_link",
       "target": "drift/SKILL.md",
       "resolved_path": "skills/drift/SKILL.md",
@@ -18190,7 +18312,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 95,
+      "line": 96,
       "syntax": "markdown_link",
       "target": "analytics-tracking/SKILL.md",
       "resolved_path": "skills/analytics-tracking/SKILL.md",
@@ -18198,7 +18320,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 96,
+      "line": 97,
       "syntax": "markdown_link",
       "target": "backlinks/SKILL.md",
       "resolved_path": "skills/backlinks/SKILL.md",
@@ -18206,7 +18328,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 97,
+      "line": 98,
       "syntax": "markdown_link",
       "target": "linkbuilding/SKILL.md",
       "resolved_path": "skills/linkbuilding/SKILL.md",
@@ -18214,7 +18336,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 105,
+      "line": 106,
       "syntax": "markdown_link",
       "target": "page-cro/SKILL.md",
       "resolved_path": "skills/page-cro/SKILL.md",
@@ -18222,7 +18344,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 106,
+      "line": 107,
       "syntax": "markdown_link",
       "target": "form-cro/SKILL.md",
       "resolved_path": "skills/form-cro/SKILL.md",
@@ -18230,7 +18352,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 107,
+      "line": 108,
       "syntax": "markdown_link",
       "target": "popup-cro/SKILL.md",
       "resolved_path": "skills/popup-cro/SKILL.md",
@@ -18238,7 +18360,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 108,
+      "line": 109,
       "syntax": "markdown_link",
       "target": "signup-flow-cro/SKILL.md",
       "resolved_path": "skills/signup-flow-cro/SKILL.md",
@@ -18246,7 +18368,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 109,
+      "line": 110,
       "syntax": "markdown_link",
       "target": "onboarding-cro/SKILL.md",
       "resolved_path": "skills/onboarding-cro/SKILL.md",
@@ -18254,7 +18376,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 110,
+      "line": 111,
       "syntax": "markdown_link",
       "target": "paywall-upgrade-cro/SKILL.md",
       "resolved_path": "skills/paywall-upgrade-cro/SKILL.md",
@@ -18262,7 +18384,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 111,
+      "line": 112,
       "syntax": "markdown_link",
       "target": "ab-test-setup/SKILL.md",
       "resolved_path": "skills/ab-test-setup/SKILL.md",
@@ -18270,7 +18392,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 119,
+      "line": 120,
       "syntax": "markdown_link",
       "target": "email-sequence/SKILL.md",
       "resolved_path": "skills/email-sequence/SKILL.md",
@@ -18278,7 +18400,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 120,
+      "line": 121,
       "syntax": "markdown_link",
       "target": "social-content/SKILL.md",
       "resolved_path": "skills/social-content/SKILL.md",
@@ -18286,7 +18408,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 121,
+      "line": 122,
       "syntax": "markdown_link",
       "target": "paid-ads/SKILL.md",
       "resolved_path": "skills/paid-ads/SKILL.md",
@@ -18294,7 +18416,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 122,
+      "line": 123,
       "syntax": "markdown_link",
       "target": "launch-strategy/SKILL.md",
       "resolved_path": "skills/launch-strategy/SKILL.md",
@@ -18302,7 +18424,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 128,
+      "line": 129,
       "syntax": "markdown_link",
       "target": "growth-lead/SKILL.md",
       "resolved_path": "skills/growth-lead/SKILL.md",
@@ -18310,7 +18432,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 129,
+      "line": 130,
       "syntax": "markdown_link",
       "target": "pricing-strategy/SKILL.md",
       "resolved_path": "skills/pricing-strategy/SKILL.md",
@@ -18318,7 +18440,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 130,
+      "line": 131,
       "syntax": "markdown_link",
       "target": "referral-program/SKILL.md",
       "resolved_path": "skills/referral-program/SKILL.md",
@@ -18326,7 +18448,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 131,
+      "line": 132,
       "syntax": "markdown_link",
       "target": "free-tool-strategy/SKILL.md",
       "resolved_path": "skills/free-tool-strategy/SKILL.md",
@@ -18334,7 +18456,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 132,
+      "line": 133,
       "syntax": "markdown_link",
       "target": "marketing-ideas/SKILL.md",
       "resolved_path": "skills/marketing-ideas/SKILL.md",
@@ -18342,7 +18464,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 133,
+      "line": 134,
       "syntax": "markdown_link",
       "target": "marketing-psychology/SKILL.md",
       "resolved_path": "skills/marketing-psychology/SKILL.md",
@@ -18350,7 +18472,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 139,
+      "line": 140,
       "syntax": "markdown_link",
       "target": "seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
@@ -18358,7 +18480,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 141,
+      "line": 142,
       "syntax": "markdown_link",
       "target": "copy-editing/references/article-editing.md",
       "resolved_path": "skills/copy-editing/references/article-editing.md",
@@ -18366,7 +18488,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 141,
+      "line": 142,
       "syntax": "markdown_link",
       "target": "topic-cluster-planning/references/internal-link-review.md",
       "resolved_path": "skills/topic-cluster-planning/references/internal-link-review.md",
@@ -18374,7 +18496,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 141,
+      "line": 142,
       "syntax": "markdown_link",
       "target": "page-audit/references/metadata-writing.md",
       "resolved_path": "skills/page-audit/references/metadata-writing.md",
@@ -18382,7 +18504,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 141,
+      "line": 142,
       "syntax": "markdown_link",
       "target": "improve-content/references/seo-editing.md",
       "resolved_path": "skills/improve-content/references/seo-editing.md",
@@ -18390,7 +18512,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 141,
+      "line": 142,
       "syntax": "markdown_link",
       "target": "page-cro/references/conversion-analysis.md",
       "resolved_path": "skills/page-cro/references/conversion-analysis.md",
@@ -18398,7 +18520,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 145,
+      "line": 146,
       "syntax": "markdown_link",
       "target": "../docs/skill-sources.md",
       "resolved_path": "docs/skill-sources.md",
@@ -18406,7 +18528,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 145,
+      "line": 146,
       "syntax": "markdown_link",
       "target": "../third_party/NOTICE.md",
       "resolved_path": "third_party/NOTICE.md",
@@ -18414,7 +18536,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 145,
+      "line": 146,
       "syntax": "markdown_link",
       "target": "../docs/history/20261029-skill-layout-migration.md",
       "resolved_path": "docs/history/20261029-skill-layout-migration.md",
@@ -18422,7 +18544,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 145,
+      "line": 146,
       "syntax": "markdown_link",
       "target": "../docs/skill-method-adaptations.json",
       "resolved_path": "docs/skill-method-adaptations.json",
@@ -18430,7 +18552,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 145,
+      "line": 146,
       "syntax": "markdown_link",
       "target": "../third_party/skill-history/seomachine/README.md",
       "resolved_path": "third_party/skill-history/seomachine/README.md",
@@ -18438,7 +18560,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 145,
+      "line": 146,
       "syntax": "backtick_path",
       "target": "skills/<capability>/SKILL.md",
       "resolved_path": null,
@@ -18587,6 +18709,206 @@
       "target": "../seo/references/backlink-quality.md",
       "resolved_path": "skills/seo/references/backlink-quality.md",
       "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/SKILL.md",
+      "line": 15,
+      "syntax": "markdown_link",
+      "target": "../competitor-alternatives/SKILL.md",
+      "resolved_path": "skills/competitor-alternatives/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/SKILL.md",
+      "line": 15,
+      "syntax": "markdown_link",
+      "target": "../seo-competitor-pages/SKILL.md",
+      "resolved_path": "skills/seo-competitor-pages/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/SKILL.md",
+      "line": 20,
+      "syntax": "backtick_path",
+      "target": "context/competitors.md",
+      "resolved_path": null,
+      "status": "project_context_reference"
+    },
+    {
+      "from_path": "skills/competitive-landscape/SKILL.md",
+      "line": 21,
+      "syntax": "markdown_link",
+      "target": "../backlinks/SKILL.md",
+      "resolved_path": "skills/backlinks/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/SKILL.md",
+      "line": 22,
+      "syntax": "markdown_link",
+      "target": "../seo-geo/references/citation-research.md",
+      "resolved_path": "skills/seo-geo/references/citation-research.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/SKILL.md",
+      "line": 24,
+      "syntax": "markdown_link",
+      "target": "../seo-plan/SKILL.md",
+      "resolved_path": "skills/seo-plan/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/SKILL.md",
+      "line": 26,
+      "syntax": "markdown_link",
+      "target": "references/analysis-workflow.md",
+      "resolved_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/SKILL.md",
+      "line": 26,
+      "syntax": "markdown_link",
+      "target": "references/report-template.md",
+      "resolved_path": "skills/competitive-landscape/references/report-template.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/SKILL.md",
+      "line": 32,
+      "syntax": "backtick_path",
+      "target": "context/competitors.md",
+      "resolved_path": null,
+      "status": "project_context_reference"
+    },
+    {
+      "from_path": "skills/competitive-landscape/SKILL.md",
+      "line": 42,
+      "syntax": "markdown_link",
+      "target": "../../docs/history/20261111-competitive-landscape-skill.md",
+      "resolved_path": "docs/history/20261111-competitive-landscape-skill.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../SKILL.md",
+      "resolved_path": "skills/competitive-landscape/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 10,
+      "syntax": "backtick_path",
+      "target": "context/competitors.md",
+      "resolved_path": null,
+      "status": "project_context_reference"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 13,
+      "syntax": "markdown_link",
+      "target": "../../seo-geo/references/citation-research.md",
+      "resolved_path": "skills/seo-geo/references/citation-research.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 15,
+      "syntax": "markdown_link",
+      "target": "report-template.md",
+      "resolved_path": "skills/competitive-landscape/references/report-template.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 21,
+      "syntax": "markdown_link",
+      "target": "../../competitor-alternatives/SKILL.md",
+      "resolved_path": "skills/competitor-alternatives/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 21,
+      "syntax": "markdown_link",
+      "target": "../../seo-competitor-pages/SKILL.md",
+      "resolved_path": "skills/seo-competitor-pages/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 34,
+      "syntax": "backtick_path",
+      "target": "projects/<id>/context/competitors.md",
+      "resolved_path": null,
+      "status": "project_context_reference"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 73,
+      "syntax": "markdown_link",
+      "target": "../../backlinks/SKILL.md",
+      "resolved_path": "skills/backlinks/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 85,
+      "syntax": "markdown_link",
+      "target": "../../seo-geo/references/citation-research.md",
+      "resolved_path": "skills/seo-geo/references/citation-research.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 115,
+      "syntax": "markdown_link",
+      "target": "../../seo-plan/SKILL.md",
+      "resolved_path": "skills/seo-plan/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 119,
+      "syntax": "backtick_path",
+      "target": "projects/<id>/reports/YYYYMMDD_ops_competitive-landscape.md",
+      "resolved_path": null,
+      "status": "project_context_reference"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 124,
+      "syntax": "backtick_path",
+      "target": "context/competitors.md",
+      "resolved_path": null,
+      "status": "project_context_reference"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/analysis-workflow.md",
+      "line": 143,
+      "syntax": "backtick_path",
+      "target": "context/competitors.md",
+      "resolved_path": null,
+      "status": "project_context_reference"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/report-template.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../SKILL.md",
+      "resolved_path": "skills/competitive-landscape/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/references/report-template.md",
+      "line": 3,
+      "syntax": "backtick_path",
+      "target": "projects/<id>/reports/YYYYMMDD_ops_competitive-landscape.md",
+      "resolved_path": null,
+      "status": "project_context_reference"
     },
     {
       "from_path": "skills/competitor-alternatives/SKILL.md",
@@ -22086,10 +22408,26 @@
     },
     {
       "from_path": "skills/seo-geo/references/citation-research.md",
-      "line": 18,
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../competitive-landscape/SKILL.md",
+      "resolved_path": "skills/competitive-landscape/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-geo/references/citation-research.md",
+      "line": 40,
       "syntax": "markdown_link",
       "target": "../../../third_party/skill-history/seomachine/commands/research-ai-citations.md",
       "resolved_path": "third_party/skill-history/seomachine/commands/research-ai-citations.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-geo/references/citation-research.md",
+      "line": 40,
+      "syntax": "markdown_link",
+      "target": "../../../docs/history/20261111-competitive-landscape-skill.md",
+      "resolved_path": "docs/history/20261111-competitive-landscape-skill.md",
       "status": "resolved_local"
     },
     {
@@ -22566,7 +22904,15 @@
     },
     {
       "from_path": "skills/seo-plan/SKILL.md",
-      "line": 118,
+      "line": 34,
+      "syntax": "markdown_link",
+      "target": "../competitive-landscape/SKILL.md",
+      "resolved_path": "skills/competitive-landscape/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-plan/SKILL.md",
+      "line": 119,
       "syntax": "markdown_link",
       "target": "../seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",

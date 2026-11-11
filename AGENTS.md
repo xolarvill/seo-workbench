@@ -25,6 +25,7 @@ Done means you re-ran the real path and can show the output. A clean diff, a pas
 | Task | Read first | Never |
 |---|---|---|
 | Keyword, topic, or page ownership | [`docs/reference/keyword-context-maintenance.md`](docs/reference/keyword-context-maintenance.md), `context/target-keywords.md` | Reduce the register to a portal, or silently drop a past target |
+| Competitive landscape or competitor comparison | [`skills/competitive-landscape/SKILL.md`](skills/competitive-landscape/SKILL.md), `context/competitors.md` | Invent authority or traffic numbers, or reduce the comparison to a weighted score |
 | Reader-facing prose | [`skills/reader-experience-review/SKILL.md`](skills/reader-experience-review/SKILL.md) | Add a second style policy or a competing mandatory prose pass |
 | Technical audit and issue verification | [`docs/reference/technical-audit.md`](docs/reference/technical-audit.md) | Verify an issue from partial, incomparable, or stale evidence |
 | Performance (Lighthouse, CrUX) | [`docs/reference/google-integrations.md`](docs/reference/google-integrations.md) | Treat lab or crawler metrics as field proof |
