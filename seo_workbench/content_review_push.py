@@ -128,8 +128,5 @@ def _set_review_thread(data: dict[str, Any], item_id: str, message_id: str) -> N
     for item in data.get("contentQueue", []):
         if isinstance(item, dict) and item.get("id") == item_id:
             item["review_thread_id"] = message_id
-            state.record_history(data, "content-review-push", "CONTENT_PRODUCTION", item_id)
-            data["lastAction"] = f"Sent content review request for {item_id}"
-            data["nextAction"] = "Review Feishu replies with content review-digest"
             return
     raise ValueError(f"content queue item not found: {item_id}")

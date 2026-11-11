@@ -123,48 +123,11 @@ def cmd_projects(args: argparse.Namespace) -> int:
     for project in projects:
         if not project.get("selectable"):
             status = "non-selectable; use --project-dir"
+        elif project.get("valid_state"):
+            status = "ok"
         else:
-            status = project.get("phase", "") if project.get("valid_state") else "invalid-state"
+            status = "invalid-state"
         print(f"{project['id']}: {project.get('name', '')} [{status}] {project.get('url', '')}")
-    return 0
-
-
-def cmd_status(args: argparse.Namespace) -> int:
-    data = state.load_state(args.project_dir)
-    phase, step = state.current_step(data)
-    payload = {
-        "ok": True,
-        "project": data.get("project", {}),
-        "phase": phase,
-        "step": step,
-        "skill_index": "skills/README.md",
-        "last": data.get("lastAction") or "",
-    }
-    if args.json_output:
-        print_json(payload)
-        return 0
-    print(f"project: {data.get('project', {}).get('name', '')}")
-    print(f"phase: {phase}")
-    print(f"step: {step.get('id') if step else 'none'}")
-    print("skills: skills/README.md (choose methods from the current goal and evidence)")
-    return 0
-
-
-def cmd_phase(args: argparse.Namespace) -> int:
-    state.mutate_state(args.project_dir, lambda data: state.set_phase(data, args.phase))
-    print(state.state_path(args.project_dir))
-    return 0
-
-
-def cmd_step(args: argparse.Namespace) -> int:
-    phase, step_id = state.mutate_state(
-        args.project_dir,
-        lambda data: state.update_step(data, args.action, args.step_id),
-    )
-    if args.json_output:
-        print_json({"ok": True, "action": args.action, "phase": phase, "step": step_id})
-        return 0
-    print(f"{args.action}: {phase}/{step_id}")
     return 0
 
 
@@ -775,7 +738,7 @@ def cmd_tech_audit_issues(args: argparse.Namespace) -> int:
 
 
 def cmd_validate(args: argparse.Namespace) -> int:
-    result = validate_project(args.project_dir, args.workflow)
+    result = validate_project(args.project_dir)
     if args.json_output:
         print_json(result)
     else:
@@ -786,7 +749,7 @@ def cmd_validate(args: argparse.Namespace) -> int:
 
 
 def cmd_doctor(args: argparse.Namespace) -> int:
-    result = run_doctor(args.project_dir, args.workflow)
+    result = run_doctor(args.project_dir)
     if args.json_output:
         print_json(result)
     else:
@@ -845,17 +808,7 @@ def cmd_content_queue(args: argparse.Namespace) -> int:
 
 def cmd_content_status(args: argparse.Namespace) -> int:
     def mutate(data: dict) -> dict:
-        item = set_queue_status(data, args.item_id, args.status, note=args.note or "")
-        state.record_history(
-            data,
-            "content-status",
-            phase="CONTENT_PRODUCTION",
-            step_id=args.item_id,
-            note=f"{item['status']}: {args.note or ''}".strip(),
-        )
-        data["lastAction"] = f"Updated content item {args.item_id} to {item['status']}"
-        data["nextAction"] = "Review content queue"
-        return item
+        return set_queue_status(data, args.item_id, args.status, note=args.note or "")
 
     item = state.mutate_state(args.project_dir, mutate)
     pipeline_synced = sync_pipeline_status(args.project_dir, args.item_id, item)
@@ -1399,7 +1352,6 @@ def build_parser() -> argparse.ArgumentParser:
     project_group = parser.add_mutually_exclusive_group()
     project_group.add_argument("--project", help="Project id under projects/, for example wildone")
     project_group.add_argument("--project-dir", type=Path, help="Explicit project directory")
-    parser.add_argument("--workflow", type=Path, default=None)
     sub = parser.add_subparsers(dest="command", required=True)
     from seo_workbench.clarity_cli import register as register_clarity
 
@@ -1419,20 +1371,6 @@ def build_parser() -> argparse.ArgumentParser:
     init.add_argument("--cms")
     init.add_argument("--force", action="store_true")
     init.set_defaults(func=cmd_init)
-
-    status = sub.add_parser("status")
-    status.add_argument("--json", action="store_true", dest="json_output")
-    status.set_defaults(func=cmd_status)
-
-    phase = sub.add_parser("phase", help="Maintain legacy phase records; does not schedule agent work")
-    phase.add_argument("phase")
-    phase.set_defaults(func=cmd_phase)
-
-    step = sub.add_parser("step", help="Maintain legacy step records; does not verify task completion")
-    step.add_argument("action", choices=["done", "skip", "reset", "start"])
-    step.add_argument("step_id", nargs="?")
-    step.add_argument("--json", action="store_true", dest="json_output")
-    step.set_defaults(func=cmd_step)
 
     evidence = sub.add_parser("evidence")
     evidence.add_argument("--timeout", type=float, default=15)
@@ -2036,10 +1974,6 @@ def main(argv: list[str] | None = None) -> int:
             args.project_dir = state.project_dir_from_id(args.project)
         elif args.project_dir is None:
             args.project_dir = state.project_dir_from_id("default")
-        if args.workflow is None:
-            from seo_workbench.workflow import DEFAULT_WORKFLOW
-
-            args.workflow = DEFAULT_WORKFLOW
         return args.func(args)
     except (FileNotFoundError, FileExistsError, RuntimeError, ValueError) as exc:
         if getattr(args, "json_output", False):

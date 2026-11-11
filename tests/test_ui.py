@@ -37,16 +37,16 @@ def ui_client(tmp_path: Path) -> tuple[TestClient, Path]:
     return client, project_dir
 
 
-def test_workspace_does_not_schedule_an_agent_step(tmp_path: Path) -> None:
+def test_workspace_does_not_expose_or_mutate_workflow_state(tmp_path: Path) -> None:
     client, project_dir = ui_client(tmp_path)
-    path = project_dir / "state.json"
+    path = project_dir / "project.json"
     before = path.read_bytes()
     with client:
         response = client.get("/api/v1/projects/store/workspace")
     assert response.status_code == 200
     workspace = response.json()["workspace"]
     assert "next" not in workspace
-    assert workspace["phases"] == json.loads(before)["phases"]
+    assert not {"phase", "step", "phase_order", "phases"} & workspace.keys()
     assert path.read_bytes() == before
 
 
@@ -772,7 +772,7 @@ def test_markdown_api_serves_project_local_images(tmp_path: Path) -> None:
     with client:
         relative = client.get("/api/v1/projects/store/media", params={"source": "assets/chart.png", "document": "reports/weekly.md"})
         absolute = client.get("/api/v1/projects/store/media", params={"source": str(asset), "document": "reports/weekly.md"})
-        outside = client.get("/api/v1/projects/store/media", params={"source": "../../state.json", "document": "reports/weekly.md"})
+        outside = client.get("/api/v1/projects/store/media", params={"source": "../../project.json", "document": "reports/weekly.md"})
 
     assert relative.status_code == 200
     assert relative.headers["content-type"] == "image/png"
@@ -827,7 +827,7 @@ def test_reports_api_updates_project_scoped_stars(tmp_path: Path) -> None:
         detail = client.get("/api/v1/projects/store/files/reports/2026_week_34_work_done.md")
         rejected = client.put(
             "/api/v1/projects/store/reports/star",
-            json={"path": "state.json", "starred": True},
+            json={"path": "project.json", "starred": True},
         )
 
     assert starred.status_code == 200
@@ -873,22 +873,6 @@ def test_reports_new_action_runs_scaffold_command(tmp_path: Path, monkeypatch) -
     assert started.status_code == 202
     assert started.json()["job"]["action"] == "content:reports-new"
     assert captured == [{"action": "content:reports-new", "command": ("reports", "new", "--json")}]
-
-
-def test_ui_updates_workflow_through_shared_state_mutation(tmp_path: Path) -> None:
-    client, project_dir = ui_client(tmp_path)
-    before = state.load_state(project_dir)
-    phase, step = state.current_step(before)
-    assert step is not None
-    with client:
-        response = client.post(
-            "/api/v1/projects/store/workflow",
-            json={"action": "start", "step_id": step["id"]},
-        )
-    assert response.status_code == 200
-    updated = state.load_state(project_dir)
-    assert updated["phases"][phase]["steps"][0]["status"] in {"done", "in_progress"}
-    assert next(item for item in updated["phases"][phase]["steps"] if item["id"] == step["id"])["status"] == "in_progress"
 
 
 def test_ui_exposes_content_queue_and_updates_status(tmp_path: Path) -> None:

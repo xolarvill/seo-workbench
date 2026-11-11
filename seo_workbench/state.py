@@ -14,7 +14,7 @@ from seo_workbench_tools.files import atomic_write_text
 ROOT = Path(__file__).resolve().parent.parent
 PROJECTS_ROOT = Path("projects")
 DEFAULT_PROJECT_DIR = Path("projects/default")
-DEFAULT_TEMPLATE = ROOT / "templates" / "state.json"
+DEFAULT_TEMPLATE = ROOT / "templates" / "project.json"
 PROJECT_ID_PATTERN = re.compile(r"^[a-z0-9](?:[a-z0-9-]{0,62})$")
 MutationResult = TypeVar("MutationResult")
 
@@ -55,6 +55,10 @@ def write_json(path: Path, data: dict[str, Any]) -> None:
 
 
 def state_path(project_dir: Path = DEFAULT_PROJECT_DIR) -> Path:
+    return safe_project_path(project_dir, "project.json")
+
+
+def legacy_state_path(project_dir: Path = DEFAULT_PROJECT_DIR) -> Path:
     return safe_project_path(project_dir, "state.json")
 
 
@@ -91,6 +95,48 @@ def project_dir_from_id(project_id: str, projects_root: Path = PROJECTS_ROOT) ->
     return project_dir
 
 
+def _backup_legacy_state(project_dir: Path) -> None:
+    legacy = legacy_state_path(project_dir)
+    if not legacy.is_file():
+        return
+    backup = safe_project_path(project_dir, ".runtime/legacy-state.json")
+    backup.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        legacy.replace(backup)
+    except OSError:
+        pass
+
+
+def migrate_legacy_state(project_dir: Path) -> dict[str, Any] | None:
+    """Convert the retired workflow state file into the project manifest.
+
+    Keeps only project metadata, the content queue, report stars, and notes. The
+    legacy file is preserved under .runtime/ instead of being destroyed.
+    """
+    legacy = legacy_state_path(project_dir)
+    if not legacy.is_file():
+        return None
+    data = read_json(legacy)
+    if not isinstance(data, dict):
+        raise ValueError(f"legacy state must be a JSON object: {legacy}")
+    project = data.get("project")
+    queue = data.get("contentQueue")
+    notes = str(data.get("notes") or "").strip()
+    next_action = str(data.get("nextAction") or "").strip()
+    if next_action:
+        notes = f"{notes}\n\nLast recorded next action: {next_action}".strip()
+    manifest: dict[str, Any] = {
+        "project": project if isinstance(project, dict) else {},
+        "contentQueue": queue if isinstance(queue, list) else [],
+        "notes": notes,
+    }
+    if isinstance(data.get("reportStars"), dict):
+        manifest["reportStars"] = data["reportStars"]
+    write_json(safe_project_path(project_dir, "project.json"), manifest)
+    _backup_legacy_state(project_dir)
+    return manifest
+
+
 def discover_projects(projects_root: Path = PROJECTS_ROOT) -> list[dict[str, Any]]:
     if projects_root.is_symlink():
         raise ValueError(f"projects root cannot be a symlink: {projects_root}")
@@ -101,12 +147,7 @@ def discover_projects(projects_root: Path = PROJECTS_ROOT) -> list[dict[str, Any
         (item for item in projects_root.iterdir() if item.is_dir() and not item.is_symlink()), key=lambda item: item.name
     ):
         try:
-            path = state_path(directory)
-            if not path.is_file():
-                continue
-            data = read_json(path)
-            if not isinstance(data, dict):
-                raise ValueError(f"state must be a JSON object: {path}")
+            data = load_state(directory)
             project = data.get("project", {})
             projects.append(
                 {
@@ -115,11 +156,12 @@ def discover_projects(projects_root: Path = PROJECTS_ROOT) -> list[dict[str, Any
                     "name": project.get("name", ""),
                     "url": project.get("url", ""),
                     "type": project.get("type", ""),
-                    "phase": data.get("currentPhase", ""),
                     "selectable": bool(PROJECT_ID_PATTERN.fullmatch(directory.name)),
                     "valid_state": True,
                 }
             )
+        except FileNotFoundError:
+            continue
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             projects.append(
                 {
@@ -128,7 +170,6 @@ def discover_projects(projects_root: Path = PROJECTS_ROOT) -> list[dict[str, Any
                     "name": "",
                     "url": "",
                     "type": "",
-                    "phase": "",
                     "selectable": bool(PROJECT_ID_PATTERN.fullmatch(directory.name)),
                     "valid_state": False,
                     "error": str(exc),
@@ -148,12 +189,12 @@ def init_state(
     force: bool = False,
 ) -> Path:
     path = state_path(project_dir)
-    if path.exists() and not force:
+    if (path.exists() or legacy_state_path(project_dir).is_file()) and not force:
         raise FileExistsError(f"{path} already exists; use --force to overwrite")
     project_paths = [safe_project_path(project_dir, dirname) for dirname in PROJECT_DIRS]
 
-    state = deepcopy(read_json(template))
-    state["project"].update(
+    data = deepcopy(read_json(template))
+    data["project"].update(
         {
             "name": name,
             "type": project_type,
@@ -163,11 +204,8 @@ def init_state(
             "platform": platform,
         }
     )
-    if project_type != "shopify-headless":
-        for step in state["phases"]["TECHNICAL_AUDIT"]["steps"]:
-            if step.get("id") == "headless-precheck":
-                step["status"] = "done"
-    write_json(path, state)
+    write_json(path, data)
+    _backup_legacy_state(project_dir)
     for project_path in project_paths:
         project_path.mkdir(parents=True, exist_ok=True)
     return path
@@ -175,9 +213,12 @@ def init_state(
 
 def load_state(project_dir: Path = DEFAULT_PROJECT_DIR) -> dict[str, Any]:
     path = state_path(project_dir)
-    if not path.exists():
-        raise FileNotFoundError(f"{path} not found; run init first")
-    return read_json(path)
+    if path.exists():
+        return read_json(path)
+    migrated = migrate_legacy_state(project_dir)
+    if migrated is not None:
+        return migrated
+    raise FileNotFoundError(f"{path} not found; run init first")
 
 
 def save_state(data: dict[str, Any], project_dir: Path = DEFAULT_PROJECT_DIR) -> None:
@@ -190,112 +231,9 @@ def mutate_state(
     *,
     timeout: float = 30,
 ) -> MutationResult:
-    """Serialize a complete read, mutate, write state transaction."""
+    """Serialize a complete read, mutate, write project-manifest transaction."""
     with project_lock(project_dir, timeout=timeout):
         data = load_state(project_dir)
         result = mutation(data)
         save_state(data, project_dir)
         return result
-
-
-def record_history(data: dict[str, Any], action: str, phase: str = "", step_id: str = "", note: str = "") -> None:
-    entry = {
-        "at": datetime.now(timezone.utc).isoformat(),
-        "action": action,
-    }
-    if phase:
-        entry["phase"] = phase
-    if step_id:
-        entry["step"] = step_id
-    if note:
-        entry["note"] = note
-    data.setdefault("history", []).append(entry)
-
-
-def current_step(data: dict[str, Any]) -> tuple[str, dict[str, Any] | None]:
-    phase = data.get("currentPhase", "INIT")
-    steps = data.get("phases", {}).get(phase, {}).get("steps", [])
-    for step in steps:
-        if step.get("status") in {"pending", "in_progress"}:
-            return phase, step
-    return phase, None
-
-
-def set_phase(data: dict[str, Any], phase: str) -> None:
-    if phase not in data.get("phases", {}):
-        raise ValueError(f"unknown phase: {phase}")
-    data["currentPhase"] = phase
-    data["lastAction"] = f"Switched to {phase}"
-    data["nextAction"] = ""
-    record_history(data, "phase", phase)
-
-
-def phase_after(data: dict[str, Any], phase: str) -> str | None:
-    order = data.get("phaseOrder", [])
-    try:
-        index = order.index(phase)
-    except ValueError:
-        return None
-    return order[index + 1] if index + 1 < len(order) else None
-
-
-def advance_if_done(data: dict[str, Any]) -> None:
-    phase = data.get("currentPhase", "INIT")
-    steps = data.get("phases", {}).get(phase, {}).get("steps", [])
-    if steps and all(step.get("status") == "done" for step in steps):
-        data["phases"][phase]["status"] = "done"
-        if next_phase := phase_after(data, phase):
-            data["currentPhase"] = next_phase
-        data["nextAction"] = ""
-
-
-def update_step(data: dict[str, Any], action: str, step_id: str | None = None) -> tuple[str, str]:
-    phase = data.get("currentPhase", "INIT")
-    steps = data.get("phases", {}).get(phase, {}).get("steps", [])
-    if not steps:
-        raise ValueError(f"{phase} has no steps")
-
-    target = None
-    if step_id:
-        target = next((step for step in steps if step.get("id") == step_id), None)
-        if target is None:
-            raise ValueError(f"unknown step in {phase}: {step_id}")
-    else:
-        _, target = current_step(data)
-    if target is None:
-        raise ValueError(f"{phase} has no pending step")
-
-    statuses = {"done": "done", "skip": "done", "reset": "pending", "start": "in_progress"}
-    if action not in statuses:
-        raise ValueError(f"unknown step action: {action}")
-    target["status"] = statuses[action]
-    if action == "skip":
-        target["skipped"] = True
-    elif action in {"done", "reset", "start"}:
-        target.pop("skipped", None)
-    data["lastAction"] = f"{action}: {phase}/{target['id']}"
-    data["nextAction"] = ""
-    record_history(data, action, phase, target["id"])
-    advance_if_done(data)
-    return phase, target["id"]
-
-
-def _self_test() -> None:
-    state = {"currentPhase": "INIT", "phases": {"INIT": {"steps": [{"id": "a", "status": "done"}, {"id": "b", "status": "pending"}]}}}
-    assert current_step(state) == ("INIT", {"id": "b", "status": "pending"})
-    set_phase({"phases": {"X": {}}, "currentPhase": "INIT"}, "X")
-    data = {
-        "currentPhase": "A",
-        "phaseOrder": ["A", "B"],
-        "phases": {"A": {"steps": [{"id": "x", "status": "pending"}]}, "B": {"steps": []}},
-    }
-    assert update_step(data, "done") == ("A", "x")
-    assert data["currentPhase"] == "B"
-    import tempfile
-
-    with tempfile.TemporaryDirectory() as dirname:
-        path = init_state("general", "T", "https://example.com", Path(dirname), force=True)
-        initialized = read_json(path)
-        precheck = initialized["phases"]["TECHNICAL_AUDIT"]["steps"][0]
-        assert precheck["id"] == "headless-precheck"
-        assert precheck["status"] == "done"

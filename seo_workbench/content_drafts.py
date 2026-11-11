@@ -151,7 +151,6 @@ def _update_queue(project_dir: Path, item_id: str, update: dict[str, Any], *, st
             item[key] = update.get(key) or ""
         if "scheduled_at" in update:
             item["scheduled_at"] = update["scheduled_at"]
-        state.record_history(data, "content-draft-import", "CONTENT_PRODUCTION", item_id)
 
     state.mutate_state(project_dir, mutation)
 

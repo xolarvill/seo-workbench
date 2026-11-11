@@ -1,6 +1,5 @@
 import { ArrowRight, Circle, Play } from "lucide-react";
 
-import type { Workspace } from "../../api/types";
 import styles from "./WorkflowPage.module.css";
 
 type Destination = "keywords" | "content";
@@ -101,19 +100,6 @@ const phaseGuides: Record<string, PhaseGuide> = {
   },
 };
 
-const fallbackGuide = (phaseName: string, steps: Array<{ id: string; label: string }>): PhaseGuide => ({
-  title: phaseName.replaceAll("_", " "),
-  purpose: "Consult project-specific references when they help the current task.",
-  handoff: "The artifact appropriate to the current task",
-  tasks: steps.map((step) => ({
-    id: step.id,
-    label: step.label,
-    description: "Review the project-specific reference and record the resulting artifact when applicable.",
-    capability: "Project workflow",
-    availability: "CLI / skill",
-  })),
-});
-
 function displayPhaseName(name: string) {
   return name.replaceAll("_", " ").toLowerCase().replace(/(^|\s)\w/g, (letter) => letter.toUpperCase());
 }
@@ -142,8 +128,8 @@ function GuideLink({ task, onOpenKeywords, onOpenContent }: { task: GuideTask; o
   );
 }
 
-export function WorkflowPage({ workspace, onOpenActions, onOpenKeywords, onOpenContent }: { workspace: Workspace; onOpenActions?: () => void; onOpenKeywords?: () => void; onOpenContent?: () => void }) {
-  const groups = [...Object.keys(phaseGuides), ...Object.keys(workspace.phases).filter((name) => !phaseGuides[name])];
+export function WorkflowPage({ onOpenActions, onOpenKeywords, onOpenContent }: { onOpenActions?: () => void; onOpenKeywords?: () => void; onOpenContent?: () => void }) {
+  const groups = Object.keys(phaseGuides);
 
   return (
     <section className={styles.page} aria-labelledby="workflow-heading">
@@ -164,7 +150,7 @@ export function WorkflowPage({ workspace, onOpenActions, onOpenKeywords, onOpenC
         <div className={styles.locationCopy}>
           <span className={styles.kicker}>Choose by task</span>
           <h2 id="capability-choice-heading">Use the methods the work needs</h2>
-          <p>Start from the current objective and existing artifacts. Any capability can be used at any time; saved phases do not prescribe the next action.</p>
+          <p>Start from the current objective and existing artifacts. Any capability can be used at any time; no stored stage gates the work.</p>
         </div>
         <div className={styles.locationMeta}>
           <span>Local skill index</span>
@@ -174,18 +160,17 @@ export function WorkflowPage({ workspace, onOpenActions, onOpenKeywords, onOpenC
       </section>
 
       <ul className={styles.timeline} aria-label="SEO capabilities by task">
-        {groups.map((phaseName) => {
-          const phase = workspace.phases[phaseName];
-          const guide = phaseGuides[phaseName] || fallbackGuide(phaseName, phase?.steps || []);
+        {groups.map((groupName) => {
+          const guide = phaseGuides[groupName];
           return (
-            <li key={phaseName} className={styles.stage}>
+            <li key={groupName} className={styles.stage}>
               <div className={styles.stageMarker} aria-hidden="true">
                 <span className={styles.markerIcon}><Circle size={14} /></span>
               </div>
               <div className={styles.stageBody}>
                 <header className={styles.stageHeader}>
                   <div>
-                    <span className={styles.stageKicker}>{displayPhaseName(phaseName)}</span>
+                    <span className={styles.stageKicker}>{displayPhaseName(groupName)}</span>
                     <h2>{guide.title}</h2>
                   </div>
                   <span className={styles.stageState}>Available when relevant</span>

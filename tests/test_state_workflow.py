@@ -3,11 +3,9 @@ from pathlib import Path
 
 import pytest
 
-from seo_workbench.content_pipeline import normalize_status
 from seo_workbench import state
 from seo_workbench.cli import main
 from seo_workbench.validation import validate_project
-from seo_workbench.workflow import DEFAULT_WORKFLOW, load_workflow, step_reference
 
 
 def test_next_is_not_an_agent_command(capsys) -> None:
@@ -17,65 +15,58 @@ def test_next_is_not_an_agent_command(capsys) -> None:
     assert "invalid choice" in capsys.readouterr().err
 
 
-def test_status_does_not_prescribe_work_or_mutate_legacy_state(tmp_path: Path, capsys) -> None:
-    path = state.init_state("shopify", "Shop", "https://example.com", project_dir=tmp_path)
-    data = state.read_json(path)
-    data["nextAction"] = "Run next"
-    state.write_json(path, data)
-    before = path.read_bytes()
-
-    assert main(["--project-dir", str(tmp_path), "status", "--json"]) == 0
-    payload = json.loads(capsys.readouterr().out)
-    assert "next" not in payload
-    assert payload["skill_index"] == "skills/README.md"
-    assert path.read_bytes() == before
+@pytest.mark.parametrize("command", (["status", "--json"], ["phase", "INIT"], ["step", "done"]))
+def test_state_commands_are_not_registered(command, capsys) -> None:
+    with pytest.raises(SystemExit) as exc:
+        main(command)
+    assert exc.value.code == 2
+    assert "invalid choice" in capsys.readouterr().err
 
 
-def test_non_headless_init_skips_headless_precheck(tmp_path: Path) -> None:
+def test_init_creates_project_manifest_without_workflow_fields(tmp_path: Path) -> None:
     path = state.init_state("general", "General", "https://example.com", project_dir=tmp_path, force=True)
     data = state.read_json(path)
-    precheck = data["phases"]["TECHNICAL_AUDIT"]["steps"][0]
-    assert precheck["id"] == "headless-precheck"
-    assert precheck["status"] == "done"
+
+    assert path.name == "project.json"
+    assert data["project"]["name"] == "General"
+    assert data["contentQueue"] == []
+    assert not {"currentPhase", "phaseOrder", "phases", "nextAction", "history"} & data.keys()
 
 
-def test_step_history_and_skip_marker(tmp_path: Path) -> None:
-    path = state.init_state("shopify-headless", "Shop", "https://example.com", project_dir=tmp_path, force=True)
-    data = state.read_json(path)
-    state.set_phase(data, "TECHNICAL_AUDIT")
-    phase, step_id = state.update_step(data, "skip", "headless-precheck")
-    assert (phase, step_id) == ("TECHNICAL_AUDIT", "headless-precheck")
-    step = data["phases"]["TECHNICAL_AUDIT"]["steps"][0]
-    assert step["status"] == "done"
-    assert step["skipped"] is True
-    assert data["history"][-1]["action"] == "skip"
+def test_legacy_state_migrates_to_project_manifest(tmp_path: Path) -> None:
+    project_dir = tmp_path / "store"
+    project_dir.mkdir()
+    legacy = {
+        "project": {"name": "Shop", "url": "https://example.com", "type": "shopify"},
+        "contentQueue": [{"id": "rec1", "status": "planned"}],
+        "reportStars": {"reports/a.md": True},
+        "notes": "Launch constraints.",
+        "nextAction": "Ship the first article",
+        "currentPhase": "INIT",
+        "phaseOrder": ["INIT"],
+        "phases": {"INIT": {"status": "pending", "steps": []}},
+        "history": [{"action": "phase"}],
+    }
+    (project_dir / "state.json").write_text(json.dumps(legacy), encoding="utf-8")
+
+    data = state.load_state(project_dir)
+
+    assert data["project"]["name"] == "Shop"
+    assert data["contentQueue"] == [{"id": "rec1", "status": "planned"}]
+    assert data["reportStars"] == {"reports/a.md": True}
+    assert "Launch constraints." in data["notes"]
+    assert "Ship the first article" in data["notes"]
+    assert not {"currentPhase", "phaseOrder", "phases", "history"} & data.keys()
+    assert (project_dir / "project.json").is_file()
+    assert not (project_dir / "state.json").exists()
+    assert (project_dir / ".runtime/legacy-state.json").is_file()
 
 
 def test_validate_project_reports_contract(tmp_path: Path) -> None:
     state.init_state("general", "General", "https://example.com", project_dir=tmp_path, force=True)
-    result = validate_project(tmp_path, DEFAULT_WORKFLOW)
+    result = validate_project(tmp_path)
     assert result["ok"] is True
     assert all(issue["severity"] != "error" for issue in result["issues"])
-
-
-def test_init_steps_declare_skill_context_and_output(tmp_path: Path) -> None:
-    workflow = load_workflow(DEFAULT_WORKFLOW)
-    brand = step_reference(workflow, "INIT", {"id": "config-brand-voice", "label": "Brand"}, tmp_path)
-    keywords = step_reference(workflow, "INIT", {"id": "config-target-keywords", "label": "Keywords"}, tmp_path)
-
-    assert brand["skill"] == "skills/project-context/SKILL.md"
-    assert brand["output"] == str(tmp_path / "context/brand-voice.md")
-    assert str(tmp_path / "audits/technology/latest.json") in brand["context"]
-    assert keywords["skill"] == "skills/project-context/SKILL.md"
-    assert keywords["output"] == str(tmp_path / "context/target-keywords.md")
-    assert str(tmp_path / "context/brand-voice.md") in keywords["context"]
-
-
-def test_agent_context_includes_optional_browser_evidence(tmp_path: Path) -> None:
-    workflow = load_workflow(DEFAULT_WORKFLOW)
-    for phase, step in (("TECHNICAL_AUDIT", "technical-audit"), ("MONITORING", "technical-recheck")):
-        contract = step_reference(workflow, phase, {"id": step, "label": step}, tmp_path)
-        assert str(tmp_path / "audits/browser/latest.json") in contract["context"]
 
 
 def test_project_id_and_discovery_keep_stores_isolated(tmp_path: Path) -> None:
@@ -88,6 +79,7 @@ def test_project_id_and_discovery_keep_stores_isolated(tmp_path: Path) -> None:
     projects = state.discover_projects(projects_root)
     assert [project["id"] for project in projects] == ["store-one", "store-two"]
     assert projects[0]["name"] == "Store One"
+    assert "phase" not in projects[0]
     assert state.state_path(first) != state.state_path(second)
     assert (first / "audits/diffs").is_dir()
     assert (first / "audits/publish").is_dir()
@@ -95,30 +87,16 @@ def test_project_id_and_discovery_keep_stores_isolated(tmp_path: Path) -> None:
     assert (first / "content/reports").is_dir()
 
 
-def test_content_production_steps_have_dynamic_contract(tmp_path: Path) -> None:
-    workflow = load_workflow(DEFAULT_WORKFLOW)
-    state_path = state.init_state("shopify", "Shop", "https://example.com", project_dir=tmp_path)
-    data = state.read_json(state_path)
-    steps = data["phases"]["CONTENT_PRODUCTION"]["steps"]
-
-    assert [step["id"] for step in steps] == ["draft-content", "revise-content", "prepare-publish"]
-    contract = step_reference(workflow, "CONTENT_PRODUCTION", steps[0], tmp_path)
-    assert contract["skill"] == "skills/write-content/SKILL.md"
-    assert str(tmp_path / "strategy/keyword-pool.jsonl") in contract["context"]
-    assert str(tmp_path / "content/blog-pipeline.jsonl") in contract["context"]
-    assert contract["output"] == str(tmp_path / "content/drafts/{slug}.md")
-
-
 def test_content_queue_validation_rejects_invalid_status(tmp_path: Path) -> None:
-    state_path = state.init_state("shopify", "Shop", "https://example.com", project_dir=tmp_path)
-    data = state.read_json(state_path)
+    project_path = state.init_state("shopify", "Shop", "https://example.com", project_dir=tmp_path)
+    data = state.read_json(project_path)
     data["contentQueue"] = [{"id": "rec1", "status": "unknown"}]
-    state.write_json(state_path, data)
+    state.write_json(project_path, data)
 
-    result = validate_project(tmp_path, DEFAULT_WORKFLOW)
+    result = validate_project(tmp_path)
 
     assert result["ok"] is False
-    assert any(issue["code"] == "state.content_queue_item" for issue in result["issues"])
+    assert any(issue["code"] == "content_queue.item" for issue in result["issues"])
 
 
 def test_project_id_rejects_path_traversal() -> None:
@@ -139,10 +117,11 @@ def test_cli_initializes_and_lists_projects_by_id(tmp_path: Path, monkeypatch, c
     payload = json.loads(capsys.readouterr().out)
     assert payload["count"] == 1
     assert payload["projects"][0]["id"] == "store-one"
+    assert "phase" not in payload["projects"][0]
 
 
 def test_cli_rejects_unsafe_project_id_as_json(capsys) -> None:
-    assert main(["--project", "../store", "status", "--json"]) == 1
+    assert main(["--project", "../store", "validate", "--json"]) == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["ok"] is False
 
@@ -192,7 +171,7 @@ def test_evidence_surfaces_google_configuration_states_without_failing_raw(tmp_p
     monkeypatch.setattr(workflow_evidence, "collect", base_bundle)
     monkeypatch.setattr(crux_probe, "collect", lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("key missing")))
     path = workflow_evidence.collect_from_state(
-        project_dir / "state.json",
+        project_dir / "project.json",
         15,
         10,
         project_dir / "audits/raw",
@@ -232,18 +211,18 @@ def test_project_id_rejects_same_root_symlink_alias(tmp_path: Path) -> None:
         raise AssertionError("expected same-root symlink alias to fail")
 
 
-def test_state_file_symlink_is_rejected(tmp_path: Path) -> None:
+def test_project_file_symlink_is_rejected(tmp_path: Path) -> None:
     project_dir = tmp_path / "projects/store"
     project_dir.mkdir(parents=True)
-    outside = tmp_path / "outside-state.json"
+    outside = tmp_path / "outside-project.json"
     outside.write_text("{}", encoding="utf-8")
-    (project_dir / "state.json").symlink_to(outside)
+    (project_dir / "project.json").symlink_to(outside)
     try:
         state.load_state(project_dir)
     except ValueError as exc:
         assert "symlink" in str(exc)
     else:
-        raise AssertionError("expected symlinked state file to fail")
+        raise AssertionError("expected symlinked project file to fail")
 
 
 def test_discovery_marks_invalid_directory_id_non_selectable(tmp_path: Path) -> None:
@@ -259,7 +238,7 @@ def test_cli_default_project_rejects_symlinked_projects_root(tmp_path: Path, mon
     outside.mkdir()
     monkeypatch.chdir(tmp_path)
     (tmp_path / "projects").symlink_to(outside, target_is_directory=True)
-    assert main(["status", "--json"]) == 1
+    assert main(["validate", "--json"]) == 1
     payload = json.loads(capsys.readouterr().out)
     assert payload["ok"] is False
     assert "projects root" in payload["error"]

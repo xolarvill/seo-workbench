@@ -101,7 +101,6 @@ def mark_index_notifications_sent(project_dir: Path, item_ids: list[str], *, now
         for item in queue:
             if isinstance(item, dict) and item.get("id") in updates:
                 item.update(updates[item["id"]])
-        state.record_history(data, "content-index-notify", "CONTENT_PRODUCTION", f"Notified {len(updates)} indexed items")
 
     state.mutate_state(project_dir, mutation)
     _update_pipeline(project_dir, updates)
@@ -126,7 +125,6 @@ def _apply_updates(project_dir: Path, updates: dict[str, dict[str, Any]]) -> Non
                 if item is None:
                     continue
             item.update(update)
-        state.record_history(data, "content-index-status", "CONTENT_PRODUCTION", "prepare-publish")
 
     state.mutate_state(project_dir, mutation)
     _update_pipeline(project_dir, updates)

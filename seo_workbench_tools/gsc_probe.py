@@ -36,6 +36,13 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def _project_manifest(project_dir: Path) -> dict[str, Any]:
+    path = project_dir / "project.json"
+    if not path.is_file():
+        path = project_dir / "state.json"
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def _timestamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
 
@@ -238,7 +245,7 @@ def bind_property(
     requester: RequestCallable = api_request,
     runtime_root: Path | None = None,
 ) -> dict[str, Any]:
-    state = json.loads((project_dir / "state.json").read_text(encoding="utf-8"))
+    state = _project_manifest(project_dir)
     project_url = state.get("project", {}).get("url", "")
     if not project_url:
         raise ValueError("project.url is missing")
@@ -502,7 +509,7 @@ def _change_rows(
 def representative_urls(project_dir: Path, limit: int = 10) -> list[str]:
     if not 1 <= limit <= 100:
         raise ValueError("inspection limit must be between 1 and 100")
-    state = json.loads((project_dir / "state.json").read_text(encoding="utf-8"))
+    state = _project_manifest(project_dir)
     candidates: list[str] = [state.get("project", {}).get("url", "")]
     raw_path = project_dir / "audits/raw/latest.json"
     if raw_path.is_file() and not raw_path.is_symlink():

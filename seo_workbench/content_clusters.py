@@ -150,7 +150,6 @@ def _merge_queue(project_dir: Path, records: list[dict[str, Any]]) -> None:
                     "source": record["source_record"],
                 }
             )
-        state.record_history(data, "content-cluster-import", "STRATEGY", note=f"Imported {len(records)} content clusters")
 
     state.mutate_state(project_dir, mutation)
 

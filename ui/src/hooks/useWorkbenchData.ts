@@ -182,7 +182,6 @@ export const WORKBENCH_EVENT_TYPES = [
   "seo-change.updated",
   "tech-audit.schedule.updated",
   "technical-issue.updated",
-  "workflow.updated",
 ];
 
 export function useWorkbenchEvents(onEvent: (event: WorkbenchEvent) => void, onConnection?: (connected: boolean) => void) {

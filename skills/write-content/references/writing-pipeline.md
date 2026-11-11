@@ -6,7 +6,7 @@ Use [the reader method](../../reader-experience-review/SKILL.md) throughout comp
 
 Organize research, outlining, writing, editing, factual verification and SEO review around the current task. These are responsibilities, not a requirement to spawn agents, select temperatures or run every stage on every request. Use delegation only when authorized by the applicable instructions.
 
-Reuse an approved brief, current research, genuine voice samples and available evidence. A local wording edit may need only the passage and its sources. A new competitive article may need the full method. Stored phases are historical context, not a scheduler or approval gate.
+Reuse an approved brief, current research, genuine voice samples and available evidence. A local wording edit may need only the passage and its sources. A new competitive article may need the full method. Stored artifacts are context, not a scheduler or approval gate.
 
 ## 1. Prepare the evidence and brief
 

@@ -48,7 +48,6 @@ const project = {
   name: "Example Shop",
   url: "https://www.example.com",
   type: "shopify",
-  phase: "TECHNICAL_AUDIT",
   selectable: true,
   valid_state: true,
 };
@@ -84,13 +83,6 @@ describe("shared workbench controls", () => {
 const workspace: Workspace = {
   project_id: "shop",
   project: { name: "Example Shop", url: "https://example.com", type: "shopify" },
-  phase: "TECHNICAL_AUDIT",
-  step: { id: "collect", label: "Collect evidence", status: "pending" },
-  phase_order: ["DISCOVERY", "TECHNICAL_AUDIT"],
-  phases: {
-    DISCOVERY: { status: "done", steps: [{ id: "brief", label: "Brief", status: "done" }] },
-    TECHNICAL_AUDIT: { status: "in_progress", steps: [{ id: "collect", label: "Collect evidence", status: "pending" }] },
-  },
   evidence: {
     items: [],
     performance: { score: 71, high_variance: false, metrics: { lcp: 2200, tbt: 170, cls: 0.08 } },
@@ -371,15 +363,14 @@ describe("workbench frontend", () => {
     expect(screen.getAllByRole("button", { name: "Audit" })[0].getAttribute("aria-expanded")).toBe("true");
   });
 
-  it("offers capabilities independently of the stored workflow phase", () => {
+  it("offers capabilities independently of stored state", () => {
     const onOpenActions = vi.fn();
     const onOpenKeywords = vi.fn();
-    render(<WorkflowPage workspace={{ ...workspace, phase_order: ["DISCOVERY", "STRATEGY", "TECHNICAL_AUDIT"], phases: { ...workspace.phases, STRATEGY: { status: "pending", steps: [] } } }} onOpenActions={onOpenActions} onOpenKeywords={onOpenKeywords} />);
+    render(<WorkflowPage onOpenActions={onOpenActions} onOpenKeywords={onOpenKeywords} />);
     fireEvent.click(screen.getByRole("button", { name: "Run audit evidence" }));
     expect(onOpenActions).toHaveBeenCalledOnce();
     expect(screen.queryByText("Collect evidence")).toBeNull();
     expect(screen.getAllByText("Available when relevant").length).toBeGreaterThan(0);
-    expect(screen.getByText("Discovery")).toBeTruthy();
     expect(screen.queryByText("Next handoff")).toBeNull();
     expect(screen.queryByText("Workflow complete")).toBeNull();
     expect(screen.getByText("Map demand and ownership")).toBeTruthy();
@@ -389,7 +380,7 @@ describe("workbench frontend", () => {
 
   it("explains content production without turning the map into a queue", () => {
     const onOpenContent = vi.fn();
-    render(<WorkflowPage workspace={{ ...workspace, phase: "CONTENT_PRODUCTION", phase_order: ["DISCOVERY", "CONTENT_PRODUCTION", "TECHNICAL_AUDIT"], step: null, phases: { ...workspace.phases, CONTENT_PRODUCTION: { status: "pending", steps: [] } } }} onOpenContent={onOpenContent} />);
+    render(<WorkflowPage onOpenContent={onOpenContent} />);
     expect(screen.getAllByText("Create or improve the page").length).toBeGreaterThan(0);
     expect(screen.getByText("Write or improve the content")).toBeTruthy();
     expect(screen.queryByText("Review content queue")).toBeNull();
@@ -397,15 +388,8 @@ describe("workbench frontend", () => {
     expect(onOpenContent).toHaveBeenCalledOnce();
   });
 
-  it("does not prescribe or mutate a step even for a pending INIT project", () => {
-    const initWorkspace: Workspace = {
-      ...workspace,
-      phase: "INIT",
-      phase_order: ["INIT"],
-      step: { id: "config-brand-voice", label: "Define brand voice", status: "pending" },
-      phases: { INIT: { status: "in_progress", steps: [{ id: "config-brand-voice", label: "Define brand voice", status: "pending" }] } },
-    };
-    render(<WorkflowPage workspace={initWorkspace} />);
+  it("does not prescribe or mutate a step", () => {
+    render(<WorkflowPage />);
     expect(screen.queryByRole("button", { name: "Mark done" })).toBeNull();
     expect(screen.queryByRole("button", { name: "Skip" })).toBeNull();
     expect(screen.queryByText("Next handoff")).toBeNull();

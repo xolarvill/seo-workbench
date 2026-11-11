@@ -8,24 +8,23 @@ This branch turns the project into a normal Python repo that any agent harness c
 seo_workbench/          Python execution layer
 seo_workbench_tools/    Existing evidence collectors, kept for compatibility
 skills/                 Extracted SEO playbooks and rubrics
-workflows/              Legacy step reference mappings
-templates/              Reusable state and report templates
+templates/              Reusable project and report templates
 third_party/            License and attribution notes
 projects/default/       Default runtime project directory
 ```
 
-Local modules now cover every non-INIT step in `templates/state.json`.
+Every project has a `project.json` manifest. The retired workflow state file is migrated automatically and its action log is preserved under the project's `.runtime/` directory.
 
 ## Harness Contract
 
 Agents should use the same local files and commands:
 
 ```bash
-./seo status
+./seo projects --json
 ./seo evidence --rendered --json
 ```
 
-Agents choose work from the current goal, project context, artifacts and evidence, using `AGENTS.md` and `skills/README.md` to discover methods. The `next` command is retired. Stored phases and explicit `phase`/`step` maintenance remain for compatibility; they do not constrain skill selection or prove professional completion. The UI Methods map offers capabilities without a current-stage gate.
+Agents choose work from the current goal, project context, artifacts and evidence, using `AGENTS.md` and `skills/README.md` to discover methods. There is no stored phase, step, `next` scheduler, or current-stage gate. The UI Methods map offers capabilities without a stage gate.
 
 Claude-specific slash commands and Codex-specific instructions become adapters, not the core product.
 

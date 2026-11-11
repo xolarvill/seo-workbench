@@ -73,11 +73,11 @@ def _ui_session_detail(session_path: Path) -> tuple[bool, str]:
         return False, "stale UI session manifest"
     except PermissionError:
         return True, "UI process exists"
-    except (OSError, TypeError, ValueError, json.JSONDecodeError) as exc:
+    except (OSError, SystemError, TypeError, ValueError, json.JSONDecodeError) as exc:
         return False, f"invalid UI session manifest: {exc}"
 
 
-def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
+def run_doctor(project_dir: Path) -> dict[str, Any]:
     checks: list[dict[str, Any]] = []
     from seo_workbench_tools.clarity_runtime import runtime_status
 
@@ -90,11 +90,11 @@ def run_doctor(project_dir: Path, workflow_path: Path) -> dict[str, Any]:
     checks.append(_check("uv_available", bool(uv_path), uv_path or "uv not found", "warning"))
 
     checks.append(_check("project_dir", project_dir.exists(), str(project_dir)))
-    state_path = state.state_path(project_dir)
-    checks.append(_check("state_file", state_path.exists(), str(state_path)))
 
-    validation = validate_project(project_dir, workflow_path)
-    checks.append(_check("workflow_contract", validation["ok"], f"{len(validation['issues'])} validation issue(s)"))
+    validation = validate_project(project_dir)
+    checks.append(_check("project_contract", validation["ok"], f"{len(validation['issues'])} validation issue(s)"))
+    project_manifest = state.state_path(project_dir)
+    checks.append(_check("project_file", project_manifest.exists(), str(project_manifest)))
 
     ui_modules = all(_module_available(name) for name in ("fastapi", "uvicorn", "watchfiles"))
     checks.append(_check("ui_python_support", ui_modules, "installed" if ui_modules else "not installed; run ./setup.sh", "info"))

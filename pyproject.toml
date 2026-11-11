@@ -56,7 +56,6 @@ include = [
     "seo_workbench_tools/",
     "skills/",
     "templates/",
-    "workflows/",
     "AGENTS.md",
     "README.md",
 ]

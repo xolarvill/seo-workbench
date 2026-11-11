@@ -14,7 +14,7 @@ class Credentials:
 
 
 def project(tmp_path: Path, url: str = "https://shop.example.com/path/") -> Path:
-    (tmp_path / "state.json").write_text(json.dumps({"project": {"url": url}}))
+    (tmp_path / "project.json").write_text(json.dumps({"project": {"url": url}}))
     return tmp_path
 
 

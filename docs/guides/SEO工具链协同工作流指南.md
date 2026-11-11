@@ -49,11 +49,11 @@ Shopify Liquid 使用 `shopify`，Hydrogen 或其他 Headless Shopify 使用 `sh
 先读仓库 `AGENTS.md`、项目自己的指令与相关任务材料，再按 `skills/README.md` 找到适用方法；索引不是调用白名单。不要求重新跑已完成且仍适用的研究，也不让局部审稿升级为整套生产流程。
 
 ```bash
-./seo --project my-site status --json
+./seo projects --json
 ./seo --help
 ```
 
-`next` 命令已退役。旧项目的phase、step和history保留，`phase`／`step`命令只供显式维护兼容记录；不需要先进入某个阶段才能使用技能。UI的Methods地图可随时打开所需工作区，不再给出“Next action”或步骤打勾按钮。
+`next`、`phase`、`step` 命令已移除，项目里也不再保存阶段或步骤。技能从当前目标、项目资料和证据选择；UI 的 Methods 地图可随时打开所需工作区。
 
 ## 第一次基线采集
 

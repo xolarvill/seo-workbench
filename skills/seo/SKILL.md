@@ -17,6 +17,6 @@ Read [the task index](../README.md), the current project's guidance and relevant
 | Structured data | [schema](../schema/SKILL.md) |
 | Pages generated from a dataset | [programmatic-seo](../programmatic-seo/SKILL.md) |
 
-Use only the relevant methods; a small review does not require the full audit or production pipeline. Continue from current decisions and evidence rather than legacy phase status.
+Use only the relevant methods; a small review does not require the full audit or production pipeline. Continue from current decisions and evidence rather than any stored status.
 
 The Workbench CLI executes explicit operations. Upstream slash commands, agents and scripts are not installed executors. [Adapted orchestration coverage](references/upstream-orchestration.md) preserve source coverage and shared references; read a relevant section only when needed.
