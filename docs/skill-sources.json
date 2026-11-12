@@ -2,7 +2,7 @@
   "schema_version": 2,
   "reviewed_on": "2026-10-29",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "47b0408262fd4ba7d4e55720be93dfe6268e6638",
+  "local_snapshot_commit": "1204851402770592a456b77920417701d568cc7d",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
@@ -115,8 +115,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "e99403652c21c58118853ae85ef1d51b3a32555480ba4a155741b014e90ced27",
-      "local_git_blob_sha": "ea539d5950fb0cd10d66c3720fd839ff76a4a330",
+      "local_sha256": "547ee33fecd0c3ecd801757cb91f32d564d12cc18a97f6060f2e82cc4415d00c",
+      "local_git_blob_sha": "97b88d4eaffe8ba847832577798a3ff4b16c2006",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -126,9 +126,9 @@
         "path": "skills/README.md"
       },
       "last_local_change": {
-        "commit": "47b0408262fd4ba7d4e55720be93dfe6268e6638",
+        "commit": "eac4df8664c724a4ff3b47c2222002a8cc99e396",
         "date": "2026-11-11",
-        "subject": "docs: add title craft for article titles",
+        "subject": "refactor: retire persisted workflow state",
         "path": "skills/README.md",
         "record_status": "committed"
       },
@@ -13002,8 +13002,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "fb1262cd599b6c88a1759942f58ddf58d7e5dc9da96d17f0870220822fb81daa",
-      "local_git_blob_sha": "f368b8d73e3f7a0af29c9bc6169bd4a7597b7995",
+      "local_sha256": "16db2f12f93c359bffc5534016c6df0bc92886eb7f068a65493e93d5cbe766d9",
+      "local_git_blob_sha": "be191ee9d5eacd4ac9b7a3a1b52b1b347e577fd3",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -13014,9 +13014,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
-        "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "commit": "eac4df8664c724a4ff3b47c2222002a8cc99e396",
+        "date": "2026-11-11",
+        "subject": "refactor: retire persisted workflow state",
         "path": "skills/seo/SKILL.md",
         "record_status": "committed"
       },
@@ -13611,9 +13611,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "11deeabee81b6ce9385346fe8800f5bd631ce7de",
-        "date": "2026-11-10",
-        "subject": "docs: split documentation into guides, reference, and history",
+        "commit": "eac4df8664c724a4ff3b47c2222002a8cc99e396",
+        "date": "2026-11-11",
+        "subject": "refactor: retire persisted workflow state",
         "path": "skills/seo/references/workbench-operations.md",
         "record_status": "committed"
       },
@@ -13621,8 +13621,8 @@
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [],
-      "local_sha256": "4e76127295e91c717b9d274a5419c56cf65304c70bdbcc07349c3231edd5f587",
-      "local_git_blob_sha": "990095047542d0a71124b408422cb1d4db921886",
+      "local_sha256": "46b417f176895ab45e18e9839cfe9a2d942060d9076f14e34f3752935c898540",
+      "local_git_blob_sha": "25654e1f526173f9ce6ac3af7e1c863a25157e3b",
       "maintenance_status": "active",
       "workingtree_modified": false
     },
@@ -16276,8 +16276,8 @@
       "upstream_path": "skills/write-content/references/writing-pipeline.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "07696830ba599f4a2cb740c43cde5606968019eb9b9540e8b091276fda16b605",
-      "local_git_blob_sha": "e5f26e49d6802895f96778aeb3b3f4770d3a0c36",
+      "local_sha256": "d19ceb2e8308ea3b05dcb399aeaf498c69c533c4730f5916e5c1b97e56350fdf",
+      "local_git_blob_sha": "6956e715ca20cb1ecb019f596b47a28121eb4dc0",
       "comparison_upstream_blob_sha": "c8a4c3c70a9526389f1cbf3eacf9f10c9ae4d0c2",
       "comparison_status": "different",
       "first_local_record": {
@@ -16287,9 +16287,9 @@
         "path": "skills/write-content/references/writing-pipeline.md"
       },
       "last_local_change": {
-        "commit": "8a6799f84cad285262d61aff1ec98cf4e700b49e",
-        "date": "2026-10-29",
-        "subject": "refactor: make the reader method the single prose authority",
+        "commit": "eac4df8664c724a4ff3b47c2222002a8cc99e396",
+        "date": "2026-11-11",
+        "subject": "refactor: retire persisted workflow state",
         "path": "skills/write-content/references/writing-pipeline.md",
         "record_status": "committed"
       },
