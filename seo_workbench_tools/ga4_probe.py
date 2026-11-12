@@ -76,13 +76,15 @@ def _write_private_json(path: Path, payload: dict[str, Any]) -> None:
     atomic_write_text(path, json.dumps(payload, ensure_ascii=False, indent=2) + "\n", mode=0o600)
 
 
-def _load_google_auth() -> tuple[Any, Any]:
+def _load_google_auth() -> tuple[Any, Any, Any, Any]:
     try:
+        from google.auth.exceptions import MalformedError
         from google.auth.transport.requests import Request as AuthRequest
         from google.oauth2 import credentials as user_credentials
+        from google.oauth2 import service_account
     except ImportError as exc:
         raise RuntimeError("Google authentication support is missing; run ./setup.sh") from exc
-    return AuthRequest, user_credentials
+    return AuthRequest, user_credentials, service_account, MalformedError
 
 
 def import_credentials(
@@ -91,17 +93,36 @@ def import_credentials(
     *,
     runtime_root: Path | None = None,
 ) -> dict[str, Any]:
-    """Store a GA4 analytics.readonly token as an authorized-user token file.
+    """Store a GA4 analytics.readonly credential.
 
-    The source file may use either the ga4.json shape (access_token,
-    refresh_token, scopes, app_client_id) or the standard authorized-user
-    shape (token, refresh_token, client_id, client_secret). Client secrets are
-    required for refresh; a shared OAuth client from the same profile's
-    client-secret.json is reused when present.
+    A Google service account key is stored as ga4-service-account.json; the
+    service account email must be added as a user on the GA4 account or
+    property. Otherwise the source file may use either the ga4.json shape
+    (access_token, refresh_token, scopes, app_client_id) or the standard
+    authorized-user shape (token, refresh_token, client_id, client_secret).
+    Client secrets are required for refresh; a shared OAuth client from the
+    same profile's client-secret.json is reused when present.
     """
     profile = validate_profile(profile)
     if not isinstance(payload, dict):
         raise ValueError("GA4 credentials must be a JSON object")
+
+    is_service_account = payload.get("type") == "service_account" or (
+        isinstance(payload.get("client_email"), str)
+        and isinstance(payload.get("private_key"), str)
+        and "refresh_token" not in payload
+    )
+    if is_service_account:
+        _, _, service_account, MalformedError = _load_google_auth()
+        try:
+            service_account.Credentials.from_service_account_info(payload, scopes=SCOPES)
+        except (KeyError, TypeError, ValueError, MalformedError) as exc:
+            raise ValueError("invalid Google service account key") from exc
+        directory = profile_dir(profile, runtime_root=runtime_root)
+        destination = directory / "ga4-service-account.json"
+        _write_private_json(destination, payload)
+        (directory / "ga4-token.json").unlink(missing_ok=True)
+        return {"profile": profile, "credential_type": "service_account", "path": str(destination)}
 
     token = payload.get("access_token") or payload.get("token")
     refresh_token = payload.get("refresh_token")
@@ -110,9 +131,9 @@ def import_credentials(
     client_secret = payload.get("client_secret") or ""
     expiry_ms = payload.get("expires_at_ms") or payload.get("expiry")
     if not isinstance(token, str) or not token:
-        raise ValueError("GA4 credentials require an access_token")
+        raise ValueError("GA4 credentials require an access_token or a service account key")
     if not isinstance(refresh_token, str) or not refresh_token:
-        raise ValueError("GA4 credentials require a refresh_token")
+        raise ValueError("GA4 credentials require a refresh_token or a service account key")
 
     directory = profile_dir(profile, runtime_root=runtime_root)
     directory.mkdir(parents=True, exist_ok=True, mode=0o700)
@@ -167,12 +188,21 @@ def import_credentials(
         "imported_at": _now(),
     }
     _write_private_json(directory / "ga4-token.json", stored)
+    (directory / "ga4-service-account.json").unlink(missing_ok=True)
     return {"profile": profile, "credential_type": "oauth", "path": str(directory / "ga4-token.json")}
 
 
 def load_credentials(profile: str, *, refresh: bool = True, runtime_root: Path | None = None) -> Any:
-    AuthRequest, user_credentials = _load_google_auth()
+    AuthRequest, user_credentials, service_account, _ = _load_google_auth()
     directory = profile_dir(profile, runtime_root=runtime_root)
+    service_path = directory / "ga4-service-account.json"
+    if service_path.is_symlink():
+        raise RuntimeError(f"GA4 profile '{profile}' credential path cannot be a symlink")
+    if service_path.is_file():
+        credentials = service_account.Credentials.from_service_account_file(str(service_path), scopes=SCOPES)
+        if refresh and not credentials.valid:
+            credentials.refresh(AuthRequest())
+        return credentials
     token_path = directory / "ga4-token.json"
     if not token_path.is_file() or token_path.is_symlink():
         raise RuntimeError(f"GA4 profile '{profile}' is not authenticated; import ga4 credentials first")

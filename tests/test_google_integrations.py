@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import date
 from pathlib import Path
 
 import pytest
 
-from seo_workbench_tools import gsc_probe
+from seo_workbench_tools import ga4_probe, gsc_probe
 
 
 class Credentials:
@@ -211,3 +212,124 @@ def test_binding_rejects_symlinked_runtime_directory(tmp_path) -> None:
     (tmp_path / "project/.runtime").symlink_to(outside, target_is_directory=True)
     with pytest.raises(ValueError, match="symlink"):
         gsc_probe.binding_path(tmp_path / "project")
+
+
+def test_ga4_import_service_account_replaces_oauth_token(tmp_path, monkeypatch) -> None:
+    seen: dict[str, object] = {}
+
+    class FakeServiceAccountCredentials:
+        @staticmethod
+        def from_service_account_info(payload, scopes=None):
+            seen["payload"] = payload
+            seen["scopes"] = scopes
+            return object()
+
+    class FakeServiceAccount:
+        pass
+
+    FakeServiceAccount.Credentials = FakeServiceAccountCredentials
+    monkeypatch.setattr(ga4_probe, "_load_google_auth", lambda: (None, None, FakeServiceAccount, ValueError))
+    directory = tmp_path / "profiles/ga4"
+    directory.mkdir(parents=True)
+    (directory / "ga4-token.json").write_text("{}")
+    payload = {
+        "type": "service_account",
+        "client_email": "seo@example.iam.gserviceaccount.com",
+        "private_key": "-----BEGIN PRIVATE KEY-----\ntest\n-----END PRIVATE KEY-----\n",
+    }
+
+    result = ga4_probe.import_credentials("ga4", payload, runtime_root=tmp_path)
+
+    assert result["credential_type"] == "service_account"
+    assert seen["payload"] == payload
+    assert seen["scopes"] == ga4_probe.SCOPES
+    stored = directory / "ga4-service-account.json"
+    assert json.loads(stored.read_text(encoding="utf-8"))["client_email"] == payload["client_email"]
+    assert not (directory / "ga4-token.json").exists()
+    if os.name != "nt":
+        assert stored.stat().st_mode & 0o777 == 0o600
+
+
+def test_ga4_import_oauth_removes_service_account(tmp_path) -> None:
+    directory = tmp_path / "profiles/ga4"
+    directory.mkdir(parents=True)
+    (directory / "ga4-service-account.json").write_text("{}")
+    (directory / "service-account.json").write_text("{}")
+
+    result = ga4_probe.import_credentials(
+        "ga4",
+        {
+            "access_token": "access",
+            "refresh_token": "refresh",
+            "client_id": "client",
+            "client_secret": "secret",
+        },
+        runtime_root=tmp_path,
+    )
+
+    assert result["credential_type"] == "oauth"
+    assert not (directory / "ga4-service-account.json").exists()
+    assert (directory / "ga4-token.json").is_file()
+    assert (directory / "service-account.json").exists()
+
+
+def test_ga4_import_rejects_invalid_service_account(tmp_path, monkeypatch) -> None:
+    class FakeServiceAccountCredentials:
+        @staticmethod
+        def from_service_account_info(payload, scopes=None):
+            raise ValueError("bad key")
+
+    class FakeServiceAccount:
+        pass
+
+    FakeServiceAccount.Credentials = FakeServiceAccountCredentials
+    monkeypatch.setattr(ga4_probe, "_load_google_auth", lambda: (None, None, FakeServiceAccount, ValueError))
+    with pytest.raises(ValueError, match="invalid Google service account key"):
+        ga4_probe.import_credentials(
+            "ga4",
+            {"type": "service_account", "client_email": "seo@example.com", "private_key": "broken"},
+            runtime_root=tmp_path,
+        )
+
+
+def test_ga4_load_credentials_refreshes_service_account(tmp_path, monkeypatch) -> None:
+    refreshes: list[object] = []
+
+    class FakeServiceAccountCredentials:
+        valid = False
+        token = None
+        service_account_email = "seo@example.iam.gserviceaccount.com"
+
+        def refresh(self, request):
+            refreshes.append(request)
+            self.valid = True
+            self.token = "service-account-token"
+
+    class FakeCredentialsFactory:
+        @staticmethod
+        def from_service_account_file(path, scopes=None):
+            assert Path(path).name == "ga4-service-account.json"
+            assert scopes == ga4_probe.SCOPES
+            return FakeServiceAccountCredentials()
+
+    class FakeServiceAccount:
+        pass
+
+    FakeServiceAccount.Credentials = FakeCredentialsFactory
+
+    def request_factory():
+        return "auth-request"
+
+    monkeypatch.setattr(
+        ga4_probe, "_load_google_auth", lambda: (request_factory, None, FakeServiceAccount, ValueError)
+    )
+    directory = tmp_path / "profiles/ga4"
+    directory.mkdir(parents=True)
+    (directory / "ga4-service-account.json").write_text(
+        json.dumps({"type": "service_account", "client_email": "seo@example.iam.gserviceaccount.com"})
+    )
+
+    credentials = ga4_probe.load_credentials("ga4", runtime_root=tmp_path)
+
+    assert credentials.token == "service-account-token"
+    assert refreshes == ["auth-request"]

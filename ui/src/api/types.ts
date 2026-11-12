@@ -63,8 +63,9 @@ export type GoogleIntegration = {
 
 export type Ga4CredentialProfile = {
   profile: string;
-  credential_type: "oauth" | "unknown";
+  credential_type: "oauth" | "service_account" | "unknown";
   status: "ready" | "reauth_required" | "incomplete";
+  principal?: string | null;
   updated_at: string | null;
 };
 

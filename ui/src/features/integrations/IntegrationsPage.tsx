@@ -644,14 +644,14 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
 
         <section className={styles.gscGrid}>
           <form className={styles.panel} onSubmit={importGa4Credential}>
-            <div className={styles.panelHeading}><Upload aria-hidden="true" size={17} /><div><h3>Add GA4 auth profile</h3><p>Import a GA4 analytics.readonly token file. Use a new profile name when rotating.</p></div></div>
+            <div className={styles.panelHeading}><Upload aria-hidden="true" size={17} /><div><h3>Add GA4 auth profile</h3><p>Import a GA4 analytics.readonly OAuth token, or a service account key with its email added to the property. Use a new profile name when rotating.</p></div></div>
             <label className={styles.field}><span>Profile name</span><input value={ga4ProfileName} onChange={(event) => setGa4ProfileName(event.target.value)} pattern="[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}" required disabled={Boolean(busy)} /></label>
             <label className={styles.fileField}>
-              <span>GA4 token JSON</span>
+              <span>GA4 credential JSON</span>
               <input ref={ga4FileInput} type="file" accept="application/json,.json" onChange={(event) => setGa4CredentialFile(event.target.files?.[0] || null)} disabled={Boolean(busy)} required />
-              <small>{ga4CredentialFile?.name || "Select the GA4 token JSON file, maximum 128 KB."}</small>
+              <small>{ga4CredentialFile?.name || "Select the OAuth token or service account JSON file, maximum 128 KB."}</small>
             </label>
-            <button className={styles.primary} type="submit" disabled={!ga4CredentialFile || !ga4ProfileName || Boolean(busy)}>{busy === "ga4-import" ? "Importing" : "Import GA4 token"}</button>
+            <button className={styles.primary} type="submit" disabled={!ga4CredentialFile || !ga4ProfileName || Boolean(busy)}>{busy === "ga4-import" ? "Importing" : "Import GA4 credential"}</button>
           </form>
 
           <GooglePropertyPanel
