@@ -141,3 +141,7 @@ https://publisher.example/article,https://example.com/page,Product guide,true,ac
 - 私有 GSC、业务、结果和外链 JSON 使用 `0600`；稳定 `latest.json` 指向当前证据，时间戳文件保留历史。
 - `audits/backlinks-report.md` 和存在基线后的 `audits/backlinks-recheck.md` 满足工作流交付入口，只包含聚合摘要和私有证据路径。
 - 内容建议、变更评价和外链差异都不自动改站。发布、合并、重定向、接受风险和 disavow 仍需人工决策。
+
+## 周期检查的首次验收
+
+用户要求周期检查时，先按同一报告口径真实执行一次只读 check-in，列明来源、窗口、覆盖、过期与未接入项，再配置实际可用的调度环境。周期执行不绕过 finalized GSC、measurement regime、statistics 或演示文稿 readiness gate；缺失值不补零。脚本、技能和本地 UI 的存在不证明有云端常驻运行，未验证的宿主菜单和套餐不写成安装步骤。

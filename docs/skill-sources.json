@@ -1,39 +1,41 @@
 {
   "schema_version": 2,
-  "reviewed_on": "2026-10-29",
+  "reviewed_on": "2026-11-16",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "1204851402770592a456b77920417701d568cc7d",
+  "local_snapshot_commit": "685af492504f3e23aa4323391b1cc5587530165f",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
   "summary": {
-    "tracked_files": 413,
+    "tracked_files": 443,
     "by_source": {
       "claude-seo": 141,
+      "openseo-core": 12,
+      "openseo-experimental": 9,
       "seomachine": 93,
       "superseo": 125,
-      "workbench": 54
+      "workbench": 63
     },
     "by_kind": {
       "agent_metadata": 1,
       "asset": 9,
       "index": 2,
       "license": 19,
-      "reference": 286,
-      "skill": 61,
+      "reference": 312,
+      "skill": 65,
       "specialist_reference": 11,
       "workflow_reference": 24
     },
     "by_comparison_status": {
       "different": 138,
-      "identical": 221,
-      "workbench_native": 54
+      "identical": 242,
+      "workbench_native": 63
     },
-    "dependency_occurrences": 839,
+    "dependency_occurrences": 906,
     "dependencies_by_status": {
       "example_reference": 4,
-      "project_context_reference": 102,
-      "resolved_local": 719,
+      "project_context_reference": 101,
+      "resolved_local": 787,
       "route_or_example": 1,
       "template_reference": 3,
       "upstream_runtime_reference": 10
@@ -99,6 +101,38 @@
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
       "upstream_skill_entrypoints_not_mapped": []
+    },
+    "openseo-core": {
+      "repository": "every-app/open-seo",
+      "repository_url": "https://github.com/every-app/open-seo",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_version": null,
+      "reviewed_on": "2026-11-16",
+      "complete_tree_observed": true,
+      "tree_sha": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "root_license": "MIT",
+      "local_license_paths": [
+        "third_party/licenses/open-seo-MIT.txt"
+      ],
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": null,
+      "upstream_skill_entrypoints_not_mapped": []
+    },
+    "openseo-experimental": {
+      "repository": "every-app/seo-party-skills",
+      "repository_url": "https://github.com/every-app/seo-party-skills",
+      "comparison_ref": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "comparison_version": null,
+      "reviewed_on": "2026-11-16",
+      "complete_tree_observed": true,
+      "tree_sha": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "root_license": "MIT",
+      "local_license_paths": [
+        "third_party/licenses/seo-party-skills-MIT.txt"
+      ],
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": null,
+      "upstream_skill_entrypoints_not_mapped": []
     }
   },
   "files": [
@@ -115,8 +149,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "547ee33fecd0c3ecd801757cb91f32d564d12cc18a97f6060f2e82cc4415d00c",
-      "local_git_blob_sha": "97b88d4eaffe8ba847832577798a3ff4b16c2006",
+      "local_sha256": "c9bfeaf02d393880789cfd4cd95d4f67cc7d2f65ea906cac6935eeef873d483d",
+      "local_git_blob_sha": "cf13ff082dc321997e77eed0934a693199f0ecb1",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -142,7 +176,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/ab-test-setup/SKILL.md",
@@ -272,6 +306,88 @@
       },
       "maintenance_status": "active",
       "workingtree_modified": false
+    },
+    {
+      "id": "workbench:skills/ai-prompt-research/SKILL.md",
+      "local_path": "skills/ai-prompt-research/SKILL.md",
+      "path_history": [
+        "skills/ai-prompt-research/SKILL.md"
+      ],
+      "kind": "skill",
+      "capability": "ai-prompt-research",
+      "current_owner_path": "skills/ai-prompt-research/SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/ai-prompt-research/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/ai-prompt-research/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [
+        "openseo-core:plugins/openseo/skills/ai-prompt-research/SKILL.md"
+      ],
+      "workingtree_modified": true,
+      "local_sha256": "b7f9a58c121ab60c9375d14e34a0bb2d956858fe0deeac1ed51b4e1e0c7eb963",
+      "local_git_blob_sha": "c03429dee385840407e022c3730c425b89eb1d65",
+      "maintenance_status": "active"
+    },
+    {
+      "id": "workbench:skills/ai-visibility-audit/SKILL.md",
+      "local_path": "skills/ai-visibility-audit/SKILL.md",
+      "path_history": [
+        "skills/ai-visibility-audit/SKILL.md"
+      ],
+      "kind": "skill",
+      "capability": "ai-visibility-audit",
+      "current_owner_path": "skills/ai-visibility-audit/SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/ai-visibility-audit/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/ai-visibility-audit/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [
+        "openseo-core:plugins/openseo/skills/ai-visibility-audit/SKILL.md",
+        "openseo-experimental:skills/chatgpt-business-setup/SKILL.md",
+        "openseo-experimental:skills/rank-on-ai/SKILL.md"
+      ],
+      "workingtree_modified": true,
+      "local_sha256": "8a6dff3c14d71f79361250a740cc02d21b4c3c6d69b46f7a427db72dcfa3b2a8",
+      "local_git_blob_sha": "f3ef1a7dc4d552ff30a9b0540809244605c08948",
+      "maintenance_status": "active"
     },
     {
       "id": "seomachine:.claude/skills/analytics-tracking/SKILL.md",
@@ -596,13 +712,16 @@
         "path": "skills/competitive-landscape/SKILL.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
-      "derived_from": [],
-      "workingtree_modified": false,
-      "local_sha256": "bc40287c728a9ce36a889743ec11fdd64b5aa49d2cd08dc6bd0bf22453298bd6",
-      "local_git_blob_sha": "2cc9e5631b05632f190845bc9694d733e523af9e",
+      "derived_from": [
+        "openseo-core:plugins/openseo/skills/competitive-landscape/SKILL.md",
+        "openseo-core:plugins/openseo/skills/competitor-analysis/SKILL.md"
+      ],
+      "workingtree_modified": true,
+      "local_sha256": "70be2b9719153d2d53868407a7a3abeafa9cb7080ae0339b86456212a3aba5f0",
+      "local_git_blob_sha": "2149d1f31aa3778c74ae31a311becac7ab80558e",
       "maintenance_status": "active"
     },
     {
@@ -634,13 +753,15 @@
         "path": "skills/competitive-landscape/references/analysis-workflow.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
-      "derived_from": [],
-      "workingtree_modified": false,
-      "local_sha256": "6fc2be8151af265cb975ba1fab88b490b566dc531c798fc6c3acd5c6ba11d71e",
-      "local_git_blob_sha": "0d384e59a0d12a3d97b75708c417353b94892a31",
+      "derived_from": [
+        "openseo-core:plugins/openseo/skills/competitor-analysis/SKILL.md"
+      ],
+      "workingtree_modified": true,
+      "local_sha256": "8eada65cac9674410b8b5550ce4e9fff7b2eff35a04566bfbc8b3075f774b6a6",
+      "local_git_blob_sha": "3a6b78a823556c922c8a7532f5df9b4cae08d75e",
       "maintenance_status": "active"
     },
     {
@@ -672,13 +793,13 @@
         "path": "skills/competitive-landscape/references/report-template.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [],
-      "workingtree_modified": false,
-      "local_sha256": "d17b73e11d1f35e5c37055d30125dff095785ec1ed983c15699c6458c380262c",
-      "local_git_blob_sha": "73348e70e3213f0be18a5bae31288dc3a3a8ae32",
+      "workingtree_modified": true,
+      "local_sha256": "82d1e5dfe77978550b6f7673aca4cb24ed690f55764e23cd3e450fdbcd002c0d",
+      "local_git_blob_sha": "0c4acc612b794c99c63a3a1909e90cfcec24eb6b",
       "maintenance_status": "active"
     },
     {
@@ -3074,8 +3195,8 @@
       "upstream_path": ".claude/skills/free-tool-strategy/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "682edad24e1f1538579e223936eb064ac6cca30b8cf09b24a4b70157c06b60d9",
-      "local_git_blob_sha": "4c6c7d3924db82ce26b36481557d7a879c5dade3",
+      "local_sha256": "b70ce5817ee69927d4d43c6d0199bcfa71ed068c643797e678fbb4bec65f72ad",
+      "local_git_blob_sha": "9bb2374c9a8a76c2e4abf633ef118e6442b55cca",
       "comparison_upstream_blob_sha": "ec78ca60b34a5dd768fe18f814804e9aefd08ea8",
       "comparison_status": "different",
       "first_local_record": {
@@ -3101,7 +3222,47 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
+    },
+    {
+      "id": "workbench:skills/free-tool-strategy/references/search-validated-spec.md",
+      "local_path": "skills/free-tool-strategy/references/search-validated-spec.md",
+      "path_history": [
+        "skills/free-tool-strategy/references/search-validated-spec.md"
+      ],
+      "kind": "reference",
+      "capability": "free-tool-strategy",
+      "current_owner_path": "skills\\free-tool-strategy\\SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/free-tool-strategy/references/search-validated-spec.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/free-tool-strategy/references/search-validated-spec.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [
+        "openseo-experimental:skills/free-tool/SKILL.md"
+      ],
+      "workingtree_modified": true,
+      "local_sha256": "748667a4c7bce5ad8d2794afbcfab3cf21ff05103b0c9a96d626a5dead4da413",
+      "local_git_blob_sha": "1d1f6291a374ab33dc3c94bc0d83089e8d9087e3",
+      "maintenance_status": "active"
     },
     {
       "id": "seomachine:.claude/skills/free-tool-strategy/references/tool-types.md",
@@ -3328,8 +3489,8 @@
       "upstream_path": "skills/improve-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "d50cc9f3615e475cb315dd0a6f8c57010ab3e591a043a48f168d91bc0712995c",
-      "local_git_blob_sha": "7a90c50570221e841c66c690a217c28e7b46c80f",
+      "local_sha256": "074784cd2e76e2fcc397c70865c90666fc7e9b3f2c2009883cd817803191311d",
+      "local_git_blob_sha": "9df19f77c8f1f55f40897bb9a6e114d3e5ecf72f",
       "comparison_upstream_blob_sha": "8f1ff6b0c8fca8e96e4b821773d296ebf5c70c21",
       "comparison_status": "different",
       "first_local_record": {
@@ -3355,7 +3516,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/improve-content/references/anti-slop-ruleset.md",
@@ -4942,6 +5103,48 @@
       "workingtree_modified": false
     },
     {
+      "id": "workbench:skills/keyword-research/SKILL.md",
+      "local_path": "skills/keyword-research/SKILL.md",
+      "path_history": [
+        "skills/keyword-research/SKILL.md"
+      ],
+      "kind": "skill",
+      "capability": "keyword-research",
+      "current_owner_path": "skills/keyword-research/SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/keyword-research/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/keyword-research/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [
+        "openseo-core:plugins/openseo/skills/keyword-research/SKILL.md",
+        "openseo-experimental:skills/customer-keywords/SKILL.md",
+        "openseo-experimental:skills/keyword-gap/SKILL.md"
+      ],
+      "workingtree_modified": true,
+      "local_sha256": "2fd6b528296ba9760eec297600bd73d766f043e0266f633bad4f84be01bbad29",
+      "local_git_blob_sha": "7e362ff569067743fdd2b384acab38461ded3ff2",
+      "maintenance_status": "active"
+    },
+    {
       "id": "seomachine:.claude/skills/launch-strategy/SKILL.md",
       "local_path": "skills/launch-strategy/SKILL.md",
       "path_history": [
@@ -4997,8 +5200,8 @@
       "upstream_path": "skills/linkbuilding/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "58fc067b869a2b773dd309acd704e1e6c710f1f4c0250ff0512f2532c301b4d0",
-      "local_git_blob_sha": "56deaafa9432ec8197c1ee3ec370046efede32a2",
+      "local_sha256": "f754ed98bbc8dd0e78047df34d2c5c8aa1c86e53956ace957f9648bf00965e32",
+      "local_git_blob_sha": "491d8686bd8510378f46408cf9be30f48942a10a",
       "comparison_upstream_blob_sha": "849210a3092ee2078ee6ef5e8afebcc01f23c3d3",
       "comparison_status": "different",
       "first_local_record": {
@@ -5024,7 +5227,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/linkbuilding/references/anchor-text-safety-guide.md",
@@ -5109,6 +5312,46 @@
       },
       "maintenance_status": "active",
       "workingtree_modified": false
+    },
+    {
+      "id": "workbench:skills/linkbuilding/references/page-prospecting.md",
+      "local_path": "skills/linkbuilding/references/page-prospecting.md",
+      "path_history": [
+        "skills/linkbuilding/references/page-prospecting.md"
+      ],
+      "kind": "reference",
+      "capability": "linkbuilding",
+      "current_owner_path": "skills\\linkbuilding\\SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/linkbuilding/references/page-prospecting.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/linkbuilding/references/page-prospecting.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [
+        "openseo-core:plugins/openseo/skills/link-prospecting/SKILL.md"
+      ],
+      "workingtree_modified": true,
+      "local_sha256": "b15601326bb0d642d1d996bb253dddc72cf477372d91238578f31887949724b7",
+      "local_git_blob_sha": "613b1c1f48899d0b2f4c54c43812a4de09ca3d8c",
+      "maintenance_status": "active"
     },
     {
       "id": "superseo:skills/linkbuilding/references/phase-classification-tree.md",
@@ -6929,8 +7172,8 @@
       "upstream_path": ".claude/skills/product-marketing-context/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "81d4344463a02af5af5752d66a33fc6b922ad60bdfebe317f88fe0d2ff4fc53f",
-      "local_git_blob_sha": "21c8d6dc5d3cdce47120149d85b3351c3af4c9fb",
+      "local_sha256": "6da378b9c5bfba59f75bf0c9a4df18fde64a0ed6b54743fed6576c8c2c847f4a",
+      "local_git_blob_sha": "1451072659bbcf0868fcd5e19c381f5259b74ce9",
       "comparison_upstream_blob_sha": "e72d88246fe56b05836ac422d02c0b488b0ae9bf",
       "comparison_status": "different",
       "first_local_record": {
@@ -6956,7 +7199,10 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true,
+      "derived_from": [
+        "openseo-core:plugins/openseo/skills/seo-project-setup/SKILL.md"
+      ]
     },
     {
       "id": "seomachine:.claude/skills/programmatic-seo/SKILL.md",
@@ -7143,8 +7389,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "000cfd3d0bb2faa74eef3da044c58d10e02ef9b40558259ced15070491c46fd9",
-      "local_git_blob_sha": "6f9aa37980eb0b9224836aa439d00a38c79e525e",
+      "local_sha256": "66a512a5ce52fc44fc8801223f6e2742a662a6b5619bb9d587c503196ffb96da",
+      "local_git_blob_sha": "ae18ecc4ea06f789a3688247dfebc23cfef73749",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -7170,7 +7416,10 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true,
+      "derived_from": [
+        "openseo-core:plugins/openseo/skills/seo-project-setup/SKILL.md"
+      ]
     },
     {
       "id": "workbench:skills/project-context/agents/openai.yaml",
@@ -7502,6 +7751,46 @@
       "local_git_blob_sha": "5a3a3d6f3db1d5d317a53c7f131201bbfee179d0",
       "maintenance_status": "active",
       "workingtree_modified": false
+    },
+    {
+      "id": "workbench:skills/reverse-engineer-seo/SKILL.md",
+      "local_path": "skills/reverse-engineer-seo/SKILL.md",
+      "path_history": [
+        "skills/reverse-engineer-seo/SKILL.md"
+      ],
+      "kind": "skill",
+      "capability": "reverse-engineer-seo",
+      "current_owner_path": "skills/reverse-engineer-seo/SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/reverse-engineer-seo/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/reverse-engineer-seo/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [
+        "openseo-experimental:skills/reverse-engineer-seo/SKILL.md"
+      ],
+      "workingtree_modified": true,
+      "local_sha256": "9861d2bf693597b760b5da6815f79ef7f324659cab3e66ad78c61984ec713403",
+      "local_git_blob_sha": "a8aaaf8ef1c59e260bff8ccfe0da682273be12d2",
+      "maintenance_status": "active"
     },
     {
       "id": "claude-seo:skills/seo-schema/LICENSE.txt",
@@ -7975,8 +8264,8 @@
       "upstream_path": "skills/seo-cluster/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "cb8f7dc2e12df66befdb51688bc2c1ad8d4fb655d5a1827320fdda8a13ab20aa",
-      "local_git_blob_sha": "14594bd1e82517bbb3c182c98388d345e5f01ac9",
+      "local_sha256": "eee27d62d9bdbc89a27300066f753eb12c08b91ab9290fc986c2954cd943e793",
+      "local_git_blob_sha": "d2ec02feaef33e7f153c7b2ac7a7f823ff81fd65",
       "comparison_upstream_blob_sha": "7286d5054bb3443c0da39f412f805b089e9429bf",
       "comparison_status": "different",
       "first_local_record": {
@@ -8002,7 +8291,10 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true,
+      "derived_from": [
+        "openseo-core:plugins/openseo/skills/keyword-clustering/SKILL.md"
+      ]
     },
     {
       "id": "claude-seo:skills/seo-cluster/references/execution-workflow.md",
@@ -9506,8 +9798,8 @@
       "upstream_path": "skills/seo-flow/references/prompts/local/prompt-generating-a-title-tag.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "2a054fe7be5cabad0538ae5ed34abc6d7228f607e992b595b4ce8d56aa92954b",
-      "local_git_blob_sha": "aea6d0538a4f370ef4d0eef4c10207a6f2bc5373",
+      "local_sha256": "24181c90aa12145b31859dfc95f6fed7787d82ce79b2343c7f2cf29d57d4c079",
+      "local_git_blob_sha": "8617643a8ad655a01e44c4e7462d74b787ab5e00",
       "comparison_upstream_blob_sha": "b0a7ce2efebd750b4b966c42522a6f12c87d0f97",
       "comparison_status": "different",
       "first_local_record": {
@@ -9540,7 +9832,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-flow/references/prompts/local/prompt-rewriting-existing-homepage.md",
@@ -10899,8 +11191,8 @@
       "upstream_path": "skills/seo-geo/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "6546a5957f19db6659e964d21ddb9d4973c2ce4056c843ac4317449ac68cf3ed",
-      "local_git_blob_sha": "b8cbf471b8681d2ddda5b6fd2d4e5993c815790c",
+      "local_sha256": "24897d404af6643839eba796becf89be5b65b469edd7acbe6c04b629da0e061a",
+      "local_git_blob_sha": "77a145c05304fd4c5143378a58fe82c454ee4320",
       "comparison_upstream_blob_sha": "b52a0745b06ed05c9e70487143a059a74e6288ab",
       "comparison_status": "different",
       "first_local_record": {
@@ -10926,7 +11218,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "workbench:skills/seo-geo/references/citation-research.md",
@@ -10963,10 +11255,10 @@
       "derived_from": [
         "seomachine:.claude/commands/research-ai-citations.md"
       ],
-      "local_sha256": "002bfc66e3cfac5f92e14972a61e5e479ae73801b569450c7143fcb8e8a4cf25",
-      "local_git_blob_sha": "4b7302765737e9144cd222dee70fdb5c9240a5fd",
+      "local_sha256": "be85591a6231f3e9ee4adc672a50fc7e256791d036278aeee275e76e25fad28e",
+      "local_git_blob_sha": "dc22311929732cac9a10fe2fdb0fb02418b8e7b0",
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-google/LICENSE.txt",
@@ -11197,8 +11489,8 @@
       "upstream_path": "skills/seo-google/references/auth-setup.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "b232980410e28e01bd6d7e8483d318b048420589cc23561012f0ae18ec58e977",
-      "local_git_blob_sha": "fd783ed11c32cf1aa0902a66736a57500b13fa61",
+      "local_sha256": "e2d56a38efdca619e56554aa9986842a16d0d3b80b345ece37e790a703e0bcdc",
+      "local_git_blob_sha": "77b4fb5fd9a9d1b90bd26740db51362c562104bd",
       "comparison_upstream_blob_sha": "8265533a2dec96494aa06aa97185ea8f4a64b38b",
       "comparison_status": "different",
       "first_local_record": {
@@ -11208,9 +11500,9 @@
         "path": "skills/claude-seo-extra/seo-google/references/auth-setup.md"
       },
       "last_local_change": {
-        "commit": "11deeabee81b6ce9385346fe8800f5bd631ce7de",
-        "date": "2026-11-10",
-        "subject": "docs: split documentation into guides, reference, and history",
+        "commit": "be92fd4e6f5662a2d24bbd598e06eb3ac19afa13",
+        "date": "2026-11-12",
+        "subject": "feat(google): support GA4 service account credentials",
         "path": "skills/seo-google/references/auth-setup.md",
         "record_status": "committed"
       },
@@ -11224,7 +11516,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-google/references/ga4-data-api.md",
@@ -12358,8 +12650,8 @@
       "upstream_path": "skills/seo-maps/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "6f69517ab708c2ace5263eaabd6b098cebaf444aa7ba538fabd5d396dd10c74f",
-      "local_git_blob_sha": "344f937670487486915e8f49e37ad7d5143e2446",
+      "local_sha256": "9428f7655fca8873c9729be7aa73c537d42c2b86b324ebe0d484e98094171780",
+      "local_git_blob_sha": "9b3a3708de715b51a275eb116481c4c7bf2968fd",
       "comparison_upstream_blob_sha": "e78d1cfac500448195a39638375ffbf614f2052a",
       "comparison_status": "different",
       "first_local_record": {
@@ -12385,7 +12677,47 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
+    },
+    {
+      "id": "workbench:skills/seo-maps/references/bounded-profile-comparison.md",
+      "local_path": "skills/seo-maps/references/bounded-profile-comparison.md",
+      "path_history": [
+        "skills/seo-maps/references/bounded-profile-comparison.md"
+      ],
+      "kind": "reference",
+      "capability": "seo-maps",
+      "current_owner_path": "skills\\seo-maps\\SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/seo-maps/references/bounded-profile-comparison.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/seo-maps/references/bounded-profile-comparison.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [
+        "openseo-core:plugins/openseo/skills/local-seo/SKILL.md"
+      ],
+      "workingtree_modified": true,
+      "local_sha256": "c3df62d35f604915e134eb5c300dd4e85d65d772f90a7d7705a88d019cfaa505",
+      "local_git_blob_sha": "13e8b2a13de23332465f7bdbbd348b796dbd5b0c",
+      "maintenance_status": "active"
     },
     {
       "id": "claude-seo:skills/seo-plan/LICENSE.txt",
@@ -12444,8 +12776,8 @@
       "upstream_path": "skills/seo-plan/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "56f94069ecbe6f174948f9107a9ca4dcbd1b225dad1b425799ec9b75710403ea",
-      "local_git_blob_sha": "887118a146e558dba831e9c1e34608dc01fad99d",
+      "local_sha256": "24aa883abe5298ba5d8e3054eb56fc05317081cdc27f1d7de5b705950f49ac7e",
+      "local_git_blob_sha": "0096cde37c4d972eff87ac9ef67a7b8e38131a7f",
       "comparison_upstream_blob_sha": "f2a6729652575082b7d603d5beab9e8602cd5e3a",
       "comparison_status": "different",
       "first_local_record": {
@@ -12471,7 +12803,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-plan/assets/agency.md",
@@ -12730,6 +13062,47 @@
       },
       "maintenance_status": "active",
       "workingtree_modified": false
+    },
+    {
+      "id": "workbench:skills/seo-plan/references/competitor-driven-plan.md",
+      "local_path": "skills/seo-plan/references/competitor-driven-plan.md",
+      "path_history": [
+        "skills/seo-plan/references/competitor-driven-plan.md"
+      ],
+      "kind": "reference",
+      "capability": "seo-plan",
+      "current_owner_path": "skills\\seo-plan\\SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/seo-plan/references/competitor-driven-plan.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/seo-plan/references/competitor-driven-plan.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [
+        "openseo-experimental:skills/competitor-strategy/SKILL.md",
+        "openseo-experimental:skills/money-pages/SKILL.md"
+      ],
+      "workingtree_modified": true,
+      "local_sha256": "9f6c5633a1e76ece18e57a7203707da60e2831d8d2941b6ae93e80c78d470d5a",
+      "local_git_blob_sha": "1feda629670df2e74707d0829d37c3268ee80814",
+      "maintenance_status": "active"
     },
     {
       "id": "claude-seo:skills/seo-sxo/SKILL.md",
@@ -13002,8 +13375,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "16db2f12f93c359bffc5534016c6df0bc92886eb7f068a65493e93d5cbe766d9",
-      "local_git_blob_sha": "be191ee9d5eacd4ac9b7a3a1b52b1b347e577fd3",
+      "local_sha256": "b7edccfc7ea5db5d0de351d8bf325ba6862431b6e210de18f78406dbe746df13",
+      "local_git_blob_sha": "9509232a31f7ac2071003fe1e8ee2c382cabd174",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -13027,7 +13400,7 @@
         "claude-seo:skills/seo/SKILL.md"
       ],
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo/references/backlink-quality.md",
@@ -13620,11 +13993,14 @@
       "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
-      "derived_from": [],
-      "local_sha256": "46b417f176895ab45e18e9839cfe9a2d942060d9076f14e34f3752935c898540",
-      "local_git_blob_sha": "25654e1f526173f9ce6ac3af7e1c863a25157e3b",
+      "derived_from": [
+        "openseo-core:plugins/openseo/skills/seo-report/SKILL.md",
+        "openseo-experimental:skills/seo-manager-agent/SKILL.md"
+      ],
+      "local_sha256": "db44d54b5ecf1c865ff2d13b50904b0f21d8ee209c07e7c676c31dbf09462761",
+      "local_git_blob_sha": "8ffa6973527246000176cb5f13be68a70b28a05d",
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "seomachine:.claude/skills/signup-flow-cro/SKILL.md",
@@ -13682,8 +14058,8 @@
       "upstream_path": null,
       "baseline_status": "workbench_native",
       "imported_upstream_commit": null,
-      "local_sha256": "b5d094454d009a3c3837043135a03f18874e5f1bf352b8cfffc1bef7c1dfa536",
-      "local_git_blob_sha": "211e51d440128cdace1301ce6c7afdadd8a632f6",
+      "local_sha256": "79fd885bf63b57b8070f6e31e853b826692bae5f4bfa1e00cbfde19a75d629a2",
+      "local_git_blob_sha": "841b3839f7e6235436c6ee447cf5015628e62544",
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
@@ -13700,7 +14076,7 @@
         "path": "skills/site-audit/SKILL.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "scope_routing_adapted_for_flat_layout",
       "declared_attribution": [],
       "composed_from": [
@@ -13708,7 +14084,7 @@
         "seomachine:.claude/skills/seo-audit/SKILL.md"
       ],
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "claude-seo:skills/seo-audit/LICENSE.txt",
@@ -13795,6 +14171,46 @@
       },
       "maintenance_status": "active",
       "workingtree_modified": false
+    },
+    {
+      "id": "workbench:skills/site-audit/references/opportunity-selection.md",
+      "local_path": "skills/site-audit/references/opportunity-selection.md",
+      "path_history": [
+        "skills/site-audit/references/opportunity-selection.md"
+      ],
+      "kind": "reference",
+      "capability": "site-audit",
+      "current_owner_path": "skills\\site-audit\\SKILL.md",
+      "source_id": "workbench",
+      "upstream_path": null,
+      "baseline_status": "workbench_native",
+      "imported_upstream_commit": null,
+      "comparison_upstream_blob_sha": null,
+      "comparison_status": "workbench_native",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/site-audit/references/opportunity-selection.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "skills/site-audit/references/opportunity-selection.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "portable_method_adaptation",
+      "declared_attribution": [],
+      "derived_from": [
+        "openseo-core:plugins/openseo/skills/seo-audit/SKILL.md"
+      ],
+      "workingtree_modified": true,
+      "local_sha256": "cb18055da7e012cfc12e3a34f46b9d5eac4a1149968ce3549016eba4467e9681",
+      "local_git_blob_sha": "be92cbc4e5756031ae228f46a16c92812186ed3a",
+      "maintenance_status": "active"
     },
     {
       "id": "seomachine:.claude/skills/seo-audit/references/aeo-geo-patterns.md",
@@ -14690,8 +15106,8 @@
       "upstream_path": "skills/write-content/SKILL.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "c07e63321db649e39d353fd89dcc61b626b070113ceca3e2adc8c9d5fe2f4cec",
-      "local_git_blob_sha": "0e6680a1e3aeee19c79482efd27c44f4f3bc2592",
+      "local_sha256": "b2990fa184bcf270d8106be7e427ae5c1dbc3b37aab3649f37552b3a638900b7",
+      "local_git_blob_sha": "8f9f808d51acabd6117e42e744f39ccf54a0b6d6",
       "comparison_upstream_blob_sha": "35c6c4041ba0a03de482ccc8e439183e6031d681",
       "comparison_status": "different",
       "first_local_record": {
@@ -14717,7 +15133,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/anti-slop-ruleset.md",
@@ -16028,8 +16444,8 @@
       "upstream_path": "skills/write-content/references/quality-scoring.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "2156b3935fc1f11cbae9cf1b29900eeb26636c3891f960103594e860f7498369",
-      "local_git_blob_sha": "f8bbcf6c7c040c34d6351fb30b46c64431465e53",
+      "local_sha256": "2a246ddb3656a2b11dd97ce0bfe107fba52b6b118dc79b3286899d9c7985c4a2",
+      "local_git_blob_sha": "79958065be5f8bc148248f06cc50c6e4f404893a",
       "comparison_upstream_blob_sha": "5d3a3ad5559e4c6f587b1a3a0adda4e175a2bb63",
       "comparison_status": "different",
       "first_local_record": {
@@ -16055,7 +16471,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/seo-optimization-layer.md",
@@ -16070,8 +16486,8 @@
       "upstream_path": "skills/write-content/references/seo-optimization-layer.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "809ee8cb447e779adbda4d534b4c1bc0827ebb4191c3171a3300f57ef6d780f8",
-      "local_git_blob_sha": "0995757bfebd2dd3a1268f9016ada1093fdb020b",
+      "local_sha256": "aedbc867691af75b05e4109cccd1753b4d513fb2152fc61797c4c1494445413c",
+      "local_git_blob_sha": "efd02d17270c2b3ae87af9cb40c61af33e446091",
       "comparison_upstream_blob_sha": "d2fbae1a76183ce15df2388d798adc294340fdda",
       "comparison_status": "different",
       "first_local_record": {
@@ -16097,7 +16513,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
     },
     {
       "id": "superseo:skills/write-content/references/serp-driven-writing.md",
@@ -16212,13 +16628,13 @@
         "path": "skills/write-content/references/title-craft.md",
         "record_status": "committed"
       },
-      "content_changed_since_first_local_record": false,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [],
-      "workingtree_modified": false,
-      "local_sha256": "059a796654c9dac2e2597a34344e99d2136384d91c9bea82ade06796097c362d",
-      "local_git_blob_sha": "9f20d14d516b7bb7e027de92449fcd94cf52ebe3",
+      "workingtree_modified": true,
+      "local_sha256": "6fa5bdec1f9a2942ab6af01a00e3ceff280928a42359e5288e663a0ccba7b03a",
+      "local_git_blob_sha": "896e59c0d20f90fa471d6f8884c83c6a5fd76658",
       "maintenance_status": "active"
     },
     {
@@ -16276,8 +16692,8 @@
       "upstream_path": "skills/write-content/references/writing-pipeline.md",
       "baseline_status": "baseline_unknown",
       "imported_upstream_commit": null,
-      "local_sha256": "d19ceb2e8308ea3b05dcb399aeaf498c69c533c4730f5916e5c1b97e56350fdf",
-      "local_git_blob_sha": "6956e715ca20cb1ecb019f596b47a28121eb4dc0",
+      "local_sha256": "572d6b712adb04023b6d913dec750b0fe9c170a6d3b37ab19b327ad762966374",
+      "local_git_blob_sha": "f72451b5348b07546acf768ea40a80b687e2ae2a",
       "comparison_upstream_blob_sha": "c8a4c3c70a9526389f1cbf3eacf9f10c9ae4d0c2",
       "comparison_status": "different",
       "first_local_record": {
@@ -16303,7 +16719,805 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": false
+      "workingtree_modified": true
+    },
+    {
+      "id": "openseo-core:plugins/openseo/skills/ai-prompt-research/SKILL.md",
+      "local_path": "third_party/skill-history/open-seo/plugins/openseo/skills/ai-prompt-research/SKILL.md",
+      "path_history": [
+        "plugins/openseo/skills/ai-prompt-research/SKILL.md",
+        "third_party/skill-history/open-seo/plugins/openseo/skills/ai-prompt-research/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "ai-prompt-research",
+      "current_owner_path": "skills/ai-prompt-research/SKILL.md",
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/ai-prompt-research/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_upstream_blob_sha": "cb1da938330b2ed4447ff0f6ccfe84e96b37c8c0",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/ai-prompt-research/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/ai-prompt-research/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "fa2e18bc074e81b539ea8f3f8741320dc0f1250b32098de7c80a80bbca565d25",
+      "local_git_blob_sha": "cb1da938330b2ed4447ff0f6ccfe84e96b37c8c0",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-core:plugins/openseo/skills/ai-visibility-audit/SKILL.md",
+      "local_path": "third_party/skill-history/open-seo/plugins/openseo/skills/ai-visibility-audit/SKILL.md",
+      "path_history": [
+        "plugins/openseo/skills/ai-visibility-audit/SKILL.md",
+        "third_party/skill-history/open-seo/plugins/openseo/skills/ai-visibility-audit/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "ai-visibility-audit",
+      "current_owner_path": "skills/ai-visibility-audit/SKILL.md",
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/ai-visibility-audit/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_upstream_blob_sha": "fcb12e340687d72b759e75e5f2431e5ce1c3a3a3",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/ai-visibility-audit/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/ai-visibility-audit/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "7b84ed2f8fdac1df191c7fe19bdd6496f8d7cceb9c97347c59a53742997b4dda",
+      "local_git_blob_sha": "fcb12e340687d72b759e75e5f2431e5ce1c3a3a3",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-core:plugins/openseo/skills/competitive-landscape/SKILL.md",
+      "local_path": "third_party/skill-history/open-seo/plugins/openseo/skills/competitive-landscape/SKILL.md",
+      "path_history": [
+        "plugins/openseo/skills/competitive-landscape/SKILL.md",
+        "third_party/skill-history/open-seo/plugins/openseo/skills/competitive-landscape/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "competitive-landscape",
+      "current_owner_path": "skills/competitive-landscape/SKILL.md",
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/competitive-landscape/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_upstream_blob_sha": "7c0c1f62b1c554f9270b1adb37c6644fa98a0049",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/competitive-landscape/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/competitive-landscape/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "9138f23ee62a8d8f0c1b734b3a56ff68233e99294ef9367d9ad2dba1c9a0749f",
+      "local_git_blob_sha": "7c0c1f62b1c554f9270b1adb37c6644fa98a0049",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-core:plugins/openseo/skills/competitor-analysis/SKILL.md",
+      "local_path": "third_party/skill-history/open-seo/plugins/openseo/skills/competitor-analysis/SKILL.md",
+      "path_history": [
+        "plugins/openseo/skills/competitor-analysis/SKILL.md",
+        "third_party/skill-history/open-seo/plugins/openseo/skills/competitor-analysis/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "competitive-landscape",
+      "current_owner_path": "skills/competitive-landscape/SKILL.md",
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/competitor-analysis/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_upstream_blob_sha": "1b2f791922cb7ff162257a8fbd9d5d51961f7761",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/competitor-analysis/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/competitor-analysis/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "048237244e0ca9eb29b2ec84c4469ba82fb7d1fd4cb4d42917e4b70eb99bc613",
+      "local_git_blob_sha": "1b2f791922cb7ff162257a8fbd9d5d51961f7761",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-core:plugins/openseo/skills/keyword-clustering/SKILL.md",
+      "local_path": "third_party/skill-history/open-seo/plugins/openseo/skills/keyword-clustering/SKILL.md",
+      "path_history": [
+        "plugins/openseo/skills/keyword-clustering/SKILL.md",
+        "third_party/skill-history/open-seo/plugins/openseo/skills/keyword-clustering/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "seo-cluster",
+      "current_owner_path": "skills/seo-cluster/SKILL.md",
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/keyword-clustering/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_upstream_blob_sha": "abd6ed1852617186ac99d24629579e87482b68c9",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/keyword-clustering/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/keyword-clustering/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "103cf5f714e395392bdc18badc45dfdbd3653e44d6b0685b7befe4a82090f19d",
+      "local_git_blob_sha": "abd6ed1852617186ac99d24629579e87482b68c9",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-core:plugins/openseo/skills/keyword-research/SKILL.md",
+      "local_path": "third_party/skill-history/open-seo/plugins/openseo/skills/keyword-research/SKILL.md",
+      "path_history": [
+        "plugins/openseo/skills/keyword-research/SKILL.md",
+        "third_party/skill-history/open-seo/plugins/openseo/skills/keyword-research/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "keyword-research",
+      "current_owner_path": "skills/keyword-research/SKILL.md",
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/keyword-research/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_upstream_blob_sha": "28d9db45d66c698314a15e254e697db70c2574d4",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/keyword-research/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/keyword-research/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "d4973d428f94bf335c8ffb567223e8d2014b0be545a78bd3361bfb1fc82a887b",
+      "local_git_blob_sha": "28d9db45d66c698314a15e254e697db70c2574d4",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-core:plugins/openseo/skills/link-prospecting/SKILL.md",
+      "local_path": "third_party/skill-history/open-seo/plugins/openseo/skills/link-prospecting/SKILL.md",
+      "path_history": [
+        "plugins/openseo/skills/link-prospecting/SKILL.md",
+        "third_party/skill-history/open-seo/plugins/openseo/skills/link-prospecting/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "references",
+      "current_owner_path": "skills/linkbuilding/references/page-prospecting.md",
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/link-prospecting/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_upstream_blob_sha": "eb676eae14b21a130ba9d097f52ddb986166fd31",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/link-prospecting/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/link-prospecting/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "60feb4f06a36df5bdf18d263a04a7c155ed85d5e5961950ca05608d4d6e3a8a3",
+      "local_git_blob_sha": "eb676eae14b21a130ba9d097f52ddb986166fd31",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-core:plugins/openseo/skills/local-seo/SKILL.md",
+      "local_path": "third_party/skill-history/open-seo/plugins/openseo/skills/local-seo/SKILL.md",
+      "path_history": [
+        "plugins/openseo/skills/local-seo/SKILL.md",
+        "third_party/skill-history/open-seo/plugins/openseo/skills/local-seo/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "references",
+      "current_owner_path": "skills/seo-maps/references/bounded-profile-comparison.md",
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/local-seo/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_upstream_blob_sha": "534762f1684fa1f6457eef622e649d431a30517d",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/local-seo/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/local-seo/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "07cfa026e3220c8ab603fb2869f0ab244b500899c7db0e83f8433aca64aa34da",
+      "local_git_blob_sha": "534762f1684fa1f6457eef622e649d431a30517d",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-core:plugins/openseo/skills/seo-audit/SKILL.md",
+      "local_path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-audit/SKILL.md",
+      "path_history": [
+        "plugins/openseo/skills/seo-audit/SKILL.md",
+        "third_party/skill-history/open-seo/plugins/openseo/skills/seo-audit/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "references",
+      "current_owner_path": "skills/site-audit/references/opportunity-selection.md",
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/seo-audit/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_upstream_blob_sha": "ce6ac6bfb229ce2f8649b10dd219f80dcb3eb90d",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-audit/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-audit/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "0fd0dcc9a5f8b51c5e13857c2770ec3b794eaebe32339f193549a541c6f46e05",
+      "local_git_blob_sha": "ce6ac6bfb229ce2f8649b10dd219f80dcb3eb90d",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-core:plugins/openseo/skills/seo-coach/SKILL.md",
+      "local_path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-coach/SKILL.md",
+      "path_history": [
+        "plugins/openseo/skills/seo-coach/SKILL.md",
+        "third_party/skill-history/open-seo/plugins/openseo/skills/seo-coach/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "source-history",
+      "current_owner_path": null,
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/seo-coach/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_upstream_blob_sha": "9e6db0f1fcc482cbf9f94354846837b4d09ff7b9",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-coach/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-coach/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "08e276ec7e2409548ecaf1edfb9e1e2af285e6f6ecd1e209c81277d3df43fc44",
+      "local_git_blob_sha": "9e6db0f1fcc482cbf9f94354846837b4d09ff7b9",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-core:plugins/openseo/skills/seo-project-setup/SKILL.md",
+      "local_path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-project-setup/SKILL.md",
+      "path_history": [
+        "plugins/openseo/skills/seo-project-setup/SKILL.md",
+        "third_party/skill-history/open-seo/plugins/openseo/skills/seo-project-setup/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "project-context",
+      "current_owner_path": "skills/project-context/SKILL.md",
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/seo-project-setup/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_upstream_blob_sha": "00df9341ef19871d33f96cf4670cc90e7cfc70bd",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-project-setup/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-project-setup/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "d11b75e01afb8f25f5e8198c3863a70ad6fa8c774056ef10184b3d8e22e9a073",
+      "local_git_blob_sha": "00df9341ef19871d33f96cf4670cc90e7cfc70bd",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-core:plugins/openseo/skills/seo-report/SKILL.md",
+      "local_path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-report/SKILL.md",
+      "path_history": [
+        "plugins/openseo/skills/seo-report/SKILL.md",
+        "third_party/skill-history/open-seo/plugins/openseo/skills/seo-report/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "references",
+      "current_owner_path": "skills/seo/references/workbench-operations.md",
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/seo-report/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "comparison_upstream_blob_sha": "104bcc09284921c409121d16f652f77ac09a562b",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-report/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-report/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "4b2c0e6d8e6080cce6ee27ace34be16c872df89f093bc824864af95f6befe63f",
+      "local_git_blob_sha": "104bcc09284921c409121d16f652f77ac09a562b",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-experimental:skills/chatgpt-business-setup/SKILL.md",
+      "local_path": "third_party/skill-history/seo-party-skills/skills/chatgpt-business-setup/SKILL.md",
+      "path_history": [
+        "skills/chatgpt-business-setup/SKILL.md",
+        "third_party/skill-history/seo-party-skills/skills/chatgpt-business-setup/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "ai-visibility-audit",
+      "current_owner_path": "skills/ai-visibility-audit/SKILL.md",
+      "source_id": "openseo-experimental",
+      "upstream_path": "skills/chatgpt-business-setup/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "comparison_upstream_blob_sha": "9dd4b9ed335d933e8511a263551372458e657799",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/chatgpt-business-setup/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/chatgpt-business-setup/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "3947b40f95f97db2e83f04954aeaeffbd3199b931b0f8f841672397c4b5a7e98",
+      "local_git_blob_sha": "9dd4b9ed335d933e8511a263551372458e657799",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-experimental:skills/competitor-strategy/SKILL.md",
+      "local_path": "third_party/skill-history/seo-party-skills/skills/competitor-strategy/SKILL.md",
+      "path_history": [
+        "skills/competitor-strategy/SKILL.md",
+        "third_party/skill-history/seo-party-skills/skills/competitor-strategy/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "references",
+      "current_owner_path": "skills/seo-plan/references/competitor-driven-plan.md",
+      "source_id": "openseo-experimental",
+      "upstream_path": "skills/competitor-strategy/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "comparison_upstream_blob_sha": "f717735582fb00df98a257fed9b5a6e6123008ef",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/competitor-strategy/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/competitor-strategy/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "d9c7d84c9b8585bc6caa0337c571bacc72f64095df08e6346d733114c1d08ddd",
+      "local_git_blob_sha": "f717735582fb00df98a257fed9b5a6e6123008ef",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-experimental:skills/customer-keywords/SKILL.md",
+      "local_path": "third_party/skill-history/seo-party-skills/skills/customer-keywords/SKILL.md",
+      "path_history": [
+        "skills/customer-keywords/SKILL.md",
+        "third_party/skill-history/seo-party-skills/skills/customer-keywords/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "keyword-research",
+      "current_owner_path": "skills/keyword-research/SKILL.md",
+      "source_id": "openseo-experimental",
+      "upstream_path": "skills/customer-keywords/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "comparison_upstream_blob_sha": "8b914fa1eadf4e396dad26cc8315905189651450",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/customer-keywords/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/customer-keywords/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "a301f4efbf9509e736871f4b866aaed44350d12bb4e6798c1e22185073e988fb",
+      "local_git_blob_sha": "8b914fa1eadf4e396dad26cc8315905189651450",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-experimental:skills/free-tool/SKILL.md",
+      "local_path": "third_party/skill-history/seo-party-skills/skills/free-tool/SKILL.md",
+      "path_history": [
+        "skills/free-tool/SKILL.md",
+        "third_party/skill-history/seo-party-skills/skills/free-tool/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "references",
+      "current_owner_path": "skills/free-tool-strategy/references/search-validated-spec.md",
+      "source_id": "openseo-experimental",
+      "upstream_path": "skills/free-tool/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "comparison_upstream_blob_sha": "31924ece148ce5f6a23a9ee75f5644f0382502f6",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/free-tool/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/free-tool/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "faa710b4c1378e9de6aea6f82fbad194031077622d79103aa7189e81afe15c9c",
+      "local_git_blob_sha": "31924ece148ce5f6a23a9ee75f5644f0382502f6",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-experimental:skills/keyword-gap/SKILL.md",
+      "local_path": "third_party/skill-history/seo-party-skills/skills/keyword-gap/SKILL.md",
+      "path_history": [
+        "skills/keyword-gap/SKILL.md",
+        "third_party/skill-history/seo-party-skills/skills/keyword-gap/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "keyword-research",
+      "current_owner_path": "skills/keyword-research/SKILL.md",
+      "source_id": "openseo-experimental",
+      "upstream_path": "skills/keyword-gap/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "comparison_upstream_blob_sha": "828e33748e3762e8a449e717f2849e7afe6d0b2e",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/keyword-gap/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/keyword-gap/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "9d7b599c57f3bba0ca946461f782618e3da77a3ea1f3c3abf0314161095a8519",
+      "local_git_blob_sha": "828e33748e3762e8a449e717f2849e7afe6d0b2e",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-experimental:skills/money-pages/SKILL.md",
+      "local_path": "third_party/skill-history/seo-party-skills/skills/money-pages/SKILL.md",
+      "path_history": [
+        "skills/money-pages/SKILL.md",
+        "third_party/skill-history/seo-party-skills/skills/money-pages/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "references",
+      "current_owner_path": "skills/seo-plan/references/competitor-driven-plan.md",
+      "source_id": "openseo-experimental",
+      "upstream_path": "skills/money-pages/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "comparison_upstream_blob_sha": "5e51f6d9ae6c63cec58033b6aa8b9d4df51f29f6",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/money-pages/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/money-pages/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "ecae12a2dc528682026830197d2e3e876c441b8837a0e2de6cb8025b187080ed",
+      "local_git_blob_sha": "5e51f6d9ae6c63cec58033b6aa8b9d4df51f29f6",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-experimental:skills/rank-on-ai/SKILL.md",
+      "local_path": "third_party/skill-history/seo-party-skills/skills/rank-on-ai/SKILL.md",
+      "path_history": [
+        "skills/rank-on-ai/SKILL.md",
+        "third_party/skill-history/seo-party-skills/skills/rank-on-ai/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "ai-visibility-audit",
+      "current_owner_path": "skills/ai-visibility-audit/SKILL.md",
+      "source_id": "openseo-experimental",
+      "upstream_path": "skills/rank-on-ai/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "comparison_upstream_blob_sha": "c14a7630f726a15375ab64bf9194199f7668b205",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/rank-on-ai/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/rank-on-ai/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "bb7e3f3b554a17bdebdc14a16370049835fca0218fbda1737f5a02f2c38ed684",
+      "local_git_blob_sha": "c14a7630f726a15375ab64bf9194199f7668b205",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-experimental:skills/reverse-engineer-seo/SKILL.md",
+      "local_path": "third_party/skill-history/seo-party-skills/skills/reverse-engineer-seo/SKILL.md",
+      "path_history": [
+        "skills/reverse-engineer-seo/SKILL.md",
+        "third_party/skill-history/seo-party-skills/skills/reverse-engineer-seo/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "reverse-engineer-seo",
+      "current_owner_path": "skills/reverse-engineer-seo/SKILL.md",
+      "source_id": "openseo-experimental",
+      "upstream_path": "skills/reverse-engineer-seo/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "comparison_upstream_blob_sha": "a97e8fa9c54bc2a0de8d33007b28c0e32e371b35",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/reverse-engineer-seo/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/reverse-engineer-seo/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "d3853fe1fcd7d3a7d74000e14d2538f3f3335a0e957db04f00629e5ee252b7fb",
+      "local_git_blob_sha": "a97e8fa9c54bc2a0de8d33007b28c0e32e371b35",
+      "maintenance_status": "historical_source"
+    },
+    {
+      "id": "openseo-experimental:skills/seo-manager-agent/SKILL.md",
+      "local_path": "third_party/skill-history/seo-party-skills/skills/seo-manager-agent/SKILL.md",
+      "path_history": [
+        "skills/seo-manager-agent/SKILL.md",
+        "third_party/skill-history/seo-party-skills/skills/seo-manager-agent/SKILL.md"
+      ],
+      "kind": "reference",
+      "capability": "references",
+      "current_owner_path": "skills/seo/references/workbench-operations.md",
+      "source_id": "openseo-experimental",
+      "upstream_path": "skills/seo-manager-agent/SKILL.md",
+      "baseline_status": "pinned_source",
+      "imported_upstream_commit": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "comparison_upstream_blob_sha": "d2dfad19c2560dda47ff4cf82c87d769a7c3dd4d",
+      "comparison_status": "identical",
+      "first_local_record": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/seo-manager-agent/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "last_local_change": {
+        "commit": null,
+        "date": "2026-11-16",
+        "path": "third_party/skill-history/seo-party-skills/skills/seo-manager-agent/SKILL.md",
+        "subject": "OpenSEO method adaptation",
+        "record_status": "introduced_in_current_change"
+      },
+      "content_changed_since_first_local_record": null,
+      "semantic_review": "historical_source_only",
+      "declared_attribution": [],
+      "workingtree_modified": true,
+      "local_sha256": "901591acea5933b05c6ffc4dbc6354b1912df748615ac00e39c13afb26b05811",
+      "local_git_blob_sha": "d2dfad19c2560dda47ff4cf82c87d769a7c3dd4d",
+      "maintenance_status": "historical_source"
     },
     {
       "id": "workbench:third_party/skill-history/seomachine/README.md",
@@ -18056,13 +19270,21 @@
       "from_path": "skills/README.md",
       "line": 30,
       "syntax": "markdown_link",
+      "target": "reverse-engineer-seo/SKILL.md",
+      "resolved_path": "skills/reverse-engineer-seo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 31,
+      "syntax": "markdown_link",
       "target": "competitive-landscape/SKILL.md",
       "resolved_path": "skills/competitive-landscape/SKILL.md",
       "status": "resolved_local"
     },
     {
       "from_path": "skills/README.md",
-      "line": 31,
+      "line": 32,
       "syntax": "markdown_link",
       "target": "content-strategy/SKILL.md",
       "resolved_path": "skills/content-strategy/SKILL.md",
@@ -18070,7 +19292,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 32,
+      "line": 33,
       "syntax": "markdown_link",
       "target": "seo-flow/SKILL.md",
       "resolved_path": "skills/seo-flow/SKILL.md",
@@ -18078,7 +19300,15 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 38,
+      "line": 39,
+      "syntax": "markdown_link",
+      "target": "keyword-research/SKILL.md",
+      "resolved_path": "skills/keyword-research/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 40,
       "syntax": "markdown_link",
       "target": "keyword-deep-dive/SKILL.md",
       "resolved_path": "skills/keyword-deep-dive/SKILL.md",
@@ -18086,7 +19316,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 39,
+      "line": 41,
       "syntax": "markdown_link",
       "target": "topic-cluster-planning/SKILL.md",
       "resolved_path": "skills/topic-cluster-planning/SKILL.md",
@@ -18094,7 +19324,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 40,
+      "line": 42,
       "syntax": "markdown_link",
       "target": "seo-cluster/SKILL.md",
       "resolved_path": "skills/seo-cluster/SKILL.md",
@@ -18102,7 +19332,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 41,
+      "line": 43,
       "syntax": "markdown_link",
       "target": "semantic-gap-analysis/SKILL.md",
       "resolved_path": "skills/semantic-gap-analysis/SKILL.md",
@@ -18110,7 +19340,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 42,
+      "line": 44,
       "syntax": "markdown_link",
       "target": "content-brief/SKILL.md",
       "resolved_path": "skills/content-brief/SKILL.md",
@@ -18118,7 +19348,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 43,
+      "line": 45,
       "syntax": "markdown_link",
       "target": "programmatic-seo/SKILL.md",
       "resolved_path": "skills/programmatic-seo/SKILL.md",
@@ -18126,7 +19356,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 49,
+      "line": 51,
       "syntax": "markdown_link",
       "target": "write-content/SKILL.md",
       "resolved_path": "skills/write-content/SKILL.md",
@@ -18134,7 +19364,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 50,
+      "line": 52,
       "syntax": "markdown_link",
       "target": "improve-content/SKILL.md",
       "resolved_path": "skills/improve-content/SKILL.md",
@@ -18142,7 +19372,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 51,
+      "line": 53,
       "syntax": "markdown_link",
       "target": "reader-experience-review/SKILL.md",
       "resolved_path": "skills/reader-experience-review/SKILL.md",
@@ -18150,7 +19380,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 52,
+      "line": 54,
       "syntax": "markdown_link",
       "target": "copywriting/SKILL.md",
       "resolved_path": "skills/copywriting/SKILL.md",
@@ -18158,7 +19388,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 53,
+      "line": 55,
       "syntax": "markdown_link",
       "target": "copy-editing/SKILL.md",
       "resolved_path": "skills/copy-editing/SKILL.md",
@@ -18166,7 +19396,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 54,
+      "line": 56,
       "syntax": "markdown_link",
       "target": "expert-interview/SKILL.md",
       "resolved_path": "skills/expert-interview/SKILL.md",
@@ -18174,7 +19404,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 62,
+      "line": 64,
       "syntax": "markdown_link",
       "target": "site-audit/SKILL.md",
       "resolved_path": "skills/site-audit/SKILL.md",
@@ -18182,7 +19412,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 63,
+      "line": 65,
       "syntax": "markdown_link",
       "target": "page-audit/SKILL.md",
       "resolved_path": "skills/page-audit/SKILL.md",
@@ -18190,7 +19420,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 64,
+      "line": 66,
       "syntax": "markdown_link",
       "target": "seo-content/SKILL.md",
       "resolved_path": "skills/seo-content/SKILL.md",
@@ -18198,7 +19428,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 65,
+      "line": 67,
       "syntax": "markdown_link",
       "target": "eeat-audit/SKILL.md",
       "resolved_path": "skills/eeat-audit/SKILL.md",
@@ -18206,7 +19436,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 66,
+      "line": 68,
       "syntax": "markdown_link",
       "target": "seo-sxo/SKILL.md",
       "resolved_path": "skills/seo-sxo/SKILL.md",
@@ -18214,7 +19444,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 67,
+      "line": 69,
       "syntax": "markdown_link",
       "target": "featured-snippet-optimizer/SKILL.md",
       "resolved_path": "skills/featured-snippet-optimizer/SKILL.md",
@@ -18222,7 +19452,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 68,
+      "line": 70,
       "syntax": "markdown_link",
       "target": "competitor-alternatives/SKILL.md",
       "resolved_path": "skills/competitor-alternatives/SKILL.md",
@@ -18230,7 +19460,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 69,
+      "line": 71,
       "syntax": "markdown_link",
       "target": "seo-competitor-pages/SKILL.md",
       "resolved_path": "skills/seo-competitor-pages/SKILL.md",
@@ -18238,7 +19468,23 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 70,
+      "line": 72,
+      "syntax": "markdown_link",
+      "target": "ai-prompt-research/SKILL.md",
+      "resolved_path": "skills/ai-prompt-research/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 73,
+      "syntax": "markdown_link",
+      "target": "ai-visibility-audit/SKILL.md",
+      "resolved_path": "skills/ai-visibility-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/README.md",
+      "line": 74,
       "syntax": "markdown_link",
       "target": "seo-geo/SKILL.md",
       "resolved_path": "skills/seo-geo/SKILL.md",
@@ -18246,7 +19492,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 78,
+      "line": 82,
       "syntax": "markdown_link",
       "target": "technical-audit/SKILL.md",
       "resolved_path": "skills/technical-audit/SKILL.md",
@@ -18254,7 +19500,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 79,
+      "line": 83,
       "syntax": "markdown_link",
       "target": "headless-precheck/SKILL.md",
       "resolved_path": "skills/headless-precheck/SKILL.md",
@@ -18262,7 +19508,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 80,
+      "line": 84,
       "syntax": "markdown_link",
       "target": "schema/SKILL.md",
       "resolved_path": "skills/schema/SKILL.md",
@@ -18270,7 +19516,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 81,
+      "line": 85,
       "syntax": "markdown_link",
       "target": "sitemap/SKILL.md",
       "resolved_path": "skills/sitemap/SKILL.md",
@@ -18278,7 +19524,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 82,
+      "line": 86,
       "syntax": "markdown_link",
       "target": "images/SKILL.md",
       "resolved_path": "skills/images/SKILL.md",
@@ -18286,7 +19532,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 83,
+      "line": 87,
       "syntax": "markdown_link",
       "target": "seo-image-gen/SKILL.md",
       "resolved_path": "skills/seo-image-gen/SKILL.md",
@@ -18294,7 +19540,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 84,
+      "line": 88,
       "syntax": "markdown_link",
       "target": "seo-ecommerce/SKILL.md",
       "resolved_path": "skills/seo-ecommerce/SKILL.md",
@@ -18302,7 +19548,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 85,
+      "line": 89,
       "syntax": "markdown_link",
       "target": "seo-hreflang/SKILL.md",
       "resolved_path": "skills/seo-hreflang/SKILL.md",
@@ -18310,7 +19556,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 86,
+      "line": 90,
       "syntax": "markdown_link",
       "target": "seo-local/SKILL.md",
       "resolved_path": "skills/seo-local/SKILL.md",
@@ -18318,7 +19564,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 87,
+      "line": 91,
       "syntax": "markdown_link",
       "target": "seo-maps/SKILL.md",
       "resolved_path": "skills/seo-maps/SKILL.md",
@@ -18326,7 +19572,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 93,
+      "line": 97,
       "syntax": "markdown_link",
       "target": "seo-google/SKILL.md",
       "resolved_path": "skills/seo-google/SKILL.md",
@@ -18334,7 +19580,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 94,
+      "line": 98,
       "syntax": "markdown_link",
       "target": "seo-dataforseo/SKILL.md",
       "resolved_path": "skills/seo-dataforseo/SKILL.md",
@@ -18342,7 +19588,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 95,
+      "line": 99,
       "syntax": "markdown_link",
       "target": "drift/SKILL.md",
       "resolved_path": "skills/drift/SKILL.md",
@@ -18350,7 +19596,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 96,
+      "line": 100,
       "syntax": "markdown_link",
       "target": "analytics-tracking/SKILL.md",
       "resolved_path": "skills/analytics-tracking/SKILL.md",
@@ -18358,7 +19604,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 97,
+      "line": 101,
       "syntax": "markdown_link",
       "target": "backlinks/SKILL.md",
       "resolved_path": "skills/backlinks/SKILL.md",
@@ -18366,7 +19612,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 98,
+      "line": 102,
       "syntax": "markdown_link",
       "target": "linkbuilding/SKILL.md",
       "resolved_path": "skills/linkbuilding/SKILL.md",
@@ -18374,7 +19620,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 106,
+      "line": 110,
       "syntax": "markdown_link",
       "target": "page-cro/SKILL.md",
       "resolved_path": "skills/page-cro/SKILL.md",
@@ -18382,7 +19628,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 107,
+      "line": 111,
       "syntax": "markdown_link",
       "target": "form-cro/SKILL.md",
       "resolved_path": "skills/form-cro/SKILL.md",
@@ -18390,7 +19636,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 108,
+      "line": 112,
       "syntax": "markdown_link",
       "target": "popup-cro/SKILL.md",
       "resolved_path": "skills/popup-cro/SKILL.md",
@@ -18398,7 +19644,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 109,
+      "line": 113,
       "syntax": "markdown_link",
       "target": "signup-flow-cro/SKILL.md",
       "resolved_path": "skills/signup-flow-cro/SKILL.md",
@@ -18406,7 +19652,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 110,
+      "line": 114,
       "syntax": "markdown_link",
       "target": "onboarding-cro/SKILL.md",
       "resolved_path": "skills/onboarding-cro/SKILL.md",
@@ -18414,7 +19660,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 111,
+      "line": 115,
       "syntax": "markdown_link",
       "target": "paywall-upgrade-cro/SKILL.md",
       "resolved_path": "skills/paywall-upgrade-cro/SKILL.md",
@@ -18422,7 +19668,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 112,
+      "line": 116,
       "syntax": "markdown_link",
       "target": "ab-test-setup/SKILL.md",
       "resolved_path": "skills/ab-test-setup/SKILL.md",
@@ -18430,7 +19676,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 120,
+      "line": 124,
       "syntax": "markdown_link",
       "target": "email-sequence/SKILL.md",
       "resolved_path": "skills/email-sequence/SKILL.md",
@@ -18438,7 +19684,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 121,
+      "line": 125,
       "syntax": "markdown_link",
       "target": "social-content/SKILL.md",
       "resolved_path": "skills/social-content/SKILL.md",
@@ -18446,7 +19692,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 122,
+      "line": 126,
       "syntax": "markdown_link",
       "target": "paid-ads/SKILL.md",
       "resolved_path": "skills/paid-ads/SKILL.md",
@@ -18454,7 +19700,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 123,
+      "line": 127,
       "syntax": "markdown_link",
       "target": "launch-strategy/SKILL.md",
       "resolved_path": "skills/launch-strategy/SKILL.md",
@@ -18462,7 +19708,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 129,
+      "line": 133,
       "syntax": "markdown_link",
       "target": "growth-lead/SKILL.md",
       "resolved_path": "skills/growth-lead/SKILL.md",
@@ -18470,7 +19716,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 130,
+      "line": 134,
       "syntax": "markdown_link",
       "target": "pricing-strategy/SKILL.md",
       "resolved_path": "skills/pricing-strategy/SKILL.md",
@@ -18478,7 +19724,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 131,
+      "line": 135,
       "syntax": "markdown_link",
       "target": "referral-program/SKILL.md",
       "resolved_path": "skills/referral-program/SKILL.md",
@@ -18486,7 +19732,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 132,
+      "line": 136,
       "syntax": "markdown_link",
       "target": "free-tool-strategy/SKILL.md",
       "resolved_path": "skills/free-tool-strategy/SKILL.md",
@@ -18494,7 +19740,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 133,
+      "line": 137,
       "syntax": "markdown_link",
       "target": "marketing-ideas/SKILL.md",
       "resolved_path": "skills/marketing-ideas/SKILL.md",
@@ -18502,7 +19748,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 134,
+      "line": 138,
       "syntax": "markdown_link",
       "target": "marketing-psychology/SKILL.md",
       "resolved_path": "skills/marketing-psychology/SKILL.md",
@@ -18510,7 +19756,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 140,
+      "line": 144,
       "syntax": "markdown_link",
       "target": "seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
@@ -18518,7 +19764,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 142,
+      "line": 146,
       "syntax": "markdown_link",
       "target": "copy-editing/references/article-editing.md",
       "resolved_path": "skills/copy-editing/references/article-editing.md",
@@ -18526,7 +19772,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 142,
+      "line": 146,
       "syntax": "markdown_link",
       "target": "topic-cluster-planning/references/internal-link-review.md",
       "resolved_path": "skills/topic-cluster-planning/references/internal-link-review.md",
@@ -18534,7 +19780,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 142,
+      "line": 146,
       "syntax": "markdown_link",
       "target": "page-audit/references/metadata-writing.md",
       "resolved_path": "skills/page-audit/references/metadata-writing.md",
@@ -18542,7 +19788,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 142,
+      "line": 146,
       "syntax": "markdown_link",
       "target": "improve-content/references/seo-editing.md",
       "resolved_path": "skills/improve-content/references/seo-editing.md",
@@ -18550,7 +19796,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 142,
+      "line": 146,
       "syntax": "markdown_link",
       "target": "page-cro/references/conversion-analysis.md",
       "resolved_path": "skills/page-cro/references/conversion-analysis.md",
@@ -18558,7 +19804,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 146,
+      "line": 150,
       "syntax": "markdown_link",
       "target": "../docs/skill-sources.md",
       "resolved_path": "docs/skill-sources.md",
@@ -18566,7 +19812,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 146,
+      "line": 150,
       "syntax": "markdown_link",
       "target": "../third_party/NOTICE.md",
       "resolved_path": "third_party/NOTICE.md",
@@ -18574,7 +19820,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 146,
+      "line": 150,
       "syntax": "markdown_link",
       "target": "../docs/history/20261029-skill-layout-migration.md",
       "resolved_path": "docs/history/20261029-skill-layout-migration.md",
@@ -18582,7 +19828,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 146,
+      "line": 150,
       "syntax": "markdown_link",
       "target": "../docs/skill-method-adaptations.json",
       "resolved_path": "docs/skill-method-adaptations.json",
@@ -18590,7 +19836,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 146,
+      "line": 150,
       "syntax": "markdown_link",
       "target": "../third_party/skill-history/seomachine/README.md",
       "resolved_path": "third_party/skill-history/seomachine/README.md",
@@ -18598,7 +19844,7 @@
     },
     {
       "from_path": "skills/README.md",
-      "line": 146,
+      "line": 150,
       "syntax": "backtick_path",
       "target": "skills/<capability>/SKILL.md",
       "resolved_path": null,
@@ -18643,6 +19889,86 @@
       "target": "projects/<id>/",
       "resolved_path": null,
       "status": "project_context_reference"
+    },
+    {
+      "from_path": "skills/ai-prompt-research/SKILL.md",
+      "line": 12,
+      "syntax": "markdown_link",
+      "target": "../seo-geo/references/citation-research.md",
+      "resolved_path": "skills/seo-geo/references/citation-research.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/ai-prompt-research/SKILL.md",
+      "line": 14,
+      "syntax": "markdown_link",
+      "target": "../seo-dataforseo/SKILL.md",
+      "resolved_path": "skills/seo-dataforseo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/ai-prompt-research/SKILL.md",
+      "line": 20,
+      "syntax": "markdown_link",
+      "target": "../ai-visibility-audit/SKILL.md",
+      "resolved_path": "skills/ai-visibility-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/ai-prompt-research/SKILL.md",
+      "line": 20,
+      "syntax": "markdown_link",
+      "target": "../keyword-research/SKILL.md",
+      "resolved_path": "skills/keyword-research/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/ai-prompt-research/SKILL.md",
+      "line": 22,
+      "syntax": "markdown_link",
+      "target": "../../docs/skill-upstream-adoptions.json",
+      "resolved_path": "docs/skill-upstream-adoptions.json",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/ai-visibility-audit/SKILL.md",
+      "line": 12,
+      "syntax": "markdown_link",
+      "target": "../ai-prompt-research/SKILL.md",
+      "resolved_path": "skills/ai-prompt-research/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/ai-visibility-audit/SKILL.md",
+      "line": 14,
+      "syntax": "markdown_link",
+      "target": "../seo/references/workbench-operations.md",
+      "resolved_path": "skills/seo/references/workbench-operations.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/ai-visibility-audit/SKILL.md",
+      "line": 24,
+      "syntax": "markdown_link",
+      "target": "../seo-geo/SKILL.md",
+      "resolved_path": "skills/seo-geo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/ai-visibility-audit/SKILL.md",
+      "line": 32,
+      "syntax": "markdown_link",
+      "target": "../linkbuilding/SKILL.md",
+      "resolved_path": "skills/linkbuilding/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/ai-visibility-audit/SKILL.md",
+      "line": 36,
+      "syntax": "markdown_link",
+      "target": "../../docs/skill-upstream-adoptions.json",
+      "resolved_path": "docs/skill-upstream-adoptions.json",
+      "status": "resolved_local"
     },
     {
       "from_path": "skills/analytics-tracking/SKILL.md",
@@ -18750,7 +20076,7 @@
     },
     {
       "from_path": "skills/competitive-landscape/SKILL.md",
-      "line": 15,
+      "line": 17,
       "syntax": "markdown_link",
       "target": "../competitor-alternatives/SKILL.md",
       "resolved_path": "skills/competitor-alternatives/SKILL.md",
@@ -18758,7 +20084,7 @@
     },
     {
       "from_path": "skills/competitive-landscape/SKILL.md",
-      "line": 15,
+      "line": 17,
       "syntax": "markdown_link",
       "target": "../seo-competitor-pages/SKILL.md",
       "resolved_path": "skills/seo-competitor-pages/SKILL.md",
@@ -18766,7 +20092,7 @@
     },
     {
       "from_path": "skills/competitive-landscape/SKILL.md",
-      "line": 20,
+      "line": 22,
       "syntax": "backtick_path",
       "target": "context/competitors.md",
       "resolved_path": null,
@@ -18774,7 +20100,7 @@
     },
     {
       "from_path": "skills/competitive-landscape/SKILL.md",
-      "line": 21,
+      "line": 23,
       "syntax": "markdown_link",
       "target": "../backlinks/SKILL.md",
       "resolved_path": "skills/backlinks/SKILL.md",
@@ -18782,7 +20108,7 @@
     },
     {
       "from_path": "skills/competitive-landscape/SKILL.md",
-      "line": 22,
+      "line": 24,
       "syntax": "markdown_link",
       "target": "../seo-geo/references/citation-research.md",
       "resolved_path": "skills/seo-geo/references/citation-research.md",
@@ -18790,7 +20116,7 @@
     },
     {
       "from_path": "skills/competitive-landscape/SKILL.md",
-      "line": 24,
+      "line": 26,
       "syntax": "markdown_link",
       "target": "../seo-plan/SKILL.md",
       "resolved_path": "skills/seo-plan/SKILL.md",
@@ -18798,7 +20124,23 @@
     },
     {
       "from_path": "skills/competitive-landscape/SKILL.md",
-      "line": 26,
+      "line": 28,
+      "syntax": "markdown_link",
+      "target": "../reverse-engineer-seo/SKILL.md",
+      "resolved_path": "skills/reverse-engineer-seo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/SKILL.md",
+      "line": 28,
+      "syntax": "markdown_link",
+      "target": "../keyword-research/SKILL.md",
+      "resolved_path": "skills/keyword-research/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/competitive-landscape/SKILL.md",
+      "line": 30,
       "syntax": "markdown_link",
       "target": "references/analysis-workflow.md",
       "resolved_path": "skills/competitive-landscape/references/analysis-workflow.md",
@@ -18806,7 +20148,7 @@
     },
     {
       "from_path": "skills/competitive-landscape/SKILL.md",
-      "line": 26,
+      "line": 30,
       "syntax": "markdown_link",
       "target": "references/report-template.md",
       "resolved_path": "skills/competitive-landscape/references/report-template.md",
@@ -18814,15 +20156,7 @@
     },
     {
       "from_path": "skills/competitive-landscape/SKILL.md",
-      "line": 32,
-      "syntax": "backtick_path",
-      "target": "context/competitors.md",
-      "resolved_path": null,
-      "status": "project_context_reference"
-    },
-    {
-      "from_path": "skills/competitive-landscape/SKILL.md",
-      "line": 42,
+      "line": 46,
       "syntax": "markdown_link",
       "target": "../../docs/history/20261111-competitive-landscape-skill.md",
       "resolved_path": "docs/history/20261111-competitive-landscape-skill.md",
@@ -19853,6 +21187,38 @@
       "status": "project_context_reference"
     },
     {
+      "from_path": "skills/free-tool-strategy/SKILL.md",
+      "line": 185,
+      "syntax": "markdown_link",
+      "target": "references/search-validated-spec.md",
+      "resolved_path": "skills/free-tool-strategy/references/search-validated-spec.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/free-tool-strategy/references/search-validated-spec.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../SKILL.md",
+      "resolved_path": "skills/free-tool-strategy/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/free-tool-strategy/references/search-validated-spec.md",
+      "line": 13,
+      "syntax": "markdown_link",
+      "target": "../../linkbuilding/SKILL.md",
+      "resolved_path": "skills/linkbuilding/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/free-tool-strategy/references/search-validated-spec.md",
+      "line": 15,
+      "syntax": "markdown_link",
+      "target": "../../../docs/skill-upstream-adoptions.json",
+      "resolved_path": "docs/skill-upstream-adoptions.json",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/headless-precheck/SKILL.md",
       "line": 20,
       "syntax": "backtick_path",
@@ -20205,6 +21571,70 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/keyword-research/SKILL.md",
+      "line": 12,
+      "syntax": "markdown_link",
+      "target": "../../docs/reference/keyword-context-maintenance.md",
+      "resolved_path": "docs/reference/keyword-context-maintenance.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/keyword-research/SKILL.md",
+      "line": 20,
+      "syntax": "markdown_link",
+      "target": "../seo-dataforseo/SKILL.md",
+      "resolved_path": "skills/seo-dataforseo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/keyword-research/SKILL.md",
+      "line": 20,
+      "syntax": "markdown_link",
+      "target": "../seo-google/SKILL.md",
+      "resolved_path": "skills/seo-google/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/keyword-research/SKILL.md",
+      "line": 20,
+      "syntax": "markdown_link",
+      "target": "../seo/references/workbench-operations.md",
+      "resolved_path": "skills/seo/references/workbench-operations.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/keyword-research/SKILL.md",
+      "line": 26,
+      "syntax": "markdown_link",
+      "target": "../seo-cluster/SKILL.md",
+      "resolved_path": "skills/seo-cluster/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/keyword-research/SKILL.md",
+      "line": 26,
+      "syntax": "markdown_link",
+      "target": "../keyword-deep-dive/SKILL.md",
+      "resolved_path": "skills/keyword-deep-dive/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/keyword-research/SKILL.md",
+      "line": 30,
+      "syntax": "markdown_link",
+      "target": "../project-context/SKILL.md",
+      "resolved_path": "skills/project-context/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/keyword-research/SKILL.md",
+      "line": 36,
+      "syntax": "markdown_link",
+      "target": "../../docs/skill-upstream-adoptions.json",
+      "resolved_path": "docs/skill-upstream-adoptions.json",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/launch-strategy/SKILL.md",
       "line": 14,
       "syntax": "backtick_path",
@@ -20282,6 +21712,22 @@
       "syntax": "markdown_link",
       "target": "../write-content/references/fact-checking.md",
       "resolved_path": "skills/write-content/references/fact-checking.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/linkbuilding/SKILL.md",
+      "line": 125,
+      "syntax": "markdown_link",
+      "target": "references/page-prospecting.md",
+      "resolved_path": "skills/linkbuilding/references/page-prospecting.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/linkbuilding/references/page-prospecting.md",
+      "line": 13,
+      "syntax": "markdown_link",
+      "target": "../../../docs/skill-upstream-adoptions.json",
+      "resolved_path": "docs/skill-upstream-adoptions.json",
       "status": "resolved_local"
     },
     {
@@ -20877,6 +22323,14 @@
       "status": "project_context_reference"
     },
     {
+      "from_path": "skills/product-marketing-context/SKILL.md",
+      "line": 248,
+      "syntax": "markdown_link",
+      "target": "../project-context/SKILL.md",
+      "resolved_path": "skills/project-context/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/programmatic-seo/SKILL.md",
       "line": 13,
       "syntax": "markdown_link",
@@ -20973,6 +22427,30 @@
       "status": "project_context_reference"
     },
     {
+      "from_path": "skills/project-context/SKILL.md",
+      "line": 59,
+      "syntax": "markdown_link",
+      "target": "../product-marketing-context/SKILL.md",
+      "resolved_path": "skills/product-marketing-context/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/project-context/SKILL.md",
+      "line": 59,
+      "syntax": "markdown_link",
+      "target": "../../docs/reference/google-integrations.md",
+      "resolved_path": "docs/reference/google-integrations.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/project-context/SKILL.md",
+      "line": 59,
+      "syntax": "markdown_link",
+      "target": "../seo/references/workbench-operations.md",
+      "resolved_path": "skills/seo/references/workbench-operations.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/reader-experience-review/SKILL.md",
       "line": 65,
       "syntax": "markdown_link",
@@ -21043,6 +22521,54 @@
       "target": "projects/<id>/",
       "resolved_path": null,
       "status": "project_context_reference"
+    },
+    {
+      "from_path": "skills/reverse-engineer-seo/SKILL.md",
+      "line": 10,
+      "syntax": "markdown_link",
+      "target": "../seo-dataforseo/SKILL.md",
+      "resolved_path": "skills/seo-dataforseo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/reverse-engineer-seo/SKILL.md",
+      "line": 10,
+      "syntax": "markdown_link",
+      "target": "../backlinks/SKILL.md",
+      "resolved_path": "skills/backlinks/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/reverse-engineer-seo/SKILL.md",
+      "line": 21,
+      "syntax": "markdown_link",
+      "target": "../keyword-research/SKILL.md",
+      "resolved_path": "skills/keyword-research/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/reverse-engineer-seo/SKILL.md",
+      "line": 21,
+      "syntax": "markdown_link",
+      "target": "../competitive-landscape/SKILL.md",
+      "resolved_path": "skills/competitive-landscape/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/reverse-engineer-seo/SKILL.md",
+      "line": 21,
+      "syntax": "markdown_link",
+      "target": "../seo-plan/SKILL.md",
+      "resolved_path": "skills/seo-plan/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/reverse-engineer-seo/SKILL.md",
+      "line": 23,
+      "syntax": "markdown_link",
+      "target": "../../docs/skill-upstream-adoptions.json",
+      "resolved_path": "docs/skill-upstream-adoptions.json",
+      "status": "resolved_local"
     },
     {
       "from_path": "skills/schema/SKILL.md",
@@ -21170,6 +22696,22 @@
       "syntax": "markdown_link",
       "target": "references/execution-workflow.md",
       "resolved_path": "skills/seo-cluster/references/execution-workflow.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-cluster/SKILL.md",
+      "line": 240,
+      "syntax": "markdown_link",
+      "target": "../keyword-research/SKILL.md",
+      "resolved_path": "skills/keyword-research/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-cluster/SKILL.md",
+      "line": 240,
+      "syntax": "markdown_link",
+      "target": "../topic-cluster-planning/SKILL.md",
+      "resolved_path": "skills/topic-cluster-planning/SKILL.md",
       "status": "resolved_local"
     },
     {
@@ -22422,7 +23964,7 @@
     },
     {
       "from_path": "skills/seo-geo/SKILL.md",
-      "line": 23,
+      "line": 10,
       "syntax": "markdown_link",
       "target": "../seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
@@ -22430,7 +23972,39 @@
     },
     {
       "from_path": "skills/seo-geo/SKILL.md",
-      "line": 61,
+      "line": 14,
+      "syntax": "markdown_link",
+      "target": "../ai-prompt-research/SKILL.md",
+      "resolved_path": "skills/ai-prompt-research/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-geo/SKILL.md",
+      "line": 15,
+      "syntax": "markdown_link",
+      "target": "../ai-visibility-audit/SKILL.md",
+      "resolved_path": "skills/ai-visibility-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-geo/SKILL.md",
+      "line": 16,
+      "syntax": "markdown_link",
+      "target": "../competitive-landscape/SKILL.md",
+      "resolved_path": "skills/competitive-landscape/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-geo/SKILL.md",
+      "line": 30,
+      "syntax": "markdown_link",
+      "target": "../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-geo/SKILL.md",
+      "line": 38,
       "syntax": "markdown_link",
       "target": "references/citation-research.md",
       "resolved_path": "skills/seo-geo/references/citation-research.md",
@@ -22438,26 +24012,34 @@
     },
     {
       "from_path": "skills/seo-geo/SKILL.md",
-      "line": 256,
+      "line": 40,
       "syntax": "markdown_link",
-      "target": "../seo/references/workbench-operations.md",
-      "resolved_path": "skills/seo/references/workbench-operations.md",
+      "target": "../../docs/skill-sources.json",
+      "resolved_path": "docs/skill-sources.json",
       "status": "resolved_local"
     },
     {
       "from_path": "skills/seo-geo/SKILL.md",
-      "line": 269,
+      "line": 40,
       "syntax": "markdown_link",
-      "target": "../seo-flow/SKILL.md",
-      "resolved_path": "skills/seo-flow/SKILL.md",
+      "target": "../../docs/skill-upstream-adoptions.json",
+      "resolved_path": "docs/skill-upstream-adoptions.json",
       "status": "resolved_local"
     },
     {
-      "from_path": "skills/seo-geo/SKILL.md",
-      "line": 275,
+      "from_path": "skills/seo-geo/references/citation-research.md",
+      "line": 3,
       "syntax": "markdown_link",
-      "target": "references/citation-research.md",
-      "resolved_path": "skills/seo-geo/references/citation-research.md",
+      "target": "../../ai-prompt-research/SKILL.md",
+      "resolved_path": "skills/ai-prompt-research/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-geo/references/citation-research.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../../ai-visibility-audit/SKILL.md",
+      "resolved_path": "skills/ai-visibility-audit/SKILL.md",
       "status": "resolved_local"
     },
     {
@@ -22973,6 +24555,38 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/seo-maps/SKILL.md",
+      "line": 262,
+      "syntax": "markdown_link",
+      "target": "references/bounded-profile-comparison.md",
+      "resolved_path": "skills/seo-maps/references/bounded-profile-comparison.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-maps/references/bounded-profile-comparison.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../SKILL.md",
+      "resolved_path": "skills/seo-maps/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-maps/references/bounded-profile-comparison.md",
+      "line": 13,
+      "syntax": "markdown_link",
+      "target": "../../seo-local/SKILL.md",
+      "resolved_path": "skills/seo-local/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-maps/references/bounded-profile-comparison.md",
+      "line": 15,
+      "syntax": "markdown_link",
+      "target": "../../../docs/skill-upstream-adoptions.json",
+      "resolved_path": "docs/skill-upstream-adoptions.json",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/seo-plan/SKILL.md",
       "line": 34,
       "syntax": "markdown_link",
@@ -22989,6 +24603,14 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/seo-plan/SKILL.md",
+      "line": 131,
+      "syntax": "markdown_link",
+      "target": "references/competitor-driven-plan.md",
+      "resolved_path": "skills/seo-plan/references/competitor-driven-plan.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/seo-plan/assets/ecommerce.md",
       "line": 57,
       "syntax": "markdown_link",
@@ -23002,6 +24624,70 @@
       "syntax": "markdown_link",
       "target": "../../schema/references/search-eligibility.md",
       "resolved_path": "skills/schema/references/search-eligibility.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-plan/references/competitor-driven-plan.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../SKILL.md",
+      "resolved_path": "skills/seo-plan/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-plan/references/competitor-driven-plan.md",
+      "line": 5,
+      "syntax": "markdown_link",
+      "target": "../../competitive-landscape/SKILL.md",
+      "resolved_path": "skills/competitive-landscape/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-plan/references/competitor-driven-plan.md",
+      "line": 5,
+      "syntax": "markdown_link",
+      "target": "../../reverse-engineer-seo/SKILL.md",
+      "resolved_path": "skills/reverse-engineer-seo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-plan/references/competitor-driven-plan.md",
+      "line": 7,
+      "syntax": "markdown_link",
+      "target": "../../keyword-research/SKILL.md",
+      "resolved_path": "skills/keyword-research/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-plan/references/competitor-driven-plan.md",
+      "line": 9,
+      "syntax": "markdown_link",
+      "target": "../../linkbuilding/SKILL.md",
+      "resolved_path": "skills/linkbuilding/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-plan/references/competitor-driven-plan.md",
+      "line": 21,
+      "syntax": "markdown_link",
+      "target": "../../competitor-alternatives/SKILL.md",
+      "resolved_path": "skills/competitor-alternatives/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-plan/references/competitor-driven-plan.md",
+      "line": 21,
+      "syntax": "markdown_link",
+      "target": "../../seo-competitor-pages/SKILL.md",
+      "resolved_path": "skills/seo-competitor-pages/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo-plan/references/competitor-driven-plan.md",
+      "line": 23,
+      "syntax": "markdown_link",
+      "target": "../../../docs/skill-upstream-adoptions.json",
+      "resolved_path": "docs/skill-upstream-adoptions.json",
       "status": "resolved_local"
     },
     {
@@ -23088,13 +24774,45 @@
       "from_path": "skills/seo/SKILL.md",
       "line": 15,
       "syntax": "markdown_link",
+      "target": "../keyword-research/SKILL.md",
+      "resolved_path": "skills/keyword-research/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo/SKILL.md",
+      "line": 16,
+      "syntax": "markdown_link",
+      "target": "../ai-prompt-research/SKILL.md",
+      "resolved_path": "skills/ai-prompt-research/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo/SKILL.md",
+      "line": 16,
+      "syntax": "markdown_link",
+      "target": "../ai-visibility-audit/SKILL.md",
+      "resolved_path": "skills/ai-visibility-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo/SKILL.md",
+      "line": 17,
+      "syntax": "markdown_link",
+      "target": "../reverse-engineer-seo/SKILL.md",
+      "resolved_path": "skills/reverse-engineer-seo/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/seo/SKILL.md",
+      "line": 18,
+      "syntax": "markdown_link",
       "target": "../keyword-deep-dive/SKILL.md",
       "resolved_path": "skills/keyword-deep-dive/SKILL.md",
       "status": "resolved_local"
     },
     {
       "from_path": "skills/seo/SKILL.md",
-      "line": 15,
+      "line": 18,
       "syntax": "markdown_link",
       "target": "../topic-cluster-planning/SKILL.md",
       "resolved_path": "skills/topic-cluster-planning/SKILL.md",
@@ -23102,7 +24820,7 @@
     },
     {
       "from_path": "skills/seo/SKILL.md",
-      "line": 16,
+      "line": 19,
       "syntax": "markdown_link",
       "target": "../content-brief/SKILL.md",
       "resolved_path": "skills/content-brief/SKILL.md",
@@ -23110,7 +24828,7 @@
     },
     {
       "from_path": "skills/seo/SKILL.md",
-      "line": 16,
+      "line": 19,
       "syntax": "markdown_link",
       "target": "../write-content/SKILL.md",
       "resolved_path": "skills/write-content/SKILL.md",
@@ -23118,7 +24836,7 @@
     },
     {
       "from_path": "skills/seo/SKILL.md",
-      "line": 17,
+      "line": 20,
       "syntax": "markdown_link",
       "target": "../schema/SKILL.md",
       "resolved_path": "skills/schema/SKILL.md",
@@ -23126,7 +24844,7 @@
     },
     {
       "from_path": "skills/seo/SKILL.md",
-      "line": 18,
+      "line": 21,
       "syntax": "markdown_link",
       "target": "../programmatic-seo/SKILL.md",
       "resolved_path": "skills/programmatic-seo/SKILL.md",
@@ -23134,7 +24852,7 @@
     },
     {
       "from_path": "skills/seo/SKILL.md",
-      "line": 22,
+      "line": 25,
       "syntax": "markdown_link",
       "target": "references/upstream-orchestration.md",
       "resolved_path": "skills/seo/references/upstream-orchestration.md",
@@ -23301,6 +25019,14 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/seo/references/workbench-operations.md",
+      "line": 40,
+      "syntax": "markdown_link",
+      "target": "../../reader-experience-review/SKILL.md",
+      "resolved_path": "skills/reader-experience-review/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/signup-flow-cro/SKILL.md",
       "line": 14,
       "syntax": "backtick_path",
@@ -23389,6 +25115,14 @@
       "status": "resolved_local"
     },
     {
+      "from_path": "skills/site-audit/SKILL.md",
+      "line": 39,
+      "syntax": "markdown_link",
+      "target": "references/opportunity-selection.md",
+      "resolved_path": "skills/site-audit/references/opportunity-selection.md",
+      "status": "resolved_local"
+    },
+    {
       "from_path": "skills/site-audit/references/claude-seo-audit.md",
       "line": 3,
       "syntax": "markdown_link",
@@ -23402,6 +25136,22 @@
       "syntax": "markdown_link",
       "target": "../../seo/references/workbench-operations.md",
       "resolved_path": "skills/seo/references/workbench-operations.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/site-audit/references/opportunity-selection.md",
+      "line": 3,
+      "syntax": "markdown_link",
+      "target": "../SKILL.md",
+      "resolved_path": "skills/site-audit/SKILL.md",
+      "status": "resolved_local"
+    },
+    {
+      "from_path": "skills/site-audit/references/opportunity-selection.md",
+      "line": 17,
+      "syntax": "markdown_link",
+      "target": "../../../docs/skill-upstream-adoptions.json",
+      "resolved_path": "docs/skill-upstream-adoptions.json",
       "status": "resolved_local"
     },
     {

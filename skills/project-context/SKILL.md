@@ -53,3 +53,7 @@ Base SEO recommendations about which keywords to select on applicable observed S
 - Check each selected keyword is recorded in current targets with a resolvable decision/research link and one intended page per primary intent, or an explicit unresolved assignment. Check removed targets retain their change history; do not fabricate research, pages or approvals.
 - Save the context in the current project; preserve existing approved documents and their actual paths.
 - Check the saved artifact against the requested scope, record unresolved facts and supporting evidence, and run `./seo --project <id> validate --json` when state or workflow contracts changed. No phase transition or next-step command is required.
+
+## Minimal project intake
+
+Reuse supplied and approved facts before asking. Fill only the business, current goal, market/language, key assets and constraints needed for the task; do not front-load a complete interview. Brand-voice prerequisites above still apply. Store durable facts in existing context documents and link research rather than duplicating inventories. Use [product-marketing-context](../product-marketing-context/SKILL.md) for positioning; account/property setup follows [Google integrations](../../docs/reference/google-integrations.md) and [Workbench operations](../seo/references/workbench-operations.md), not inferred access.

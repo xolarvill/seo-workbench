@@ -256,3 +256,7 @@ Generate `MAPS-ANALYSIS-{domain}.md` with:
 | API rate limit hit | Report the limit. Suggest waiting or using standard (queued) method instead of live. |
 | No reviews returned | Record the source and query coverage. Report zero reviews only when a successful complete response establishes that count; otherwise mark review evidence unavailable. |
 | Multi-location detected | Ask user which location to analyze, or offer batch mode with per-location cost estimate. |
+
+## Bounded profile comparison
+
+For GBP versus nearby competitors or a small rank-grid review, read [bounded profile comparison](references/bounded-profile-comparison.md). Preserve point-level not-found/resultsCount/errors; missing observations are not measured rank 21.

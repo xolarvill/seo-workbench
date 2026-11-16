@@ -35,3 +35,5 @@ Keep the chosen scope, methods, evidence pointers, findings and uncovered areas 
 - [Claude SEO audit coverage](references/claude-seo-audit.md): consult for page-type and specialty coverage. Its original scripts, crawl settings and orchestration are preserved source material.
 
 Source mappings and licenses are recorded in [the provenance reference](../../docs/skill-sources.md).
+
+For an audit that must choose the next investment, read [opportunity selection](references/opportunity-selection.md): compare serious candidates and explain why the leading action beats the strongest alternative.

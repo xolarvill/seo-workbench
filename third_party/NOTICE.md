@@ -15,3 +15,10 @@ and the upstream update procedure are maintained in
 [Skill sources and upstream comparison](../docs/skill-sources.md).
 
 The wappalyzergo license is preserved at `third_party/licenses/wappalyzergo-MIT.txt`.
+
+OpenSEO method sources (fixed revisions and per-file mappings in the skill source inventory):
+
+- every-app/open-seo — MIT, copyright 2026 Ben Senescu; license at [open-seo-MIT.txt](licenses/open-seo-MIT.txt).
+- every-app/seo-party-skills — MIT, copyright 2026 Every App; license at [seo-party-skills-MIT.txt](licenses/seo-party-skills-MIT.txt).
+
+Their original SKILL.md files are preserved under skill-history as research material, not installed instructions or executors.

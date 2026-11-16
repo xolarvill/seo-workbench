@@ -234,3 +234,7 @@ and private project evidence in their respective existing locations.
 
 The local `seo-flow` find-stage references complement SERP-overlap clustering
 with structured discovery prompts. Select the relevant prompt from that skill.
+
+## Scope and handoff
+
+For a small usable keyword set, return a simple query-to-page map instead of forcing a large cluster. Show existing page, proposed page, defer or do-not-target with rationale. Multiple observed query-page rows are an investigation signal, not proof of harmful cannibalization. Discovery of what to target belongs to [keyword-research](../keyword-research/SKILL.md); detailed hub/spoke design belongs to [topic-cluster-planning](../topic-cluster-planning/SKILL.md).

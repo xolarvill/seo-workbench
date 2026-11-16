@@ -34,3 +34,9 @@ Keep the proposed content and target reviewable before a write. After an authori
 Discover available session tools for advertising, email, image generation, maps, marketplace research or other providers. Verify the tool's supported operation and account/project scope before relying on it. If it is unavailable, work from an appropriate supplied export or record the specific missing input. An upstream tool catalog describes possible data; it does not establish an installed executor or grant paid collection, messaging or publication authority.
 
 Weekly presentations use the gated `reports presentation` operations. For another report format, use an actually available renderer or deliver the requested source document. Historical PDF scripts, slash commands and automatic source sync are preserved as provenance rather than installed interfaces.
+
+## Report and check-in delivery
+
+Reuse the same subject/period artifact when correcting that report; a materially new period or question can have its own report. Give a short conclusion, leading action and evidence links so later work can resume without rereading the full material. Continue to use the existing report format and [reader-led expression](../../reader-experience-review/SKILL.md); no separate HTML writer or mandatory prose pass is installed. Saving locally does not authorize public sharing.
+
+Before enabling a user-requested recurring check-in, run its read-only reporting path once to expose missing, stale or incomparable sources. Keep actual collection windows, denominators and gates; failed reads do not become zero. Only an actually available authorized scheduler can run future checks. The local Friday presentation attempt is not a hosted always-on agent. Do not create a second task database or treat document instructions as installed automation.

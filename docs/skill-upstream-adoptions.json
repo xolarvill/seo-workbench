@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "reviewed_on": "2026-11-11",
-  "scope": "Approved step 8; selected methods only. The source comparison refs do not imply a whole-pack import; 2026-11-11 competitive-landscape extension reviewed.",
+  "reviewed_on": "2026-11-16",
+  "scope": "Selected methods; 2026-11-16 approved OpenSEO adaptation, four independent research skills. Raw source preservation is not whole-pack installation.",
   "sources": {
     "superseo": {
       "repository": "inhouseseo/superseo-skills",
@@ -22,6 +22,16 @@
       "repository": "Boom-Caoq/geo-seo-competitor-lens",
       "verified_default_head": "49deea6cd227ed46e20edfe8138e60f1709505f2",
       "checked_on": "2026-11-11"
+    },
+    "openseo-core": {
+      "repository": "every-app/open-seo",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "checked_on": "2026-11-16"
+    },
+    "openseo-experimental": {
+      "repository": "every-app/seo-party-skills",
+      "comparison_ref": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "checked_on": "2026-11-16"
     }
   },
   "adopted": [
@@ -161,6 +171,328 @@
       ],
       "adopted_method": "FAQ retirement, desktop Breadcrumb and public-bookable physical Event eligibility, checked against Google.",
       "local_adaptation": "Vocabulary validity, eligibility and observed display stay distinct; do not adopt generic AI citation uplift."
+    },
+    {
+      "id": "openseo-core-ai-prompt-research",
+      "source_id": "openseo-core",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/open-seo/blob/2df84ff91461cc55b6c8bb98f3ce0f195d2e463d/plugins/openseo/skills/ai-prompt-research/SKILL.md",
+          "blob_sha": "cb1da938330b2ed4447ff0f6ccfe84e96b37c8c0"
+        }
+      ],
+      "local_paths": [
+        "skills/ai-prompt-research/SKILL.md"
+      ],
+      "adopted_method": "Selected portable method for ai-prompt-research",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-core-ai-visibility-audit",
+      "source_id": "openseo-core",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/open-seo/blob/2df84ff91461cc55b6c8bb98f3ce0f195d2e463d/plugins/openseo/skills/ai-visibility-audit/SKILL.md",
+          "blob_sha": "fcb12e340687d72b759e75e5f2431e5ce1c3a3a3"
+        }
+      ],
+      "local_paths": [
+        "skills/ai-visibility-audit/SKILL.md"
+      ],
+      "adopted_method": "Selected portable method for ai-visibility-audit",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-core-competitive-landscape",
+      "source_id": "openseo-core",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/open-seo/blob/2df84ff91461cc55b6c8bb98f3ce0f195d2e463d/plugins/openseo/skills/competitive-landscape/SKILL.md",
+          "blob_sha": "7c0c1f62b1c554f9270b1adb37c6644fa98a0049"
+        }
+      ],
+      "local_paths": [
+        "skills/competitive-landscape/SKILL.md"
+      ],
+      "adopted_method": "Selected portable method for competitive-landscape",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-core-competitor-analysis",
+      "source_id": "openseo-core",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/open-seo/blob/2df84ff91461cc55b6c8bb98f3ce0f195d2e463d/plugins/openseo/skills/competitor-analysis/SKILL.md",
+          "blob_sha": "1b2f791922cb7ff162257a8fbd9d5d51961f7761"
+        }
+      ],
+      "local_paths": [
+        "skills/competitive-landscape/SKILL.md",
+        "skills/competitive-landscape/references/analysis-workflow.md"
+      ],
+      "adopted_method": "Selected portable method for competitor-analysis",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-core-keyword-clustering",
+      "source_id": "openseo-core",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/open-seo/blob/2df84ff91461cc55b6c8bb98f3ce0f195d2e463d/plugins/openseo/skills/keyword-clustering/SKILL.md",
+          "blob_sha": "abd6ed1852617186ac99d24629579e87482b68c9"
+        }
+      ],
+      "local_paths": [
+        "skills/seo-cluster/SKILL.md"
+      ],
+      "adopted_method": "Selected portable method for keyword-clustering",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-core-keyword-research",
+      "source_id": "openseo-core",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/open-seo/blob/2df84ff91461cc55b6c8bb98f3ce0f195d2e463d/plugins/openseo/skills/keyword-research/SKILL.md",
+          "blob_sha": "28d9db45d66c698314a15e254e697db70c2574d4"
+        }
+      ],
+      "local_paths": [
+        "skills/keyword-research/SKILL.md"
+      ],
+      "adopted_method": "Selected portable method for keyword-research",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-core-link-prospecting",
+      "source_id": "openseo-core",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/open-seo/blob/2df84ff91461cc55b6c8bb98f3ce0f195d2e463d/plugins/openseo/skills/link-prospecting/SKILL.md",
+          "blob_sha": "eb676eae14b21a130ba9d097f52ddb986166fd31"
+        }
+      ],
+      "local_paths": [
+        "skills/linkbuilding/references/page-prospecting.md"
+      ],
+      "adopted_method": "Selected portable method for link-prospecting",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-core-local-seo",
+      "source_id": "openseo-core",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/open-seo/blob/2df84ff91461cc55b6c8bb98f3ce0f195d2e463d/plugins/openseo/skills/local-seo/SKILL.md",
+          "blob_sha": "534762f1684fa1f6457eef622e649d431a30517d"
+        }
+      ],
+      "local_paths": [
+        "skills/seo-maps/references/bounded-profile-comparison.md"
+      ],
+      "adopted_method": "Selected portable method for local-seo",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-core-seo-audit",
+      "source_id": "openseo-core",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/open-seo/blob/2df84ff91461cc55b6c8bb98f3ce0f195d2e463d/plugins/openseo/skills/seo-audit/SKILL.md",
+          "blob_sha": "ce6ac6bfb229ce2f8649b10dd219f80dcb3eb90d"
+        }
+      ],
+      "local_paths": [
+        "skills/site-audit/references/opportunity-selection.md"
+      ],
+      "adopted_method": "Selected portable method for seo-audit",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-core-seo-project-setup",
+      "source_id": "openseo-core",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/open-seo/blob/2df84ff91461cc55b6c8bb98f3ce0f195d2e463d/plugins/openseo/skills/seo-project-setup/SKILL.md",
+          "blob_sha": "00df9341ef19871d33f96cf4670cc90e7cfc70bd"
+        }
+      ],
+      "local_paths": [
+        "skills/project-context/SKILL.md",
+        "skills/product-marketing-context/SKILL.md"
+      ],
+      "adopted_method": "Selected portable method for seo-project-setup",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-core-seo-report",
+      "source_id": "openseo-core",
+      "comparison_ref": "2df84ff91461cc55b6c8bb98f3ce0f195d2e463d",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/open-seo/blob/2df84ff91461cc55b6c8bb98f3ce0f195d2e463d/plugins/openseo/skills/seo-report/SKILL.md",
+          "blob_sha": "104bcc09284921c409121d16f652f77ac09a562b"
+        }
+      ],
+      "local_paths": [
+        "skills/seo/references/workbench-operations.md"
+      ],
+      "adopted_method": "Selected portable method for seo-report",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-experimental-chatgpt-business-setup",
+      "source_id": "openseo-experimental",
+      "comparison_ref": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/seo-party-skills/blob/3134e53fc2a77e04eb7d63266ece1777d88757e0/skills/chatgpt-business-setup/SKILL.md",
+          "blob_sha": "9dd4b9ed335d933e8511a263551372458e657799"
+        }
+      ],
+      "local_paths": [
+        "skills/ai-visibility-audit/SKILL.md"
+      ],
+      "adopted_method": "Selected portable method for chatgpt-business-setup",
+      "local_adaptation": "Local evidence, scope and authorization govern execution; no upstream MCP, spending or schedule installation. Platform claiming/publishing excluded; manager check-in delivery only."
+    },
+    {
+      "id": "openseo-experimental-competitor-strategy",
+      "source_id": "openseo-experimental",
+      "comparison_ref": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/seo-party-skills/blob/3134e53fc2a77e04eb7d63266ece1777d88757e0/skills/competitor-strategy/SKILL.md",
+          "blob_sha": "f717735582fb00df98a257fed9b5a6e6123008ef"
+        }
+      ],
+      "local_paths": [
+        "skills/seo-plan/references/competitor-driven-plan.md"
+      ],
+      "adopted_method": "Selected portable method for competitor-strategy",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-experimental-customer-keywords",
+      "source_id": "openseo-experimental",
+      "comparison_ref": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/seo-party-skills/blob/3134e53fc2a77e04eb7d63266ece1777d88757e0/skills/customer-keywords/SKILL.md",
+          "blob_sha": "8b914fa1eadf4e396dad26cc8315905189651450"
+        }
+      ],
+      "local_paths": [
+        "skills/keyword-research/SKILL.md"
+      ],
+      "adopted_method": "Selected portable method for customer-keywords",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-experimental-free-tool",
+      "source_id": "openseo-experimental",
+      "comparison_ref": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/seo-party-skills/blob/3134e53fc2a77e04eb7d63266ece1777d88757e0/skills/free-tool/SKILL.md",
+          "blob_sha": "31924ece148ce5f6a23a9ee75f5644f0382502f6"
+        }
+      ],
+      "local_paths": [
+        "skills/free-tool-strategy/references/search-validated-spec.md"
+      ],
+      "adopted_method": "Selected portable method for free-tool",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-experimental-keyword-gap",
+      "source_id": "openseo-experimental",
+      "comparison_ref": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/seo-party-skills/blob/3134e53fc2a77e04eb7d63266ece1777d88757e0/skills/keyword-gap/SKILL.md",
+          "blob_sha": "828e33748e3762e8a449e717f2849e7afe6d0b2e"
+        }
+      ],
+      "local_paths": [
+        "skills/keyword-research/SKILL.md"
+      ],
+      "adopted_method": "Selected portable method for keyword-gap",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-experimental-money-pages",
+      "source_id": "openseo-experimental",
+      "comparison_ref": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/seo-party-skills/blob/3134e53fc2a77e04eb7d63266ece1777d88757e0/skills/money-pages/SKILL.md",
+          "blob_sha": "5e51f6d9ae6c63cec58033b6aa8b9d4df51f29f6"
+        }
+      ],
+      "local_paths": [
+        "skills/seo-plan/references/competitor-driven-plan.md"
+      ],
+      "adopted_method": "Selected portable method for money-pages",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-experimental-rank-on-ai",
+      "source_id": "openseo-experimental",
+      "comparison_ref": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/seo-party-skills/blob/3134e53fc2a77e04eb7d63266ece1777d88757e0/skills/rank-on-ai/SKILL.md",
+          "blob_sha": "c14a7630f726a15375ab64bf9194199f7668b205"
+        }
+      ],
+      "local_paths": [
+        "skills/ai-visibility-audit/SKILL.md"
+      ],
+      "adopted_method": "Selected portable method for rank-on-ai",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-experimental-reverse-engineer-seo",
+      "source_id": "openseo-experimental",
+      "comparison_ref": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/seo-party-skills/blob/3134e53fc2a77e04eb7d63266ece1777d88757e0/skills/reverse-engineer-seo/SKILL.md",
+          "blob_sha": "a97e8fa9c54bc2a0de8d33007b28c0e32e371b35"
+        }
+      ],
+      "local_paths": [
+        "skills/reverse-engineer-seo/SKILL.md"
+      ],
+      "adopted_method": "Selected portable method for reverse-engineer-seo",
+      "local_adaptation": "Adapted to existing Workbench evidence and lifecycle contracts; source runtime and fixed thresholds are not executors."
+    },
+    {
+      "id": "openseo-experimental-seo-manager-agent",
+      "source_id": "openseo-experimental",
+      "comparison_ref": "3134e53fc2a77e04eb7d63266ece1777d88757e0",
+      "upstream_files": [
+        {
+          "url": "https://github.com/every-app/seo-party-skills/blob/3134e53fc2a77e04eb7d63266ece1777d88757e0/skills/seo-manager-agent/SKILL.md",
+          "blob_sha": "d2dfad19c2560dda47ff4cf82c87d769a7c3dd4d"
+        }
+      ],
+      "local_paths": [
+        "skills/seo/references/workbench-operations.md"
+      ],
+      "adopted_method": "Selected portable method for seo-manager-agent",
+      "local_adaptation": "Local evidence, scope and authorization govern execution; no upstream MCP, spending or schedule installation. Platform claiming/publishing excluded; manager check-in delivery only."
     }
   ],
   "primary_checks": [
@@ -229,6 +561,13 @@
       "upstream_path": "skills/geo-seo/SKILL.md",
       "decision": "Rejected",
       "reason": "The source is a fixed seven-section prompt with no runtime or collector; only its competitor register, GEO observation matrix and qualitative contrast were adapted, not the whole workflow or output format."
+    }
+  ],
+  "deferred": [
+    {
+      "source_id": "openseo-core",
+      "upstream_path": "plugins/openseo/skills/seo-coach/SKILL.md",
+      "reason": "Existing router and shared expression already cover it; no independent coach workflow."
     }
   ]
 }

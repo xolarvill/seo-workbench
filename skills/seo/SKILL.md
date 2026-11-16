@@ -12,6 +12,9 @@ Read [the task index](../README.md), the current project's guidance and relevant
 | Full-site or multi-template diagnosis | [site-audit](../site-audit/SKILL.md) |
 | One URL's page/content/technical review | [page-audit](../page-audit/SKILL.md) |
 | Technical diagnosis | [technical-audit](../technical-audit/SKILL.md) |
+| Discover keyword opportunities before selecting a query | [keyword-research](../keyword-research/SKILL.md) |
+| Discover AI questions / audit observed answers | [ai-prompt-research](../ai-prompt-research/SKILL.md) / [ai-visibility-audit](../ai-visibility-audit/SKILL.md) |
+| Single-site acquisition teardown | [reverse-engineer-seo](../reverse-engineer-seo/SKILL.md) |
 | Query opportunity and page ownership | [keyword-deep-dive](../keyword-deep-dive/SKILL.md), [topic-cluster-planning](../topic-cluster-planning/SKILL.md) |
 | Writer-ready scope or an article | [content-brief](../content-brief/SKILL.md), [write-content](../write-content/SKILL.md) |
 | Structured data | [schema](../schema/SKILL.md) |

@@ -1,275 +1,40 @@
 ---
 name: seo-geo
-description: >
-  Optimize content for AI Overviews (formerly SGE), ChatGPT web search,
-  Perplexity, and other AI-powered search experiences. Generative Engine
-  Optimization (GEO) analysis including brand mention signals, AI crawler
-  accessibility, llms.txt compliance, passage-level citability scoring, and
-  platform-specific optimization. Use when user says "AI Overviews", "SGE",
-  "GEO", "AI search", "LLM optimization", "Perplexity", "AI citations",
-  "ChatGPT search", "AI visibility", "prompt discovery", "query fan-out",
-  "反推用户问法", or "用户会怎么问".
+description: Diagnose a page's AI-search access, answer usefulness and brand-fact consistency from observed evidence. Use for AI crawler or page-level GEO questions; use ai-prompt-research to discover questions and ai-visibility-audit to audit brand visibility across actual answers.
 user-invokable: true
-argument-hint: "[url]"
 license: MIT
-metadata:
-  author: AgriciDaniel
-  version: "1.9.6"
-  category: seo
 ---
 
-# AI Search / GEO Optimization (February 2026)
+# AI search page diagnosis
 
-Use current project evidence and the [Workbench operations guide](../seo/references/workbench-operations.md) for fresh collection. Record coverage and unavailable inputs alongside findings.
+Establish the page, user job, platform/market and decision served. Reuse project context and eligible raw/rendered observations through [Workbench operations](../seo/references/workbench-operations.md).
 
-## Key Statistics
+## Choose the task
 
-| Metric | Value | Source |
-|--------|-------|--------|
-| AI Overviews reach | 1.5 billion users/month across 200+ countries | Google |
-| AI Overviews query coverage | 50%+ of all queries | Industry data |
-| AI-referred sessions growth | 527% (Jan-May 2025) | SparkToro |
-| ChatGPT weekly active users | 900 million | OpenAI |
-| Perplexity monthly queries | 500+ million | Perplexity |
+- Question discovery or selecting an observation set: [ai-prompt-research](../ai-prompt-research/SKILL.md).
+- Brand recommendations, mentions and cited sources across observed answers: [ai-visibility-audit](../ai-visibility-audit/SKILL.md).
+- This page's access, content or factual diagnosis: continue here. For a broad market comparison use [competitive-landscape](../competitive-landscape/SKILL.md).
 
-## Critical Insight: Brand Mentions > Backlinks
+A direct page review does not require running all three methods.
 
-**Brand mentions correlate 3x more strongly with AI visibility than backlinks.**
-(Ahrefs December 2025 study of 75,000 brands)
+## Inspect actual access
 
-| Signal | Correlation with AI Citations |
-|--------|------------------------------|
-| YouTube mentions | ~0.737 (strongest) |
-| Reddit mentions | High |
-| Wikipedia presence | High |
-| LinkedIn presence | Moderate |
-| Domain Rating (backlinks) | ~0.266 (weak) |
+Use eligible page, robots and rendered evidence. Record status, final URL, date and access condition. A failed/challenged fetch cannot prove missing content. Distinguish training crawlers, search crawlers and user-triggered retrieval; verify current owning platform documentation before recommending a directive. Do not infer live-search access from a training opt-out or recommend allowing every crawler.
 
-**Only 11% of domains** are cited by both ChatGPT and Google AI Overviews for the same query, so platform-specific optimization is essential.
+A robots permission does not prove successful retrieval or future citation. A missing llms.txt alone is not a defect, compliance failure or reason to prioritize a change.
 
----
+## Inspect the answer and facts
 
-## Prompt Discovery (Before GEO Analysis)
+Read the relevant main content and, when available, the actual prompt/answer and cited alternatives. Check whether the page answers the user's job with accurate, self-contained facts, useful examples, prices/policies where relevant and visible supporting sources. Inspect headings, internal discovery, public availability and rendered dependency only where they affect the job.
 
-Use when the prompt set would otherwise be invented by the analyst. Discovery produces candidates, not evidence of demand.
+Use [reader-experience-review](../reader-experience-review/SKILL.md) during authorized drafting. Do not enforce a universal answer length, citation percentage, readiness score, schema advantage or fixed passage formula. Original research and tools are candidates when the audience needs them, not compulsory tactics.
 
-1. In 2–3 assistants, use fresh sessions with personalization and memory off; ask how a named audience would ask for the job, and collect 10–15 exact phrasings across the six families (brand, category, comparison, best-for, how-to, problem).
-2. Record model, date, locale and session; deduplicate and cluster by task and intent.
-3. Validate against observed demand when available (GSC queries, site search, sales or support language, community threads), and label provenance: `model_generated`, `observed_query`, `customer_language` or `competitor_gap`.
-4. Freeze 6–12 validated prompts as the observation set; run it unchanged across the target and competitors.
+For brand-fact consistency, compare dated answers with the owning product/policy pages. Quote conflicting official versions and leave resolution with the owner. No visible citation means provenance unknown, not proven model memory. Profile claiming, account verification and publishing are separate tasks requiring verified platform operations.
 
-Model-generated questions are hypotheses; do not infer demand, ranking, traffic or conversion from them. Full steps and the observation matrix: [AI citation research](references/citation-research.md).
+## Deliver
 
-## GEO Analysis Criteria (Updated)
+Give the supported page diagnosis, concrete change, mechanism and uncertainty, with URL/date/platform and eligibility attached. Separate observed access/content issues from visibility hypotheses. If no worthwhile change is established, say so. Do not invent AI demand, ranking, traffic or conversion gains.
 
-### 1. Citability Score (25%)
+For comparable answer observations retain [citation research](references/citation-research.md) as the shared evidence format; discovery is owned by ai-prompt-research and interpretation by ai-visibility-audit.
 
-**Optimal passage length: 134-167 words** for AI citation.
-
-**Strong signals:**
-- Clear, quotable sentences with specific facts/statistics
-- Self-contained answer blocks (can be extracted without context)
-- Direct answer in first 40-60 words of section
-- Claims attributed with specific sources
-- Definitions following "X is..." or "X refers to..." patterns
-- Unique data points not found elsewhere
-
-**Weak signals:**
-- Vague, general statements
-- Opinion without evidence
-- Buried conclusions
-- No specific data points
-
-### 2. Structural Readability (20%)
-
-**92% of AI Overview citations come from top-10 ranking pages**, but 47% come from pages ranking below position 5, demonstrating different selection logic.
-
-**Strong signals:**
-- Clean H1->H2->H3 heading hierarchy
-- Question-based headings (matches query patterns)
-- Short paragraphs (2-4 sentences)
-- Tables for comparative data
-- Ordered/unordered lists for step-by-step or multi-item content
-- FAQ sections with clear Q&A format
-
-**Weak signals:**
-- Wall of text with no structure
-- Inconsistent heading hierarchy
-- No lists or tables
-- Information buried in paragraphs
-
-### 3. Multi-Modal Content (15%)
-
-Content with multi-modal elements sees **156% higher selection rates**.
-
-**Check for:**
-- Text + relevant images
-- Video content (embedded or linked)
-- Infographics and charts
-- Interactive elements (calculators, tools)
-- Structured data supporting media
-
-### 4. Authority & Brand Signals (20%)
-
-**Strong signals:**
-- Author byline with credentials
-- Publication date and last-updated date
-- Citations to primary sources (studies, official docs, data)
-- Organization credentials and affiliations
-- Expert quotes with attribution
-- Entity presence in Wikipedia, Wikidata
-- Mentions on Reddit, YouTube, LinkedIn
-
-**Weak signals:**
-- Anonymous authorship
-- No dates
-- No sources cited
-- No brand presence across platforms
-
-### 5. Technical Accessibility (20%)
-
-**AI crawlers do NOT execute JavaScript.** Server-side rendering is critical.
-
-**Check for:**
-- Server-side rendering (SSR) vs client-only content
-- AI crawler access in robots.txt
-- llms.txt file presence and configuration
-- RSL 1.0 licensing terms
-
----
-
-## AI Crawler Detection
-
-Check `robots.txt` for these AI crawlers:
-
-| Crawler | Owner | Purpose |
-|---------|-------|---------|
-| GPTBot | OpenAI | ChatGPT web search |
-| OAI-SearchBot | OpenAI | OpenAI search features |
-| ChatGPT-User | OpenAI | ChatGPT browsing |
-| ClaudeBot | Anthropic | Claude web features |
-| PerplexityBot | Perplexity | Perplexity AI search |
-| CCBot | Common Crawl | Training data (often blocked) |
-| anthropic-ai | Anthropic | Claude training |
-| Bytespider | ByteDance | TikTok/Douyin AI |
-| cohere-ai | Cohere | Cohere models |
-
-**Recommendation:** Allow GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot for AI search visibility. Block CCBot and training crawlers if desired.
-
----
-
-## llms.txt Standard
-
-The emerging **llms.txt** standard provides AI crawlers with structured content guidance.
-
-**Location:** `/llms.txt` (root of domain)
-
-**Format:**
-```
-# Title of site
-> Brief description
-
-## Main sections
-- [Page title](https://example.com/page): Description
-- [Another page](https://example.com/another-page): Description
-
-## Optional: Key facts
-- Fact 1
-- Fact 2
-```
-
-**Check for:**
-- Presence of `/llms.txt`
-- Structured content guidance
-- Key page highlights
-- Contact/authority information
-
----
-
-## RSL 1.0 (Really Simple Licensing)
-
-New standard (December 2025) for machine-readable AI licensing terms.
-
-**Backed by:** Reddit, Yahoo, Medium, Quora, Cloudflare, Akamai, Creative Commons
-
-**Check for:** RSL implementation and appropriate licensing terms.
-
----
-
-## Platform-Specific Optimization
-
-| Platform | Key Citation Sources | Optimization Focus |
-|----------|---------------------|-------------------|
-| **Google AI Overviews** | Top-10 ranking pages (92%) | Traditional SEO + passage optimization |
-| **ChatGPT** | Wikipedia (47.9%), Reddit (11.3%) | Entity presence, authoritative sources |
-| **Perplexity** | Reddit (46.7%), Wikipedia | Community validation, discussions |
-| **Bing Copilot** | Bing index, authoritative sites | Bing SEO, IndexNow |
-
----
-
-## Output
-
-Generate `GEO-ANALYSIS.md` with:
-
-1. **GEO Readiness Score: XX/100**
-2. **Platform breakdown** (Google AIO, ChatGPT, Perplexity scores)
-3. **AI Crawler Access Status** (which crawlers allowed/blocked)
-4. **llms.txt Status** (present, missing, recommendations)
-5. **Brand Mention Analysis** (presence on Wikipedia, Reddit, YouTube, LinkedIn)
-6. **Passage-Level Citability** (optimal 134-167 word blocks identified)
-7. **Server-Side Rendering Check** (JavaScript dependency analysis)
-8. **Top 5 Highest-Impact Changes**
-9. **Schema Recommendations** (for AI discoverability)
-10. **Content Reformatting Suggestions** (specific passages to rewrite)
-
----
-
-## Quick Wins
-
-1. Add "What is [topic]?" definition in first 60 words
-2. Create 134-167 word self-contained answer blocks
-3. Add question-based H2/H3 headings
-4. Include specific statistics with sources
-5. Add publication/update dates
-6. Implement Person schema for authors
-7. Allow key AI crawlers in robots.txt
-
-## Medium Effort
-
-1. Create `/llms.txt` file
-2. Add author bio with credentials + Wikipedia/LinkedIn links
-3. Ensure server-side rendering for key content
-4. Build entity presence on Reddit, YouTube
-5. Add comparison tables with data
-6. Implement FAQ sections (structured, not schema for commercial sites)
-
-## High Impact
-
-1. Create original research/surveys (unique citability)
-2. Build Wikipedia presence for brand/key people
-3. Establish YouTube channel with content mentions
-4. Implement comprehensive entity linking (sameAs across platforms)
-5. Develop unique tools or calculators
-
-## Optional provider evidence
-
-For AI answer or mention tracking, use supplied answer captures or discover an available integration that supports the requested platform. Verify the operation, account scope and cost; record prompt, platform, locale, capture time and cited URLs. A scraper response represents that sampled answer, while repeated comparable observations support trend analysis. See [Workbench operations](../seo/references/workbench-operations.md) for current collection interfaces.
-
-## Error Handling
-
-| Scenario | Action |
-|----------|--------|
-| URL unreachable (DNS failure, connection refused) | Report the error clearly. Do not guess site content. Suggest the user verify the URL and try again. |
-| AI crawlers blocked by robots.txt | Report exactly which crawlers are blocked and which are allowed. Provide specific robots.txt directives to add for enabling AI search visibility. |
-| No llms.txt found | Note the absence and provide a ready-to-use llms.txt template based on the site's content structure. |
-| No structured data detected | Report the gap and provide specific schema recommendations (Article, Organization, Person) for improving AI discoverability. |
-
-## FLOW Framework Integration
-
-For prompt-guided AI content optimization, select relevant optimize-stage references from [seo-flow](../seo-flow/SKILL.md) — FLOW's 21 optimize-stage prompts complement GEO's citability and structure analysis with evidence-led AI prompts.
-
-## Adapted specialist and workflow references
-
-Read the matching reference when it supports the current task:
-
-- [AI citation research](references/citation-research.md): a topic needs prompt discovery or a prompt-based citation observation plan.
+Original claude-seo provenance remains in [source inventory](../../docs/skill-sources.json); the current evidence-led adaptation and selected every-app methods are recorded in [adoptions](../../docs/skill-upstream-adoptions.json).

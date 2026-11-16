@@ -1,6 +1,6 @@
 # AI citation research
 
-Read when a topic needs prompt discovery or a prompt-based citation observation plan, or when a competitive landscape needs the same AI questions run across a target and its competitors. Use [seo-geo](../SKILL.md) as the canonical entrypoint for GEO work, and [competitive-landscape](../../competitive-landscape/SKILL.md) when the wider comparison includes links, content and technical evidence.
+Read when a topic needs prompt discovery or a prompt-based citation observation plan, or when a competitive landscape needs the same AI questions run across a target and its competitors. Use [ai-prompt-research](../../ai-prompt-research/SKILL.md) for question discovery, [ai-visibility-audit](../../ai-visibility-audit/SKILL.md) for answer interpretation and [seo-geo](../SKILL.md) for page diagnosis, and [competitive-landscape](../../competitive-landscape/SKILL.md) when the wider comparison includes links, content and technical evidence.
 
 ## Prompt discovery (optional)
 

@@ -122,3 +122,7 @@ Binding rejects inaccessible properties and properties that do not cover the pro
 | `failed` | Configured collection failed | Report the structured error; do not invent evidence |
 
 `evidence --crux --gsc` preserves these component states. Missing Google configuration does not turn a successful raw site probe into a failure.
+
+## Focused project intake
+
+Project setup can identify the exact missing account/profile/property binding from existing status before asking for credentials. Verify connection using the documented read-only status/query operations; never run paid research as a connectivity test. A saved goal, site inference or selected skill is not proof of access. Keep credentials and bindings in the ignored runtime paths above.

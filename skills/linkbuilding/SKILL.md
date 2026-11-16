@@ -119,3 +119,7 @@ Load from `references` only when the step or situation calls for them.
 ## Research evidence
 
 Use [source verification](../write-content/references/fact-checking.md) for research claims: rely on sources actually read or supplied project facts, preserve failed fetches as gaps, and record material dates and scope in the task artifact.
+
+## Page-level prospecting
+
+When the request needs actual target pages, contact paths or drafts, read [page prospecting](references/page-prospecting.md). Keep contact provenance and editorial fit explicit; this does not authorize sending.

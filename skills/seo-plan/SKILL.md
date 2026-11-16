@@ -125,3 +125,7 @@ Use existing project evidence and supplied competitor/keyword exports first. If 
 | Unrecognized business type | Fall back to `generic.md` template. Inform user that no industry-specific template was found and proceed with the general business template. |
 | No website URL provided | Proceed with new-site planning mode. Skip current site assessment and competitive gap analysis that require a live URL. |
 | Industry template not found | Check `assets` directory for available templates. If the requested template file is missing, use `generic.md` and note the missing template in output. |
+
+## Competitor-driven and SaaS page priorities
+
+Read [competitor-driven plan](references/competitor-driven-plan.md) when research must become an ordered page/link plan or the task is choosing SaaS commercial pages. Research methods remain with their owning skills; planning consumes their artifacts.

@@ -1,6 +1,6 @@
 # Competitive landscape analysis workflow
 
-Use with [competitive-landscape](../SKILL.md). This is a default order, not a scheduler. Skip a step only when its entry condition fails, and record the reason in the run log.
+Use with [competitive-landscape](../SKILL.md). This is a default order, not a scheduler. Select steps from the actual task; out-of-scope dimensions are skipped with a reason, not mandatory prerequisites. A one-domain review needs no extra competitors or GEO collection.
 
 ## Step table
 
@@ -29,7 +29,7 @@ Use sources in this order:
 3. Similar products the target's own pages, pricing or positioning make relevant.
 4. A provider-scoped gap set, if one already exists and is comparable.
 
-Keep 3–5. A larger set needs a reason and a smaller observation depth.
+For a multi-site landscape use a bounded set, often 3–5. For a named-competitor review, use that competitor without inventing others. A larger set needs a reason and smaller observation depth.
 
 Maintain `projects/<id>/context/competitors.md` in this shape:
 
@@ -80,7 +80,7 @@ Only run it with the user's paid-collection authorization. A partial or non-comp
 
 Do not create a project directory for a competitor, run a full crawl of its site, or present a bounded sample as a full audit.
 
-## 4. GEO comparison
+## 4. GEO comparison (when in scope)
 
 Use the competitive extension in [citation research](../../seo-geo/references/citation-research.md). Build one question set and run it unchanged for the target and each competitor:
 
