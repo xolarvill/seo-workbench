@@ -47,7 +47,7 @@ def dependencies(files: list[dict]) -> list[dict]:
         if not path.endswith('.md'):
             continue
         fence = False
-        for number, line in enumerate(local_path(path).read_text().splitlines(), 1):
+        for number, line in enumerate(local_path(path).read_text(encoding='utf-8').splitlines(), 1):
             if re.match(r'^\s*(```|~~~)', line):
                 fence = not fence
                 continue
@@ -94,7 +94,7 @@ def unavailable_runtime_paths(files: list[dict]) -> list[str]:
         path = row['local_path']
         if not path.startswith('skills/') or not path.endswith('.md'):
             continue
-        for number, line in enumerate(local_path(path).read_text().splitlines(), 1):
+        for number, line in enumerate(local_path(path).read_text(encoding='utf-8').splitlines(), 1):
             # A link to an upstream source file is attribution, not a local dependency.
             line = re.sub(r'https?://[^\s)>]+', '', line)
             # Markdown destinations are resolved by dependencies(), including
@@ -113,6 +113,7 @@ def render_tables(inventory: dict) -> str:
     groups = [('superseo', 'skill'), ('claude-seo', 'skill'), ('seomachine', 'skill'),
               ('workbench', 'skill'), ('seomachine', 'specialist_reference'),
               ('seomachine', 'workflow_reference'), ('workbench', 'reference')]
+    groups += sorted({(r['source_id'], r['kind']) for r in inventory['files']} - set(groups))
     for source, kind in groups:
         files = [row for row in inventory['files'] if row['source_id'] == source and row['kind'] == kind]
         lines += [f'### {source} / {kind}（{len(files)}）', '',
@@ -139,7 +140,9 @@ def render_tables(inventory: dict) -> str:
 
 def render_summary(inventory: dict) -> str:
     rows = ['## 当前清点范围', '', '| 来源 | 全部文件 | 活跃技能 | 专家原文 | 流程原文 | 与上游相同 | 与上游有差异 |', '|---|---:|---:|---:|---:|---:|---:|']
-    for source in ['superseo', 'claude-seo', 'seomachine', 'workbench']:
+    sources = ['superseo', 'claude-seo', 'seomachine', 'workbench']
+    sources += sorted({r['source_id'] for r in inventory['files']} - set(sources))
+    for source in sources:
         files = [r for r in inventory['files'] if r['source_id'] == source]
         kinds = Counter(r['kind'] for r in files)
         states = Counter(r['comparison_status'] for r in files)
@@ -206,7 +209,7 @@ def refresh(inventory: dict, register: list[str]) -> None:
     material = material_paths()
     known = {r['local_path'] for r in inventory['files']}
     registry_path = ROOT / 'docs/skill-method-adaptations.json'
-    adaptations = json.loads(registry_path.read_text())['materials'] if registry_path.exists() else []
+    adaptations = json.loads(registry_path.read_text(encoding='utf-8'))['materials'] if registry_path.exists() else []
     derived = {r['adapted_path']: r for r in adaptations if r.get('adapted_path')}
     allowed = set(register) | set(derived)
     if material - known - allowed:
@@ -255,16 +258,16 @@ def refresh(inventory: dict, register: list[str]) -> None:
         'by_comparison_status': dict(sorted(Counter(r['comparison_status'] for r in inventory['files']).items())),
         'dependency_occurrences': len(inventory['dependencies']),
         'dependencies_by_status': dict(sorted(Counter(r['status'] for r in inventory['dependencies']).items()))}
-    MANIFEST.write_text(json.dumps(inventory, ensure_ascii=False, indent=2) + '\n')
+    MANIFEST.write_text(json.dumps(inventory, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     doc = ROOT / 'docs/skill-sources.md'
-    text = doc.read_text().split('## 入口与上游文件映射')[0]
+    text = doc.read_text(encoding='utf-8').split('## 入口与上游文件映射')[0]
     start = text.index('## 当前清点范围')
     end = text.index('当前上游而本地尚无对应入口的技能：')
     text = text[:start] + render_summary(inventory) + text[end:]
     text = re.sub(r'当前 \d+ 个受维护文件均有记录[：；][^\n]+',
                   f"当前 {len(inventory['files'])} 个受维护文件均有记录；原材料与派生方法保持独立来源身份。", text)
     text = re.sub(r'当前登记 \d+ 处字面路径引用：', f"当前登记 {len(inventory['dependencies'])} 处字面路径引用：", text)
-    doc.write_text(text.rstrip() + '\n\n' + render_tables(inventory))
+    doc.write_text(text.rstrip() + '\n\n' + render_tables(inventory), encoding='utf-8')
 
 
 def check(inventory: dict, strict: bool) -> list[str]:
@@ -297,7 +300,7 @@ def main() -> int:
     parser.add_argument('--register-workbench', action='append', default=[])
     parser.add_argument('--strict-active', action='store_true')
     args = parser.parse_args()
-    inventory = json.loads(MANIFEST.read_text())
+    inventory = json.loads(MANIFEST.read_text(encoding='utf-8'))
     if args.action == 'refresh':
         refresh(inventory, args.register_workbench)
     errors = check(inventory, args.strict_active)

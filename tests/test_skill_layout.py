@@ -12,22 +12,22 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def load_plan():
-    return json.loads((ROOT / 'docs/skill-layout-migration.json').read_text())
+    return json.loads((ROOT / 'docs/skill-layout-migration.json').read_text(encoding='utf-8'))
 
 
 def load_inventory():
-    return json.loads((ROOT / 'docs/skill-sources.json').read_text())
+    return json.loads((ROOT / 'docs/skill-sources.json').read_text(encoding='utf-8'))
 
 
 def test_skill_entrypoints_share_one_namespace():
-    actual = {str(p.relative_to(ROOT)) for p in (ROOT / 'skills').rglob('SKILL.md')}
+    actual = {p.relative_to(ROOT).as_posix() for p in (ROOT / 'skills').rglob('SKILL.md')}
     expected = {row['local_path'] for row in load_inventory()['files'] if row['kind'] == 'skill'}
     assert actual == expected
     names = []
     for path in sorted(actual):
         p = ROOT / path
         assert p.parent.parent == ROOT / 'skills', path
-        frontmatter = yaml.safe_load(p.read_text().split('---', 2)[1])
+        frontmatter = yaml.safe_load(p.read_text(encoding='utf-8').split('---', 2)[1])
         assert frontmatter['name'] == p.parent.name, path
         assert frontmatter['description']
         names.append(frontmatter['name'])
@@ -54,7 +54,7 @@ def test_every_source_record_survives_layout_migration():
             assert record['source_id'] == source
             assert record['upstream_path'] == upstream_path
             assert record['comparison_upstream_blob_sha']
-    actual = {str(p.relative_to(ROOT)) for base in ['skills', 'third_party/skill-history']
+    actual = {p.relative_to(ROOT).as_posix() for base in ['skills', 'third_party/skill-history']
               for p in (ROOT / base).rglob('*') if p.is_file() and p.name != '.DS_Store'}
     assert actual == {row['local_path'] for row in inventory['files']}
 
@@ -63,15 +63,15 @@ def test_inventory_dependency_locations_are_current():
     for edge in load_inventory()['dependencies']:
         source = ROOT / edge['from_path']
         assert source.is_file(), edge
-        assert edge['target'] in source.read_text().splitlines()[edge['line'] - 1], edge
+        assert edge['target'] in source.read_text(encoding='utf-8').splitlines()[edge['line'] - 1], edge
         if edge['status'] == 'resolved_local':
             assert (ROOT / edge['resolved_path']).exists(), edge
 
 
 def test_index_links_every_canonical_skill_directly():
     index = ROOT / 'skills/README.md'
-    targets = {str((index.parent / link).resolve().relative_to(ROOT))
-               for link in re.findall(r'\]\(([^)]+/SKILL\.md)\)', index.read_text())}
+    targets = {(index.parent / link).resolve().relative_to(ROOT).as_posix()
+               for link in re.findall(r'\]\(([^)]+/SKILL\.md)\)', index.read_text(encoding='utf-8'))}
     expected = {row['local_path'] for row in load_inventory()['files'] if row['kind'] == 'skill'}
     assert expected <= targets
 
@@ -80,7 +80,7 @@ def test_selected_upstream_methods_retain_pinned_sources_and_current_targets():
     inventory = load_inventory()
     records = {row['id']: row for row in inventory['files']}
     material = {row['local_path'] for row in records.values()}
-    ledger = json.loads((ROOT / 'docs/skill-upstream-adoptions.json').read_text())
+    ledger = json.loads((ROOT / 'docs/skill-upstream-adoptions.json').read_text(encoding='utf-8'))
     assert len({row['id'] for row in ledger['adopted']}) == len(ledger['adopted'])
     for adoption in ledger['adopted']:
         source = ledger['sources'][adoption['source_id']]

@@ -9,11 +9,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def adaptations():
-    return json.loads((ROOT / 'docs/skill-method-adaptations.json').read_text())['materials']
+    return json.loads((ROOT / 'docs/skill-method-adaptations.json').read_text(encoding='utf-8'))['materials']
 
 
 def test_legacy_methods_have_current_owners_or_a_history_only_reason():
-    inventory = json.loads((ROOT / 'docs/skill-sources.json').read_text())
+    inventory = json.loads((ROOT / 'docs/skill-sources.json').read_text(encoding='utf-8'))
     originals = {r['id']: r for r in inventory['files']
                  if r['source_id'] == 'seomachine' and r['kind'] in
                  {'specialist_reference', 'workflow_reference'}}
@@ -29,7 +29,7 @@ def test_legacy_methods_have_current_owners_or_a_history_only_reason():
         reference = ROOT / row['adapted_path']
         owner = ROOT / row['owner_path']
         assert reference.is_file() and owner.is_file()
-        assert reference.name in owner.read_text()
+        assert reference.name in owner.read_text(encoding='utf-8')
         assert row['source_id'] in next(r for r in inventory['files']
                                        if r['local_path'] == row['adapted_path'])['derived_from']
 
@@ -38,7 +38,7 @@ def test_current_adapters_do_not_require_the_old_executor():
     for row in adaptations():
         if not row['adapted_path']:
             continue
-        text = (ROOT / row['adapted_path']).read_text()
+        text = (ROOT / row['adapted_path']).read_text(encoding='utf-8')
         assert not re.search(r'\bpython3?\s+|data_sources/|\.claude/|`/(?:write|article|publish-draft|scrub)\b', text)
 
 

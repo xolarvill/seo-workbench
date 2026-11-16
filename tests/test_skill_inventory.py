@@ -9,7 +9,7 @@ from scripts import skill_inventory
 
 
 def test_active_skills_have_resolvable_execution_dependencies():
-    inventory = json.loads(skill_inventory.MANIFEST.read_text())
+    inventory = json.loads(skill_inventory.MANIFEST.read_text(encoding='utf-8'))
     assert skill_inventory.check(inventory, strict=True) == []
 
 
@@ -33,6 +33,29 @@ def test_dependency_scan_distinguishes_real_targets_context_and_examples(tmp_pat
         'reference.md': 'resolved_local', 'missing.md': 'missing_literal_target',
         'context/brand-voice.md': 'project_context_reference', 'example.md': 'example_reference',
     }
+
+
+def test_dependency_scan_reads_utf8_method_text(tmp_path, monkeypatch):
+    monkeypatch.setattr(skill_inventory, 'ROOT', tmp_path)
+    folder = tmp_path / 'skills/example'
+    folder.mkdir(parents=True)
+    (folder / '证据.md').write_text('已观察的来源', encoding='utf-8')
+    (folder / 'SKILL.md').write_text('[证据](证据.md)\n', encoding='utf-8')
+    rows = skill_inventory.dependencies([{'local_path': 'skills/example/SKILL.md'}])
+    assert rows[0]['status'] == 'resolved_local'
+    assert rows[0]['resolved_path'] == 'skills/example/证据.md'
+
+
+def test_render_tables_includes_additional_source_families():
+    row = {'source_id': 'additional-source', 'kind': 'reference',
+           'local_path': 'third_party/skill-history/new/method.md',
+           'upstream_path': 'skills/method/SKILL.md', 'first_local_record': {'commit': None},
+           'comparison_status': 'identical'}
+    inventory = {'files': [row], 'sources': {
+        'additional-source': {'repository': 'example/methods', 'comparison_ref': 'a' * 40}}}
+    rendered = skill_inventory.render_tables(inventory)
+    assert 'third_party/skill-history/new/method.md' in rendered
+    assert 'https://github.com/example/methods/blob/' + 'a' * 40 in rendered
 
 
 def test_runtime_scan_checks_real_scripts_and_ignores_remote_source_urls(tmp_path, monkeypatch):
@@ -63,6 +86,9 @@ def history_repo(tmp_path, monkeypatch):
                                        cwd=tmp_path, text=True).strip()
 
     run('init', '-q')
+    # These tests compare worktree bytes with Git blobs, independently of the
+    # user's checkout newline conversion settings.
+    run('config', 'core.autocrlf', 'false')
     return tmp_path, run
 
 
