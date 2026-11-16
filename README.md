@@ -48,8 +48,6 @@ cd seo-workbench
 ./seo ui # open the visual managing interface
 ```
 
-### Working with an agent
-
 Run your coding agent from the repository root. SEO Workbench is agent-neutral. Codex, Claude Code, or another coding agent can use the same `./seo` commands, project files, and local skills. The CLI remains the source of truth when the UI is closed.
 
  A useful first request is:
@@ -59,25 +57,6 @@ Agents choose methods from the current goal, project artifacts, and evidence. Re
 
 For keyword planning, `context/target-keywords.md` is the maintained list of current targets, candidates and removed targets. Record each selected keyword with a link to its decision/research; keep detailed rationale and launch plans in reports. Follow [keyword context maintenance](docs/reference/keyword-context-maintenance.md) for lifecycle and evidence checks. Markdown is not automatically synchronized with the keyword workspace.
 
-### Working manually
-
-Manual operation is supported, create a project and collect its first evidence:
-
-```bash
-./seo --project my-site init general \
-  --name "My Site" --url "https://example.com"
-
-./seo --project my-site evidence --rendered --technology --json
-./seo --project my-site performance --json
-```
-
-Open the workbench:
-
-```bash
-./seo --project my-site ui
-```
-
-The interface listens only on the local machine and uses the same project files as the CLI. Open the printed `http://localhost:<port>` address in any browser; no browser-specific session is required.
 
 ## Workflow
 
