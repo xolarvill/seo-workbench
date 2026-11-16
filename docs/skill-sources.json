@@ -2,7 +2,7 @@
   "schema_version": 2,
   "reviewed_on": "2026-11-16",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "685af492504f3e23aa4323391b1cc5587530165f",
+  "local_snapshot_commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
@@ -160,9 +160,9 @@
         "path": "skills/README.md"
       },
       "last_local_change": {
-        "commit": "eac4df8664c724a4ff3b47c2222002a8cc99e396",
-        "date": "2026-11-11",
-        "subject": "refactor: retire persisted workflow state",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/README.md",
         "record_status": "committed"
       },
@@ -323,26 +323,26 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/ai-prompt-research/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/ai-prompt-research/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
         "openseo-core:plugins/openseo/skills/ai-prompt-research/SKILL.md"
       ],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "b7f9a58c121ab60c9375d14e34a0bb2d956858fe0deeac1ed51b4e1e0c7eb963",
       "local_git_blob_sha": "c03429dee385840407e022c3730c425b89eb1d65",
       "maintenance_status": "active"
@@ -363,20 +363,20 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/ai-visibility-audit/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/ai-visibility-audit/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
@@ -384,7 +384,7 @@
         "openseo-experimental:skills/chatgpt-business-setup/SKILL.md",
         "openseo-experimental:skills/rank-on-ai/SKILL.md"
       ],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "8a6dff3c14d71f79361250a740cc02d21b4c3c6d69b46f7a427db72dcfa3b2a8",
       "local_git_blob_sha": "f3ef1a7dc4d552ff30a9b0540809244605c08948",
       "maintenance_status": "active"
@@ -706,9 +706,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
-        "date": "2026-11-11",
-        "subject": "feat: add competitive landscape analysis workflow",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/competitive-landscape/SKILL.md",
         "record_status": "committed"
       },
@@ -747,9 +747,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
-        "date": "2026-11-11",
-        "subject": "feat: add competitive landscape analysis workflow",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/competitive-landscape/references/analysis-workflow.md",
         "record_status": "committed"
       },
@@ -3206,9 +3206,9 @@
         "path": "skills/seo-machine-pipeline/skills/free-tool-strategy/SKILL.md"
       },
       "last_local_change": {
-        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
-        "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/free-tool-strategy/SKILL.md",
         "record_status": "committed"
       },
@@ -3240,26 +3240,26 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/free-tool-strategy/references/search-validated-spec.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/free-tool-strategy/references/search-validated-spec.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
         "openseo-experimental:skills/free-tool/SKILL.md"
       ],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "748667a4c7bce5ad8d2794afbcfab3cf21ff05103b0c9a96d626a5dead4da413",
       "local_git_blob_sha": "1d1f6291a374ab33dc3c94bc0d83089e8d9087e3",
       "maintenance_status": "active"
@@ -5118,20 +5118,20 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/keyword-research/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/keyword-research/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
@@ -5139,7 +5139,7 @@
         "openseo-experimental:skills/customer-keywords/SKILL.md",
         "openseo-experimental:skills/keyword-gap/SKILL.md"
       ],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "2fd6b528296ba9760eec297600bd73d766f043e0266f633bad4f84be01bbad29",
       "local_git_blob_sha": "7e362ff569067743fdd2b384acab38461ded3ff2",
       "maintenance_status": "active"
@@ -5211,9 +5211,9 @@
         "path": "skills/linkbuilding/SKILL.md"
       },
       "last_local_change": {
-        "commit": "3f17dbb3e1811fda2ab4bec2fe00847d09a3cc70",
-        "date": "2026-10-29",
-        "subject": "feat: adopt selected upstream skill methods and policy corrections",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/linkbuilding/SKILL.md",
         "record_status": "committed"
       },
@@ -5329,26 +5329,26 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/linkbuilding/references/page-prospecting.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/linkbuilding/references/page-prospecting.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
         "openseo-core:plugins/openseo/skills/link-prospecting/SKILL.md"
       ],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "b15601326bb0d642d1d996bb253dddc72cf477372d91238578f31887949724b7",
       "local_git_blob_sha": "613b1c1f48899d0b2f4c54c43812a4de09ca3d8c",
       "maintenance_status": "active"
@@ -7183,9 +7183,9 @@
         "path": "skills/seo-machine-pipeline/skills/product-marketing-context/SKILL.md"
       },
       "last_local_change": {
-        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
-        "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/product-marketing-context/SKILL.md",
         "record_status": "committed"
       },
@@ -7400,9 +7400,9 @@
         "path": "skills/project-context/SKILL.md"
       },
       "last_local_change": {
-        "commit": "11deeabee81b6ce9385346fe8800f5bd631ce7de",
-        "date": "2026-11-10",
-        "subject": "docs: split documentation into guides, reference, and history",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/project-context/SKILL.md",
         "record_status": "committed"
       },
@@ -7768,26 +7768,26 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/reverse-engineer-seo/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/reverse-engineer-seo/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
         "openseo-experimental:skills/reverse-engineer-seo/SKILL.md"
       ],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "9861d2bf693597b760b5da6815f79ef7f324659cab3e66ad78c61984ec713403",
       "local_git_blob_sha": "a8aaaf8ef1c59e260bff8ccfe0da682273be12d2",
       "maintenance_status": "active"
@@ -8275,9 +8275,9 @@
         "path": "skills/claude-seo-extra/seo-cluster/SKILL.md"
       },
       "last_local_change": {
-        "commit": "80573d2d5f0020a7847019166b070949e448c87d",
-        "date": "2026-10-29",
-        "subject": "refactor: unify writing methods around reader tasks and evidence",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/seo-cluster/SKILL.md",
         "record_status": "committed"
       },
@@ -11202,9 +11202,9 @@
         "path": "skills/claude-seo-extra/seo-geo/SKILL.md"
       },
       "last_local_change": {
-        "commit": "390e93744aa4175ca282172d5b006d04ec76c284",
-        "date": "2026-11-11",
-        "subject": "docs: surface GEO prompt discovery in entrypoints",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/seo-geo/SKILL.md",
         "record_status": "committed"
       },
@@ -11243,9 +11243,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "09541d433ed057834626ca8e259191d512d63401",
-        "date": "2026-11-11",
-        "subject": "feat: add GEO prompt discovery method",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/seo-geo/references/citation-research.md",
         "record_status": "committed"
       },
@@ -12661,9 +12661,9 @@
         "path": "skills/claude-seo-extra/seo-maps/SKILL.md"
       },
       "last_local_change": {
-        "commit": "790ba2b90b3ed31f48ca69a37714a46bcedcc39f",
-        "date": "2026-10-29",
-        "subject": "fix: align skill runtime references with Workbench operations",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/seo-maps/SKILL.md",
         "record_status": "committed"
       },
@@ -12695,26 +12695,26 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/seo-maps/references/bounded-profile-comparison.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/seo-maps/references/bounded-profile-comparison.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
         "openseo-core:plugins/openseo/skills/local-seo/SKILL.md"
       ],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "c3df62d35f604915e134eb5c300dd4e85d65d772f90a7d7705a88d019cfaa505",
       "local_git_blob_sha": "13e8b2a13de23332465f7bdbbd348b796dbd5b0c",
       "maintenance_status": "active"
@@ -12787,9 +12787,9 @@
         "path": "skills/claude-seo-extra/seo-plan/SKILL.md"
       },
       "last_local_change": {
-        "commit": "4f81976836bb679c824bf81037c85588f690ca15",
-        "date": "2026-11-11",
-        "subject": "feat: add competitive landscape analysis workflow",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/seo-plan/SKILL.md",
         "record_status": "committed"
       },
@@ -13079,27 +13079,27 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/seo-plan/references/competitor-driven-plan.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/seo-plan/references/competitor-driven-plan.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
         "openseo-experimental:skills/competitor-strategy/SKILL.md",
         "openseo-experimental:skills/money-pages/SKILL.md"
       ],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "9f6c5633a1e76ece18e57a7203707da60e2831d8d2941b6ae93e80c78d470d5a",
       "local_git_blob_sha": "1feda629670df2e74707d0829d37c3268ee80814",
       "maintenance_status": "active"
@@ -13387,9 +13387,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "eac4df8664c724a4ff3b47c2222002a8cc99e396",
-        "date": "2026-11-11",
-        "subject": "refactor: retire persisted workflow state",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/seo/SKILL.md",
         "record_status": "committed"
       },
@@ -13984,9 +13984,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "eac4df8664c724a4ff3b47c2222002a8cc99e396",
-        "date": "2026-11-11",
-        "subject": "refactor: retire persisted workflow state",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/seo/references/workbench-operations.md",
         "record_status": "committed"
       },
@@ -14070,9 +14070,9 @@
         "record_status": "committed"
       },
       "last_local_change": {
-        "commit": "49574dd69db83563582b57993c2c0fa21869b11d",
-        "date": "2026-10-29",
-        "subject": "refactor: unify local skills under canonical capability entrypoints",
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
+        "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/site-audit/SKILL.md",
         "record_status": "committed"
       },
@@ -14188,26 +14188,26 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/site-audit/references/opportunity-selection.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "skills/site-audit/references/opportunity-selection.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "portable_method_adaptation",
       "declared_attribution": [],
       "derived_from": [
         "openseo-core:plugins/openseo/skills/seo-audit/SKILL.md"
       ],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "cb18055da7e012cfc12e3a34f46b9d5eac4a1149968ce3549016eba4467e9681",
       "local_git_blob_sha": "be92cbc4e5756031ae228f46a16c92812186ed3a",
       "maintenance_status": "active"
@@ -16738,23 +16738,23 @@
       "comparison_upstream_blob_sha": "cb1da938330b2ed4447ff0f6ccfe84e96b37c8c0",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/ai-prompt-research/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/ai-prompt-research/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "fa2e18bc074e81b539ea8f3f8741320dc0f1250b32098de7c80a80bbca565d25",
       "local_git_blob_sha": "cb1da938330b2ed4447ff0f6ccfe84e96b37c8c0",
       "maintenance_status": "historical_source"
@@ -16776,23 +16776,23 @@
       "comparison_upstream_blob_sha": "fcb12e340687d72b759e75e5f2431e5ce1c3a3a3",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/ai-visibility-audit/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/ai-visibility-audit/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "7b84ed2f8fdac1df191c7fe19bdd6496f8d7cceb9c97347c59a53742997b4dda",
       "local_git_blob_sha": "fcb12e340687d72b759e75e5f2431e5ce1c3a3a3",
       "maintenance_status": "historical_source"
@@ -16814,23 +16814,23 @@
       "comparison_upstream_blob_sha": "7c0c1f62b1c554f9270b1adb37c6644fa98a0049",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/competitive-landscape/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/competitive-landscape/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "9138f23ee62a8d8f0c1b734b3a56ff68233e99294ef9367d9ad2dba1c9a0749f",
       "local_git_blob_sha": "7c0c1f62b1c554f9270b1adb37c6644fa98a0049",
       "maintenance_status": "historical_source"
@@ -16852,23 +16852,23 @@
       "comparison_upstream_blob_sha": "1b2f791922cb7ff162257a8fbd9d5d51961f7761",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/competitor-analysis/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/competitor-analysis/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "048237244e0ca9eb29b2ec84c4469ba82fb7d1fd4cb4d42917e4b70eb99bc613",
       "local_git_blob_sha": "1b2f791922cb7ff162257a8fbd9d5d51961f7761",
       "maintenance_status": "historical_source"
@@ -16890,23 +16890,23 @@
       "comparison_upstream_blob_sha": "abd6ed1852617186ac99d24629579e87482b68c9",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/keyword-clustering/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/keyword-clustering/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "103cf5f714e395392bdc18badc45dfdbd3653e44d6b0685b7befe4a82090f19d",
       "local_git_blob_sha": "abd6ed1852617186ac99d24629579e87482b68c9",
       "maintenance_status": "historical_source"
@@ -16928,23 +16928,23 @@
       "comparison_upstream_blob_sha": "28d9db45d66c698314a15e254e697db70c2574d4",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/keyword-research/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/keyword-research/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "d4973d428f94bf335c8ffb567223e8d2014b0be545a78bd3361bfb1fc82a887b",
       "local_git_blob_sha": "28d9db45d66c698314a15e254e697db70c2574d4",
       "maintenance_status": "historical_source"
@@ -16966,23 +16966,23 @@
       "comparison_upstream_blob_sha": "eb676eae14b21a130ba9d097f52ddb986166fd31",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/link-prospecting/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/link-prospecting/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "60feb4f06a36df5bdf18d263a04a7c155ed85d5e5961950ca05608d4d6e3a8a3",
       "local_git_blob_sha": "eb676eae14b21a130ba9d097f52ddb986166fd31",
       "maintenance_status": "historical_source"
@@ -17004,23 +17004,23 @@
       "comparison_upstream_blob_sha": "534762f1684fa1f6457eef622e649d431a30517d",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/local-seo/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/local-seo/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "07cfa026e3220c8ab603fb2869f0ab244b500899c7db0e83f8433aca64aa34da",
       "local_git_blob_sha": "534762f1684fa1f6457eef622e649d431a30517d",
       "maintenance_status": "historical_source"
@@ -17042,23 +17042,23 @@
       "comparison_upstream_blob_sha": "ce6ac6bfb229ce2f8649b10dd219f80dcb3eb90d",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-audit/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-audit/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "0fd0dcc9a5f8b51c5e13857c2770ec3b794eaebe32339f193549a541c6f46e05",
       "local_git_blob_sha": "ce6ac6bfb229ce2f8649b10dd219f80dcb3eb90d",
       "maintenance_status": "historical_source"
@@ -17080,23 +17080,23 @@
       "comparison_upstream_blob_sha": "9e6db0f1fcc482cbf9f94354846837b4d09ff7b9",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-coach/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-coach/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "08e276ec7e2409548ecaf1edfb9e1e2af285e6f6ecd1e209c81277d3df43fc44",
       "local_git_blob_sha": "9e6db0f1fcc482cbf9f94354846837b4d09ff7b9",
       "maintenance_status": "historical_source"
@@ -17118,23 +17118,23 @@
       "comparison_upstream_blob_sha": "00df9341ef19871d33f96cf4670cc90e7cfc70bd",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-project-setup/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-project-setup/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "d11b75e01afb8f25f5e8198c3863a70ad6fa8c774056ef10184b3d8e22e9a073",
       "local_git_blob_sha": "00df9341ef19871d33f96cf4670cc90e7cfc70bd",
       "maintenance_status": "historical_source"
@@ -17156,23 +17156,23 @@
       "comparison_upstream_blob_sha": "104bcc09284921c409121d16f652f77ac09a562b",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-report/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/open-seo/plugins/openseo/skills/seo-report/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "4b2c0e6d8e6080cce6ee27ace34be16c872df89f093bc824864af95f6befe63f",
       "local_git_blob_sha": "104bcc09284921c409121d16f652f77ac09a562b",
       "maintenance_status": "historical_source"
@@ -17194,23 +17194,23 @@
       "comparison_upstream_blob_sha": "9dd4b9ed335d933e8511a263551372458e657799",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/chatgpt-business-setup/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/chatgpt-business-setup/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "3947b40f95f97db2e83f04954aeaeffbd3199b931b0f8f841672397c4b5a7e98",
       "local_git_blob_sha": "9dd4b9ed335d933e8511a263551372458e657799",
       "maintenance_status": "historical_source"
@@ -17232,23 +17232,23 @@
       "comparison_upstream_blob_sha": "f717735582fb00df98a257fed9b5a6e6123008ef",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/competitor-strategy/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/competitor-strategy/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "d9c7d84c9b8585bc6caa0337c571bacc72f64095df08e6346d733114c1d08ddd",
       "local_git_blob_sha": "f717735582fb00df98a257fed9b5a6e6123008ef",
       "maintenance_status": "historical_source"
@@ -17270,23 +17270,23 @@
       "comparison_upstream_blob_sha": "8b914fa1eadf4e396dad26cc8315905189651450",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/customer-keywords/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/customer-keywords/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "a301f4efbf9509e736871f4b866aaed44350d12bb4e6798c1e22185073e988fb",
       "local_git_blob_sha": "8b914fa1eadf4e396dad26cc8315905189651450",
       "maintenance_status": "historical_source"
@@ -17308,23 +17308,23 @@
       "comparison_upstream_blob_sha": "31924ece148ce5f6a23a9ee75f5644f0382502f6",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/free-tool/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/free-tool/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "faa710b4c1378e9de6aea6f82fbad194031077622d79103aa7189e81afe15c9c",
       "local_git_blob_sha": "31924ece148ce5f6a23a9ee75f5644f0382502f6",
       "maintenance_status": "historical_source"
@@ -17346,23 +17346,23 @@
       "comparison_upstream_blob_sha": "828e33748e3762e8a449e717f2849e7afe6d0b2e",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/keyword-gap/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/keyword-gap/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "9d7b599c57f3bba0ca946461f782618e3da77a3ea1f3c3abf0314161095a8519",
       "local_git_blob_sha": "828e33748e3762e8a449e717f2849e7afe6d0b2e",
       "maintenance_status": "historical_source"
@@ -17384,23 +17384,23 @@
       "comparison_upstream_blob_sha": "5e51f6d9ae6c63cec58033b6aa8b9d4df51f29f6",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/money-pages/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/money-pages/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "ecae12a2dc528682026830197d2e3e876c441b8837a0e2de6cb8025b187080ed",
       "local_git_blob_sha": "5e51f6d9ae6c63cec58033b6aa8b9d4df51f29f6",
       "maintenance_status": "historical_source"
@@ -17422,23 +17422,23 @@
       "comparison_upstream_blob_sha": "c14a7630f726a15375ab64bf9194199f7668b205",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/rank-on-ai/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/rank-on-ai/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "bb7e3f3b554a17bdebdc14a16370049835fca0218fbda1737f5a02f2c38ed684",
       "local_git_blob_sha": "c14a7630f726a15375ab64bf9194199f7668b205",
       "maintenance_status": "historical_source"
@@ -17460,23 +17460,23 @@
       "comparison_upstream_blob_sha": "a97e8fa9c54bc2a0de8d33007b28c0e32e371b35",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/reverse-engineer-seo/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/reverse-engineer-seo/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "d3853fe1fcd7d3a7d74000e14d2538f3f3335a0e957db04f00629e5ee252b7fb",
       "local_git_blob_sha": "a97e8fa9c54bc2a0de8d33007b28c0e32e371b35",
       "maintenance_status": "historical_source"
@@ -17498,23 +17498,23 @@
       "comparison_upstream_blob_sha": "d2dfad19c2560dda47ff4cf82c87d769a7c3dd4d",
       "comparison_status": "identical",
       "first_local_record": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/seo-manager-agent/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
         "date": "2026-11-16",
+        "subject": "feat: adapt OpenSEO methods with four independent research skills",
         "path": "third_party/skill-history/seo-party-skills/skills/seo-manager-agent/SKILL.md",
-        "subject": "OpenSEO method adaptation",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "historical_source_only",
       "declared_attribution": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "901591acea5933b05c6ffc4dbc6354b1912df748615ac00e39c13afb26b05811",
       "local_git_blob_sha": "d2dfad19c2560dda47ff4cf82c87d769a7c3dd4d",
       "maintenance_status": "historical_source"
