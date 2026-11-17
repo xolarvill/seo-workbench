@@ -9,6 +9,7 @@ Agent-neutral SEO workflow repo. Use the local Python CLI and local `skills/` fi
 - For substantive SEO work, choose skills from [`skills/README.md`](skills/README.md) and read the useful bodies before doing the professional work; combine or shorten methods to fit the task. The catalog is a navigation aid, not an allowlist, so search local modules when the task falls outside the examples. Do not wait for the user to name skills; engineering-only changes need SEO skills only when they change SEO semantics.
 - Keyword, page-ownership, and reader-facing writing tasks begin with the owner document named in [Task routing](#task-routing).
 - Scale the method to the task and reuse applicable, sufficiently current research. State the chosen method and purpose briefly, and keep decisions, outputs, evidence pointers, and gaps in the task artifact so another session can resume from it.
+- When analysis or diagnosis is too broad to guide the next step, consider narrowing to the most informative subgroup or component and checking competing explanations there. Widen again if the finding leaves the broader result unexplained; skip further splitting when it would not change the next decision or the evidence is too thin.
 - New invariants go to `docs/` first; promote one here only if it changes every action. On conflict: this file beats `docs/`, which beats examples inside `skills/`; the user's current instruction beats this file.
 
 ## Definition of done
