@@ -249,7 +249,7 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [skills/ai-prompt-research/SKILL.md](../skills/ai-prompt-research/SKILL.md) | openseo-core:plugins/openseo/skills/ai-prompt-research/SKILL.md | 本地方法 | `072873b` |
 | [skills/ai-visibility-audit/SKILL.md](../skills/ai-visibility-audit/SKILL.md) | openseo-core:plugins/openseo/skills/ai-visibility-audit/SKILL.md；openseo-experimental:skills/chatgpt-business-setup/SKILL.md；openseo-experimental:skills/rank-on-ai/SKILL.md | 本地方法 | `072873b` |
 | [skills/competitive-landscape/SKILL.md](../skills/competitive-landscape/SKILL.md) | openseo-core:plugins/openseo/skills/competitive-landscape/SKILL.md；openseo-core:plugins/openseo/skills/competitor-analysis/SKILL.md | 本地方法 | `4f81976` |
-| [skills/gsc-traffic-diagnosis/SKILL.md](../skills/gsc-traffic-diagnosis/SKILL.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/gsc-traffic-diagnosis/SKILL.md](../skills/gsc-traffic-diagnosis/SKILL.md) | Workbench 本地方法 | 本地方法 | `ab97e37` |
 | [skills/headless-precheck/SKILL.md](../skills/headless-precheck/SKILL.md) | Workbench 本地方法 | 本地方法 | `45c60ef` |
 | [skills/keyword-research/SKILL.md](../skills/keyword-research/SKILL.md) | openseo-core:plugins/openseo/skills/keyword-research/SKILL.md；openseo-experimental:skills/customer-keywords/SKILL.md；openseo-experimental:skills/keyword-gap/SKILL.md | 本地方法 | `072873b` |
 | [skills/project-context/SKILL.md](../skills/project-context/SKILL.md) | openseo-core:plugins/openseo/skills/seo-project-setup/SKILL.md | 本地方法 | `4146d19` |
@@ -323,9 +323,9 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [skills/drift/references/performance-priorities.md](../skills/drift/references/performance-priorities.md) | seomachine:.claude/commands/research-performance.md | 本地方法 | `08d0679` |
 | [skills/email-sequence/references/provider-inputs.md](../skills/email-sequence/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
 | [skills/free-tool-strategy/references/search-validated-spec.md](../skills/free-tool-strategy/references/search-validated-spec.md) | openseo-experimental:skills/free-tool/SKILL.md | 本地方法 | `072873b` |
-| [skills/gsc-traffic-diagnosis/references/regex-cases.json](../skills/gsc-traffic-diagnosis/references/regex-cases.json) | Workbench 本地方法 | 本地方法 | 本轮新增 |
-| [skills/gsc-traffic-diagnosis/references/regex-cookbook.md](../skills/gsc-traffic-diagnosis/references/regex-cookbook.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
-| [skills/gsc-traffic-diagnosis/references/source-notes.md](../skills/gsc-traffic-diagnosis/references/source-notes.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/gsc-traffic-diagnosis/references/regex-cases.json](../skills/gsc-traffic-diagnosis/references/regex-cases.json) | Workbench 本地方法 | 本地方法 | `ab97e37` |
+| [skills/gsc-traffic-diagnosis/references/regex-cookbook.md](../skills/gsc-traffic-diagnosis/references/regex-cookbook.md) | Workbench 本地方法 | 本地方法 | `ab97e37` |
+| [skills/gsc-traffic-diagnosis/references/source-notes.md](../skills/gsc-traffic-diagnosis/references/source-notes.md) | Workbench 本地方法 | 本地方法 | `ab97e37` |
 | [skills/improve-content/references/optimization-workflow.md](../skills/improve-content/references/optimization-workflow.md) | seomachine:.claude/commands/optimize.md | 本地方法 | `08d0679` |
 | [skills/improve-content/references/refresh-workflow.md](../skills/improve-content/references/refresh-workflow.md) | seomachine:.claude/commands/rewrite.md | 本地方法 | `08d0679` |
 | [skills/improve-content/references/seo-editing.md](../skills/improve-content/references/seo-editing.md) | seomachine:.claude/agents/seo-optimizer.md | 本地方法 | `08d0679` |

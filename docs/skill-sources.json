@@ -2,7 +2,7 @@
   "schema_version": 2,
   "reviewed_on": "2026-11-17",
   "timezone": "Asia/Shanghai",
-  "local_snapshot_commit": "9362ad3017912e360da10ce489aed5e0a5acea2c",
+  "local_snapshot_commit": "ab97e37f21f60cacdc485fe8bb920542ee134e44",
   "scope": "Maintained skill material under skills/ and third_party/skill-history/; project-private skills and untracked system files are excluded.",
   "operation": "method_adaptation_inventory",
   "dependency_scan": "Literal Markdown/inline paths; fenced examples are classified separately. No source text is executed.",
@@ -160,9 +160,9 @@
         "path": "skills/README.md"
       },
       "last_local_change": {
-        "commit": "072873b25ec54646b7092a475b198d92bb4ee93d",
-        "date": "2026-11-16",
-        "subject": "feat: adapt OpenSEO methods with four independent research skills",
+        "commit": "ab97e37f21f60cacdc485fe8bb920542ee134e44",
+        "date": "2026-11-17",
+        "subject": "feat: add GSC traffic diagnosis skill and SEO regex recipes",
         "path": "skills/README.md",
         "record_status": "committed"
       },
@@ -176,7 +176,7 @@
         "on": "2026-10-29"
       },
       "maintenance_status": "active",
-      "workingtree_modified": true
+      "workingtree_modified": false
     },
     {
       "id": "seomachine:.claude/skills/ab-test-setup/SKILL.md",
@@ -3366,26 +3366,26 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "ab97e37f21f60cacdc485fe8bb920542ee134e44",
         "date": "2026-11-17",
+        "subject": "feat: add GSC traffic diagnosis skill and SEO regex recipes",
         "path": "skills/gsc-traffic-diagnosis/SKILL.md",
-        "subject": "feat: add GSC traffic diagnosis and regex recipes",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "ab97e37f21f60cacdc485fe8bb920542ee134e44",
         "date": "2026-11-17",
+        "subject": "feat: add GSC traffic diagnosis skill and SEO regex recipes",
         "path": "skills/gsc-traffic-diagnosis/SKILL.md",
-        "subject": "feat: add GSC traffic diagnosis and regex recipes",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "gsc_scope_diagnosis_and_re2_recipes",
       "declared_attribution": [],
       "derived_from": [],
       "workingtree_modified": true,
-      "local_sha256": "565030322d765eab360afd39c19f826ac5b1c11d3a46bca4545643f47dba2e43",
-      "local_git_blob_sha": "d85a8946ddf92f6a6b8f27b2cfe835c7be297db2",
+      "local_sha256": "423af5c6911dfa614e22f91638345a5893a143e3cd93cdd97712df218fc8f4e6",
+      "local_git_blob_sha": "ee091260c0039aba4300794aa8f9dedadadc6fa9",
       "maintenance_status": "active",
       "external_sources": [
         "https://x.com/CoderJeffLee/status/2122132239286927503",
@@ -3409,24 +3409,24 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "ab97e37f21f60cacdc485fe8bb920542ee134e44",
         "date": "2026-11-17",
+        "subject": "feat: add GSC traffic diagnosis skill and SEO regex recipes",
         "path": "skills/gsc-traffic-diagnosis/references/regex-cases.json",
-        "subject": "feat: add GSC traffic diagnosis and regex recipes",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "ab97e37f21f60cacdc485fe8bb920542ee134e44",
         "date": "2026-11-17",
+        "subject": "feat: add GSC traffic diagnosis skill and SEO regex recipes",
         "path": "skills/gsc-traffic-diagnosis/references/regex-cases.json",
-        "subject": "feat: add GSC traffic diagnosis and regex recipes",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "gsc_scope_diagnosis_and_re2_recipes",
       "declared_attribution": [],
       "derived_from": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "61a806f6230bf3c4043e950b73b4422c1f7ec6368019e10f86b4efd7e2cc2033",
       "local_git_blob_sha": "32395e40ab74ce00361ecc8c4b88a09bb383dc46",
       "maintenance_status": "active",
@@ -3452,24 +3452,24 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "ab97e37f21f60cacdc485fe8bb920542ee134e44",
         "date": "2026-11-17",
+        "subject": "feat: add GSC traffic diagnosis skill and SEO regex recipes",
         "path": "skills/gsc-traffic-diagnosis/references/regex-cookbook.md",
-        "subject": "feat: add GSC traffic diagnosis and regex recipes",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "ab97e37f21f60cacdc485fe8bb920542ee134e44",
         "date": "2026-11-17",
+        "subject": "feat: add GSC traffic diagnosis skill and SEO regex recipes",
         "path": "skills/gsc-traffic-diagnosis/references/regex-cookbook.md",
-        "subject": "feat: add GSC traffic diagnosis and regex recipes",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": false,
       "semantic_review": "gsc_scope_diagnosis_and_re2_recipes",
       "declared_attribution": [],
       "derived_from": [],
-      "workingtree_modified": true,
+      "workingtree_modified": false,
       "local_sha256": "6a8b958a812b5beced84e1e5b0ac7a64a3c78a8a788bb19c08331c7ef567d060",
       "local_git_blob_sha": "81d991599dc054d2f32f1da1c1e7a16d010c5bd7",
       "maintenance_status": "active",
@@ -3495,26 +3495,26 @@
       "comparison_upstream_blob_sha": null,
       "comparison_status": "workbench_native",
       "first_local_record": {
-        "commit": null,
+        "commit": "ab97e37f21f60cacdc485fe8bb920542ee134e44",
         "date": "2026-11-17",
+        "subject": "feat: add GSC traffic diagnosis skill and SEO regex recipes",
         "path": "skills/gsc-traffic-diagnosis/references/source-notes.md",
-        "subject": "feat: add GSC traffic diagnosis and regex recipes",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
       "last_local_change": {
-        "commit": null,
+        "commit": "ab97e37f21f60cacdc485fe8bb920542ee134e44",
         "date": "2026-11-17",
+        "subject": "feat: add GSC traffic diagnosis skill and SEO regex recipes",
         "path": "skills/gsc-traffic-diagnosis/references/source-notes.md",
-        "subject": "feat: add GSC traffic diagnosis and regex recipes",
-        "record_status": "introduced_in_current_change"
+        "record_status": "committed"
       },
-      "content_changed_since_first_local_record": null,
+      "content_changed_since_first_local_record": true,
       "semantic_review": "gsc_scope_diagnosis_and_re2_recipes",
       "declared_attribution": [],
       "derived_from": [],
       "workingtree_modified": true,
-      "local_sha256": "ecba5b403aeb18116e008ff16eff6165d5adaaac8a4ff9bfbeaaf53490eb291f",
-      "local_git_blob_sha": "3cd0061dde8030821fdcb407880c12416b72f010",
+      "local_sha256": "1468a6a09104f4397f45d33011937353930abde732e7f818a76d6327c8a641ed",
+      "local_git_blob_sha": "fc1a269bb2cf43d69c4de075cb5de7ffa0be02ac",
       "maintenance_status": "active",
       "external_sources": [
         "https://x.com/CoderJeffLee/status/2122132239286927503",
@@ -21440,7 +21440,7 @@
     },
     {
       "from_path": "skills/gsc-traffic-diagnosis/SKILL.md",
-      "line": 40,
+      "line": 54,
       "syntax": "markdown_link",
       "target": "../technical-audit/SKILL.md",
       "resolved_path": "skills/technical-audit/SKILL.md",
@@ -21448,7 +21448,7 @@
     },
     {
       "from_path": "skills/gsc-traffic-diagnosis/SKILL.md",
-      "line": 40,
+      "line": 54,
       "syntax": "markdown_link",
       "target": "../keyword-deep-dive/SKILL.md",
       "resolved_path": "skills/keyword-deep-dive/SKILL.md",
@@ -21456,7 +21456,7 @@
     },
     {
       "from_path": "skills/gsc-traffic-diagnosis/SKILL.md",
-      "line": 40,
+      "line": 54,
       "syntax": "markdown_link",
       "target": "../topic-cluster-planning/SKILL.md",
       "resolved_path": "skills/topic-cluster-planning/SKILL.md",
