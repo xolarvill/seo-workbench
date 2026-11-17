@@ -1,13 +1,13 @@
 # 本地 skills 来源与上游比对参考
 
-本文件是技能来源维护入口，配套的 [skill-sources.json](skill-sources.json) 保存完整文件映射、内容指纹、本地历史和引用关系。最后核查：**2026-11-16（Asia/Shanghai）**。第 1 步建立来源基线；第 2、3 步已按[能力归属与目录迁移记录](history/20261029-skill-layout-migration.md)更新为 61 个一级入口（2026-11-16 增至 65 个）；2026-11-11 新增 competitive-landscape 竞对格局入口。
+本文件是技能来源维护入口，配套的 [skill-sources.json](skill-sources.json) 保存完整文件映射、内容指纹、本地历史和引用关系。最后核查：**2026-11-17（Asia/Shanghai）**。第 1 步建立来源基线；第 2、3 步已按[能力归属与目录迁移记录](history/20261029-skill-layout-migration.md)更新为 61 个一级入口（2026-11-17 增至 66 个）；2026-11-11 新增 competitive-landscape 竞对格局入口。
 
 第 4、5 步的[方法与运行适配记录](history/20261029-skill-methods-runtime-adaptation.md)保存了专业参考归属、失效执行引用的处理与验证。第 6、7、8 步见[写作与上游适配](history/20261029-skill-writing-upstream-adaptation.md)。第 9 步见[主动发现入口](history/20261029-skill-discovery-entrypoints.md)。第 10 步见[验收与维护](history/20261029-skills-acceptance-and-maintenance.md)。
 
 ## 快速查询
 
 - 查某个技能来自哪里：在下方入口表中找名称，打开固定版本的上游链接。
-- 查 references、assets、许可证等配套文件：在 JSON 的 `files` 中按 `local_path` 查找。当前 443 个受维护文件均有记录；原材料与派生方法保持独立来源身份。
+- 查 references、assets、许可证等配套文件：在 JSON 的 `files` 中按 `local_path` 查找。当前 447 个受维护文件均有记录；原材料与派生方法保持独立来源身份。
 - 查本地何时修改：查看 `first_local_record`、`last_local_change`，再用 Git 读取对应文件差异。
 - 查旧工具路径和断开的引用：在 JSON 的 `dependencies` 中按 `from_path` 或 `target` 查询。后续修复应更新这里的状态。
 - 查升级范围：比较同一来源的 `comparison_ref` 与新提交，按本文后面的步骤审阅。
@@ -38,6 +38,8 @@
 
 许可证原文与归属见 [third_party/NOTICE.md](../third_party/NOTICE.md)。JSON 的 `local_license_paths` 指向本地保留文件。部分 FLOW 参考材料自带 `AgriciDaniel/flow`、`CC BY 4.0` 和同步日期声明；43 个文件的这类声明已保存在 `declared_attribution` 中。维护时保留这层来源，不能仅套用外层仓库的 MIT 标记。这里只登记文件已有声明，未把声明中的同步日期推断为已核实的原始提交。
 
+本次新增 [gsc-traffic-diagnosis](../skills/gsc-traffic-diagnosis/SKILL.md)：Workbench 原生适配，方法来源为 [CoderJeffLee 帖子](https://x.com/CoderJeffLee/status/2122132239286927503)，另加官方文档核实的正则配方；[采用边界](../skills/gsc-traffic-diagnosis/references/source-notes.md)保留读取方式与解释限制。
+
 ## 当前清点范围
 
 | 来源 | 全部文件 | 活跃技能 | 专家原文 | 流程原文 | 与上游相同 | 与上游有差异 |
@@ -45,10 +47,10 @@
 | superseo | 125 | 11 | 0 | 0 | 87 | 38 |
 | claude-seo | 141 | 20 | 0 | 0 | 70 | 71 |
 | seomachine | 93 | 24 | 11 | 24 | 64 | 29 |
-| workbench | 63 | 10 | 0 | 0 | 不适用 | 不适用 |
+| workbench | 67 | 11 | 0 | 0 | 不适用 | 不适用 |
 | openseo-core | 12 | 0 | 0 | 0 | 12 | 0 |
 | openseo-experimental | 9 | 0 | 0 | 0 | 9 | 0 |
-| 合计 | **443** | **65** | **11** | **24** | **242** | **138** |
+| 合计 | **447** | **66** | **11** | **24** | **242** | **138** |
 
 原有 364 个文件的来源 ID 全部保留。新增组合入口和适配参考分别登记为 Workbench 文件，并通过 composed_from 或 derived_from 关联原记录；历史专家与流程原文保留在 third_party/skill-history。
 
@@ -82,7 +84,7 @@ JSON 覆盖 skills/ 和 third_party/skill-history/ 的受维护文件，不含�
 
 ## 引用关系与适配线索
 
-当前登记 906 处字面路径引用：Markdown 链接目标，以及指定前缀的无空白反引号路径。每条保存来源文件、行号、原始目标、解析位置和状态。它用于后续修复定位，不执行其中的命令。
+当前登记 919 处字面路径引用：Markdown 链接目标，以及指定前缀的无空白反引号路径。每条保存来源文件、行号、原始目标、解析位置和状态。它用于后续修复定位，不执行其中的命令。
 
 | 状态 | 解释 |
 |---|---|
@@ -240,13 +242,14 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [skills/signup-flow-cro/SKILL.md](../skills/signup-flow-cro/SKILL.md) | [.claude/skills/signup-flow-cro/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/signup-flow-cro/SKILL.md) | 有差异 | `f0116d2` |
 | [skills/social-content/SKILL.md](../skills/social-content/SKILL.md) | [.claude/skills/social-content/SKILL.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/skills/social-content/SKILL.md) | 有差异 | `f0116d2` |
 
-### workbench / skill（10）
+### workbench / skill（11）
 
 | 当前文件 | 固定版本中的上游路径／派生来源 | 内容比对 | 本地首次记录 |
 |---|---|---|---|
 | [skills/ai-prompt-research/SKILL.md](../skills/ai-prompt-research/SKILL.md) | openseo-core:plugins/openseo/skills/ai-prompt-research/SKILL.md | 本地方法 | `072873b` |
 | [skills/ai-visibility-audit/SKILL.md](../skills/ai-visibility-audit/SKILL.md) | openseo-core:plugins/openseo/skills/ai-visibility-audit/SKILL.md；openseo-experimental:skills/chatgpt-business-setup/SKILL.md；openseo-experimental:skills/rank-on-ai/SKILL.md | 本地方法 | `072873b` |
 | [skills/competitive-landscape/SKILL.md](../skills/competitive-landscape/SKILL.md) | openseo-core:plugins/openseo/skills/competitive-landscape/SKILL.md；openseo-core:plugins/openseo/skills/competitor-analysis/SKILL.md | 本地方法 | `4f81976` |
+| [skills/gsc-traffic-diagnosis/SKILL.md](../skills/gsc-traffic-diagnosis/SKILL.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
 | [skills/headless-precheck/SKILL.md](../skills/headless-precheck/SKILL.md) | Workbench 本地方法 | 本地方法 | `45c60ef` |
 | [skills/keyword-research/SKILL.md](../skills/keyword-research/SKILL.md) | openseo-core:plugins/openseo/skills/keyword-research/SKILL.md；openseo-experimental:skills/customer-keywords/SKILL.md；openseo-experimental:skills/keyword-gap/SKILL.md | 本地方法 | `072873b` |
 | [skills/project-context/SKILL.md](../skills/project-context/SKILL.md) | openseo-core:plugins/openseo/skills/seo-project-setup/SKILL.md | 本地方法 | `4146d19` |
@@ -300,7 +303,7 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [third_party/skill-history/seomachine/commands/scrub.md](../third_party/skill-history/seomachine/commands/scrub.md) | [.claude/commands/scrub.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/commands/scrub.md) | 相同 | `f0116d2` |
 | [third_party/skill-history/seomachine/commands/write.md](../third_party/skill-history/seomachine/commands/write.md) | [.claude/commands/write.md](https://github.com/TheCraigHewitt/seomachine/blob/120e7b46dc07c98382cd4f68ac5b6515ab9f2604/.claude/commands/write.md) | 相同 | `f0116d2` |
 
-### workbench / reference（50）
+### workbench / reference（53）
 
 | 当前文件 | 固定版本中的上游路径／派生来源 | 内容比对 | 本地首次记录 |
 |---|---|---|---|
@@ -320,6 +323,9 @@ check 不写文件。运行引用修复后，可用 `check --strict-active` 检�
 | [skills/drift/references/performance-priorities.md](../skills/drift/references/performance-priorities.md) | seomachine:.claude/commands/research-performance.md | 本地方法 | `08d0679` |
 | [skills/email-sequence/references/provider-inputs.md](../skills/email-sequence/references/provider-inputs.md) | Workbench 本地方法 | 本地方法 | `b4c5142` |
 | [skills/free-tool-strategy/references/search-validated-spec.md](../skills/free-tool-strategy/references/search-validated-spec.md) | openseo-experimental:skills/free-tool/SKILL.md | 本地方法 | `072873b` |
+| [skills/gsc-traffic-diagnosis/references/regex-cases.json](../skills/gsc-traffic-diagnosis/references/regex-cases.json) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/gsc-traffic-diagnosis/references/regex-cookbook.md](../skills/gsc-traffic-diagnosis/references/regex-cookbook.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
+| [skills/gsc-traffic-diagnosis/references/source-notes.md](../skills/gsc-traffic-diagnosis/references/source-notes.md) | Workbench 本地方法 | 本地方法 | 本轮新增 |
 | [skills/improve-content/references/optimization-workflow.md](../skills/improve-content/references/optimization-workflow.md) | seomachine:.claude/commands/optimize.md | 本地方法 | `08d0679` |
 | [skills/improve-content/references/refresh-workflow.md](../skills/improve-content/references/refresh-workflow.md) | seomachine:.claude/commands/rewrite.md | 本地方法 | `08d0679` |
 | [skills/improve-content/references/seo-editing.md](../skills/improve-content/references/seo-editing.md) | seomachine:.claude/agents/seo-optimizer.md | 本地方法 | `08d0679` |

@@ -92,6 +92,8 @@ Site-audit coordinates multi-page diagnosis; technical-audit handles technical q
 
 ## Measurement and links
 
+For a GSC decline or fluctuation, start with [gsc-traffic-diagnosis](gsc-traffic-diagnosis/SKILL.md) to isolate site/directory/page losses and apply query/page regex filters. Use seo-google below for collection rather than inventing filter flags.
+
 | Skill and trigger | Useful inputs | Expected output | Combine when useful |
 |---|---|---|---|
 | [seo-google](seo-google/SKILL.md): analyze GSC, GA4 or CrUX evidence | Bound project/property, exact windows and existing artifacts | Source-appropriate collection or analysis | drift for comparable audit changes; analytics-tracking for instrumentation questions |
@@ -147,6 +149,6 @@ Specialist references live with their owners: [article editing](copy-editing/ref
 
 ## Sources and maintenance
 
-All 61 repository-wide entrypoints live at `skills/<capability>/SKILL.md`. Capability groupings above describe work, not upstream ownership. Use [the provenance reference](../docs/skill-sources.md) for upstream versions and local changes, [attribution](../third_party/NOTICE.md) for licenses, [the migration map](../docs/history/20261029-skill-layout-migration.md) for old paths, and [the adaptation map](../docs/skill-method-adaptations.json) for preserved specialist/workflow methods. [Historical originals](../third_party/skill-history/seomachine/README.md) support source comparison.
+All 66 repository-wide entrypoints live at `skills/<capability>/SKILL.md`. Capability groupings above describe work, not upstream ownership. Use [the provenance reference](../docs/skill-sources.md) for upstream versions and local changes, [attribution](../third_party/NOTICE.md) for licenses, [the migration map](../docs/history/20261029-skill-layout-migration.md) for old paths, and [the adaptation map](../docs/skill-method-adaptations.json) for preserved specialist/workflow methods. [Historical originals](../third_party/skill-history/seomachine/README.md) support source comparison.
 
 Source recipes are material for judgment and adaptation. Current project facts, evidence eligibility, bounded collectors, project isolation and user authorization govern execution. Source-era article quotas, generic scores and invented authority estimates are not acceptance gates. Preserve useful methods without restoring archived executors or independent prose authorities.

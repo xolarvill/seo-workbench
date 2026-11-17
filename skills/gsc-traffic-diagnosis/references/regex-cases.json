@@ -1,0 +1,174 @@
+[
+  {
+    "id": "blog-directories",
+    "pattern": "^https://(www\\.)?example\\.com/blogs?(/|[?#]|$)",
+    "matches": [
+      "https://example.com/blog/how-to",
+      "https://www.example.com/blogs/news",
+      "https://example.com/blog?sort=new"
+    ],
+    "non_matches": [
+      "https://example.com/blogger/a",
+      "https://other.com/blog/a",
+      "https://example.com/products/a?next=/blog/"
+    ]
+  },
+  {
+    "id": "shopify-articles",
+    "pattern": "^https://(www\\.)?example\\.com/blogs/[^/?#]+/[^/?#]+/?([?#].*)?$",
+    "matches": [
+      "https://example.com/blogs/news/setup",
+      "https://example.com/blogs/news/setup/?x=1"
+    ],
+    "non_matches": [
+      "https://example.com/blogs/news",
+      "https://example.com/blogs/news/tagged/desk"
+    ]
+  },
+  {
+    "id": "commerce-pages",
+    "pattern": "^https://(www\\.)?example\\.com/(products|collections)(/|[?#]|$)",
+    "matches": [
+      "https://example.com/products/desk",
+      "https://example.com/collections/desks"
+    ],
+    "non_matches": [
+      "https://example.com/products-old/desk",
+      "https://example.com/blog/collections"
+    ]
+  },
+  {
+    "id": "exact-pages",
+    "pattern": "^https://example\\.com/(products/desk|blogs/news/setup)/?$",
+    "matches": [
+      "https://example.com/products/desk",
+      "https://example.com/blogs/news/setup/"
+    ],
+    "non_matches": [
+      "https://example.com/products/desk-pro",
+      "https://example.com/blogs/news/setup?x=1"
+    ]
+  },
+  {
+    "id": "brand",
+    "pattern": "(?i)(^|[^a-z0-9])(acme\\+tools|acme[ -]?tools|acmetols)($|[^a-z0-9])",
+    "matches": [
+      "Acme+Tools desk",
+      "buy acme-tools",
+      "acmetols review"
+    ],
+    "non_matches": [
+      "acmetoolsmith",
+      "best desk"
+    ]
+  },
+  {
+    "id": "questions",
+    "pattern": "(?i)^(how|what|why|when|where|who|which|can|does|do|is|are)\\b",
+    "matches": [
+      "how to choose a desk",
+      "Is a monitor arm worth it"
+    ],
+    "non_matches": [
+      "show desk",
+      "best desk"
+    ]
+  },
+  {
+    "id": "commercial",
+    "pattern": "(?i)\\b(best|reviews?|vs\\.?|versus|alternatives?|compare|comparison)\\b",
+    "matches": [
+      "best desk",
+      "desk vs table",
+      "monitor arm review"
+    ],
+    "non_matches": [
+      "preview desk",
+      "desk setup"
+    ]
+  },
+  {
+    "id": "transactional",
+    "pattern": "(?i)\\b(buy|price|cost|deal|discount|coupon|shipping)\\b",
+    "matches": [
+      "desk price",
+      "buy a desk"
+    ],
+    "non_matches": [
+      "buyer desk",
+      "desk setup"
+    ]
+  },
+  {
+    "id": "long-tail",
+    "pattern": "^\\s*\\S+(\\s+\\S+){4,}\\s*$",
+    "matches": [
+      "how to choose a monitor arm",
+      "one two three four five"
+    ],
+    "non_matches": [
+      "best monitor arm",
+      "显示器支架怎么选"
+    ]
+  },
+  {
+    "id": "chinese-intent",
+    "pattern": "(怎么选|如何选择|哪个好|值得买吗|对比|评测|替代)",
+    "matches": [
+      "显示器支架怎么选",
+      "桌子对比"
+    ],
+    "non_matches": [
+      "桌子尺寸"
+    ]
+  },
+  {
+    "id": "year",
+    "pattern": "(^|[^0-9])202[5-7]([^0-9]|$)",
+    "matches": [
+      "best tools 2026",
+      "2025 desk review"
+    ],
+    "non_matches": [
+      "20260 desk",
+      "desk 2024"
+    ]
+  },
+  {
+    "id": "tracking-parameters",
+    "pattern": "[?&](utm_[a-z0-9_]+|gclid|fbclid)=",
+    "matches": [
+      "https://example.com/a?utm_source=x",
+      "https://example.com/a?x=1&gclid=y"
+    ],
+    "non_matches": [
+      "https://example.com/utm_source=x",
+      "https://example.com/a?notgclid=y"
+    ]
+  },
+  {
+    "id": "facets",
+    "pattern": "[?&](sort_by|filter\\.[^=&#]+|page)=",
+    "matches": [
+      "https://example.com/collections/desks?sort_by=price",
+      "https://example.com/a?filter.v.option.color=black",
+      "https://example.com/a?page=2"
+    ],
+    "non_matches": [
+      "https://example.com/a?homepage=2",
+      "https://example.com/page=2"
+    ]
+  },
+  {
+    "id": "file-types",
+    "pattern": "(?i)\\.(pdf|xlsx?|csv)([?#]|$)",
+    "matches": [
+      "https://example.com/manual.PDF",
+      "https://example.com/data.csv?download=1"
+    ],
+    "non_matches": [
+      "https://example.com/a.pdf.html",
+      "https://example.com/pdf-guide"
+    ]
+  }
+]
