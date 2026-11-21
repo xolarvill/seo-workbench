@@ -85,10 +85,11 @@
   place-items: center;
   border: 1px solid var(--separator);
   border-radius: var(--radius-card);
-  color: var(--primary);
-  background: var(--primary-wash);
-  transition: background-color 220ms var(--ease-out), color 220ms var(--ease-out), border-color 220ms var(--ease-out);
+  background: var(--surface-soft);
+  transition: background-color 220ms var(--ease-out), border-color 220ms var(--ease-out);
 }
+
+.brandMark { display: block; object-fit: contain; }
 
 .cardText { min-width: 0; display: grid; align-content: start; gap: 3px; }
 .cardTitle { font-size: 18px; font-weight: 600; line-height: 1.2; letter-spacing: -.01em; }
@@ -133,7 +134,7 @@
   }
   .card:hover::after { opacity: 1; }
   .card:active { transform: translateY(0) scale(.99); }
-  .card:hover .cardIcon { color: var(--primary-dark); background: var(--primary-wash); }
+  .card:hover .cardIcon { border-color: var(--separator-strong); background: var(--surface); }
   .card:hover .cardAction { color: var(--primary-dark); }
   .card:hover .cardAction svg { transform: translate(2px, -2px); }
 }

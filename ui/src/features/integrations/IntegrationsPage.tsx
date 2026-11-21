@@ -1,27 +1,27 @@
 import {
-  Activity,
   ArrowUpRight,
   BarChart3,
   Check,
   CircleAlert,
-  Database,
   ExternalLink,
-  Gauge,
   KeyRound,
   Link2,
   LockKeyhole,
-  Megaphone,
-  MousePointerClick,
   RefreshCw,
   SearchCheck,
-  Store,
   Trash2,
   Upload,
   X,
-  type LucideIcon,
 } from "lucide-react";
 import { type FormEvent, type ReactNode, useEffect, useRef, useState } from "react";
 
+import adsLogo from "../../assets/brands/ads.svg";
+import chromeLogo from "../../assets/brands/chrome.svg";
+import clarityLogo from "../../assets/brands/clarity.png";
+import dataForSeoLogo from "../../assets/brands/dataforseo.png";
+import ga4Logo from "../../assets/brands/ga4.svg";
+import gscLogo from "../../assets/brands/gsc.png";
+import shopifyLogo from "../../assets/brands/shopify.svg";
 import {
   ApiError,
   deleteCruxKey,
@@ -72,8 +72,12 @@ type ProviderEntry = {
   subtitle: string;
   meta: string;
   status?: string | null;
-  icon: LucideIcon;
+  logo: string;
 };
+
+function BrandMark({ src, size }: { src: string; size: number }) {
+  return <img className={styles.brandMark} src={src} alt="" width={size} height={size} decoding="async" />;
+}
 
 function sourceStatus(value?: string | null): { label: string; tone: StatusTone } | null {
   if (!value) return null;
@@ -88,7 +92,6 @@ function sourceStatus(value?: string | null): { label: string; tone: StatusTone 
 }
 
 function SourceCard({ provider, index, onOpen }: { provider: ProviderEntry; index: number; onOpen: () => void }) {
-  const Icon = provider.icon;
   const summary = sourceStatus(provider.status);
   return (
     <button
@@ -106,7 +109,7 @@ function SourceCard({ provider, index, onOpen }: { provider: ProviderEntry; inde
       }}
     >
       <span className={styles.cardTop}>
-        <span className={styles.cardIcon}><Icon aria-hidden="true" size={18} strokeWidth={1.7} /></span>
+        <span className={styles.cardIcon}><BrandMark src={provider.logo} size={20} /></span>
         {summary ? <StatusPill value={summary.label} tone={summary.tone} /> : null}
       </span>
       <span className={styles.cardText}>
@@ -504,7 +507,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
         ? (shopify.configured ? (shopify.shop_name || shopify.shop_domain || "Store connected") : "No store connected")
         : "Project is not a Shopify store",
       status: shopify?.status,
-      icon: Store,
+      logo: shopifyLogo,
     },
     {
       id: "shopify-crawler",
@@ -514,7 +517,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
         ? (shopify.crawler_access.configured ? `Signed · ${shopify.crawler_access.domain_host}` : "No signature saved")
         : "Project is not a Shopify store",
       status: shopify?.crawler_access.status,
-      icon: LockKeyhole,
+      logo: shopifyLogo,
     },
   ];
   coreProviders.push(
@@ -524,7 +527,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
       subtitle: "Field performance",
       meta: crux?.configured ? (crux.source === "environment" ? "Environment key" : "Private runtime key") : "No API key",
       status: crux?.status,
-      icon: Gauge,
+      logo: chromeLogo,
     },
     {
       id: "gsc",
@@ -532,7 +535,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
       subtitle: "Search Analytics",
       meta: profileMeta(gsc?.profiles.length || 0, gsc?.binding?.property),
       status: gsc?.status,
-      icon: SearchCheck,
+      logo: gscLogo,
     },
     {
       id: "ga4",
@@ -540,7 +543,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
       subtitle: "Channel analytics",
       meta: profileMeta(integration?.ga4?.profiles.length || 0, integration?.ga4?.binding ? (integration.ga4.binding.display_name || integration.ga4.binding.property) : null),
       status: integration?.ga4?.status,
-      icon: BarChart3,
+      logo: ga4Logo,
     },
     {
       id: "clarity",
@@ -548,7 +551,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
       subtitle: "Behavior analytics",
       meta: clarity?.project_id ? `Project · ${clarity.project_id}` : clarity?.configured ? "Credentials stored" : "No project id",
       status: clarity?.status,
-      icon: MousePointerClick,
+      logo: clarityLogo,
     },
   );
   const optionalProviders: ProviderEntry[] = [
@@ -558,7 +561,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
       subtitle: "Keyword data",
       meta: dataForSeo?.configured ? "REST v3 · credentials stored" : "REST v3 · not configured",
       status: dataForSeo?.status,
-      icon: Database,
+      logo: dataForSeoLogo,
     },
   ];
   const providers = section === "core" ? coreProviders : optionalProviders;
@@ -602,7 +605,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
             style={{ animationDelay: `${providers.length * 40}ms` }}
           >
             <span className={styles.cardTop}>
-              <span className={styles.cardIcon}><Megaphone aria-hidden="true" size={18} strokeWidth={1.7} /></span>
+              <span className={styles.cardIcon}><BrandMark src={adsLogo} size={20} /></span>
               <ExternalLink className={styles.cardExternal} aria-hidden="true" size={15} />
             </span>
             <span className={styles.cardText}>
@@ -638,7 +641,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
       {section === "core" ? <>
       {!shopify?.applicable && activeProvider?.id === "shopify" ? <article className={styles.integration}>
         <header className={styles.integrationHeader}>
-          <Store aria-hidden="true" size={22} />
+          <BrandMark src={shopifyLogo} size={22} />
           <div><span>COMMERCE SOURCE</span><h2>Shopify Admin API</h2><p>Project-scoped store access for product, collection, content, and theme evidence.</p></div>
           <Status value="not_applicable" />
         </header>
@@ -650,7 +653,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
 
       {!shopify?.applicable && activeProvider?.id === "shopify-crawler" ? <article className={styles.integration}>
         <header className={styles.integrationHeader}>
-          <LockKeyhole aria-hidden="true" size={22} />
+          <BrandMark src={shopifyLogo} size={22} />
           <div><span>SHOPIFY CRAWLER ACCESS</span><h2>Signed storefront crawl</h2><p>Use the Web Bot Auth signature generated by Shopify. It is attached automatically to requests for this project domain.</p></div>
           <Status value="not_applicable" />
         </header>
@@ -661,7 +664,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
 
       {shopify?.applicable ? <article hidden={activeProvider?.id !== "shopify"} className={styles.integration}>
         <header className={styles.integrationHeader}>
-          <Store aria-hidden="true" size={22} />
+          <BrandMark src={shopifyLogo} size={22} />
           <div><span>COMMERCE SOURCE</span><h2>Shopify Admin API</h2><p>Project-scoped store access for future product, collection, content, and theme evidence.</p></div>
           <Status value={shopify.status} />
         </header>
@@ -726,7 +729,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
 
       {shopify?.applicable ? <article hidden={activeProvider?.id !== "shopify-crawler"} className={styles.integration}>
         <header className={styles.integrationHeader}>
-          <LockKeyhole aria-hidden="true" size={22} />
+          <BrandMark src={shopifyLogo} size={22} />
           <div><span>SHOPIFY CRAWLER ACCESS</span><h2>Signed storefront crawl</h2><p>Use the Web Bot Auth signature generated by Shopify. It is attached automatically to requests for this project domain.</p></div>
           <Status value={shopify.crawler_access.status} />
         </header>
@@ -766,7 +769,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
 
       <article hidden={activeProvider?.id !== "crux"} className={styles.integration}>
         <header className={styles.integrationHeader}>
-          <Activity aria-hidden="true" size={22} />
+          <BrandMark src={chromeLogo} size={22} />
           <div><span>FIELD PERFORMANCE</span><h2>Chrome UX Report</h2><p>One workspace-level API key, used only for official CrUX requests.</p></div>
           {crux ? <Status value={crux.status} /> : null}
         </header>
@@ -808,7 +811,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
 
       <article hidden={activeProvider?.id !== "gsc"} className={styles.integration}>
         <header className={styles.integrationHeader}>
-          <SearchCheck aria-hidden="true" size={22} />
+          <BrandMark src={gscLogo} size={22} />
           <div><span>SEARCH EVIDENCE</span><h2>Google Search Console</h2><p>Reusable local auth profiles, bound separately to each SEO project.</p></div>
           {gsc ? <Status value={gsc.status} /> : null}
         </header>
@@ -872,7 +875,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
 
       <article hidden={activeProvider?.id !== "ga4"} className={styles.integration}>
         <header className={styles.integrationHeader}>
-          <BarChart3 aria-hidden="true" size={22} />
+          <BrandMark src={ga4Logo} size={22} />
           <div><span>ACQUISITION EVIDENCE</span><h2>Google Analytics 4</h2><p>Read-only analytics.readonly profile for channel and landing-page evidence, bound per project.</p></div>
           {integration?.ga4 ? <Status value={integration.ga4.status} /> : null}
         </header>
@@ -920,7 +923,7 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
         <>
           {dataForSeo ? <article hidden={activeProvider?.id !== "dataforseo"} className={styles.integration}>
         <header className={styles.integrationHeader}>
-          <Database aria-hidden="true" size={22} />
+          <BrandMark src={dataForSeoLogo} size={22} />
           <div><span>OPTIONAL KEYWORD DATA</span><h2>DataForSEO</h2><p>Project-scoped credentials for paid keyword evidence. Saving verifies the account with a free request; keyword calls stay disabled until a workflow explicitly requests them.</p></div>
           {dataForSeo ? <Status value={dataForSeo.status} /> : null}
         </header>

@@ -1,8 +1,8 @@
-import { Activity } from "lucide-react";
 import { useEffect, useState, type FormEvent } from "react";
 
 import { deleteClarityCredentials, fetchClarityEvidence, fetchClarityIntegration, fetchClarityRecordingLinks, fetchJobs, saveClarityCredentials, startClarityQuery, verifyClarityConnection } from "../../api/client";
 import type { ClarityEvidence, ClarityIntegration, ClarityQuery } from "../../api/types";
+import clarityLogo from "../../assets/brands/clarity.png";
 import { confirmAction } from "../../components/ActionButton";
 import { HelpTooltip } from "../../components/HelpTooltip";
 import { StatusPill, statusLabel, statusTone } from "../../components/StatusPill";
@@ -97,7 +97,7 @@ export function ClarityPanel({ projectId }: { projectId: string }) {
   }
 
   return <article className={`${styles.integration} ${styles.clarity}`} aria-label="Clarity connection">
-    <header className={styles.integrationHeader}><Activity aria-hidden="true" size={22} /><div><span>OPTIONAL BEHAVIOR ANALYTICS</span><h2>Microsoft Clarity</h2><p>Explore page engagement and find recording samples for this brand.</p></div><StatusPill value={statusLabel(integration?.status || "not_collected")} tone={statusTone(integration?.status, "evidence")} /></header>
+    <header className={styles.integrationHeader}><img className={styles.brandMark} src={clarityLogo} alt="" width={22} height={22} decoding="async" /><div><span>OPTIONAL BEHAVIOR ANALYTICS</span><h2>Microsoft Clarity</h2><p>Explore page engagement and find recording samples for this brand.</p></div><StatusPill value={statusLabel(integration?.status || "not_collected")} tone={statusTone(integration?.status, "evidence")} /></header>
     <div className={styles.clarityBody}>
       {error ? <p role="alert" className={styles.error}>{error}</p> : null}
       <p>Runtime: {integration?.runtime_ready ? "Ready" : "Needs setup"} · Credentials: {integration?.credential_verified ? "Verified" : "Unverified"} · Project identity: {integration?.identity_verified ? "Verified" : "Declared, unverified"} <HelpTooltip label="Clarity project identity">A successful API request does not independently prove that the token belongs to the declared project.</HelpTooltip></p>
