@@ -12,6 +12,34 @@
 /* The floating desktop sidebar is hidden on the mobile shell. */
 .sidebar { display: flex; }
 
+.navScroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--separator-strong) transparent;
+}
+
+.navScroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.navScroll::-webkit-scrollbar-track,
+.navScroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.navScroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--separator-strong);
+}
+
+.navScroll:hover::-webkit-scrollbar-thumb {
+  background: var(--muted-soft);
+}
+
+.navScroll::-webkit-scrollbar-button {
+  display: none;
+}
+
 .subnav {
   display: grid;
   gap: 2px;

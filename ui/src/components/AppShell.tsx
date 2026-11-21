@@ -406,7 +406,7 @@ export function AppShell({
           )}
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-2 pb-2">
+        <div className={cn("min-h-0 flex-1 overflow-y-auto px-2 pb-2", styles.navScroll)}>
           {primaryNavigation.length > 0 ? (
             <nav aria-label="Workbench" className={cn("grid gap-0.5", collapsed && "justify-items-center")}>
               {!collapsed ? <p className="px-2 pb-1 pt-2 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-muted">Navigate</p> : null}
