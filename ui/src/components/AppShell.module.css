@@ -45,18 +45,9 @@
   font-weight: 600;
 }
 
-.workspace { min-width: 0; display: grid; grid-template-rows: 64px minmax(0, 1fr); min-height: 100vh; background: var(--canvas); }
-.commandBar { position: sticky; inset-block-start: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 0 32px; border-bottom: 1px solid var(--separator); background: rgba(255, 255, 255, 0.96); }
-.commandProject { display: flex; align-items: center; gap: 16px; min-width: 0; }
-.commandIdentity { min-width: 0; display: grid; gap: 2px; padding-right: 16px; border-right: 1px solid var(--separator); }
-.commandIdentity strong { color: var(--ink); font-size: 16px; line-height: 1.05; letter-spacing: -0.01em; }
-.commandIdentity small { overflow: hidden; color: var(--muted); font-size: 11px; line-height: 1.1; text-overflow: ellipsis; white-space: nowrap; }
-.commandProject span { padding-left: 16px; color: var(--muted); font-size: 12px; }
-.commandProject .commandIdentity { padding-left: 0; border-left: 0; }
-.commandProject .commandIdentity small { padding-left: 0; border-left: 0; }
-.commandProject .breadcrumb { color: var(--ink-muted); }
-.commandProject b { padding-left: 16px; border-left: 1px solid var(--separator); color: var(--primary); font: 600 11px/1 var(--font-mono); letter-spacing: .02em; }
-.main { min-width: 0; min-height: calc(100vh - 64px); }
+.workspace { min-width: 0; display: grid; grid-template-rows: minmax(0, 1fr); min-height: 100vh; background: var(--canvas); }
+.commandBar { display: none; }
+.main { min-width: 0; }
 .mobileHeader,
 .mobileNav,
 .mobileProject { display: none; }
@@ -79,8 +70,7 @@
   .mobileMore > div { position: absolute; inset-block-start: 46px; inset-inline-end: 0; width: 160px; display: grid; gap: 2px; padding: 6px; border: 1px solid var(--separator); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-menu); }
   .mobileMore button { width: 100%; min-height: 42px; border: 0; border-radius: var(--radius-4); color: var(--ink-muted); background: transparent; text-align: left; font: 500 14px var(--font-ui); }
   .mobileMore button[aria-current="page"] { color: var(--ink); background: var(--surface-soft); }
-  .commandBar { position: static; min-height: 78px; padding: 0 18px; background: var(--surface); }
-  .commandProject { display: none; }
+  .commandBar { position: static; min-height: 78px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; border-bottom: 1px solid var(--separator); background: var(--surface); }
   .mobileProject { min-width: 0; display: grid; gap: 3px; }
   .mobileProject strong { color: var(--ink); font-size: 18px; }
   .mobileProject span { overflow: hidden; color: var(--muted); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }

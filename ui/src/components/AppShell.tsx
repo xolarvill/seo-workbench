@@ -109,22 +109,6 @@ const connectionSections: NavSection[] = [
   { id: "optional", label: "Optional providers", icon: Plug },
 ];
 
-const viewLabels: Record<ViewName, string> = {
-  overview: "Home",
-  owners: "Owners",
-  keywords: "Keywords",
-  pages: "Pages",
-  "link-building": "Link building",
-  statistics: "Statistics",
-  workflow: "Methods",
-  content: "Content",
-  reports: "Reports",
-  audits: "Audit",
-  files: "Files",
-  integrations: "Connections",
-  tutorials: "Guides",
-};
-
 function displayHost(url: string) {
   try {
     return new URL(url).hostname.replace(/^www\./i, "");
@@ -371,10 +355,7 @@ export function AppShell({
     );
   };
 
-  const breadcrumbSection = expandable[activeView];
-
-  return (
-    <div className={styles.shell} data-collapsed={collapsed ? "true" : undefined}>
+  return (    <div className={styles.shell} data-collapsed={collapsed ? "true" : undefined}>
       <aside aria-label="Workbench navigation" className={cn(styles.sidebar, "sticky top-3 mx-3 flex h-[calc(100vh-24px)] w-[var(--sidebar-width)] shrink-0 flex-col overflow-hidden rounded-2xl border border-separator bg-surface shadow-[0_1px_2px_rgba(16,24,40,0.04),0_16px_40px_rgba(16,24,40,0.07)] transition-[width] duration-200 ease-out")}>
         <div className={cn("px-2 pb-2", collapsed ? "flex flex-col items-center gap-1 px-0 pt-2" : "flex items-center gap-1.5 pt-3")}>
           {collapsed ? (
@@ -506,13 +487,6 @@ export function AppShell({
           <div className={styles.mobileProject}>
             <strong>{project?.name || "SEO Workbench"}</strong>
             <span>{project ? displayHost(project.url) : "Local workspace"}</span>
-          </div>
-          <div className={styles.commandProject}>
-            <span className={styles.commandIdentity}>
-              <strong>{project?.name || "SEO Workbench"}</strong>
-              <small>{project ? displayHost(project.url) : "Local workspace"}</small>
-            </span>
-            <span className={styles.breadcrumb}>{viewLabels[activeView]}{breadcrumbSection ? ` / ${breadcrumbSection.sections.find((section) => section.id === breadcrumbSection.activeSection)?.label || breadcrumbSection.sections[0]?.label || ""}` : ""}</span>
           </div>
         </header>
         <main id="main-content" className={styles.main}>{children}</main>
