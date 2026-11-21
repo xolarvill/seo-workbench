@@ -40,6 +40,16 @@
   display: none;
 }
 
+.subnavWrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 200ms var(--ease-out);
+}
+
+.subnavWrap[data-open="true"] { grid-template-rows: 1fr; }
+
+.subnavClip { min-height: 0; overflow: hidden; }
+
 .subnav {
   display: grid;
   gap: 2px;

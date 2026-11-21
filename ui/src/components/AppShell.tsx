@@ -188,6 +188,7 @@ type ExpandableNavItemProps = {
 };
 
 function ExpandableNavItem({ view, label, icon, open, onToggle, subnavLabel, sections, activeView, activeSection, onSectionChange, collapsed }: ExpandableNavItemProps) {
+  const shown = open && !collapsed;
   return (
     <div>
       <NavButton
@@ -199,26 +200,28 @@ function ExpandableNavItem({ view, label, icon, open, onToggle, subnavLabel, sec
         onClick={onToggle}
         showChevron
       />
-      {open && !collapsed ? (
-        <div className={styles.subnav} aria-label={subnavLabel}>
-          {sections.map((section) => {
-            const SectionIcon = section.icon;
-            const isActive = activeView === view && activeSection === section.id;
-            return (
-              <button
-                key={section.id}
-                type="button"
-                aria-current={isActive ? "page" : undefined}
-                onClick={() => onSectionChange(section.id)}
-                className={isActive ? styles.subnavItemActive : styles.subnavItem}
-              >
-                <SectionIcon aria-hidden="true" size={16} strokeWidth={1.7} className="shrink-0" />
-                <span className="truncate">{section.label}</span>
-              </button>
-            );
-          })}
+      <div className={styles.subnavWrap} data-open={shown} aria-hidden={!shown} inert={!shown}>
+        <div className={styles.subnavClip}>
+          <div className={styles.subnav} aria-label={subnavLabel}>
+            {sections.map((section) => {
+              const SectionIcon = section.icon;
+              const isActive = activeView === view && activeSection === section.id;
+              return (
+                <button
+                  key={section.id}
+                  type="button"
+                  aria-current={isActive ? "page" : undefined}
+                  onClick={() => onSectionChange(section.id)}
+                  className={isActive ? styles.subnavItemActive : styles.subnavItem}
+                >
+                  <SectionIcon aria-hidden="true" size={16} strokeWidth={1.7} className="shrink-0" />
+                  <span className="truncate">{section.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
-      ) : null}
+      </div>
     </div>
   );
 }
