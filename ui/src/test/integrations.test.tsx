@@ -111,6 +111,13 @@ const readyShopify: ShopifyIntegration = {
   },
 };
 
+const inapplicableShopify: ShopifyIntegration = {
+  ...emptyShopify,
+  applicable: false,
+  status: "not_applicable",
+  crawler_access: { ...emptyShopify.crawler_access, status: "not_applicable" },
+};
+
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(fetchGoogleIntegration).mockResolvedValue(emptyIntegration);
@@ -151,7 +158,7 @@ describe("SEO integrations page", () => {
     vi.mocked(saveShopifyCrawlerAccess).mockResolvedValue(readyShopify);
     render(<IntegrationsPage projectId="store" refreshKey={0} onRunAction={vi.fn()} />);
 
-    fireEvent.click(await screen.findByRole("button", { name: /^Configure Crawler access/ }));
+    fireEvent.click(await screen.findByRole("button", { name: /^Configure Crawler signature/ }));
     expect(await screen.findByRole("heading", { name: "Signed storefront crawl" })).toBeTruthy();
     fireEvent.change(screen.getByLabelText("Crawler Signature"), { target: { value: "sig1=:private:" } });
     fireEvent.change(screen.getByLabelText("Crawler Signature-Input"), { target: { value: 'sig1=("@authority");expires=4102444800' } });
@@ -235,6 +242,19 @@ describe("SEO integrations page", () => {
     fireEvent.click(screen.getByRole("button", { name: "Close configuration" }));
     expect(await screen.findByRole("button", { name: /^Configure Shopify/ })).toBeTruthy();
     expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("lists the Shopify sources in core and explains a non-Shopify project", async () => {
+    vi.mocked(fetchShopifyIntegration).mockResolvedValue(inapplicableShopify);
+    render(<IntegrationsPage projectId="store" refreshKey={0} onRunAction={vi.fn()} />);
+
+    const shopifyCard = await screen.findByRole("button", { name: /^Configure Shopify\./ });
+    expect(screen.getByRole("button", { name: /^Configure Crawler signature\./ })).toBeTruthy();
+    expect(screen.getAllByText("Not applicable", { selector: ".statusPill" })).toHaveLength(2);
+
+    fireEvent.click(shopifyCard);
+    expect(await screen.findByText(/not registered as a Shopify store/)).toBeTruthy();
+    expect(screen.queryByLabelText("Admin API access token")).toBeNull();
   });
 
   it("stores DataForSEO credentials from the optional providers tab without displaying them", async () => {
