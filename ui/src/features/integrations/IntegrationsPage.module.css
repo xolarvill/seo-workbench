@@ -6,17 +6,13 @@
 
 .pageHead {
   max-width: 1180px;
-  margin: 0 auto 20px;
+  margin: 0 auto 16px;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: flex-end;
   gap: 20px;
   padding: 4px 2px 0;
 }
-
-.pageHeadCopy { min-width: 0; display: grid; gap: 5px; }
-.pageKicker { margin: 0; color: var(--primary); font: 600 10px/1.2 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
-.pageLine { margin: 0; color: var(--ink-muted); font-size: 13px; line-height: 1.5; }
 
 .pageHeadSide { flex: 0 0 auto; display: flex; align-items: center; gap: 10px; }
 .readiness { color: var(--muted); font: 11px/1 var(--font-mono); letter-spacing: .04em; white-space: nowrap; }
@@ -425,7 +421,7 @@
 @media (max-width: 700px) {
   .board,
   .boardPair { grid-template-columns: 1fr; }
-  .pageHead { align-items: flex-start; flex-direction: column; gap: 12px; }
+  .pageHead { justify-content: flex-start; }
 }
 
 @media (max-width: 760px) {

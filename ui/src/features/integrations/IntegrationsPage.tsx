@@ -569,10 +569,6 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
       {notice ? <div className={styles.notice} role="status"><Check aria-hidden="true" size={17} /><span>{notice}</span></div> : null}
 
       <header className={styles.pageHead}>
-        <div className={styles.pageHeadCopy}>
-          <p className={styles.pageKicker}>{section === "core" ? "Core sources" : "Optional providers"}</p>
-          <p className={styles.pageLine}>{section === "core" ? "Performance, search, and channel evidence for this project." : "Keyword and behavior evidence, connected only when a workflow needs it."}</p>
-        </div>
         <div className={styles.pageHeadSide}>
           <span className={styles.readiness}>{readyCount} / {providers.length} ready</span>
           <span className={styles.localChip}>
