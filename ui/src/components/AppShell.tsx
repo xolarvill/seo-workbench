@@ -356,7 +356,7 @@ export function AppShell({
   };
 
   return (    <div className={styles.shell} data-collapsed={collapsed ? "true" : undefined}>
-      <aside aria-label="Workbench navigation" className={cn(styles.sidebar, "sticky top-3 mx-3 flex h-[calc(100vh-24px)] w-[var(--sidebar-width)] shrink-0 flex-col overflow-hidden rounded-2xl border border-separator bg-surface shadow-[0_1px_2px_rgba(16,24,40,0.04),0_16px_40px_rgba(16,24,40,0.07)] transition-[width] duration-200 ease-out")}>
+      <aside aria-label="Workbench navigation" className={cn(styles.sidebar, "sticky top-3 mx-3 flex h-[calc(100vh-24px)] w-[var(--sidebar-width)] shrink-0 flex-col overflow-hidden rounded-2xl border border-separator bg-surface shadow-[var(--shadow-sidebar)] transition-[width] duration-200 ease-out")}>
         <div className={cn("px-2 pb-2", collapsed ? "flex flex-col items-center gap-1 px-0 pt-2" : "flex items-center gap-1.5 pt-3")}>
           {collapsed ? (
             <>
