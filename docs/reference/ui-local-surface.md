@@ -29,6 +29,7 @@ Editor writes are limited to `context/`, `strategy/`, `content/`, `audits/`, and
 - Primitives: `ui/src/components/ui/` (shadcn-style components using Tailwind v4 utilities and Radix behavior).
 - Theme tokens: `ui/src/styles/global.css`; define palette values in `:root` and expose them through `@theme inline`.
 - Shared wrappers: `StatusPill` (`Badge`), `HelpTooltip` (`Tooltip`), `Drawer` (Radix Dialog `Sheet`). Use these instead of page-local tone maps, pill CSS, or ad-hoc tooltips.
+- Design references: shadcn/ui, Aceternity UI, and Fluid Functionalism; apply them as described in [`ui-design-inspiration.md`](ui-design-inspiration.md).
 - Page CSS Modules may coexist with Tailwind and override utilities by cascade order.
 - Section `h2` headings are visually hidden; Markdown content headings opt in with `data-content-heading`.
 - Commands: `npm run ui:dev`, `npm run ui:build`, `npm run ui:typecheck`, `npm run ui:test`.

@@ -315,6 +315,28 @@ describe("workbench frontend", () => {
     expect(screen.queryByRole("button", { name: "Run audit" })).toBeNull();
   });
 
+  it("filters navigation from sidebar search and collapses to an icon rail", () => {
+    render(<AppShell projects={[project]} selectedProject="shop" activeView="overview" onProjectChange={vi.fn()} onNavigate={vi.fn()}><p>Workspace</p></AppShell>);
+    const sidebar = within(screen.getByLabelText("Workbench navigation"));
+    fireEvent.change(screen.getByRole("searchbox", { name: "Search navigation" }), { target: { value: "audit" } });
+    expect(sidebar.getByRole("button", { name: "Audit" })).toBeTruthy();
+    expect(sidebar.queryByRole("button", { name: "Keywords" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Collapse sidebar" }));
+    expect(screen.queryByRole("searchbox", { name: "Search navigation" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Expand sidebar" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Expand sidebar" }));
+  });
+
+  it("opens settings to switch the project", () => {
+    const change = vi.fn();
+    const other = { ...project, id: "other", name: "Other Shop", url: "https://other.example.com" };
+    render(<AppShell projects={[project, other]} selectedProject="shop" activeView="overview" onProjectChange={change} onNavigate={vi.fn()}><p>Workspace</p></AppShell>);
+    fireEvent.click(screen.getByRole("button", { name: "Settings" }));
+    const dialog = screen.getByRole("dialog", { name: "Settings" });
+    fireEvent.click(within(dialog).getByRole("radio", { name: /Other Shop/ }));
+    expect(change).toHaveBeenCalledWith("other");
+  });
+
   it("closes mobile navigation after choosing a destination", () => {
     const navigate = vi.fn();
     const { container } = render(<AppShell projects={[project]} selectedProject="shop" activeView="overview" onProjectChange={vi.fn()} onNavigate={navigate}><p>Workspace</p></AppShell>);
@@ -330,7 +352,7 @@ describe("workbench frontend", () => {
     const navigate = vi.fn();
     const section = vi.fn();
     render(<AppShell projects={[project]} selectedProject="shop" activeView="audits" activeAuditSection="url-inventory" onAuditSectionChange={section} onProjectChange={vi.fn()} onNavigate={navigate}><p>Workspace</p></AppShell>);
-    expect(screen.getByRole("button", { name: "URL inventory" }).className).toContain("activeTechnicalSubitem");
+    expect(screen.getByRole("button", { name: "URL inventory" }).getAttribute("aria-current")).toBe("page");
     fireEvent.click(screen.getByRole("button", { name: "Schedule" }));
     expect(navigate).toHaveBeenCalledWith("audits");
     expect(section).toHaveBeenCalledWith("automation");
@@ -340,7 +362,7 @@ describe("workbench frontend", () => {
     const navigate = vi.fn();
     const section = vi.fn();
     render(<AppShell projects={[project]} selectedProject="shop" activeView="integrations" activeConnectionSection="optional" onConnectionSectionChange={section} onProjectChange={vi.fn()} onNavigate={navigate}><p>Workspace</p></AppShell>);
-    expect(screen.getByRole("button", { name: "Optional providers" }).className).toContain("activeTechnicalSubitem");
+    expect(screen.getByRole("button", { name: "Optional providers" }).getAttribute("aria-current")).toBe("page");
     fireEvent.click(screen.getByRole("button", { name: "Core sources" }));
     expect(navigate).toHaveBeenCalledWith("integrations");
     expect(section).toHaveBeenCalledWith("core");
@@ -350,7 +372,7 @@ describe("workbench frontend", () => {
     const navigate = vi.fn();
     const section = vi.fn();
     render(<AppShell projects={[project]} selectedProject="shop" activeView="content" activeContentSection="brief" onContentSectionChange={section} onProjectChange={vi.fn()} onNavigate={navigate}><p>Workspace</p></AppShell>);
-    expect(screen.getByRole("button", { name: "Brief" }).className).toContain("activeTechnicalSubitem");
+    expect(screen.getByRole("button", { name: "Brief" }).getAttribute("aria-current")).toBe("page");
     fireEvent.click(screen.getByRole("button", { name: "Produce" }));
     expect(navigate).toHaveBeenCalledWith("content");
     expect(section).toHaveBeenCalledWith("produce");

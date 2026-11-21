@@ -1,26 +1,50 @@
 import {
   BarChart3,
-  ChevronDown,
-  ChevronUp,
-  ChevronsUpDown,
+  BellRing,
+  CalendarClock,
+  CalendarDays,
+  Check,
+  ChevronRight,
+  CircleHelp,
   FileChartColumn,
   FileText,
   FolderOpen,
   GitBranch,
+  GitCommitHorizontal,
   House,
   KeyRound,
+  LayoutDashboard,
   Link2,
+  ListChecks,
   MoreVertical,
+  PanelLeftClose,
+  PanelLeftOpen,
   PanelsTopLeft,
+  PenLine,
+  Plug,
+  Presentation,
+  Search,
+  Settings,
   ShieldCheck,
   Tags,
   UserRound,
+  X,
+  type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
+
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 import type { ProjectSummary } from "../api/types";
 import styles from "./AppShell.module.css";
 
+const SIDEBAR_STATE_KEY = "seo-workbench:sidebar";
+
+const navItemClass = "flex min-h-9 w-full items-center gap-2.5 rounded-lg px-2.5 text-left text-[13px] font-medium transition-colors";
+const navIdleClass = "text-ink-muted hover:bg-surface-soft hover:text-ink";
+const navActiveClass = "bg-surface-soft font-semibold text-ink";
 
 export type ViewName = "overview" | "owners" | "keywords" | "pages" | "link-building" | "statistics" | "workflow" | "content" | "reports" | "audits" | "files" | "integrations" | "tutorials";
 export type AuditSection = "overview" | "automation" | "url-inventory" | "crawl-comparison" | "redirects" | "sitemaps" | "logs";
@@ -45,6 +69,8 @@ type AppShellProps = {
   children: ReactNode;
 };
 
+type NavSection = { id: string; label: string; icon: LucideIcon };
+
 const navigation = [
   { id: "overview" as const, label: "Home", icon: House },
   { id: "workflow" as const, label: "Methods", icon: GitBranch },
@@ -60,27 +86,27 @@ const navigation = [
   { id: "files" as const, label: "Files", icon: FolderOpen },
 ];
 
-const auditSections: Array<{ id: AuditSection; label: string }> = [
-  { id: "overview", label: "Summary" },
-  { id: "automation", label: "Schedule" },
-  { id: "url-inventory", label: "URL inventory" },
+const auditSections: NavSection[] = [
+  { id: "overview", label: "Summary", icon: LayoutDashboard },
+  { id: "automation", label: "Schedule", icon: CalendarClock },
+  { id: "url-inventory", label: "URL inventory", icon: ListChecks },
 ];
 
-const reportSections: Array<{ id: ReportSection; label: string }> = [
-  { id: "weekly", label: "Weekly" },
-  { id: "seo-changes", label: "SEO changes" },
-  { id: "presentation", label: "Presentation" },
-  { id: "notify", label: "Notify" },
+const reportSections: NavSection[] = [
+  { id: "weekly", label: "Weekly", icon: CalendarDays },
+  { id: "seo-changes", label: "SEO changes", icon: GitCommitHorizontal },
+  { id: "presentation", label: "Presentation", icon: Presentation },
+  { id: "notify", label: "Notify", icon: BellRing },
 ];
 
-const contentSections: Array<{ id: ContentSection; label: string }> = [
-  { id: "brief", label: "Brief" },
-  { id: "produce", label: "Produce" },
+const contentSections: NavSection[] = [
+  { id: "brief", label: "Brief", icon: FileText },
+  { id: "produce", label: "Produce", icon: PenLine },
 ];
 
-const connectionSections: Array<{ id: ConnectionSection; label: string }> = [
-  { id: "core", label: "Core sources" },
-  { id: "optional", label: "Optional providers" },
+const connectionSections: NavSection[] = [
+  { id: "core", label: "Core sources", icon: KeyRound },
+  { id: "optional", label: "Optional providers", icon: Plug },
 ];
 
 const viewLabels: Record<ViewName, string> = {
@@ -107,50 +133,111 @@ function displayHost(url: string) {
   }
 }
 
+function readCollapsedState() {
+  try {
+    return window.localStorage.getItem(SIDEBAR_STATE_KEY) === "collapsed";
+  } catch {
+    return false;
+  }
+}
+
+function NavIcon({ icon: Icon }: { icon: LucideIcon }) {
+  return <Icon aria-hidden="true" size={18} strokeWidth={1.7} className="shrink-0" />;
+}
+
+type NavButtonProps = {
+  active: boolean;
+  collapsed: boolean;
+  current?: boolean;
+  expanded?: boolean;
+  hasPopup?: "dialog";
+  icon: LucideIcon;
+  label: string;
+  onClick: () => void;
+  showChevron?: boolean;
+};
+
+/** One sidebar row: icon, label, and an optional disclosure chevron. */
+function NavButton({ active, collapsed, current = true, expanded, hasPopup, icon: Icon, label, onClick, showChevron = false }: NavButtonProps) {
+  const button = (
+    <button
+      type="button"
+      aria-current={active && current ? "page" : undefined}
+      aria-expanded={showChevron ? expanded : undefined}
+      aria-haspopup={hasPopup}
+      onClick={onClick}
+      className={cn(navItemClass, active ? navActiveClass : navIdleClass, expanded && !active && "font-semibold text-ink", collapsed && "size-9 min-h-9 justify-center px-0")}
+    >
+      <NavIcon icon={Icon} />
+      <span className={cn("truncate", collapsed && "sr-only")}>{label}</span>
+      {showChevron ? (
+        <ChevronRight
+          aria-hidden="true"
+          size={16}
+          className={cn("ml-auto shrink-0 text-ink-muted transition-transform duration-150", expanded && "rotate-90", collapsed && "hidden")}
+        />
+      ) : null}
+    </button>
+  );
+
+  if (!collapsed) return button;
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{button}</TooltipTrigger>
+      <TooltipContent side="right" sideOffset={10}>{label}</TooltipContent>
+    </Tooltip>
+  );
+}
+
 type ExpandableNavItemProps = {
   view: ViewName;
   label: string;
-  icon: React.ComponentType<{ size?: number; strokeWidth?: number }>;
+  icon: LucideIcon;
   open: boolean;
   onToggle: () => void;
   subnavLabel: string;
-  sections: ReadonlyArray<{ id: string; label: string }>;
+  sections: ReadonlyArray<NavSection>;
   activeView: ViewName;
   activeSection: string | undefined;
   onSectionChange: (section: string) => void;
+  collapsed: boolean;
 };
 
-function ExpandableNavItem({ view, label, icon: Icon, open, onToggle, subnavLabel, sections, activeView, activeSection, onSectionChange }: ExpandableNavItemProps) {
+function ExpandableNavItem({ view, label, icon, open, onToggle, subnavLabel, sections, activeView, activeSection, onSectionChange, collapsed }: ExpandableNavItemProps) {
   return (
-    <div className={styles.technicalNavigation}>
-      <button
-        className={activeView === view ? styles.activeNav : styles.navItem}
-        type="button"
-        aria-expanded={open}
+    <div>
+      <NavButton
+        active={activeView === view && !open}
+        collapsed={collapsed}
+        expanded={open}
+        icon={icon}
+        label={label}
         onClick={onToggle}
-      >
-        <Icon aria-hidden="true" size={20} strokeWidth={1.5} />
-        <span>{label}</span>
-        {open ? <ChevronUp aria-hidden="true" size={16} /> : <ChevronDown aria-hidden="true" size={16} />}
-      </button>
-      {open ? (
-        <div className={styles.technicalSubnav} aria-label={subnavLabel}>
-          {sections.map((section) => (
-            <button
-              key={section.id}
-              className={activeView === view && activeSection === section.id ? styles.activeTechnicalSubitem : styles.technicalSubitem}
-              type="button"
-              onClick={() => onSectionChange(section.id)}
-            >
-              {section.label}
-            </button>
-          ))}
+        showChevron
+      />
+      {open && !collapsed ? (
+        <div className={styles.subnav} aria-label={subnavLabel}>
+          {sections.map((section) => {
+            const SectionIcon = section.icon;
+            const isActive = activeView === view && activeSection === section.id;
+            return (
+              <button
+                key={section.id}
+                type="button"
+                aria-current={isActive ? "page" : undefined}
+                onClick={() => onSectionChange(section.id)}
+                className={isActive ? styles.subnavItemActive : styles.subnavItem}
+              >
+                <SectionIcon aria-hidden="true" size={16} strokeWidth={1.7} className="shrink-0" />
+                <span className="truncate">{section.label}</span>
+              </button>
+            );
+          })}
         </div>
       ) : null}
     </div>
   );
 }
-
 
 export function AppShell({
   projects,
@@ -169,11 +256,16 @@ export function AppShell({
   children,
 }: AppShellProps) {
   const mobileMore = useRef<HTMLDetailsElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const settingsTrigger = useRef<HTMLDivElement>(null);
   const [openViews, setOpenViews] = useState<Set<ViewName>>(() => new Set([activeView]));
+  const [collapsed, setCollapsed] = useState(readCollapsedState);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [query, setQuery] = useState("");
   const project = projects.find((item) => item.id === selectedProject);
   const primaryMobile = navigation.filter((item) => ["overview", "keywords", "pages", "audits"].includes(item.id));
   const mobileMoreItems = [...navigation.filter((item) => !primaryMobile.includes(item)), { id: "tutorials" as const, label: "Guides" }];
-  const expandable: Partial<Record<ViewName, { activeSection: string; sections: ReadonlyArray<{ id: string; label: string }>; subnavLabel: string; onSectionChange: (section: string) => void }>> = {
+  const expandable: Partial<Record<ViewName, { activeSection: string; sections: ReadonlyArray<NavSection>; subnavLabel: string; onSectionChange: (section: string) => void }>> = {
     audits: { activeSection: activeAuditSection, sections: auditSections, subnavLabel: "Audit sections", onSectionChange: (section) => onAuditSectionChange?.(section as AuditSection) },
     content: { activeSection: activeContentSection, sections: contentSections, subnavLabel: "Content sections", onSectionChange: (section) => onContentSectionChange?.(section as ContentSection) },
     reports: { activeSection: activeReportSection, sections: reportSections, subnavLabel: "Report sections", onSectionChange: (section) => onReportSectionChange?.(section as ReportSection) },
@@ -188,6 +280,46 @@ export function AppShell({
     if (expandable[activeView]) setOpenViews((current) => new Set(current).add(activeView));
   }, [activeView]);
 
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(SIDEBAR_STATE_KEY, collapsed ? "collapsed" : "expanded");
+    } catch {
+      // The sidebar still works when storage is unavailable.
+    }
+  }, [collapsed]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setCollapsed(false);
+        requestAnimationFrame(() => searchRef.current?.focus());
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  const toggleCollapsed = () => {
+    const next = !collapsed;
+    setCollapsed(next);
+    if (next) setQuery("");
+  };
+
+  const expandSearch = () => {
+    setCollapsed(false);
+    requestAnimationFrame(() => searchRef.current?.focus());
+  };
+
+  const normalizedQuery = query.trim().toLowerCase();
+  const queryActive = normalizedQuery.length > 0;
+  const matches = (label: string) => label.toLowerCase().includes(normalizedQuery);
+  const isVisible = (id: ViewName, label: string) =>
+    !queryActive || matches(label) || (expandable[id]?.sections.some((section) => matches(section.label)) ?? false);
+  const primaryNavigation = navigation.filter(({ id, label }) => id !== "files" && id !== "integrations" && isVisible(id, label));
+  const workspaceNavigation = navigation.filter(({ id, label }) => (id === "files" || id === "integrations") && isVisible(id, label));
+  const noMatches = queryActive && primaryNavigation.length === 0 && workspaceNavigation.length === 0;
+
   const navigateSection = (view: ViewName, section: string) => {
     setOpenViews((current) => new Set(current).add(view));
     onNavigate(view);
@@ -196,51 +328,170 @@ export function AppShell({
 
   const renderNavItem = ({ id, label, icon: Icon }: (typeof navigation)[number]) => {
     const config = expandable[id];
-    if (config) return <ExpandableNavItem key={id} view={id} label={label} icon={Icon} open={openViews.has(id)} onToggle={() => { setOpenViews((current) => { const next = new Set(current); next.has(id) ? next.delete(id) : next.add(id); return next; }); onNavigate(id); }} subnavLabel={config.subnavLabel} sections={config.sections} activeView={activeView} activeSection={config.activeSection} onSectionChange={(section) => navigateSection(id, section)} />;
-    return <button key={id} className={activeView === id ? styles.activeNav : styles.navItem} type="button" onClick={() => onNavigate(id)}><Icon aria-hidden="true" size={20} strokeWidth={1.5} /><span>{label}</span></button>;
+    if (config) {
+      const sections = queryActive
+        ? matches(label)
+          ? config.sections
+          : config.sections.filter((section) => matches(section.label))
+        : config.sections;
+      return (
+        <ExpandableNavItem
+          key={id}
+          view={id}
+          label={label}
+          icon={Icon}
+          open={queryActive || openViews.has(id)}
+          onToggle={() => {
+            if (collapsed) setCollapsed(false);
+            setOpenViews((current) => {
+              const next = new Set(current);
+              next.has(id) ? next.delete(id) : next.add(id);
+              return next;
+            });
+            onNavigate(id);
+          }}
+          subnavLabel={config.subnavLabel}
+          sections={sections}
+          activeView={activeView}
+          activeSection={config.activeSection}
+          onSectionChange={(section) => navigateSection(id, section)}
+          collapsed={collapsed}
+        />
+      );
+    }
+    return (
+      <NavButton
+        key={id}
+        active={activeView === id}
+        collapsed={collapsed}
+        icon={Icon}
+        label={label}
+        onClick={() => onNavigate(id)}
+      />
+    );
   };
 
   const breadcrumbSection = expandable[activeView];
 
   return (
-    <div className={styles.shell}>
-      <aside className={styles.sidebar} aria-label="Workbench navigation">
-        <div className={styles.wordmark}><img src="/seo-workbench-mark.svg" alt="" /><span>SEO Workbench</span></div>
-        <label className={styles.projectPicker}>
-          <span className={styles.projectMonogram}>{project?.name?.slice(0, 1).toUpperCase() || "S"}</span>
-          <span className={styles.projectText}>
-            <span>{project?.name || "Select project"}</span>
-            <small>{project ? displayHost(project.url) : "Local workspace"}</small>
-          </span>
-          <select
-            aria-label="Select project"
-            value={selectedProject || ""}
-            onChange={(event) => onProjectChange(event.target.value)}
-          >
-            {projects.map((item) => <option key={item.id} value={item.id}>{item.name || item.id}</option>)}
-          </select>
-          <ChevronsUpDown aria-hidden="true" size={16} />
-        </label>
-        <nav className={styles.navigation}>
-          <span className={styles.navGroupLabel}>Navigate</span>
-          {navigation.filter(({ id }) => id !== "files" && id !== "integrations").map(renderNavItem)}
-        </nav>
-        <div className={styles.utilityNavigation}>
-          <span className={styles.navGroupLabel}>Workspace</span>
-          {navigation.filter(({ id }) => id === "files" || id === "integrations").map(renderNavItem)}
+    <div className={styles.shell} data-collapsed={collapsed ? "true" : undefined}>
+      <aside aria-label="Workbench navigation" className={cn(styles.sidebar, "sticky top-3 mx-3 flex h-[calc(100vh-24px)] w-[var(--sidebar-width)] shrink-0 flex-col overflow-hidden rounded-2xl border border-separator bg-surface shadow-[0_1px_2px_rgba(16,24,40,0.04),0_16px_40px_rgba(16,24,40,0.07)] transition-[width] duration-200 ease-out")}>
+        <div className={cn("px-2 pb-2", collapsed ? "flex flex-col items-center gap-1 px-0 pt-2" : "flex items-center gap-1.5 pt-3")}>
+          {collapsed ? (
+            <>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button type="button" aria-label="Expand sidebar" onClick={() => setCollapsed(false)} className="grid size-9 place-items-center rounded-lg text-ink-muted transition-colors hover:bg-surface-soft hover:text-ink">
+                    <PanelLeftOpen aria-hidden="true" size={18} strokeWidth={1.7} />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="right" sideOffset={10}>Expand sidebar</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button type="button" aria-label="Search navigation" onClick={expandSearch} className="grid size-9 place-items-center rounded-lg text-ink-muted transition-colors hover:bg-surface-soft hover:text-ink">
+                    <Search aria-hidden="true" size={18} strokeWidth={1.7} />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="right" sideOffset={10}>Search navigation</TooltipContent>
+              </Tooltip>
+            </>
+          ) : (
+            <>
+              <div className="relative min-w-0 flex-1">
+                <Search aria-hidden="true" size={15} strokeWidth={1.8} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-muted" />
+                <input
+                  ref={searchRef}
+                  type="search"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  onKeyDown={(event) => { if (event.key === "Escape") setQuery(""); }}
+                  aria-label="Search navigation"
+                  placeholder="Search"
+                  className="h-9 w-full rounded-lg border border-separator-strong bg-canvas pl-8 pr-14 text-[13px] text-ink placeholder:text-muted-foreground focus:border-primary focus:bg-surface focus:outline-none focus:ring-2 focus:ring-primary-wash"
+                />
+                {query ? (
+                  <button type="button" aria-label="Clear search" onClick={() => setQuery("")} className="absolute right-1.5 top-1/2 grid size-6 -translate-y-1/2 place-items-center rounded-md text-ink-muted transition-colors hover:bg-surface-soft hover:text-ink">
+                    <X aria-hidden="true" size={14} />
+                  </button>
+                ) : (
+                  <kbd className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 rounded border border-separator-strong bg-surface px-1.5 py-0.5 font-mono text-[10px] leading-none text-ink-muted">Ctrl K</kbd>
+                )}
+              </div>
+              <button type="button" aria-label="Collapse sidebar" onClick={toggleCollapsed} className="grid size-8 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-surface-soft hover:text-ink">
+                <PanelLeftClose aria-hidden="true" size={17} strokeWidth={1.7} />
+              </button>
+            </>
+          )}
         </div>
-        <div className={styles.helpNavigation}>
-          <button
-            className={activeView === "tutorials" ? styles.activeHelpNav : styles.helpNav}
-            type="button"
-            onClick={() => onNavigate("tutorials")}
-            aria-current={activeView === "tutorials" ? "page" : undefined}
-          >
-            <span className={styles.helpGlyph} aria-hidden="true">?</span>
-            <span>Guides</span>
-          </button>
+
+        <div className="min-h-0 flex-1 overflow-y-auto px-2 pb-2">
+          {primaryNavigation.length > 0 ? (
+            <nav aria-label="Workbench" className={cn("grid gap-0.5", collapsed && "justify-items-center")}>
+              {!collapsed ? <p className="px-2 pb-1 pt-2 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-muted">Navigate</p> : null}
+              {primaryNavigation.map(renderNavItem)}
+            </nav>
+          ) : null}
+          {workspaceNavigation.length > 0 ? (
+            <nav aria-label="Workspace" className={cn("mt-3 grid gap-0.5", collapsed && "justify-items-center")}>
+              {!collapsed ? <p className="px-2 pb-1 pt-2 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-muted">Workspace</p> : null}
+              {workspaceNavigation.map(renderNavItem)}
+            </nav>
+          ) : null}
+          {noMatches ? <p className="px-2 py-6 text-center text-xs text-muted-foreground">No matches</p> : null}
+        </div>
+
+        <div ref={settingsTrigger} className="grid gap-0.5 p-2">
+          <NavButton active={settingsOpen} current={false} collapsed={collapsed} hasPopup="dialog" icon={Settings} label="Settings" onClick={() => setSettingsOpen(true)} />
+          <NavButton active={activeView === "tutorials"} collapsed={collapsed} icon={CircleHelp} label="Guides" onClick={() => onNavigate("tutorials")} />
         </div>
       </aside>
+
+      <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
+        <DialogContent
+          aria-describedby="settings-description"
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            settingsTrigger.current?.querySelector("button")?.focus();
+          }}
+        >
+          <DialogHeader>
+            <DialogTitle asChild><h3>Settings</h3></DialogTitle>
+            <DialogDescription id="settings-description">Choose the project this workspace uses.</DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-2">
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-muted">Project</p>
+            <div role="radiogroup" aria-label="Project" className="grid max-h-[50vh] gap-1 overflow-y-auto">
+              {projects.length > 0 ? projects.map((item) => {
+                const selected = item.id === selectedProject;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={selected}
+                    onClick={() => {
+                      onProjectChange(item.id);
+                      setSettingsOpen(false);
+                    }}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg border px-3 py-2.5 text-left transition-colors",
+                      selected ? "border-primary bg-primary-wash" : "border-separator hover:border-separator-strong hover:bg-surface-soft",
+                    )}
+                  >
+                    <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-graphite font-mono text-[11px] font-medium text-white">{(item.name || item.id).slice(0, 1).toUpperCase()}</span>
+                    <span className="grid min-w-0 flex-1 gap-0.5">
+                      <span className="truncate text-[13px] font-semibold text-ink">{item.name || item.id}</span>
+                      <small className="truncate text-[11px] font-normal text-muted-foreground">{displayHost(item.url)}</small>
+                    </span>
+                    {selected ? <Check aria-hidden="true" size={16} className="shrink-0 text-primary" /> : null}
+                  </button>
+                );
+              }) : <p className="py-4 text-center text-xs text-muted-foreground">No projects available.</p>}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <header className={styles.mobileHeader}>
         <span className={styles.mobileWordmark}>SEO WORKBENCH</span>
