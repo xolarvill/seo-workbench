@@ -94,7 +94,7 @@ const phaseGuides: Record<string, PhaseGuide> = {
     tasks: [
       { id: "technical-recheck", label: "Recheck implemented technical fixes", description: "Verify fixes with a later comparable audit. A partial or mismatched run cannot prove absence.", capability: "technical audit", availability: "Workspace", href: "#/audits/url-inventory" },
       { id: "drift-compare", label: "Compare compatible evidence", description: "Use audit diff, GSC, CrUX, GA4, and Statistics without merging incomparable windows or regimes.", capability: "GSC · GA4 · Shopify · Statistics", availability: "Workspace", href: "#/statistics" },
-      { id: "seo-change-review", label: "Review recorded SEO changes", description: "Compare descriptive pre/post evidence for shipped changes and keep causal claims bounded by the available data.", capability: "Pages · SEO changes · Reports", availability: "Workspace", href: "#/reports/seo-changes" },
+      { id: "seo-change-review", label: "Review recorded SEO changes", description: "Compare descriptive pre/post evidence for shipped changes and keep causal claims bounded by the available data.", capability: "Pages · Timeline", availability: "Workspace", href: "#/timeline" },
       { id: "backlinks-recheck", label: "Recheck external link changes", description: "Only call links new or lost when complete same-source snapshots support that conclusion.", capability: "backlinks", availability: "CLI / skill", href: "#/files" },
     ],
   },

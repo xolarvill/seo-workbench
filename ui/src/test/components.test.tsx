@@ -16,6 +16,7 @@ import { OwnersPage } from "../features/owners/OwnersPage";
 import { FilesPage } from "../features/files/FilesPage";
 import { PagesWorkbenchPage } from "../features/pages/PagesWorkbenchPage";
 import { ReportsPage } from "../features/reports/ReportsPage";
+import { TimelinePage } from "../features/timeline/TimelinePage";
 import { TutorialsPage } from "../features/tutorials/TutorialsPage";
 import { TechnicalAuditPage } from "../features/technical-audit/TechnicalAuditPage";
 import { WorkflowPage } from "../features/workflow/WorkflowPage";
@@ -300,6 +301,8 @@ describe("workbench frontend", () => {
     expect(screen.getAllByText("example.com").length).toBeGreaterThan(0);
     fireEvent.click(screen.getAllByRole("button", { name: /Methods/i })[0]);
     expect(navigate).toHaveBeenCalledWith("workflow");
+    fireEvent.click(screen.getAllByRole("button", { name: "Timeline" })[0]);
+    expect(navigate).toHaveBeenCalledWith("timeline");
     fireEvent.click(screen.getAllByRole("button", { name: /Keywords/i })[0]);
     expect(navigate).toHaveBeenCalledWith("keywords");
     fireEvent.click(screen.getAllByRole("button", { name: /Owners/i })[0]);
@@ -693,13 +696,21 @@ describe("workbench frontend", () => {
     await waitFor(() => expect(run).toHaveBeenCalledWith({ action: "report", period: "daily" }));
   });
 
-  it("renders SEO changes as a read-only report timeline", async () => {
-    render(<ReportsPage projectId="shop" jobs={[]} refreshKey={0} section="seo-changes" onOpenFile={vi.fn()} onRunContentAction={vi.fn()} />);
-    expect(await screen.findByRole("heading", { name: "SEO changes" })).toBeTruthy();
+  it("renders the timeline as month-grouped entries and opens one read-only record", async () => {
+    render(<TimelinePage projectId="shop" refreshKey={0} />);
+    expect(await screen.findByRole("heading", { name: "Timeline" })).toBeTruthy();
+    expect(screen.getByText("AUGUST 2026")).toBeTruthy();
     expect(screen.getByText("Improve the product title")).toBeTruthy();
-    expect(screen.getByLabelText("Help: SEO change scope")).toBeTruthy();
     expect(screen.getAllByText("shipped", { selector: ".statusPill" })).toHaveLength(1);
-    fireEvent.change(screen.getByRole("combobox", { name: "Filter SEO changes by type" }), { target: { value: "content" } });
+
+    fireEvent.click(screen.getByRole("button", { name: /Improve the product title/ }));
+    const dialog = await screen.findByRole("dialog");
+    expect(within(dialog).getByText("Improve the product title")).toBeTruthy();
+    expect(within(dialog).getByText("Updated title and description")).toBeTruthy();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Close timeline entry" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+
+    fireEvent.change(screen.getByRole("combobox", { name: "Filter timeline by type" }), { target: { value: "content" } });
     expect(screen.queryByText("Improve the product title")).toBeNull();
     expect(screen.getByText("Expand the guide")).toBeTruthy();
   });

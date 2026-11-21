@@ -11,6 +11,7 @@ import { OwnersPage } from "./features/owners/OwnersPage";
 import { PagesWorkbenchPage } from "./features/pages/PagesWorkbenchPage";
 import { LinkBuildingPage } from "./features/link-building/LinkBuildingPage";
 import { ReportsPage } from "./features/reports/ReportsPage";
+import { TimelinePage } from "./features/timeline/TimelinePage";
 import { StatisticsPage } from "./features/statistics/StatisticsPage";
 import { TechnicalAuditPage } from "./features/technical-audit/TechnicalAuditPage";
 import { TutorialsPage } from "./features/tutorials/TutorialsPage";
@@ -20,7 +21,7 @@ import { useProjects, useWorkbenchEvents, useWorkspace } from "./hooks/useWorkbe
 const MarkdownOverlay = lazy(() => import("./features/editor/MarkdownOverlay"));
 const IntegrationsPage = lazy(() => import("./features/integrations/IntegrationsPage").then((module) => ({ default: module.IntegrationsPage })));
 const KeywordsWorkbenchPage = lazy(() => import("./features/keywords/KeywordsWorkbenchPage").then((module) => ({ default: module.KeywordsWorkbenchPage })));
-const VIEWS = new Set<ViewName>(["overview", "owners", "keywords", "pages", "link-building", "statistics", "workflow", "content", "reports", "audits", "files", "integrations", "tutorials"]);
+const VIEWS = new Set<ViewName>(["overview", "timeline", "owners", "keywords", "pages", "link-building", "statistics", "workflow", "content", "reports", "audits", "files", "integrations", "tutorials"]);
 const AUDIT_SECTIONS = new Set<AuditSection>(["overview", "automation", "url-inventory", "crawl-comparison", "redirects", "sitemaps", "logs"]);
 
 function hashRoute() {
@@ -31,6 +32,7 @@ function hashRoute() {
 type HashRoute = ReturnType<typeof hashRoute>;
 
 function viewFromRoute(route: HashRoute): ViewName {
+  if ((route.parts[0] === "reports" && route.parts[1] === "seo-changes") || route.parts[0] === "seo-changes") return "timeline";
   const value = route.parts[0] as ViewName;
   return VIEWS.has(value) ? value : "overview";
 }
@@ -42,7 +44,7 @@ function auditSectionFromRoute(route: HashRoute): AuditSection {
 }
 
 function reportSectionFromRoute(route: HashRoute): ReportSection {
-  return route.parts[1] === "notify" ? "notify" : route.parts[1] === "presentation" ? "presentation" : route.parts[1] === "seo-changes" ? "seo-changes" : "weekly";
+  return route.parts[1] === "notify" ? "notify" : route.parts[1] === "presentation" ? "presentation" : "weekly";
 }
 
 function contentSectionFromRoute(route: HashRoute): ContentSection {
@@ -255,6 +257,7 @@ export function App() {
             />
           ) : null}
           {activeView === "reports" ? <ReportsPage projectId={selectedProject} jobs={jobs} refreshKey={refreshKey} section={activeReportSection} onOpenFile={openFile} onRunContentAction={runContentAction} onRunPresentation={() => runAuditAction("presentation-weekly")} /> : null}
+          {activeView === "timeline" ? <TimelinePage projectId={selectedProject} refreshKey={refreshKey} /> : null}
           {activeView === "audits" ? (
             <TechnicalAuditPage
               projectId={selectedProject}

@@ -10,7 +10,7 @@ import {
   FileText,
   FolderOpen,
   GitBranch,
-  GitCommitHorizontal,
+  GitCommitVertical,
   House,
   KeyRound,
   LayoutDashboard,
@@ -46,10 +46,10 @@ const navItemClass = "flex min-h-9 w-full items-center gap-2.5 rounded-lg px-2.5
 const navIdleClass = "text-ink-muted hover:bg-surface-soft hover:text-ink";
 const navActiveClass = "bg-surface-soft font-semibold text-ink";
 
-export type ViewName = "overview" | "owners" | "keywords" | "pages" | "link-building" | "statistics" | "workflow" | "content" | "reports" | "audits" | "files" | "integrations" | "tutorials";
+export type ViewName = "overview" | "timeline" | "owners" | "keywords" | "pages" | "link-building" | "statistics" | "workflow" | "content" | "reports" | "audits" | "files" | "integrations" | "tutorials";
 export type AuditSection = "overview" | "automation" | "url-inventory" | "crawl-comparison" | "redirects" | "sitemaps" | "logs";
 export type ContentSection = "brief" | "produce";
-export type ReportSection = "weekly" | "seo-changes" | "presentation" | "notify";
+export type ReportSection = "weekly" | "presentation" | "notify";
 export type ConnectionSection = "core" | "optional";
 
 type AppShellProps = {
@@ -73,7 +73,7 @@ type NavSection = { id: string; label: string; icon: LucideIcon };
 
 const navigation = [
   { id: "overview" as const, label: "Home", icon: House },
-  { id: "workflow" as const, label: "Methods", icon: GitBranch },
+  { id: "timeline" as const, label: "Timeline", icon: GitCommitVertical },
   { id: "owners" as const, label: "Owners", icon: UserRound },
   { id: "keywords" as const, label: "Keywords", icon: Tags },
   { id: "pages" as const, label: "Pages", icon: PanelsTopLeft },
@@ -84,6 +84,7 @@ const navigation = [
   { id: "reports" as const, label: "Reports", icon: FileChartColumn },
   { id: "integrations" as const, label: "Connections", icon: KeyRound },
   { id: "files" as const, label: "Files", icon: FolderOpen },
+  { id: "workflow" as const, label: "Methods", icon: GitBranch },
 ];
 
 const auditSections: NavSection[] = [
@@ -94,7 +95,6 @@ const auditSections: NavSection[] = [
 
 const reportSections: NavSection[] = [
   { id: "weekly", label: "Weekly", icon: CalendarDays },
-  { id: "seo-changes", label: "SEO changes", icon: GitCommitHorizontal },
   { id: "presentation", label: "Presentation", icon: Presentation },
   { id: "notify", label: "Notify", icon: BellRing },
 ];
@@ -303,8 +303,8 @@ export function AppShell({
   const matches = (label: string) => label.toLowerCase().includes(normalizedQuery);
   const isVisible = (id: ViewName, label: string) =>
     !queryActive || matches(label) || (expandable[id]?.sections.some((section) => matches(section.label)) ?? false);
-  const primaryNavigation = navigation.filter(({ id, label }) => id !== "files" && id !== "integrations" && isVisible(id, label));
-  const workspaceNavigation = navigation.filter(({ id, label }) => (id === "files" || id === "integrations") && isVisible(id, label));
+  const primaryNavigation = navigation.filter(({ id, label }) => id !== "files" && id !== "integrations" && id !== "workflow" && isVisible(id, label));
+  const workspaceNavigation = navigation.filter(({ id, label }) => (id === "files" || id === "integrations" || id === "workflow") && isVisible(id, label));
   const noMatches = queryActive && primaryNavigation.length === 0 && workspaceNavigation.length === 0;
 
   const navigateSection = (view: ViewName, section: string) => {
