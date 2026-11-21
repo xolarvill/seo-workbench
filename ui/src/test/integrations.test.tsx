@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
@@ -123,6 +123,7 @@ beforeEach(() => {
 describe("SEO integrations page", () => {
   it("preserves the Clarity query across evidence watcher refreshes", async () => {
     const { rerender } = render(<IntegrationsPage projectId="store" refreshKey={0} section="optional" onRunAction={vi.fn()} />);
+    fireEvent.click(await screen.findByRole("button", { name: /^Configure Clarity/ }));
     const question = await screen.findByLabelText("Clarity question");
     fireEvent.change(question, { target: { value: "Mobile sessions" } });
     rerender(<IntegrationsPage projectId="store" refreshKey={1} section="optional" onRunAction={vi.fn()} />);
@@ -132,6 +133,7 @@ describe("SEO integrations page", () => {
     vi.mocked(saveShopifyCredentials).mockResolvedValue(readyShopify);
     render(<IntegrationsPage projectId="store" refreshKey={0} onRunAction={vi.fn()} />);
 
+    fireEvent.click(await screen.findByRole("button", { name: /^Configure Shopify/ }));
     expect(await screen.findByRole("heading", { name: "Shopify Admin API" })).toBeTruthy();
     fireEvent.change(screen.getByLabelText("Shopify shop domain"), { target: { value: "example-store.myshopify.com" } });
     fireEvent.change(screen.getByLabelText("Admin API access token"), { target: { value: "shpat_private_token" } });
@@ -140,14 +142,16 @@ describe("SEO integrations page", () => {
     expect(saveShopifyCredentials).toHaveBeenCalledWith("store", "example-store.myshopify.com", "shpat_private_token");
     expect(await screen.findByText("Shopify Admin API connected. The access token will not be shown again.")).toBeTruthy();
     expect(screen.queryByDisplayValue("shpat_private_token")).toBeNull();
-    expect(screen.getByText("Example Store")).toBeTruthy();
-    expect(screen.getByText("Read scopes only")).toBeTruthy();
+    const dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByText("Example Store")).toBeTruthy();
+    expect(within(dialog).getByText("Read scopes only")).toBeTruthy();
   });
 
   it("stores Shopify Web Bot Auth without displaying the signature", async () => {
     vi.mocked(saveShopifyCrawlerAccess).mockResolvedValue(readyShopify);
     render(<IntegrationsPage projectId="store" refreshKey={0} onRunAction={vi.fn()} />);
 
+    fireEvent.click(await screen.findByRole("button", { name: /^Configure Crawler access/ }));
     expect(await screen.findByRole("heading", { name: "Signed storefront crawl" })).toBeTruthy();
     fireEvent.change(screen.getByLabelText("Crawler Signature"), { target: { value: "sig1=:private:" } });
     fireEvent.change(screen.getByLabelText("Crawler Signature-Input"), { target: { value: 'sig1=("@authority");expires=4102444800' } });
@@ -172,7 +176,8 @@ describe("SEO integrations page", () => {
 
     expect(await screen.findByRole("heading", { name: "SEO integrations" })).toBeTruthy();
     expect(fetchDataForSeoIntegration).not.toHaveBeenCalled();
-    expect(screen.getByText("Needs key")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: /^Configure CrUX/ }));
+    expect(await screen.findByText("Needs key")).toBeTruthy();
     expect(screen.getAllByText("Local only").length).toBeGreaterThan(0);
 
     fireEvent.change(screen.getByLabelText("API key"), { target: { value: "private-crux-key" } });
@@ -198,6 +203,7 @@ describe("SEO integrations page", () => {
     });
     render(<IntegrationsPage projectId="store" refreshKey={0} onRunAction={vi.fn()} />);
 
+    fireEvent.click(await screen.findByRole("button", { name: /^Configure Search Console/ }));
     expect(await screen.findByText("default · Ready")).toBeTruthy();
     fireEvent.click(screen.getAllByRole("button", { name: "Load accessible properties" })[0]);
     expect(await screen.findByText("1 accessible Search Console properties loaded.")).toBeTruthy();
@@ -216,6 +222,21 @@ describe("SEO integrations page", () => {
     expect(readyPills.every((pill) => pill.getAttribute("data-tone") === "success")).toBe(true);
   });
 
+  it("opens one source configuration in a dialog and closes it", async () => {
+    render(<IntegrationsPage projectId="store" refreshKey={0} onRunAction={vi.fn()} />);
+
+    expect(screen.queryByRole("dialog")).toBeNull();
+    fireEvent.click(await screen.findByRole("button", { name: /^Configure Shopify/ }));
+
+    expect(await screen.findByRole("dialog")).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Shopify Admin API" })).toBeTruthy();
+    expect(screen.queryByRole("heading", { name: "Signed storefront crawl" })).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Close configuration" }));
+    expect(await screen.findByRole("button", { name: /^Configure Shopify/ })).toBeTruthy();
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
   it("stores DataForSEO credentials from the optional providers tab without displaying them", async () => {
     vi.mocked(saveDataForSeoCredentials).mockResolvedValue({
       ...emptyDataForSeo,
@@ -227,9 +248,9 @@ describe("SEO integrations page", () => {
     });
     render(<IntegrationsPage projectId="store" refreshKey={0} section="optional" onRunAction={vi.fn()} />);
 
-    await screen.findByRole("heading", { name: "DataForSEO" });
+    fireEvent.click(await screen.findByRole("button", { name: /^Configure DataForSEO/ }));
+    expect(await screen.findByRole("heading", { name: "DataForSEO" })).toBeTruthy();
     expect(screen.queryByRole("heading", { name: "Google Search Console" })).toBeNull();
-    expect(screen.getByRole("heading", { name: "DataForSEO" })).toBeTruthy();
     fireEvent.change(screen.getByLabelText("DataForSEO API login"), { target: { value: "api@example.com" } });
     fireEvent.change(screen.getByLabelText("DataForSEO API password"), { target: { value: "private-password" } });
     fireEvent.click(screen.getByRole("button", { name: "Verify and store" }));
