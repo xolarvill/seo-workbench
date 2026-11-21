@@ -268,6 +268,9 @@ describe("SEO integrations page", () => {
     });
     render(<IntegrationsPage projectId="store" refreshKey={0} section="optional" onRunAction={vi.fn()} />);
 
+    const adsLink = await screen.findByRole("link", { name: "Open Google Ads in a new tab" });
+    expect(adsLink.getAttribute("href")).toBe("https://ads.google.com/");
+    expect(adsLink.getAttribute("target")).toBe("_blank");
     fireEvent.click(await screen.findByRole("button", { name: /^Configure DataForSEO/ }));
     expect(screen.queryByRole("button", { name: /^Configure Clarity/ })).toBeNull();
     expect(await screen.findByRole("heading", { name: "DataForSEO" })).toBeTruthy();

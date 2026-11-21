@@ -118,6 +118,8 @@
 }
 .cardAction svg { transition: transform 220ms var(--ease-out); }
 .cardIndex { color: var(--muted-soft); font: 10px/1 var(--font-mono); letter-spacing: .08em; }
+.cardLink { text-decoration: none; }
+.cardExternal { color: var(--muted); }
 
 @keyframes cardEnter {
   from { opacity: 0; transform: translateY(6px); }

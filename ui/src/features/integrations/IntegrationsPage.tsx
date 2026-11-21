@@ -5,10 +5,12 @@ import {
   Check,
   CircleAlert,
   Database,
+  ExternalLink,
   Gauge,
   KeyRound,
   Link2,
   LockKeyhole,
+  Megaphone,
   MousePointerClick,
   RefreshCw,
   SearchCheck,
@@ -590,6 +592,30 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
             onOpen={() => setSelectedProvider(provider.id)}
           />
         ))}
+        {section === "optional" ? (
+          <a
+            className={cn(styles.card, styles.cardLink)}
+            href="https://ads.google.com/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open Google Ads in a new tab"
+            style={{ animationDelay: `${providers.length * 40}ms` }}
+          >
+            <span className={styles.cardTop}>
+              <span className={styles.cardIcon}><Megaphone aria-hidden="true" size={18} strokeWidth={1.7} /></span>
+              <ExternalLink className={styles.cardExternal} aria-hidden="true" size={15} />
+            </span>
+            <span className={styles.cardText}>
+              <strong className={styles.cardTitle}>Google Ads</strong>
+              <span className={styles.cardSubtitle}>Keyword and campaign data</span>
+              <span className={styles.cardMeta}>ads.google.com</span>
+            </span>
+            <span className={styles.cardFoot}>
+              <span className={styles.cardAction}><span>Open</span><ArrowUpRight aria-hidden="true" size={14} /></span>
+              <span className={styles.cardIndex} aria-hidden="true">{String(providers.length + 1).padStart(2, "0")}</span>
+            </span>
+          </a>
+        ) : null}
       </div>
 
       <footer className={styles.securityFooter}>
