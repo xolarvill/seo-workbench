@@ -136,6 +136,22 @@ a:hover { color: var(--primary-dark); text-decoration-color: currentColor; }
 
 .srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
+/* Section headings stay in the accessibility tree but are never rendered.
+   Markdown content opts back in with [data-content-heading].
+   The body prefix keeps this above component-level h2 rules. */
+body h2:not([data-content-heading]) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 .loading-screen,
 .error-screen {
   min-height: 100vh;
