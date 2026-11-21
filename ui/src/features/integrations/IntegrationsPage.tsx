@@ -236,15 +236,21 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
   }, [projectId, refreshKey, section]);
 
   useEffect(() => {
+    let active = true;
+    setClarity(null);
+    fetchClarityIntegration(projectId)
+      .then((result) => { if (active) setClarity(result); })
+      .catch(() => {});
+    return () => { active = false; };
+  }, [projectId, refreshKey]);
+
+  useEffect(() => {
     if (section !== "optional") return;
     let active = true;
     setDataForSeo(null);
     fetchDataForSeoIntegration(projectId)
       .then((result) => { if (active) setDataForSeo(result); })
       .catch((reason) => { if (active) setError(messageFrom(reason)); });
-    fetchClarityIntegration(projectId)
-      .then((result) => { if (active) setClarity(result); })
-      .catch(() => {});
     return () => { active = false; };
   }, [projectId, refreshKey, section]);
 
@@ -532,6 +538,14 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
       status: integration?.ga4?.status,
       icon: BarChart3,
     },
+    {
+      id: "clarity",
+      label: "Clarity",
+      subtitle: "Behavior analytics",
+      meta: clarity?.project_id ? `Project · ${clarity.project_id}` : clarity?.configured ? "Credentials stored" : "No project id",
+      status: clarity?.status,
+      icon: MousePointerClick,
+    },
   );
   const optionalProviders: ProviderEntry[] = [
     {
@@ -541,14 +555,6 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
       meta: dataForSeo?.configured ? "REST v3 · credentials stored" : "REST v3 · not configured",
       status: dataForSeo?.status,
       icon: Database,
-    },
-    {
-      id: "clarity",
-      label: "Clarity",
-      subtitle: "Behavior analytics",
-      meta: clarity?.project_id ? `Project · ${clarity.project_id}` : clarity?.configured ? "Credentials stored" : "No project id",
-      status: clarity?.status,
-      icon: MousePointerClick,
     },
   ];
   const providers = section === "core" ? coreProviders : optionalProviders;
@@ -861,6 +867,8 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
           <button className={styles.primary} type="button" disabled={integration?.ga4?.status !== "ready" || Boolean(busy)} onClick={() => runEvidence("ga4")}>{busy === "ga4-verify" ? "Queuing" : "Run GA4 collection"}</button>
         </div>
       </article>
+
+      {activeProvider?.id === "clarity" ? <ClarityPanel key={projectId} projectId={projectId} /> : null}
       </> : (
         <>
           {dataForSeo ? <article hidden={activeProvider?.id !== "dataforseo"} className={styles.integration}>
@@ -903,7 +911,6 @@ export function IntegrationsPage({ projectId, refreshKey, section = "core", onRu
           </div>
         </form>
           </article> : activeProvider?.id === "dataforseo" ? <div className={styles.state}>Loading optional provider status</div> : null}
-          {activeProvider?.id === "clarity" ? <ClarityPanel key={projectId} projectId={projectId} /> : null}
         </>
       )}
           </div>

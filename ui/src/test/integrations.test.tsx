@@ -122,11 +122,11 @@ beforeEach(() => {
 
 describe("SEO integrations page", () => {
   it("preserves the Clarity query across evidence watcher refreshes", async () => {
-    const { rerender } = render(<IntegrationsPage projectId="store" refreshKey={0} section="optional" onRunAction={vi.fn()} />);
+    const { rerender } = render(<IntegrationsPage projectId="store" refreshKey={0} onRunAction={vi.fn()} />);
     fireEvent.click(await screen.findByRole("button", { name: /^Configure Clarity/ }));
     const question = await screen.findByLabelText("Clarity question");
     fireEvent.change(question, { target: { value: "Mobile sessions" } });
-    rerender(<IntegrationsPage projectId="store" refreshKey={1} section="optional" onRunAction={vi.fn()} />);
+    rerender(<IntegrationsPage projectId="store" refreshKey={1} onRunAction={vi.fn()} />);
     expect((screen.getByLabelText("Clarity question") as HTMLInputElement).value).toBe("Mobile sessions");
   });
   it("verifies and stores a write-only Shopify Admin API token", async () => {
@@ -249,6 +249,7 @@ describe("SEO integrations page", () => {
     render(<IntegrationsPage projectId="store" refreshKey={0} section="optional" onRunAction={vi.fn()} />);
 
     fireEvent.click(await screen.findByRole("button", { name: /^Configure DataForSEO/ }));
+    expect(screen.queryByRole("button", { name: /^Configure Clarity/ })).toBeNull();
     expect(await screen.findByRole("heading", { name: "DataForSEO" })).toBeTruthy();
     expect(screen.queryByRole("heading", { name: "Google Search Console" })).toBeNull();
     fireEvent.change(screen.getByLabelText("DataForSEO API login"), { target: { value: "api@example.com" } });
