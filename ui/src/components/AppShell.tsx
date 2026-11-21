@@ -42,7 +42,7 @@ import styles from "./AppShell.module.css";
 
 const SIDEBAR_STATE_KEY = "seo-workbench:sidebar";
 
-const navItemClass = "flex min-h-9 w-full items-center gap-2.5 rounded-lg px-2.5 text-left text-[13px] font-medium transition-colors";
+const navItemClass = "flex min-h-9 w-full items-center gap-2.5 rounded-lg px-2.5 text-left text-[13px] font-normal transition-colors";
 const navIdleClass = "text-ink-muted hover:bg-surface-soft hover:text-ink";
 const navActiveClass = "bg-surface-soft font-semibold text-ink";
 
@@ -166,7 +166,7 @@ function NavButton({ active, collapsed, current = true, expanded, hasPopup, icon
       aria-expanded={showChevron ? expanded : undefined}
       aria-haspopup={hasPopup}
       onClick={onClick}
-      className={cn(navItemClass, active ? navActiveClass : navIdleClass, expanded && !active && "font-semibold text-ink", collapsed && "size-9 min-h-9 justify-center px-0")}
+      className={cn(navItemClass, active ? navActiveClass : navIdleClass, expanded && !active && "text-ink", collapsed && "size-9 min-h-9 justify-center px-0")}
     >
       <NavIcon icon={Icon} />
       <span className={cn("truncate", collapsed && "sr-only")}>{label}</span>
