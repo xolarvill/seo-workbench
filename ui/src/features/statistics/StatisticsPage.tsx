@@ -63,7 +63,7 @@ function deltaTone(value: unknown): StatusTone {
 }
 
 function Card({ title, subtitle, help, children }: { title: string; subtitle?: ReactNode; help?: ReactNode; children: ReactNode }) {
-  return <section className={styles.card}><header className={styles.cardHeader}><h2>{title}{help ? <HelpTooltip label={title} align="center">{help}</HelpTooltip> : null}</h2>{subtitle ? <span>{subtitle}</span> : null}</header><div className={styles.cardBody}>{children}</div></section>;
+  return <section className={styles.card}><header className={styles.cardHeader}><div className={styles.cardTitle}><h2>{title}</h2>{help ? <HelpTooltip label={title} align="center">{help}</HelpTooltip> : null}</div>{subtitle ? <span>{subtitle}</span> : null}</header><div className={styles.cardBody}>{children}</div></section>;
 }
 
 function TrendBars({ weekly, tone }: { weekly: unknown; tone?: StatusTone }) {

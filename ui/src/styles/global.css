@@ -1,3 +1,66 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+  Tailwind theme tokens for the shadcn primitives. Each one maps to a workbench
+  token in :root, so utilities and CSS Modules share one palette. Light only.
+*/
+@theme inline {
+  --font-sans: var(--font-ui);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --color-background: var(--canvas);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--primary);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--surface-soft);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--surface-soft);
+  --color-muted-foreground: var(--muted);
+  --color-accent: var(--primary-wash);
+  --color-accent-foreground: var(--primary-dark);
+  --color-destructive: var(--danger);
+  --color-destructive-foreground: #ffffff;
+  --color-border: var(--separator);
+  --color-input: var(--separator-strong);
+  --color-ring: var(--primary);
+
+  /* Workbench palette exposed to Tailwind utilities (bg-surface, text-ink, …). */
+  --color-canvas: var(--canvas);
+  --color-graphite: var(--graphite);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-muted-soft: var(--muted-soft);
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-separator: var(--separator);
+  --color-separator-strong: var(--separator-strong);
+  --color-primary-wash: var(--primary-wash);
+  --color-primary-dark: var(--primary-dark);
+  --color-success: var(--success);
+  --color-success-dark: var(--success-dark);
+  --color-success-wash: var(--success-wash);
+  --color-warning: var(--warning);
+  --color-warning-dark: var(--warning-dark);
+  --color-warning-wash: var(--warning-wash);
+  --color-danger: var(--danger);
+  --color-danger-dark: var(--danger-dark);
+  --color-danger-wash: var(--danger-wash);
+  --color-info: var(--info);
+  --color-info-dark: var(--info-dark);
+  --color-info-wash: var(--info-wash);
+
+  --radius-sm: var(--radius-4);
+  --radius-md: var(--radius-6);
+  --radius-lg: var(--radius-card);
+  --radius-xl: calc(var(--radius-card) + 4px);
+}
+
 :root {
   color: var(--ink);
   background: var(--canvas);
@@ -12,7 +75,7 @@
   --ink-muted: #475467;
   --muted: #667085;
   --muted-soft: #98a2b3;
-  --canvas: #f8fafc;
+  --canvas: #ffffff;
   --surface: #ffffff;
   --surface-soft: #f2f4f7;
   --separator: #eaecf0;
@@ -40,15 +103,9 @@
   --shadow-link: 0 1px 2px rgba(16, 24, 40, 0.06);
   --shadow-menu: 0 14px 32px rgba(16, 24, 40, 0.14);
   --shadow-floating: 0 18px 44px rgba(16, 24, 40, 0.16);
+  --shadow-sidebar: 0 1px 2px rgba(16, 24, 40, 0.04), 0 16px 40px #f8fafc;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-.statusPill { display: inline-flex; align-items: center; width: fit-content; min-height: 22px; padding: 2px 8px; border: 1px solid transparent; border-radius: 999px; font: 600 10px/1.2 var(--font-mono); letter-spacing: 0; text-transform: capitalize; white-space: nowrap; }
-.statusPill[data-tone="danger"] { border-color: #fecaca; color: var(--danger-dark); background: var(--danger-wash); }
-.statusPill[data-tone="warning"] { border-color: #fde68a; color: var(--warning-dark); background: var(--warning-wash); }
-.statusPill[data-tone="info"] { border-color: #bfdbfe; color: var(--info-dark); background: var(--info-wash); }
-.statusPill[data-tone="success"] { border-color: #a7f3d0; color: var(--success-dark); background: var(--success-wash); }
-.statusPill[data-tone="neutral"] { border-color: var(--separator); color: var(--ink-muted); background: var(--canvas); }
 
 * { box-sizing: border-box; }
 html { min-width: 320px; background: var(--canvas); }
@@ -76,6 +133,22 @@ a:hover { color: var(--primary-dark); text-decoration-color: currentColor; }
 .skip-link:focus { transform: translateY(0); }
 
 .srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Section headings stay in the accessibility tree but never render.
+   Markdown content opts in with [data-content-heading]; the body prefix
+   outranks component-level h2 rules. */
+body h2:not([data-content-heading]) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
 
 .loading-screen,
 .error-screen {

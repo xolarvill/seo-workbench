@@ -38,6 +38,8 @@ export function MarkdownPreview({ content, documentPath, onLocalLink, projectId 
             );
           },
           img: ({ src, alt, title }) => <img src={imageSource(src, projectId, documentPath)} alt={alt || ""} title={title} loading="lazy" decoding="async" />,
+          h1: ({ children }) => <h1 data-content-heading>{children}</h1>,
+          h2: ({ children }) => <h2 data-content-heading>{children}</h2>,
         }}
       >{content}</ReactMarkdown>
     </article>

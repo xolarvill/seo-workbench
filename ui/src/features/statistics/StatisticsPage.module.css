@@ -26,6 +26,7 @@
 
 .card { border: 1px solid var(--separator); border-radius: 10px; background: var(--surface); overflow: visible; }
 .cardHeader { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 12px 14px 0; }
+.cardTitle { display: inline-flex; align-items: center; gap: 2px; min-width: 0; }
 .cardHeader h2 { position: relative; margin: 0; display: inline-flex; align-items: center; gap: 2px; color: var(--ink); font-size: 14px; letter-spacing: -.01em; }
 .cardHeader h2 > span { position: static; }
 .cardHeader h2 > span > [role="tooltip"] { left: 0; right: auto; transform: translateY(-3px); }

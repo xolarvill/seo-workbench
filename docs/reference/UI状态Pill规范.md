@@ -1,6 +1,6 @@
 # UI Status Pill 规范
 
-所有工作台页面统一使用 `ui/src/components/StatusPill.tsx` 的 `StatusPill`，不要在页面组件中重新实现 pill 样式或 tone 映射。公共外观位于 `ui/src/styles/global.css`。
+所有工作台页面统一使用 `ui/src/components/StatusPill.tsx` 的 `StatusPill`，不要在页面组件中重新实现 pill 样式或 tone 映射。外观来自 shadcn `Badge` 的 tone variants（`ui/src/components/ui/badge.tsx`），颜色令牌在 `ui/src/styles/global.css`。
 
 ## 颜色语义
 

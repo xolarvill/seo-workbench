@@ -16,6 +16,7 @@ import { OwnersPage } from "../features/owners/OwnersPage";
 import { FilesPage } from "../features/files/FilesPage";
 import { PagesWorkbenchPage } from "../features/pages/PagesWorkbenchPage";
 import { ReportsPage } from "../features/reports/ReportsPage";
+import { TimelinePage } from "../features/timeline/TimelinePage";
 import { TutorialsPage } from "../features/tutorials/TutorialsPage";
 import { TechnicalAuditPage } from "../features/technical-audit/TechnicalAuditPage";
 import { WorkflowPage } from "../features/workflow/WorkflowPage";
@@ -64,7 +65,7 @@ describe("shared workbench controls", () => {
     expect(pageLabel(100, 50, 120)).toBe("101–120 of 120");
   });
 
-  it("closes drawers with Escape and restores focus", () => {
+  it("closes drawers with Escape and restores focus", async () => {
     function Harness() {
       const [open, setOpen] = useState(false);
       return <><button type="button" onClick={() => setOpen(true)}>Open drawer</button>{open ? <Drawer label="Test drawer" eyebrow="Test" title="Details" onClose={() => setOpen(false)}><button type="button">Action</button></Drawer> : null}</>;
@@ -73,10 +74,10 @@ describe("shared workbench controls", () => {
     const opener = screen.getByRole("button", { name: "Open drawer" });
     opener.focus();
     fireEvent.click(opener);
-    expect(screen.getAllByRole("button", { name: "Close details" })[1]).toBe(document.activeElement);
+    await waitFor(() => expect(screen.getByRole("button", { name: "Close details" })).toBe(document.activeElement));
     fireEvent.keyDown(document, { key: "Escape" });
-    expect(screen.queryByRole("dialog", { name: "Test drawer" })).toBeNull();
-    expect(opener).toBe(document.activeElement);
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Test drawer" })).toBeNull());
+    await waitFor(() => expect(opener).toBe(document.activeElement));
   });
 });
 
@@ -300,6 +301,8 @@ describe("workbench frontend", () => {
     expect(screen.getAllByText("example.com").length).toBeGreaterThan(0);
     fireEvent.click(screen.getAllByRole("button", { name: /Methods/i })[0]);
     expect(navigate).toHaveBeenCalledWith("workflow");
+    fireEvent.click(screen.getAllByRole("button", { name: "Timeline" })[0]);
+    expect(navigate).toHaveBeenCalledWith("timeline");
     fireEvent.click(screen.getAllByRole("button", { name: /Keywords/i })[0]);
     expect(navigate).toHaveBeenCalledWith("keywords");
     fireEvent.click(screen.getAllByRole("button", { name: /Owners/i })[0]);
@@ -313,6 +316,28 @@ describe("workbench frontend", () => {
     fireEvent.click(screen.getAllByRole("button", { name: /Guides/i })[0]);
     expect(navigate).toHaveBeenCalledWith("tutorials");
     expect(screen.queryByRole("button", { name: "Run audit" })).toBeNull();
+  });
+
+  it("filters navigation from sidebar search and collapses to an icon rail", () => {
+    render(<AppShell projects={[project]} selectedProject="shop" activeView="overview" onProjectChange={vi.fn()} onNavigate={vi.fn()}><p>Workspace</p></AppShell>);
+    const sidebar = within(screen.getByLabelText("Workbench navigation"));
+    fireEvent.change(screen.getByRole("searchbox", { name: "Search navigation" }), { target: { value: "audit" } });
+    expect(sidebar.getByRole("button", { name: "Audit" })).toBeTruthy();
+    expect(sidebar.queryByRole("button", { name: "Keywords" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Collapse sidebar" }));
+    expect(screen.queryByRole("searchbox", { name: "Search navigation" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Expand sidebar" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Expand sidebar" }));
+  });
+
+  it("opens settings to switch the project", () => {
+    const change = vi.fn();
+    const other = { ...project, id: "other", name: "Other Shop", url: "https://other.example.com" };
+    render(<AppShell projects={[project, other]} selectedProject="shop" activeView="overview" onProjectChange={change} onNavigate={vi.fn()}><p>Workspace</p></AppShell>);
+    fireEvent.click(screen.getByRole("button", { name: "Settings" }));
+    const dialog = screen.getByRole("dialog", { name: "Settings" });
+    fireEvent.click(within(dialog).getByRole("radio", { name: /Other Shop/ }));
+    expect(change).toHaveBeenCalledWith("other");
   });
 
   it("closes mobile navigation after choosing a destination", () => {
@@ -330,7 +355,7 @@ describe("workbench frontend", () => {
     const navigate = vi.fn();
     const section = vi.fn();
     render(<AppShell projects={[project]} selectedProject="shop" activeView="audits" activeAuditSection="url-inventory" onAuditSectionChange={section} onProjectChange={vi.fn()} onNavigate={navigate}><p>Workspace</p></AppShell>);
-    expect(screen.getByRole("button", { name: "URL inventory" }).className).toContain("activeTechnicalSubitem");
+    expect(screen.getByRole("button", { name: "URL inventory" }).getAttribute("aria-current")).toBe("page");
     fireEvent.click(screen.getByRole("button", { name: "Schedule" }));
     expect(navigate).toHaveBeenCalledWith("audits");
     expect(section).toHaveBeenCalledWith("automation");
@@ -340,7 +365,7 @@ describe("workbench frontend", () => {
     const navigate = vi.fn();
     const section = vi.fn();
     render(<AppShell projects={[project]} selectedProject="shop" activeView="integrations" activeConnectionSection="optional" onConnectionSectionChange={section} onProjectChange={vi.fn()} onNavigate={navigate}><p>Workspace</p></AppShell>);
-    expect(screen.getByRole("button", { name: "Optional providers" }).className).toContain("activeTechnicalSubitem");
+    expect(screen.getByRole("button", { name: "Optional providers" }).getAttribute("aria-current")).toBe("page");
     fireEvent.click(screen.getByRole("button", { name: "Core sources" }));
     expect(navigate).toHaveBeenCalledWith("integrations");
     expect(section).toHaveBeenCalledWith("core");
@@ -350,7 +375,7 @@ describe("workbench frontend", () => {
     const navigate = vi.fn();
     const section = vi.fn();
     render(<AppShell projects={[project]} selectedProject="shop" activeView="content" activeContentSection="brief" onContentSectionChange={section} onProjectChange={vi.fn()} onNavigate={navigate}><p>Workspace</p></AppShell>);
-    expect(screen.getByRole("button", { name: "Brief" }).className).toContain("activeTechnicalSubitem");
+    expect(screen.getByRole("button", { name: "Brief" }).getAttribute("aria-current")).toBe("page");
     fireEvent.click(screen.getByRole("button", { name: "Produce" }));
     expect(navigate).toHaveBeenCalledWith("content");
     expect(section).toHaveBeenCalledWith("produce");
@@ -671,13 +696,21 @@ describe("workbench frontend", () => {
     await waitFor(() => expect(run).toHaveBeenCalledWith({ action: "report", period: "daily" }));
   });
 
-  it("renders SEO changes as a read-only report timeline", async () => {
-    render(<ReportsPage projectId="shop" jobs={[]} refreshKey={0} section="seo-changes" onOpenFile={vi.fn()} onRunContentAction={vi.fn()} />);
-    expect(await screen.findByRole("heading", { name: "SEO changes" })).toBeTruthy();
+  it("renders the timeline as month-grouped entries and opens one read-only record", async () => {
+    render(<TimelinePage projectId="shop" refreshKey={0} />);
+    expect(await screen.findByRole("heading", { name: "Timeline" })).toBeTruthy();
+    expect(screen.getByText("AUGUST 2026")).toBeTruthy();
     expect(screen.getByText("Improve the product title")).toBeTruthy();
-    expect(screen.getByLabelText("Help: SEO change scope")).toBeTruthy();
     expect(screen.getAllByText("shipped", { selector: ".statusPill" })).toHaveLength(1);
-    fireEvent.change(screen.getByRole("combobox", { name: "Filter SEO changes by type" }), { target: { value: "content" } });
+
+    fireEvent.click(screen.getByRole("button", { name: /Improve the product title/ }));
+    const dialog = await screen.findByRole("dialog");
+    expect(within(dialog).getByText("Improve the product title")).toBeTruthy();
+    expect(within(dialog).getByText("Updated title and description")).toBeTruthy();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Close timeline entry" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+
+    fireEvent.change(screen.getByRole("combobox", { name: "Filter timeline by type" }), { target: { value: "content" } });
     expect(screen.queryByText("Improve the product title")).toBeNull();
     expect(screen.getByText("Expand the guide")).toBeTruthy();
   });

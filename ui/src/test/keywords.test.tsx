@@ -177,7 +177,7 @@ describe("keyword workbench", () => {
     await waitFor(() => expect(screen.getByRole("button", { name: "Open research" })).toBeTruthy());
     fireEvent.click(screen.getByRole("button", { name: "Open research" }));
     await waitFor(() => expect(openFile).toHaveBeenCalledWith("strategy/keyword-dives/product-desk-shelf.md"));
-    fireEvent.click(screen.getAllByRole("button", { name: "Close keyword details" })[1]);
+    fireEvent.click(screen.getByRole("button", { name: "Close keyword details" }));
 
     fireEvent.click(screen.getByText("monitor riser"));
     await waitFor(() => expect(screen.getByRole("button", { name: "Agent deep dive" })).toBeTruthy());

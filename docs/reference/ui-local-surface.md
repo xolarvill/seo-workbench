@@ -24,6 +24,12 @@ Editor writes are limited to `context/`, `strategy/`, `content/`, `audits/`, and
 - Grouped technical actions are read-only and drill down by rule and page template; status, owner, and notes are updated on individual issue fingerprints.
 - Pages may update existing local ledgers only. Never publish, redirect, recrawl, push notifications, or mutate the site from Pages; those actions stay in the existing workspaces and confirmation paths.
 
-## Shared components
+## UI foundation
 
-Status pills use `ui/src/components/StatusPill.tsx` (see `docs/reference/UI状态Pill规范.md`); help tooltips use `ui/src/components/HelpTooltip.tsx` (see `docs/reference/UI帮助气泡规范.md`). Page-local tone maps, pill CSS, and ad-hoc tooltip implementations are not accepted.
+- Primitives: `ui/src/components/ui/` (shadcn-style components using Tailwind v4 utilities and Radix behavior).
+- Theme tokens: `ui/src/styles/global.css`; define palette values in `:root` and expose them through `@theme inline`.
+- Shared wrappers: `StatusPill` (`Badge`), `HelpTooltip` (`Tooltip`), `Drawer` (Radix Dialog `Sheet`). Use these instead of page-local tone maps, pill CSS, or ad-hoc tooltips.
+- Design references: shadcn/ui, Aceternity UI, and Fluid Functionalism; apply them as described in [`ui-design-inspiration.md`](ui-design-inspiration.md).
+- Page CSS Modules may coexist with Tailwind and override utilities by cascade order.
+- Section `h2` headings are visually hidden; Markdown content headings opt in with `data-content-heading`.
+- Commands: `npm run ui:dev`, `npm run ui:build`, `npm run ui:typecheck`, `npm run ui:test`.
