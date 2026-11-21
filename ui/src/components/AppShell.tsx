@@ -304,7 +304,7 @@ export function AppShell({
   const isVisible = (id: ViewName, label: string) =>
     !queryActive || matches(label) || (expandable[id]?.sections.some((section) => matches(section.label)) ?? false);
   const primaryNavigation = navigation.filter(({ id, label }) => id !== "files" && id !== "integrations" && id !== "workflow" && isVisible(id, label));
-  const workspaceNavigation = navigation.filter(({ id, label }) => (id === "files" || id === "integrations" || id === "workflow") && isVisible(id, label));
+  const workspaceNavigation = navigation.filter(({ id, label }) => (id === "files" || id === "integrations") && isVisible(id, label));
   const noMatches = queryActive && primaryNavigation.length === 0 && workspaceNavigation.length === 0;
 
   const navigateSection = (view: ViewName, section: string) => {
@@ -427,6 +427,7 @@ export function AppShell({
 
         <div ref={settingsTrigger} className="grid gap-0.5 p-2">
           <NavButton active={settingsOpen} current={false} collapsed={collapsed} hasPopup="dialog" icon={Settings} label="Settings" onClick={() => setSettingsOpen(true)} />
+          <NavButton active={activeView === "workflow"} collapsed={collapsed} icon={GitBranch} label="Methods" onClick={() => onNavigate("workflow")} />
           <NavButton active={activeView === "tutorials"} collapsed={collapsed} icon={CircleHelp} label="Guides" onClick={() => onNavigate("tutorials")} />
         </div>
       </aside>
