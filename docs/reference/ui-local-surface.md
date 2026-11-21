@@ -24,10 +24,11 @@ Editor writes are limited to `context/`, `strategy/`, `content/`, `audits/`, and
 - Grouped technical actions are read-only and drill down by rule and page template; status, owner, and notes are updated on individual issue fingerprints.
 - Pages may update existing local ledgers only. Never publish, redirect, recrawl, push notifications, or mutate the site from Pages; those actions stay in the existing workspaces and confirmation paths.
 
-## Shared components
+## UI foundation
 
-The UI foundation is shadcn-style: Tailwind v4 utilities plus Radix primitives live in `ui/src/components/ui/`, and the theme contract in `ui/src/styles/global.css` maps Tailwind tokens (`--color-primary`, `--color-border`, `--radius-md`, …) to the workbench palette. Start new interactive surfaces (dialogs, menus, popovers, selects, tooltips) from those primitives instead of hand-rolled markup; add a new design token to `:root`, not to an individual component.
-
-Status pills use `ui/src/components/StatusPill.tsx` (shadcn `Badge`; see `docs/reference/UI状态Pill规范.md`); help tooltips use `ui/src/components/HelpTooltip.tsx` (Radix `Tooltip`; see `docs/reference/UI帮助气泡规范.md`); detail drawers use `ui/src/components/Drawer.tsx` (Radix Dialog `Sheet`). Page-local tone maps, pill CSS, and ad-hoc tooltip implementations are not accepted. Existing page-level CSS Modules stay in place during migration and override Tailwind utilities by cascade order; do not add a second competing primitive.
-
-Section headings stay in the DOM for screen readers but are not rendered: global CSS hides every `h2` except Markdown content headings marked `data-content-heading`. Use visible eyebrow/kicker text for section labels instead of re-showing a heading, and do not add page-local overrides to make an `h2` visible again.
+- Primitives: `ui/src/components/ui/` (shadcn-style components using Tailwind v4 utilities and Radix behavior).
+- Theme tokens: `ui/src/styles/global.css`; define palette values in `:root` and expose them through `@theme inline`.
+- Shared wrappers: `StatusPill` (`Badge`), `HelpTooltip` (`Tooltip`), `Drawer` (Radix Dialog `Sheet`). Use these instead of page-local tone maps, pill CSS, or ad-hoc tooltips.
+- Page CSS Modules may coexist with Tailwind and override utilities by cascade order.
+- Section `h2` headings are visually hidden; Markdown content headings opt in with `data-content-heading`.
+- Commands: `npm run ui:dev`, `npm run ui:build`, `npm run ui:typecheck`, `npm run ui:test`.

@@ -67,10 +67,7 @@ export function statusTone(value: unknown, context: StatusContext): StatusTone {
   return "info";
 }
 
-/**
- * Shared status pill. The presentation is the shadcn Badge; `statusPill` and
- * `data-tone` stay as stable selectors for styling hooks and tests.
- */
+/** Shared status pill: shadcn Badge with `statusPill` and `data-tone` styling hooks. */
 export function StatusPill({ value, context = "status", tone }: { value: unknown; context?: StatusContext; tone?: StatusTone }) {
   const label = String(value ?? "").trim().replaceAll("_", " ") || "No data";
   const resolved = tone || statusTone(value, context);

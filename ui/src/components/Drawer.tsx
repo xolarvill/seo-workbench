@@ -12,8 +12,7 @@ import styles from "./Drawer.module.css";
  * existing right-side panel appearance.
  */
 export function Drawer({ children, closeLabel = "Close details", eyebrow, label, onClose, title, url }: { children: ReactNode; closeLabel?: string; eyebrow: ReactNode; label: string; onClose: () => void; title: ReactNode; url?: string }) {
-  // Radix restores focus to Dialog.Trigger; this drawer has no trigger element,
-  // so remember the element that was focused when it opened and restore it.
+  // This drawer has no Dialog.Trigger, so restore the element focused at open.
   const restoreRef = useRef<HTMLElement | null>(document.activeElement as HTMLElement | null);
   return (
     <Sheet open onOpenChange={(open) => { if (!open) onClose(); }}>

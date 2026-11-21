@@ -4,11 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
-/**
- * shadcn Button tuned to the workbench tokens.
- * Focus styling comes from the global :focus-visible rule so migrated and
- * legacy controls keep the same 2px primary outline.
- */
+/** shadcn Button tuned to the workbench tokens; focus uses the global :focus-visible outline. */
 const buttonVariants = cva(
   "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-sm text-[13px] font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {

@@ -4,11 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
-/**
- * shadcn Badge with the workbench status tones.
- * Tone values mirror the historical `.statusPill[data-tone]` rules so the
- * shared StatusPill looks identical after migration.
- */
+/** shadcn Badge with the workbench status tone variants. */
 const badgeVariants = cva(
   "inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-full border px-2 py-0.5 font-mono text-[10px] font-semibold leading-[1.2] tracking-normal capitalize [&>svg]:pointer-events-none [&>svg]:size-3",
   {

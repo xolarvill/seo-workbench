@@ -6,11 +6,7 @@ import { cn } from "@/lib/utils";
 
 const alignment = { left: "start", center: "center", right: "end" } as const;
 
-/**
- * Shared help bubble. Radix Tooltip provides the hover/focus wiring, dismiss
- * behavior, and collision-aware placement; the classes keep the workbench
- * bubble shape (lead-in strong + supporting list).
- */
+/** Shared help bubble: Radix Tooltip wiring and placement, workbench bubble styling. */
 export function HelpTooltip({ label, children, align = "left" }: { label: string; children: ReactNode; align?: "left" | "center" | "right" }) {
   return (
     <Tooltip delayDuration={0}>
