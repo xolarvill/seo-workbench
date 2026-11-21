@@ -109,8 +109,10 @@ describe("statistics workbench", () => {
     expect(screen.getByLabelText("Help: Daily history coverage")).toBeTruthy();
     expect(screen.getByLabelText("Help: Measurement regimes")).toBeTruthy();
     expect(screen.getByLabelText("Help: CTR benchmark")).toBeTruthy();
-    expect(screen.getByText(/Comparability guard/)).toBeTruthy();
-    expect(screen.getByText(/Internal, within-property benchmark/)).toBeTruthy();
+    fireEvent.focus(screen.getByLabelText("Help: Measurement regimes"));
+    expect(await screen.findByText(/Comparability guard/)).toBeTruthy();
+    fireEvent.focus(screen.getByLabelText("Help: CTR benchmark"));
+    expect(await screen.findByText(/Internal, within-property benchmark/)).toBeTruthy();
     expect(screen.getAllByText("gsc").length).toBeGreaterThan(0);
     expect(screen.getAllByText("56 days").length).toBeGreaterThan(0);
     expect(screen.getAllByText("ok", { selector: '[class*="statusPill"]' }).every((pill) => pill.getAttribute("data-tone") === "success")).toBe(true);

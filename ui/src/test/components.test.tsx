@@ -64,7 +64,7 @@ describe("shared workbench controls", () => {
     expect(pageLabel(100, 50, 120)).toBe("101–120 of 120");
   });
 
-  it("closes drawers with Escape and restores focus", () => {
+  it("closes drawers with Escape and restores focus", async () => {
     function Harness() {
       const [open, setOpen] = useState(false);
       return <><button type="button" onClick={() => setOpen(true)}>Open drawer</button>{open ? <Drawer label="Test drawer" eyebrow="Test" title="Details" onClose={() => setOpen(false)}><button type="button">Action</button></Drawer> : null}</>;
@@ -73,10 +73,10 @@ describe("shared workbench controls", () => {
     const opener = screen.getByRole("button", { name: "Open drawer" });
     opener.focus();
     fireEvent.click(opener);
-    expect(screen.getAllByRole("button", { name: "Close details" })[1]).toBe(document.activeElement);
+    await waitFor(() => expect(screen.getByRole("button", { name: "Close details" })).toBe(document.activeElement));
     fireEvent.keyDown(document, { key: "Escape" });
-    expect(screen.queryByRole("dialog", { name: "Test drawer" })).toBeNull();
-    expect(opener).toBe(document.activeElement);
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "Test drawer" })).toBeNull());
+    await waitFor(() => expect(opener).toBe(document.activeElement));
   });
 });
 

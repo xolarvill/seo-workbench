@@ -1,21 +1,23 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { HelpTooltip } from "../components/HelpTooltip";
 
 describe("HelpTooltip", () => {
-  it("renders an accessible trigger with labelled tooltip content", () => {
+  it("renders an accessible trigger with labelled tooltip content", async () => {
     render(<HelpTooltip label="CTR benchmark">Internal benchmark.</HelpTooltip>);
     const trigger = screen.getByLabelText("Help: CTR benchmark");
-    expect(trigger).toBeTruthy();
     expect(trigger.getAttribute("role")).toBe("img");
-    expect(trigger.getAttribute("aria-describedby")).toBeTruthy();
-    expect(screen.getByRole("tooltip").textContent).toBe("Internal benchmark.");
+    fireEvent.focus(trigger);
+    const tooltip = await screen.findByRole("tooltip");
+    expect(tooltip.textContent).toBe("Internal benchmark.");
+    expect(trigger.getAttribute("aria-describedby")).toBe(tooltip.id);
   });
 
-  it("keeps long-form help structured with a lead-in and list", () => {
+  it("keeps long-form help structured with a lead-in and list", async () => {
     render(<HelpTooltip label="Regimes"><><strong>Comparability guard.</strong><ul><li>Records changes that alter what a metric means.</li><li>A break makes the window incomparable.</li></ul></></HelpTooltip>);
-    const tooltip = screen.getByRole("tooltip");
+    fireEvent.focus(screen.getByLabelText("Help: Regimes"));
+    const tooltip = await screen.findByRole("tooltip");
     expect(tooltip.querySelector("strong")?.textContent).toBe("Comparability guard.");
     expect(tooltip.querySelectorAll("li").length).toBe(2);
   });

@@ -1,3 +1,5 @@
+import { Badge } from "@/components/ui/badge";
+
 export type StatusContext = "urgency" | "status" | "evidence" | "http";
 export type StatusTone = "danger" | "warning" | "info" | "success" | "neutral";
 
@@ -65,7 +67,12 @@ export function statusTone(value: unknown, context: StatusContext): StatusTone {
   return "info";
 }
 
+/**
+ * Shared status pill. The presentation is the shadcn Badge; `statusPill` and
+ * `data-tone` stay as stable selectors for styling hooks and tests.
+ */
 export function StatusPill({ value, context = "status", tone }: { value: unknown; context?: StatusContext; tone?: StatusTone }) {
   const label = String(value ?? "").trim().replaceAll("_", " ") || "No data";
-  return <span className="statusPill" data-tone={tone || statusTone(value, context)}>{label}</span>;
+  const resolved = tone || statusTone(value, context);
+  return <Badge variant={resolved} data-tone={resolved} className="statusPill min-h-[22px]">{label}</Badge>;
 }
