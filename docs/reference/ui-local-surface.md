@@ -26,4 +26,6 @@ Editor writes are limited to `context/`, `strategy/`, `content/`, `audits/`, and
 
 ## Shared components
 
-Status pills use `ui/src/components/StatusPill.tsx` (see `docs/reference/UI状态Pill规范.md`); help tooltips use `ui/src/components/HelpTooltip.tsx` (see `docs/reference/UI帮助气泡规范.md`). Page-local tone maps, pill CSS, and ad-hoc tooltip implementations are not accepted.
+The UI foundation is shadcn-style: Tailwind v4 utilities plus Radix primitives live in `ui/src/components/ui/`, and the theme contract in `ui/src/styles/global.css` maps Tailwind tokens (`--color-primary`, `--color-border`, `--radius-md`, …) to the workbench palette. Start new interactive surfaces (dialogs, menus, popovers, selects, tooltips) from those primitives instead of hand-rolled markup; add a new design token to `:root`, not to an individual component.
+
+Status pills use `ui/src/components/StatusPill.tsx` (shadcn `Badge`; see `docs/reference/UI状态Pill规范.md`); help tooltips use `ui/src/components/HelpTooltip.tsx` (Radix `Tooltip`; see `docs/reference/UI帮助气泡规范.md`); detail drawers use `ui/src/components/Drawer.tsx` (Radix Dialog `Sheet`). Page-local tone maps, pill CSS, and ad-hoc tooltip implementations are not accepted. Existing page-level CSS Modules stay in place during migration and override Tailwind utilities by cascade order; do not add a second competing primitive.
